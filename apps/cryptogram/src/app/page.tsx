@@ -15,6 +15,7 @@ export default function Index() {
               <span> Hello there, </span>
               Welcome cryptogram 👋
             </h1>
+              <a href="/game">Let&apos;s play</a>
           </div>
 
           <div id="hero" className="rounded">
