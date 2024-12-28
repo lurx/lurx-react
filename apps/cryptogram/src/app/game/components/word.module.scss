@@ -1,0 +1,10 @@
+.word {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5rem;
+	font-weight: bold;
+  &:not(.punctuationAfter) {
+    margin-inline-end: var(--word-spacing);
+  }
+}

@@ -1,0 +1,11 @@
+.board {
+  width: 100%;
+}
+
+.quote {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-block: 1rem;
+  // gap: 1rem;
+}

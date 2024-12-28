@@ -7,9 +7,9 @@ export type ZenQuote = {
   c: string;
 }
 
-export type Quote = {
-  quote: Nullable<string>;
-  author: Nullable<string>;
-  html: Nullable<string>;
-  category: Nullable<string>;
-}
+export type Quote = Nullable<{
+  quote: string;
+  author: string;
+  html: string;
+  category: string;
+}>
