@@ -1,3 +1,5 @@
+import { RegexTypes } from "./utils.constants";
+
 const wordTypes = {
   word: 'word',
   number: 'number',
@@ -11,11 +13,6 @@ type WordifyReturn = {
   type: WordType;
 }
 
-const regexes = {
-  word: /\w/,
-  number: /\d/,
-  punctuation: /[^\s\w]/,
-}
 
 export const wordify = (text: string): WordifyReturn[] => {
   const words = text.match(/[\w]+|[^\s\w]+|\s/g);
@@ -25,9 +22,9 @@ export const wordify = (text: string): WordifyReturn[] => {
 
   const wordified = words.reduce((acc: WordifyReturn[], word) => {
     let type:WordType = wordTypes.punctuation;
-    if (regexes.number.test(word)) {
+    if (RegexTypes.number.test(word)) {
       type = wordTypes.number
-    } else if (regexes.word.test(word)) {
+    } else if (RegexTypes.word.test(word)) {
         type = wordTypes.word;
     }
 

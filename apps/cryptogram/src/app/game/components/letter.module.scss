@@ -1,8 +1,19 @@
 .letter {
   color: var(--neutral);
   display: flex;
+  flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
+  text-transform: uppercase;
+  &:focus-within {
+    background-color: var(--primary-light)
+  }
+}
+
+.letterInput {
+  border-block-end: 1px solid;
+  max-width: 1em;
+  text-align: center;
 }

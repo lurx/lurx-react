@@ -9,7 +9,7 @@ import { useGameContext } from '../context/game-context';
 import { Punctuation } from './punctuation';
 
 export const Board = () => {
-	const { quote } = useGameContext();
+	const { quote, currentLetterIndex } = useGameContext();
 
 	const wordedQuote = useMemo(() => wordify(quote?.quote ?? ''), [quote]);
 
@@ -24,6 +24,7 @@ export const Board = () => {
 				return (
 					<Word
 						key={key}
+            wordIndex={index}
 						word={word.content}
             punctuationAfter={!isPunctuation && isNextWordPunctuation}
 					/>
@@ -33,11 +34,11 @@ export const Board = () => {
 		});
 	}, [wordedQuote]);
 
-	console.log(quote);
 
 	return (
 		<div className={styles.board}>
 			<p>{quote?.quote}</p>
+      <p>{currentLetterIndex}</p>
 			{quote?.quote && <div className={styles.quote}>{rewordQuote}</div>}
 		</div>
 	);

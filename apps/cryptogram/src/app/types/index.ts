@@ -13,3 +13,10 @@ export type Quote = Nullable<{
   html: string;
   category: string;
 }>
+
+export type LetterWithAssignedNumber = {
+  letter: string;
+  number: number;
+  isFound?: boolean;
+  isSolved?: boolean;
+}

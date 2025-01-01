@@ -5,7 +5,7 @@ describe('getRandomArrayIndex', () => {
     expect(getRandomArrayIndex([])).toBe(0);
   });
 
-  it('should return an integer that is <= to array.length', () => {
+  it('should return an integer that is lte to array.length', () => {
     const randomLength = Math.random() * 100;
     const randomArray = Array.from({ length: randomLength }, (_, i) => i);
     expect(getRandomArrayIndex(randomArray)).toBeLessThanOrEqual(randomArray.length);
