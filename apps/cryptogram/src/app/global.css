@@ -6,6 +6,9 @@
   --secondary-dark: #F35B04;
   --text-color: #FFFFFF;
 
+  --letter-correct: #00FF00;
+  --letter-incorrect: #FF0000;
+
   /* spacing */
   --word-spacing: 1rem;
 }

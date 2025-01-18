@@ -1,8 +1,6 @@
 import { assignNumbers } from './assign-numbers.util';
-import Chance from 'chance';
+import { chance } from './test-helpers.ts';
 import { getUniqueLetters } from './get-unique-letters';
-
-const chance = new Chance();
 
 const chanceString = () => chance.string({
   pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.!?\'"&',

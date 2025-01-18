@@ -20,3 +20,13 @@ export type LetterWithAssignedNumber = {
   isFound?: boolean;
   isSolved?: boolean;
 }
+
+export type RequireAll<Type> = {
+  [Prop in keyof Type]-?: Type[Prop];
+}
+
+export type RequiredSome<Type, Keys extends keyof Type> = {
+  [Prop in Keys]-?: Type[Prop];
+} & {
+  [Prop in Exclude<keyof Type, Keys>]?: Type[Prop];
+}

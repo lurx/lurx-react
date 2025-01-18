@@ -1,7 +1,6 @@
 import { getOnlyLettersFromString, getUniqueLetters } from './get-unique-letters';
-import Chance from 'chance';
+import { chance } from './test-helpers.ts';
 
-const chance = new Chance();
 const testArray = new Array(10).fill(null).map(() => chance.string());
 describe('getOnlyLettersFromString', () => {
   it.each(testArray)('should return a set of unique letters for string "%s"', (string:string) => {

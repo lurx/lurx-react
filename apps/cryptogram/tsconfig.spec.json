@@ -5,7 +5,7 @@
     "module": "commonjs",
     "moduleResolution": "node10",
     "jsx": "react",
-    "types": ["jest", "node"]
+    "types": ["jest", "node", "@types/chance"]
   },
   "include": [
     "jest.config.ts",
