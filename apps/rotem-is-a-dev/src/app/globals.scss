@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--under-construction-bg-color);
+  background-image: url('/construction-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  image-rendering: pixelated;
+  font-family: 'Press Start 2P', cursive;
+}
