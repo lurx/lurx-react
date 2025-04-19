@@ -1,0 +1,9 @@
+{
+	"name": "rotem-is-a-dev",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/rotem-is-a-dev",
+	"projectType": "application",
+	"tags": ["ui"],
+	"// targets": "to see all targets run: nx show project rotem-is-a-dev --web",
+	"targets": {}
+}
