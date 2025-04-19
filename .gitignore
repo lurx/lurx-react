@@ -44,3 +44,9 @@ Thumbs.db
 # Next.js
 .next
 out
+
+# APPS
+
+# apps/rotem-is-a-dev
+apps/rotem-is-a-dev/.env
+apps/rotem-is-a-dev/.env.local
