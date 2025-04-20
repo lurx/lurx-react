@@ -50,4 +50,4 @@ out
 # apps/rotem-is-a-dev
 apps/rotem-is-a-dev/.env
 apps/rotem-is-a-dev/.env.local
-apps/rotem-is-a-dev/.env.*
+apps/rotem-is-a-dev/.env*
