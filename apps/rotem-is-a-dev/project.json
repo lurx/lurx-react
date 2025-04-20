@@ -11,6 +11,13 @@
 			"options": {
 				"outputPath": "dist/apps/rotem-is-a-dev"
 			}
+		},
+		"serve": {
+			"executor": "@nx/next:server",
+			"options": {
+				"buildTarget": "rotem-is-a-dev:build",
+				"dev": true
+			}
 		}
 	}
 }
