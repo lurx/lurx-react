@@ -1,11 +1,11 @@
 import {
-    createAnimationUtils,
-    getAnimationDuration,
-    getMotionPreferences,
-    setMotionPreference,
-    shouldReduceMotion,
-    startAnimationMonitoring,
-    stopAnimationMonitoring,
+	createAnimationUtils,
+	getAnimationDuration,
+	getMotionPreferences,
+	setMotionPreference,
+	shouldReduceMotion,
+	startAnimationMonitoring,
+	stopAnimationMonitoring,
 } from '../animation.utils';
 
 // Mock anime.js createScope
@@ -26,7 +26,7 @@ const mockLocalStorage = {
 	getItem: jest.fn(),
 	setItem: jest.fn(),
 	removeItem: jest.fn(),
-	clear: jest.fn()
+	clear: jest.fn(),
 };
 
 describe('Animation Utils', () => {
@@ -122,7 +122,10 @@ describe('Animation Utils', () => {
 		it('should set motion preference in localStorage', () => {
 			setMotionPreference('reduced');
 
-			expect(mockLocalStorage.setItem).toHaveBeenCalledWith('motion-preference', 'reduced');
+			expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+				'motion-preference',
+				'reduced',
+			);
 		});
 
 		it('should dispatch custom event', () => {
@@ -132,7 +135,7 @@ describe('Animation Utils', () => {
 				expect.objectContaining({
 					type: 'motion-preference-changed',
 					detail: { motionLevel: 'none' },
-				})
+				}),
 			);
 		});
 	});
@@ -255,7 +258,9 @@ describe('Animation Utils', () => {
 			const mockScope1 = { revert: jest.fn() };
 			const mockScope2 = { revert: jest.fn() };
 
-			mockCreateScope.mockReturnValueOnce(mockScope1).mockReturnValueOnce(mockScope2);
+			mockCreateScope
+				.mockReturnValueOnce(mockScope1)
+				.mockReturnValueOnce(mockScope2);
 
 			utils.createScope();
 			utils.createScope();
@@ -281,7 +286,7 @@ describe('Animation Utils', () => {
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error cleaning up animation scope:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			consoleSpy.mockRestore();
@@ -313,7 +318,7 @@ describe('Animation Utils', () => {
 	describe('performance monitoring', () => {
 		beforeEach(() => {
 			// Mock requestAnimationFrame
-			global.requestAnimationFrame = jest.fn((cb) => {
+			global.requestAnimationFrame = jest.fn(cb => {
 				setTimeout(cb, 16);
 				return 1;
 			});

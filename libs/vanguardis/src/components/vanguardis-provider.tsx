@@ -29,12 +29,18 @@ export interface VanguardisProviderProps extends PropsWithChildren {
  * }
  * ```
  */
-export function VanguardisProvider({ children, className }: VanguardisProviderProps): React.JSX.Element {
+export function VanguardisProvider({
+	children,
+	className,
+}: VanguardisProviderProps): React.JSX.Element {
 	// Note: CSS is imported via '@lurx-react/vanguardis/style' at build time
 	// No dynamic CSS loading needed when used with build-time imports
 
 	return (
-		<div className={`vanguardis-provider ${className || ''}`} data-vanguardis-provider>
+		<div
+			className={`vanguardis-provider ${className || ''}`}
+			data-vanguardis-provider
+		>
 			{children}
 		</div>
 	);

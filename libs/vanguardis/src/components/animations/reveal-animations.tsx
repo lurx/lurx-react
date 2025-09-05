@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { getAnimationDuration, shouldReduceMotion } from '../../utils/animation.utils';
+import {
+	getAnimationDuration,
+	shouldReduceMotion,
+} from '../../utils/animation.utils';
 
 interface FadeInProps {
 	children: React.ReactNode;
@@ -74,7 +77,9 @@ export function FadeIn({
 
 		element.style.opacity = '0';
 		element.style.transform = initialTransform;
-		element.style.transition = `opacity ${getAnimationDuration(duration)}ms ease-out, transform ${getAnimationDuration(duration)}ms ease-out`;
+		element.style.transition = `opacity ${getAnimationDuration(
+			duration,
+		)}ms ease-out, transform ${getAnimationDuration(duration)}ms ease-out`;
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -92,7 +97,7 @@ export function FadeIn({
 					}
 				}
 			},
-			{ threshold }
+			{ threshold },
 		);
 
 		observer.observe(element);
@@ -101,7 +106,10 @@ export function FadeIn({
 	}, [delay, duration, direction, distance, once, threshold]);
 
 	return (
-		<div ref={ref} className={className}>
+		<div
+			ref={ref}
+			className={className}
+		>
 			{children}
 		</div>
 	);
@@ -138,11 +146,12 @@ export function StaggerFadeIn({
 			right: `translateX(-${distance}px)`,
 		}[direction];
 
-		elements.forEach((element) => {
+		elements.forEach(element => {
 			if (element instanceof HTMLElement) {
 				element.style.opacity = '0';
 				element.style.transform = initialTransform;
-				element.style.transition = 'opacity 600ms ease-out, transform 600ms ease-out';
+				element.style.transition =
+					'opacity 600ms ease-out, transform 600ms ease-out';
 			}
 		});
 
@@ -166,7 +175,7 @@ export function StaggerFadeIn({
 					}
 				}
 			},
-			{ threshold }
+			{ threshold },
 		);
 
 		observer.observe(container);
@@ -175,7 +184,10 @@ export function StaggerFadeIn({
 	}, [stagger, itemSelector, direction, distance, once, threshold]);
 
 	return (
-		<div ref={ref} className={className}>
+		<div
+			ref={ref}
+			className={className}
+		>
 			{children}
 		</div>
 	);
@@ -211,7 +223,9 @@ export function SlideIn({
 
 		element.style.opacity = '0';
 		element.style.transform = initialTransform;
-		element.style.transition = `opacity ${getAnimationDuration(duration)}ms ease-out, transform ${getAnimationDuration(duration)}ms ease-out`;
+		element.style.transition = `opacity ${getAnimationDuration(
+			duration,
+		)}ms ease-out, transform ${getAnimationDuration(duration)}ms ease-out`;
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -228,7 +242,7 @@ export function SlideIn({
 					}
 				}
 			},
-			{ threshold }
+			{ threshold },
 		);
 
 		observer.observe(element);
@@ -237,7 +251,10 @@ export function SlideIn({
 	}, [direction, distance, duration, delay, once, threshold]);
 
 	return (
-		<div ref={ref} className={className}>
+		<div
+			ref={ref}
+			className={className}
+		>
 			{children}
 		</div>
 	);
@@ -265,7 +282,11 @@ export function ScaleIn({
 		// Set initial state
 		element.style.opacity = '0';
 		element.style.transform = `scale(${scale})`;
-		element.style.transition = `opacity ${getAnimationDuration(duration)}ms ease-out, transform ${getAnimationDuration(duration)}ms cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
+		element.style.transition = `opacity ${getAnimationDuration(
+			duration,
+		)}ms ease-out, transform ${getAnimationDuration(
+			duration,
+		)}ms cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -282,7 +303,7 @@ export function ScaleIn({
 					}
 				}
 			},
-			{ threshold }
+			{ threshold },
 		);
 
 		observer.observe(element);
@@ -291,7 +312,10 @@ export function ScaleIn({
 	}, [scale, duration, delay, once, threshold]);
 
 	return (
-		<div ref={ref} className={className}>
+		<div
+			ref={ref}
+			className={className}
+		>
 			{children}
 		</div>
 	);

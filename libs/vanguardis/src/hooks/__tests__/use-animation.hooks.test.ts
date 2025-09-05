@@ -1,6 +1,14 @@
 import { act, renderHook } from '@testing-library/react';
-import type { AnimationState, MotionPreferences } from '../../types/animation.types';
-import { useAnimationScope, useAnimationState, useMotionPreferences, useMultipleAnimationScopes } from '../use-animation.hooks';
+import type {
+	AnimationState,
+	MotionPreferences,
+} from '../../types/animation.types';
+import {
+	useAnimationScope,
+	useAnimationState,
+	useMotionPreferences,
+	useMultipleAnimationScopes,
+} from '../use-animation.hooks';
 
 type ExtendedMotionPreferences = MotionPreferences & {
 	setMotionLevel: (level: MotionPreferences['motionLevel']) => void;
@@ -97,16 +105,18 @@ describe('Animation Hooks', () => {
 			});
 		});
 
-	it('should return motion preferences with default values', () => {
-		mockUseMediaQuery.mockReturnValue(false);
-		mockUseLocalStorage.mockReturnValue([null, jest.fn()]);
+		it('should return motion preferences with default values', () => {
+			mockUseMediaQuery.mockReturnValue(false);
+			mockUseLocalStorage.mockReturnValue([null, jest.fn()]);
 
-		const { result } = renderHook(() => useMotionPreferences());
+			const { result } = renderHook(() => useMotionPreferences());
 
-		expect(result.current.prefersReducedMotion).toBe(false);
-		expect(result.current.motionLevel).toBe('full');
-		expect(typeof (result.current as ExtendedMotionPreferences).setMotionLevel).toBe('function');
-	});
+			expect(result.current.prefersReducedMotion).toBe(false);
+			expect(result.current.motionLevel).toBe('full');
+			expect(
+				typeof (result.current as ExtendedMotionPreferences).setMotionLevel,
+			).toBe('function');
+		});
 
 		it('should return reduced motion when system preference is enabled', () => {
 			mockUseMediaQuery.mockReturnValue(true);
@@ -139,7 +149,7 @@ describe('Animation Hooks', () => {
 				expect.objectContaining({
 					type: 'motion-preference-changed',
 					detail: { motionLevel: 'full' },
-				})
+				}),
 			);
 		});
 
@@ -149,9 +159,9 @@ describe('Animation Hooks', () => {
 			mockUseLocalStorage.mockReturnValue([null, mockSetMotionLevel]);
 
 			const { result } = renderHook(() => useMotionPreferences());
-		act(() => {
-			(result.current as ExtendedMotionPreferences).setMotionLevel('reduced');
-		});
+			act(() => {
+				(result.current as ExtendedMotionPreferences).setMotionLevel('reduced');
+			});
 
 			expect(mockSetMotionLevel).toHaveBeenCalledWith('reduced');
 		});
@@ -190,8 +200,8 @@ describe('Animation Hooks', () => {
 			const { createScope } = require('animejs');
 			createScope.mockReturnValue(mockScope);
 
-			const { result, unmount } = renderHook(() =>
-				useAnimationScope(mockSetup, { autoCleanup: false }) // Use autoCleanup: false for testing
+			const { result, unmount } = renderHook(
+				() => useAnimationScope(mockSetup, { autoCleanup: false }), // Use autoCleanup: false for testing
 			);
 
 			expect(createScope).toHaveBeenCalledWith({ root: document.body });
@@ -214,7 +224,7 @@ describe('Animation Hooks', () => {
 			const mockSetup = jest.fn();
 
 			renderHook(() =>
-				useAnimationScope(mockSetup, { respectMotionPreference: true })
+				useAnimationScope(mockSetup, { respectMotionPreference: true }),
 			);
 
 			expect(mockSetup).not.toHaveBeenCalled();
@@ -231,7 +241,7 @@ describe('Animation Hooks', () => {
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error setting up animations:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			expect(result.current.scope).toBeNull();
@@ -247,7 +257,7 @@ describe('Animation Hooks', () => {
 			createScope.mockReturnValue(mockScope);
 
 			const { result } = renderHook(() =>
-				useAnimationScope(mockSetup, { autoCleanup: false })
+				useAnimationScope(mockSetup, { autoCleanup: false }),
 			);
 
 			expect(result.current.scope).toBe(mockScope);
@@ -273,12 +283,13 @@ describe('Animation Hooks', () => {
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error setting up animations:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			// Should also try to clean up
 			const { createScope } = require('animejs');
-			const mockScope = createScope.mock.results[createScope.mock.results.length - 1]?.value;
+			const mockScope =
+				createScope.mock.results[createScope.mock.results.length - 1]?.value;
 			if (mockScope?.revert) {
 				expect(mockScope.revert).toHaveBeenCalled();
 			}
@@ -300,7 +311,7 @@ describe('Animation Hooks', () => {
 			const mockScope = {
 				revert: jest.fn().mockImplementation(() => {
 					throw new Error('Cleanup error');
-				})
+				}),
 			};
 			createScope.mockReturnValue(mockScope);
 
@@ -308,11 +319,11 @@ describe('Animation Hooks', () => {
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error setting up animations:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 			expect(warnSpy).toHaveBeenCalledWith(
 				'Error cleaning up animation scope:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			consoleSpy.mockRestore();
@@ -328,19 +339,19 @@ describe('Animation Hooks', () => {
 			const mockScope = {
 				revert: jest.fn().mockImplementation(() => {
 					throw new Error('Cleanup error');
-				})
+				}),
 			};
 			createScope.mockReturnValue(mockScope);
 
 			const { unmount } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: true })
+				useAnimationScope(setup, { autoCleanup: true }),
 			);
 
 			unmount();
 
 			expect(warnSpy).toHaveBeenCalledWith(
 				'Error cleaning up animation scope:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			warnSpy.mockRestore();
@@ -348,26 +359,30 @@ describe('Animation Hooks', () => {
 
 		it('should handle performance monitoring with enablePerformanceMonitoring', () => {
 			const setup = jest.fn();
-			const { startAnimationMonitoring } = require('../../utils/animation.utils');
+			const {
+				startAnimationMonitoring,
+			} = require('../../utils/animation.utils');
 
 			renderHook(() =>
-				useAnimationScope(setup, { enablePerformanceMonitoring: true })
+				useAnimationScope(setup, { enablePerformanceMonitoring: true }),
 			);
 
 			expect(startAnimationMonitoring).toHaveBeenCalledWith(
-				expect.stringMatching(/^animation-\d+-/)
+				expect.stringMatching(/^animation-\d+-/),
 			);
 		});
 
 		it('should stop performance monitoring on cleanup', () => {
 			const setup = jest.fn();
-			const { stopAnimationMonitoring } = require('../../utils/animation.utils');
+			const {
+				stopAnimationMonitoring,
+			} = require('../../utils/animation.utils');
 
 			const { unmount } = renderHook(() =>
 				useAnimationScope(setup, {
 					autoCleanup: true,
-					enablePerformanceMonitoring: true
-				})
+					enablePerformanceMonitoring: true,
+				}),
 			);
 
 			unmount();
@@ -378,9 +393,9 @@ describe('Animation Hooks', () => {
 		it('should handle options changes correctly', () => {
 			const setup = jest.fn();
 
-			const { rerender } = renderHook((props) =>
-				useAnimationScope(setup, props),
-				{ initialProps: { autoCleanup: false } }
+			const { rerender } = renderHook(
+				props => useAnimationScope(setup, props),
+				{ initialProps: { autoCleanup: false } },
 			);
 
 			// Change options
@@ -396,7 +411,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			renderHook(() =>
-				useAnimationScope(setup, { respectMotionPreference: true })
+				useAnimationScope(setup, { respectMotionPreference: true }),
 			);
 
 			expect(setup).not.toHaveBeenCalled();
@@ -408,7 +423,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			renderHook(() =>
-				useAnimationScope(setup, { respectMotionPreference: false })
+				useAnimationScope(setup, { respectMotionPreference: false }),
 			);
 
 			expect(setup).toHaveBeenCalled();
@@ -428,7 +443,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			const { result } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: false })
+				useAnimationScope(setup, { autoCleanup: false }),
 			);
 
 			act(() => {
@@ -437,21 +452,24 @@ describe('Animation Hooks', () => {
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error cleaning up animation scope:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			consoleSpy.mockRestore();
 		});
 
 		it('should enable performance monitoring when specified', () => {
-			const { startAnimationMonitoring, stopAnimationMonitoring } = require('../../utils/animation.utils');
+			const {
+				startAnimationMonitoring,
+				stopAnimationMonitoring,
+			} = require('../../utils/animation.utils');
 			const setup = jest.fn();
 
 			const { result } = renderHook(() =>
 				useAnimationScope(setup, {
 					autoCleanup: true,
-					enablePerformanceMonitoring: true
-				})
+					enablePerformanceMonitoring: true,
+				}),
 			);
 
 			expect(startAnimationMonitoring).toHaveBeenCalled();
@@ -477,21 +495,21 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			const { unmount } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: true })
+				useAnimationScope(setup, { autoCleanup: true }),
 			);
 
 			unmount();
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'Error cleaning up animation scope:',
-				expect.any(Error)
+				expect.any(Error),
 			);
 
 			consoleSpy.mockRestore();
 		});
 
 		it('should handle setup function with scope parameter', () => {
-			const setup = jest.fn((scope) => {
+			const setup = jest.fn(scope => {
 				// Use the scope in setup
 				if (scope) {
 					scope.testMethod?.();
@@ -500,9 +518,11 @@ describe('Animation Hooks', () => {
 
 			renderHook(() => useAnimationScope(setup));
 
-			expect(setup).toHaveBeenCalledWith(expect.objectContaining({
-				revert: expect.any(Function)
-			}));
+			expect(setup).toHaveBeenCalledWith(
+				expect.objectContaining({
+					revert: expect.any(Function),
+				}),
+			);
 		});
 
 		it('should handle complex configuration object', () => {
@@ -525,7 +545,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			const { result } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: false })
+				useAnimationScope(setup, { autoCleanup: false }),
 			);
 
 			expect(typeof result.current.cleanup).toBe('function');
@@ -535,7 +555,8 @@ describe('Animation Hooks', () => {
 			});
 
 			const { createScope } = require('animejs');
-			const mockScope = createScope.mock.results[createScope.mock.results.length - 1]?.value;
+			const mockScope =
+				createScope.mock.results[createScope.mock.results.length - 1]?.value;
 			if (mockScope?.revert) {
 				expect(mockScope.revert).toHaveBeenCalled();
 			}
@@ -545,7 +566,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			const { result } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: false })
+				useAnimationScope(setup, { autoCleanup: false }),
 			);
 
 			act(() => {
@@ -561,7 +582,7 @@ describe('Animation Hooks', () => {
 			const setup = jest.fn();
 
 			const { result } = renderHook(() =>
-				useAnimationScope(setup, { autoCleanup: false })
+				useAnimationScope(setup, { autoCleanup: false }),
 			);
 
 			// Manually set scope to null
@@ -645,7 +666,10 @@ describe('Animation Hooks', () => {
 		});
 
 		it('should call animation monitoring functions when enabled', () => {
-			const { startAnimationMonitoring, stopAnimationMonitoring } = require('../../utils/animation.utils');
+			const {
+				startAnimationMonitoring,
+				stopAnimationMonitoring,
+			} = require('../../utils/animation.utils');
 
 			const { result } = renderHook(() => useAnimationState('test-id', true));
 
@@ -663,7 +687,10 @@ describe('Animation Hooks', () => {
 		});
 
 		it('should not call monitoring functions when disabled', () => {
-			const { startAnimationMonitoring, stopAnimationMonitoring } = require('../../utils/animation.utils');
+			const {
+				startAnimationMonitoring,
+				stopAnimationMonitoring,
+			} = require('../../utils/animation.utils');
 
 			const { result } = renderHook(() => useAnimationState('test-id', false));
 
@@ -720,7 +747,7 @@ describe('Animation Hooks', () => {
 
 			// Mock requestAnimationFrame
 			const mockRAF = jest.spyOn(window, 'requestAnimationFrame');
-			mockRAF.mockImplementation((callback) => {
+			mockRAF.mockImplementation(callback => {
 				setTimeout(callback, 16);
 				return 1;
 			});
@@ -831,7 +858,10 @@ describe('Animation Hooks', () => {
 				result.current.createScope('test-scope', setupFn);
 			});
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error setting up animation scope test-scope:', expect.any(Error));
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error setting up animation scope test-scope:',
+				expect.any(Error),
+			);
 			expect(result.current.scopes.has('test-scope')).toBe(false);
 
 			consoleSpy.mockRestore();
@@ -863,7 +893,7 @@ describe('Animation Hooks', () => {
 			const mockScope = {
 				revert: jest.fn(() => {
 					throw new Error('Revert failed');
-				})
+				}),
 			};
 			createScope.mockReturnValue(mockScope);
 
@@ -879,7 +909,10 @@ describe('Animation Hooks', () => {
 				result.current.removeScope('test-scope');
 			});
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error removing scope test-scope:', expect.any(Error));
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error removing scope test-scope:',
+				expect.any(Error),
+			);
 			expect(result.current.scopes.has('test-scope')).toBe(false);
 
 			consoleSpy.mockRestore();
@@ -889,7 +922,9 @@ describe('Animation Hooks', () => {
 			const { createScope } = require('animejs');
 			const mockScope1 = { revert: jest.fn() };
 			const mockScope2 = { revert: jest.fn() };
-			createScope.mockReturnValueOnce(mockScope1).mockReturnValueOnce(mockScope2);
+			createScope
+				.mockReturnValueOnce(mockScope1)
+				.mockReturnValueOnce(mockScope2);
 
 			const { result } = renderHook(() => useMultipleAnimationScopes());
 
@@ -914,7 +949,7 @@ describe('Animation Hooks', () => {
 			const mockScope = {
 				revert: jest.fn(() => {
 					throw new Error('Cleanup failed');
-				})
+				}),
 			};
 			createScope.mockReturnValue(mockScope);
 
@@ -930,7 +965,10 @@ describe('Animation Hooks', () => {
 				result.current.cleanupAll();
 			});
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error cleaning up scope test-scope:', expect.any(Error));
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error cleaning up scope test-scope:',
+				expect.any(Error),
+			);
 			expect(result.current.scopes.size).toBe(0);
 
 			consoleSpy.mockRestore();
@@ -941,7 +979,9 @@ describe('Animation Hooks', () => {
 			const mockScope = { revert: jest.fn() };
 			createScope.mockReturnValue(mockScope);
 
-			const { result, unmount } = renderHook(() => useMultipleAnimationScopes());
+			const { result, unmount } = renderHook(() =>
+				useMultipleAnimationScopes(),
+			);
 
 			act(() => {
 				result.current.createScope('test-scope', jest.fn());
@@ -959,7 +999,7 @@ describe('Animation Hooks', () => {
 			const oldScope = {
 				revert: jest.fn(() => {
 					throw new Error('Existing scope cleanup failed');
-				})
+				}),
 			};
 			const newScope = { revert: jest.fn() };
 			createScope.mockReturnValueOnce(oldScope).mockReturnValueOnce(newScope);
@@ -978,7 +1018,10 @@ describe('Animation Hooks', () => {
 				result.current.createScope('test-scope', jest.fn());
 			});
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error cleaning up existing scope test-scope:', expect.any(Error));
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error cleaning up existing scope test-scope:',
+				expect.any(Error),
+			);
 			expect(result.current.scopes.get('test-scope')).toBe(newScope);
 
 			consoleSpy.mockRestore();
@@ -995,30 +1038,31 @@ describe('Animation Hooks', () => {
 			// Should not throw error
 			expect(result.current.scopes.size).toBe(0);
 		});
-	});		it('should handle setup function with scope parameter and stop performance monitoring on error', () => {
-			const mockScope = { revert: jest.fn() };
-			const { createScope } = require('animejs');
-			createScope.mockReturnValue(mockScope);
+	});
+	it('should handle setup function with scope parameter and stop performance monitoring on error', () => {
+		const mockScope = { revert: jest.fn() };
+		const { createScope } = require('animejs');
+		createScope.mockReturnValue(mockScope);
 
-			// Create a setup function that throws an error
-			const setupFn = jest.fn(() => {
-				throw new Error('Setup failed');
-			});
-
-			const { result } = renderHook(() =>
-				useAnimationScope(setupFn, {
-					enablePerformanceMonitoring: true
-				})
-			);
-
-			// Should handle error gracefully
-			expect(result.current.scope).toBe(null);
-			expect(setupFn).toHaveBeenCalled();
-			expect(mockScope.revert).toHaveBeenCalled();
-
-			// The performance monitoring stop function should be called when error occurs
-			// since animationId is set before setup is called
-			const { stopAnimationMonitoring } = require('../../utils/animation.utils');
-			expect(stopAnimationMonitoring).toHaveBeenCalledTimes(1);
+		// Create a setup function that throws an error
+		const setupFn = jest.fn(() => {
+			throw new Error('Setup failed');
 		});
+
+		const { result } = renderHook(() =>
+			useAnimationScope(setupFn, {
+				enablePerformanceMonitoring: true,
+			}),
+		);
+
+		// Should handle error gracefully
+		expect(result.current.scope).toBe(null);
+		expect(setupFn).toHaveBeenCalled();
+		expect(mockScope.revert).toHaveBeenCalled();
+
+		// The performance monitoring stop function should be called when error occurs
+		// since animationId is set before setup is called
+		const { stopAnimationMonitoring } = require('../../utils/animation.utils');
+		expect(stopAnimationMonitoring).toHaveBeenCalledTimes(1);
+	});
 });

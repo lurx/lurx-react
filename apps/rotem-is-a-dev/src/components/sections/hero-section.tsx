@@ -30,10 +30,10 @@ type Nullable<T> = T | null;
  * Features particle effects, smooth animations, and responsive design
  */
 export default function HeroSection({
-	title = "Rotem Horovitz",
-	subtitle = "Full-Stack Developer & Creative Problem Solver",
-	primaryCta = "View My Work",
-	secondaryCta = "Get In Touch",
+	title = 'Rotem Horovitz',
+	subtitle = 'Full-Stack Developer & Creative Problem Solver',
+	primaryCta = 'View My Work',
+	secondaryCta = 'Get In Touch',
 	onPrimaryCta,
 	onSecondaryCta,
 }: HeroSectionProps) {
@@ -69,7 +69,9 @@ export default function HeroSection({
 
 			// Parallax background
 			if (particlesRef.current) {
-				particlesRef.current.style.transform = `translateY(${scrollProgress * 30}px)`;
+				particlesRef.current.style.transform = `translateY(${
+					scrollProgress * 30
+				}px)`;
 			}
 		}, 16); // ~60fps
 
@@ -87,9 +89,15 @@ export default function HeroSection({
 	}, []);
 
 	return (
-		<section ref={heroRef} className={styles.heroSection}>
+		<section
+			ref={heroRef}
+			className={styles.heroSection}
+		>
 			{/* Animated background particles */}
-			<div ref={particlesRef} className={styles.particles} />
+			<div
+				ref={particlesRef}
+				className={styles.particles}
+			/>
 
 			{/* Gradient overlay */}
 			<div className={styles.gradientOverlay} />
@@ -97,12 +105,19 @@ export default function HeroSection({
 			<div className={styles.container}>
 				<div className={styles.content}>
 					{/* Main title with typing animation */}
-					<FadeIn direction="down" delay={300}>
+					<FadeIn
+						direction="down"
+						delay={300}
+					>
 						<h1 className={styles.title}>{title}</h1>
 					</FadeIn>
 
 					{/* Subtitle */}
-					<SlideIn direction="up" delay={600} distance={30}>
+					<SlideIn
+						direction="up"
+						delay={600}
+						distance={30}
+					>
 						<p className={styles.subtitle}>{subtitle}</p>
 					</SlideIn>
 

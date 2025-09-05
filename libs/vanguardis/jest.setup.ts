@@ -6,9 +6,9 @@ import '@testing-library/jest-dom';
 // Mock console.warn for animation utilities that may warn about reduced motion
 const originalWarn = console.warn;
 beforeAll(() => {
-  console.warn = jest.fn();
+	console.warn = jest.fn();
 });
 
 afterAll(() => {
-  console.warn = originalWarn;
+	console.warn = originalWarn;
 });

@@ -1,12 +1,12 @@
 import { act, renderHook } from '@testing-library/react';
 import { useEffect, useState } from 'react';
 import {
-    useIntersectionAnimation,
-    useInViewport,
-    useParallax,
-    useScrollAnimation,
-    useScrollDirection,
-    useScrollProgress,
+	useIntersectionAnimation,
+	useInViewport,
+	useParallax,
+	useScrollAnimation,
+	useScrollDirection,
+	useScrollProgress,
 } from '../use-scroll-animation.hooks';
 
 // Mock dependencies
@@ -15,8 +15,8 @@ jest.mock('animejs', () => ({
 }));
 
 jest.mock('es-toolkit', () => ({
-	throttle: jest.fn((fn) => fn),
-	debounce: jest.fn((fn) => fn),
+	throttle: jest.fn(fn => fn),
+	debounce: jest.fn(fn => fn),
 }));
 
 jest.mock('../../utils/animation.utils', () => ({
@@ -26,7 +26,7 @@ jest.mock('../../utils/animation.utils', () => ({
 // Setup DOM mocks
 const mockAddEventListener = jest.fn();
 const mockRemoveEventListener = jest.fn();
-const mockRequestAnimationFrame = jest.fn((cb) => {
+const mockRequestAnimationFrame = jest.fn(cb => {
 	cb();
 	return 1;
 });
@@ -38,7 +38,7 @@ const mockDisconnect = jest.fn();
 
 const createMockIntersectionObserver = (
 	callback: IntersectionObserverCallback,
-	options: IntersectionObserverInit
+	options: IntersectionObserverInit,
 ) => ({
 	observe: mockObserve,
 	unobserve: mockUnobserve,
@@ -110,11 +110,11 @@ describe('useScrollProgress', () => {
 		expect(mockAddEventListener).toHaveBeenCalledWith(
 			'scroll',
 			expect.any(Function),
-			{ passive: true }
+			{ passive: true },
 		);
 		expect(mockAddEventListener).toHaveBeenCalledWith(
 			'resize',
-			expect.any(Function)
+			expect.any(Function),
 		);
 	});
 
@@ -125,11 +125,11 @@ describe('useScrollProgress', () => {
 
 		expect(mockRemoveEventListener).toHaveBeenCalledWith(
 			'scroll',
-			expect.any(Function)
+			expect.any(Function),
 		);
 		expect(mockRemoveEventListener).toHaveBeenCalledWith(
 			'resize',
-			expect.any(Function)
+			expect.any(Function),
 		);
 	});
 });
@@ -145,7 +145,9 @@ describe('useScrollAnimation', () => {
 	};
 
 	beforeEach(() => {
-		const mockQuerySelector = document.querySelector as jest.MockedFunction<typeof document.querySelector>;
+		const mockQuerySelector = document.querySelector as jest.MockedFunction<
+			typeof document.querySelector
+		>;
 		mockQuerySelector.mockReturnValue(mockElement as unknown as Element);
 	});
 
@@ -179,7 +181,9 @@ describe('useScrollAnimation', () => {
 
 		renderHook(() => useScrollAnimation(config));
 
-		const mockQuerySelector = document.querySelector as jest.MockedFunction<typeof document.querySelector>;
+		const mockQuerySelector = document.querySelector as jest.MockedFunction<
+			typeof document.querySelector
+		>;
 		expect(mockQuerySelector).toHaveBeenCalledWith('.test-element');
 	});
 
@@ -194,7 +198,9 @@ describe('useScrollAnimation', () => {
 
 		renderHook(() => useScrollAnimation(config));
 
-		const mockQuerySelector = document.querySelector as jest.MockedFunction<typeof document.querySelector>;
+		const mockQuerySelector = document.querySelector as jest.MockedFunction<
+			typeof document.querySelector
+		>;
 		expect(mockQuerySelector).not.toHaveBeenCalled();
 	});
 
@@ -233,7 +239,7 @@ describe('useScrollAnimation', () => {
 		expect(() => renderHook(() => useScrollAnimation(config))).not.toThrow();
 		expect(consoleSpy).toHaveBeenCalledWith(
 			'Error creating scroll animation:',
-			expect.any(Error)
+			expect.any(Error),
 		);
 
 		consoleSpy.mockRestore();
@@ -250,7 +256,10 @@ describe('useIntersectionAnimation', () => {
 	});
 
 	it('should not set up IntersectionObserver without an element', () => {
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 
 		const config = {
 			threshold: 0.5,
@@ -269,7 +278,10 @@ describe('useIntersectionAnimation', () => {
 		const { shouldReduceMotion } = require('../../utils/animation.utils');
 		shouldReduceMotion.mockReturnValue(true);
 
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 
 		const { result } = renderHook(() => useIntersectionAnimation());
 
@@ -303,7 +315,7 @@ describe('useParallax', () => {
 
 		// Should not set up scroll listener when motion is reduced
 		const scrollListenerCalls = mockAddEventListener.mock.calls.filter(
-			call => call[0] === 'scroll'
+			call => call[0] === 'scroll',
 		);
 		expect(scrollListenerCalls.length).toBe(0);
 
@@ -325,7 +337,7 @@ describe('useScrollDirection', () => {
 		expect(mockAddEventListener).toHaveBeenCalledWith(
 			'scroll',
 			expect.any(Function),
-			{ passive: true }
+			{ passive: true },
 		);
 	});
 
@@ -336,7 +348,7 @@ describe('useScrollDirection', () => {
 
 		expect(mockRemoveEventListener).toHaveBeenCalledWith(
 			'scroll',
-			expect.any(Function)
+			expect.any(Function),
 		);
 	});
 });
@@ -351,7 +363,10 @@ describe('useInViewport', () => {
 	});
 
 	it('should not set up IntersectionObserver without an element', () => {
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 
 		renderHook(() => useInViewport(0.8, '20px'));
 
@@ -360,7 +375,10 @@ describe('useInViewport', () => {
 	});
 
 	it('should set up IntersectionObserver with element and handle viewport changes', () => {
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 		const mockElement = document.createElement('div');
 
 		// Create ref with element already attached
@@ -369,7 +387,9 @@ describe('useInViewport', () => {
 		const { result } = renderHook(() => {
 			// Inline the hook logic with pre-attached ref
 			const [isInViewport, setIsInViewport] = useState(false);
-			const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
+			const [entry, setEntry] = useState<IntersectionObserverEntry | null>(
+				null,
+			);
 
 			useEffect(() => {
 				const element = mockRef.current;
@@ -406,7 +426,7 @@ describe('useInViewport', () => {
 			{
 				threshold: 0.8,
 				rootMargin: '20px',
-			}
+			},
 		);
 
 		// Simulate intersection
@@ -433,16 +453,22 @@ describe('useInViewport', () => {
 describe('useIntersectionAnimation - Additional Coverage', () => {
 	it('should skip setup when motion should be reduced', () => {
 		// Mock shouldReduceMotion to return true
-		const mockShouldReduceMotion = require('../../utils/animation.utils').shouldReduceMotion;
+		const mockShouldReduceMotion =
+			require('../../utils/animation.utils').shouldReduceMotion;
 		mockShouldReduceMotion.mockReturnValue(true);
 
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 		const mockElement = document.createElement('div');
 
-		const { result } = renderHook(() => useIntersectionAnimation({
-			threshold: 0.5,
-			rootMargin: '20px',
-		}));
+		const { result } = renderHook(() =>
+			useIntersectionAnimation({
+				threshold: 0.5,
+				rootMargin: '20px',
+			}),
+		);
 
 		// Attach element
 		act(() => {
@@ -457,7 +483,10 @@ describe('useIntersectionAnimation - Additional Coverage', () => {
 	});
 
 	it('should handle intersection callbacks gracefully', () => {
-		const mockIntersectionObserver = window.IntersectionObserver as jest.MockedClass<typeof IntersectionObserver>;
+		const mockIntersectionObserver =
+			window.IntersectionObserver as jest.MockedClass<
+				typeof IntersectionObserver
+			>;
 		const mockElement = document.createElement('div');
 		const mockOnIntersect = jest.fn();
 
@@ -529,10 +558,9 @@ describe('useParallax', () => {
 	it('should set up scroll event listener and update transform', () => {
 		const mockElement = document.createElement('div');
 
-		const { result, rerender } = renderHook(
-			({ speed }) => useParallax(speed),
-			{ initialProps: { speed: -0.5 } }
-		);
+		const { result, rerender } = renderHook(({ speed }) => useParallax(speed), {
+			initialProps: { speed: -0.5 },
+		});
 
 		// Attach element
 		act(() => {
@@ -546,7 +574,7 @@ describe('useParallax', () => {
 		expect(mockAddEventListener).toHaveBeenCalledWith(
 			'scroll',
 			expect.any(Function),
-			{ passive: true }
+			{ passive: true },
 		);
 
 		// Simulate scroll
@@ -557,7 +585,7 @@ describe('useParallax', () => {
 
 		// Trigger the scroll event handler
 		const scrollHandler = mockAddEventListener.mock.calls.find(
-			call => call[0] === 'scroll'
+			call => call[0] === 'scroll',
 		)?.[1];
 
 		if (scrollHandler) {
@@ -586,7 +614,7 @@ describe('useScrollDirection - Additional Coverage', () => {
 
 		// Trigger scroll event
 		const scrollHandler = mockAddEventListener.mock.calls.find(
-			call => call[0] === 'scroll'
+			call => call[0] === 'scroll',
 		)?.[1];
 
 		if (scrollHandler) {
@@ -604,7 +632,7 @@ describe('useScrollDirection - Additional Coverage', () => {
 
 		// Simulate multiple rapid scroll events
 		const scrollHandler = mockAddEventListener.mock.calls.find(
-			call => call[0] === 'scroll'
+			call => call[0] === 'scroll',
 		)?.[1];
 
 		if (scrollHandler) {

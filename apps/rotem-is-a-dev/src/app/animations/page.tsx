@@ -1,6 +1,11 @@
 'use client';
 
-import { FadeIn, ScaleIn, SlideIn, StaggerFadeIn } from '@lurx-react/vanguardis';
+import {
+	FadeIn,
+	ScaleIn,
+	SlideIn,
+	StaggerFadeIn,
+} from '@lurx-react/vanguardis';
 import styles from './page.module.scss';
 
 /**
@@ -11,10 +16,14 @@ export default function AnimationsPage() {
 		<div className={styles.animationsPage}>
 			<div className={styles.container}>
 				{/* Header */}
-				<FadeIn direction="down" className={styles.header}>
+				<FadeIn
+					direction="down"
+					className={styles.header}
+				>
 					<h1 className={styles.title}>Animation Showcase</h1>
 					<p className={styles.subtitle}>
-						Demonstrating various animation patterns and techniques built with our animation system
+						Demonstrating various animation patterns and techniques built with
+						our animation system
 					</p>
 				</FadeIn>
 
@@ -31,14 +40,20 @@ export default function AnimationsPage() {
 							</div>
 						</FadeIn>
 
-						<SlideIn direction="left" delay={600}>
+						<SlideIn
+							direction="left"
+							delay={600}
+						>
 							<div className={`${styles.demo} ${styles.slideDemo}`}>
 								<h3>Slide In Left</h3>
 								<p>Slides in from the left side</p>
 							</div>
 						</SlideIn>
 
-						<SlideIn direction="right" delay={800}>
+						<SlideIn
+							direction="right"
+							delay={800}
+						>
 							<div className={`${styles.demo} ${styles.slideDemo}`}>
 								<h3>Slide In Right</h3>
 								<p>Slides in from the right side</p>
@@ -52,14 +67,20 @@ export default function AnimationsPage() {
 							</div>
 						</ScaleIn>
 
-						<SlideIn direction="up" delay={1200}>
+						<SlideIn
+							direction="up"
+							delay={1200}
+						>
 							<div className={`${styles.demo} ${styles.slideDemo}`}>
 								<h3>Slide In Up</h3>
 								<p>Slides in from bottom</p>
 							</div>
 						</SlideIn>
 
-						<SlideIn direction="down" delay={1400}>
+						<SlideIn
+							direction="down"
+							delay={1400}
+						>
 							<div className={`${styles.demo} ${styles.slideDemo}`}>
 								<h3>Slide In Down</h3>
 								<p>Slides in from top</p>
@@ -74,25 +95,37 @@ export default function AnimationsPage() {
 						<h2 className={styles.sectionTitle}>Direction Variations</h2>
 					</FadeIn>
 					<div className={styles.directionGrid}>
-						<FadeIn direction="up" delay={200}>
+						<FadeIn
+							direction="up"
+							delay={200}
+						>
 							<div className={styles.directionDemo}>
 								<h4>Fade Up</h4>
 								<p>From bottom</p>
 							</div>
 						</FadeIn>
-						<FadeIn direction="down" delay={400}>
+						<FadeIn
+							direction="down"
+							delay={400}
+						>
 							<div className={styles.directionDemo}>
 								<h4>Fade Down</h4>
 								<p>From top</p>
 							</div>
 						</FadeIn>
-						<FadeIn direction="left" delay={600}>
+						<FadeIn
+							direction="left"
+							delay={600}
+						>
 							<div className={styles.directionDemo}>
 								<h4>Fade Left</h4>
 								<p>From right</p>
 							</div>
 						</FadeIn>
-						<FadeIn direction="right" delay={800}>
+						<FadeIn
+							direction="right"
+							delay={800}
+						>
 							<div className={styles.directionDemo}>
 								<h4>Fade Right</h4>
 								<p>From left</p>
@@ -107,19 +140,28 @@ export default function AnimationsPage() {
 						<h2 className={styles.sectionTitle}>Scale Animations</h2>
 					</FadeIn>
 					<div className={styles.scaleGrid}>
-						<ScaleIn scale={0.5} delay={200}>
+						<ScaleIn
+							scale={0.5}
+							delay={200}
+						>
 							<div className={styles.scaleDemo}>
 								<h4>Scale 0.5x</h4>
 								<p>Starts at half size</p>
 							</div>
 						</ScaleIn>
-						<ScaleIn scale={0.8} delay={400}>
+						<ScaleIn
+							scale={0.8}
+							delay={400}
+						>
 							<div className={styles.scaleDemo}>
 								<h4>Scale 0.8x</h4>
 								<p>Starts at 80% size</p>
 							</div>
 						</ScaleIn>
-						<ScaleIn scale={1.2} delay={600}>
+						<ScaleIn
+							scale={1.2}
+							delay={600}
+						>
 							<div className={styles.scaleDemo}>
 								<h4>Scale 1.2x</h4>
 								<p>Starts at 120% size</p>
@@ -133,10 +175,16 @@ export default function AnimationsPage() {
 					<FadeIn>
 						<h2 className={styles.sectionTitle}>Stagger Animations</h2>
 					</FadeIn>
-					<StaggerFadeIn stagger={{ stagger: 100 }} itemSelector=".stagger-item">
+					<StaggerFadeIn
+						stagger={{ stagger: 100 }}
+						itemSelector=".stagger-item"
+					>
 						<div className={styles.staggerContainer}>
 							{Array.from({ length: 8 }, (_, i) => (
-								<div key={i} className={`${styles.staggerItem} stagger-item`}>
+								<div
+									key={i}
+									className={`${styles.staggerItem} stagger-item`}
+								>
 									<div className={styles.number}>{i + 1}</div>
 									<p>Item {i + 1}</p>
 								</div>
@@ -150,10 +198,16 @@ export default function AnimationsPage() {
 					<FadeIn>
 						<h2 className={styles.sectionTitle}>Fast Stagger (50ms)</h2>
 					</FadeIn>
-					<StaggerFadeIn stagger={{ stagger: 50 }} itemSelector=".fast-stagger-item">
+					<StaggerFadeIn
+						stagger={{ stagger: 50 }}
+						itemSelector=".fast-stagger-item"
+					>
 						<div className={styles.fastStaggerContainer}>
 							{Array.from({ length: 12 }, (_, i) => (
-								<div key={i} className={`${styles.fastStaggerItem} fast-stagger-item`}>
+								<div
+									key={i}
+									className={`${styles.fastStaggerItem} fast-stagger-item`}
+								>
 									{i + 1}
 								</div>
 							))}
@@ -166,12 +220,22 @@ export default function AnimationsPage() {
 					<FadeIn>
 						<h2 className={styles.sectionTitle}>Slow Stagger (200ms)</h2>
 					</FadeIn>
-					<StaggerFadeIn stagger={{ stagger: 200 }} itemSelector=".slow-stagger-item" direction="left">
+					<StaggerFadeIn
+						stagger={{ stagger: 200 }}
+						itemSelector=".slow-stagger-item"
+						direction="left"
+					>
 						<div className={styles.slowStaggerContainer}>
 							{Array.from({ length: 4 }, (_, i) => (
-								<div key={i} className={`${styles.slowStaggerItem} slow-stagger-item`}>
+								<div
+									key={i}
+									className={`${styles.slowStaggerItem} slow-stagger-item`}
+								>
 									<h4>Card {i + 1}</h4>
-									<p>This is a larger card with more content to demonstrate the slow stagger effect.</p>
+									<p>
+										This is a larger card with more content to demonstrate the
+										slow stagger effect.
+									</p>
 								</div>
 							))}
 						</div>
@@ -183,7 +247,8 @@ export default function AnimationsPage() {
 					<FadeIn>
 						<h2 className={styles.sectionTitle}>Interactive Hover Effects</h2>
 						<p className={styles.hoverDescription}>
-							These effects are achieved with pure CSS transforms for optimal performance
+							These effects are achieved with pure CSS transforms for optimal
+							performance
 						</p>
 					</FadeIn>
 					<div className={styles.hoverGrid}>

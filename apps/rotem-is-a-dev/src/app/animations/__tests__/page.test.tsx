@@ -4,7 +4,7 @@ import AnimationsPage from '../page';
 
 interface MockProps {
 	children: React.ReactNode;
-  className?: string;
+	className?: string;
 	[key: string]: unknown;
 }
 
@@ -79,23 +79,37 @@ describe('AnimationsPage', () => {
 	it('should render the page title', () => {
 		render(<AnimationsPage />);
 
-		expect(screen.getByRole('heading', { name: /animation showcase/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /animation showcase/i }),
+		).toBeInTheDocument();
 	});
 
 	it('should render the page subtitle', () => {
 		render(<AnimationsPage />);
 
-		expect(screen.getByText(/demonstrating various animation patterns/i)).toBeInTheDocument();
+		expect(
+			screen.getByText(/demonstrating various animation patterns/i),
+		).toBeInTheDocument();
 	});
 
 	it('should render all main sections', () => {
 		render(<AnimationsPage />);
 
-		expect(screen.getByRole('heading', { name: /basic reveal animations/i })).toBeInTheDocument();
-		expect(screen.getByRole('heading', { name: /direction variations/i })).toBeInTheDocument();
-		expect(screen.getByRole('heading', { name: /scale animations/i })).toBeInTheDocument();
-		expect(screen.getByRole('heading', { name: /stagger animations/i })).toBeInTheDocument();
-		expect(screen.getByRole('heading', { name: /interactive hover effects/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /basic reveal animations/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /direction variations/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /scale animations/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /stagger animations/i }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /interactive hover effects/i }),
+		).toBeInTheDocument();
 	});
 
 	it('should render animation examples', () => {
@@ -123,7 +137,9 @@ describe('AnimationsPage', () => {
 
 		// Just check that all numbers 1-12 exist somewhere
 		for (let i = 2; i <= 12; i++) {
-			expect(screen.getByText(i.toString(), { selector: '.fastStaggerItem' })).toBeInTheDocument();
+			expect(
+				screen.getByText(i.toString(), { selector: '.fastStaggerItem' }),
+			).toBeInTheDocument();
 		}
 	});
 
@@ -149,16 +165,24 @@ describe('AnimationsPage', () => {
 	it('should render performance features', () => {
 		render(<AnimationsPage />);
 
-		expect(screen.getByRole('heading', { name: /performance & accessibility features/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', {
+				name: /performance & accessibility features/i,
+			}),
+		).toBeInTheDocument();
 		expect(screen.getByText(/gpu-accelerated transforms/i)).toBeInTheDocument();
-		expect(screen.getByText(/respects prefers-reduced-motion/i)).toBeInTheDocument();
+		expect(
+			screen.getByText(/respects prefers-reduced-motion/i),
+		).toBeInTheDocument();
 		expect(screen.getByText(/intersection observer/i)).toBeInTheDocument();
 	});
 
 	it('should render code examples', () => {
 		render(<AnimationsPage />);
 
-		expect(screen.getByRole('heading', { name: /usage examples/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole('heading', { name: /usage examples/i }),
+		).toBeInTheDocument();
 		expect(screen.getByText('Basic Fade In')).toBeInTheDocument();
 		expect(screen.getByText('Slide Animation')).toBeInTheDocument();
 		expect(screen.getByText('Stagger Effect')).toBeInTheDocument();
@@ -174,7 +198,9 @@ describe('AnimationsPage', () => {
 		expect(screen.getByText('Slide In Right')).toBeInTheDocument();
 
 		// Check that elements have initial animation styles
-		const animationElements = document.querySelectorAll('[style*="opacity: 0"]');
+		const animationElements = document.querySelectorAll(
+			'[style*="opacity: 0"]',
+		);
 		expect(animationElements.length).toBeGreaterThan(0);
 	});
 

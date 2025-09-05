@@ -27,20 +27,26 @@ export default function ComponentsPage() {
 		<div className={styles.componentsPage}>
 			<div className={styles.container}>
 				{/* Header */}
-				<FadeIn direction="down" className={styles.header}>
+				<FadeIn
+					direction="down"
+					className={styles.header}
+				>
 					<h1 className={styles.title}>Component Showcase</h1>
 					<p className={styles.subtitle}>
-						Explore our comprehensive collection of reusable components built with modern web technologies
+						Explore our comprehensive collection of reusable components built
+						with modern web technologies
 					</p>
 				</FadeIn>
 
 				{/* Tab Navigation */}
 				<FadeIn delay={200}>
 					<div className={styles.tabNavigation}>
-						{tabs.map((tab) => (
+						{tabs.map(tab => (
 							<button
 								key={tab.id}
-								className={`${styles.tabButton} ${activeTab === tab.id ? styles.active : ''}`}
+								className={`${styles.tabButton} ${
+									activeTab === tab.id ? styles.active : ''
+								}`}
 								onClick={() => handleTabChange(tab.id)}
 							>
 								{tab.label}
@@ -58,8 +64,9 @@ export default function ComponentsPage() {
 								<section className={styles.componentSection}>
 									<h2 className={styles.componentTitle}>Hero Section</h2>
 									<p className={styles.componentDescription}>
-										A full-screen hero section with animated background particles, gradient overlays,
-										and call-to-action buttons. Features responsive design and smooth animations.
+										A full-screen hero section with animated background
+										particles, gradient overlays, and call-to-action buttons.
+										Features responsive design and smooth animations.
 									</p>
 									<div className={styles.componentDemo}>
 										<div className={styles.demoContainer}>
@@ -75,14 +82,16 @@ export default function ComponentsPage() {
 									</div>
 									<div className={styles.codeExample}>
 										<h3>Usage Example</h3>
-										<pre><code>{`<HeroSection
+										<pre>
+											<code>{`<HeroSection
   title="Rotem Horovitz"
   subtitle="Full-Stack Developer & Creative Problem Solver"
   primaryCta="View My Work"
   secondaryCta="Get In Touch"
   onPrimaryCta={() => handlePrimaryAction()}
   onSecondaryCta={() => handleSecondaryAction()}
-/>`}</code></pre>
+/>`}</code>
+										</pre>
 									</div>
 								</section>
 							</FadeIn>
@@ -92,12 +101,16 @@ export default function ComponentsPage() {
 					{/* Layout Components Tab */}
 					{activeTab === 'layout' && (
 						<div className={styles.layoutTab}>
-							<SlideIn direction="up" delay={300}>
+							<SlideIn
+								direction="up"
+								delay={300}
+							>
 								<section className={styles.componentSection}>
 									<h2 className={styles.componentTitle}>Navigation Header</h2>
 									<p className={styles.componentDescription}>
-										A responsive navigation header with auto-hide on scroll, glassmorphism background,
-										and smooth mobile menu transitions.
+										A responsive navigation header with auto-hide on scroll,
+										glassmorphism background, and smooth mobile menu
+										transitions.
 									</p>
 									<div className={styles.componentDemo}>
 										<div className={styles.navigationDemo}>
@@ -110,19 +123,22 @@ export default function ComponentsPage() {
 												]}
 												logo="Demo"
 												onLogoClick={() => console.log('Logo clicked')}
-												onNavClick={(href) => console.log('Nav clicked:', href)}
+												onNavClick={href => console.log('Nav clicked:', href)}
 											/>
 										</div>
 									</div>
 								</section>
 							</SlideIn>
 
-							<SlideIn direction="up" delay={400}>
+							<SlideIn
+								direction="up"
+								delay={400}
+							>
 								<section className={styles.componentSection}>
 									<h2 className={styles.componentTitle}>Footer</h2>
 									<p className={styles.componentDescription}>
-										A comprehensive footer with social links, contact information,
-										and animated background elements.
+										A comprehensive footer with social links, contact
+										information, and animated background elements.
 									</p>
 									<div className={styles.componentDemo}>
 										<div className={styles.footerDemo}>
@@ -130,8 +146,18 @@ export default function ComponentsPage() {
 												email="demo@example.com"
 												copyright="Demo Company"
 												socialLinks={[
-													{ name: 'GitHub', href: '#', icon: 'GH', ariaLabel: 'GitHub' },
-													{ name: 'LinkedIn', href: '#', icon: 'LI', ariaLabel: 'LinkedIn' },
+													{
+														name: 'GitHub',
+														href: '#',
+														icon: 'GH',
+														ariaLabel: 'GitHub',
+													},
+													{
+														name: 'LinkedIn',
+														href: '#',
+														icon: 'LI',
+														ariaLabel: 'LinkedIn',
+													},
 												]}
 											/>
 										</div>
@@ -149,7 +175,8 @@ export default function ComponentsPage() {
 								<section className={styles.componentSection}>
 									<h2 className={styles.componentTitle}>Loading Components</h2>
 									<p className={styles.componentDescription}>
-										Beautiful loading screens and spinners using our design system tokens and smooth animations.
+										Beautiful loading screens and spinners using our design
+										system tokens and smooth animations.
 									</p>
 
 									<div className={styles.componentDemo}>
@@ -158,9 +185,18 @@ export default function ComponentsPage() {
 											<div className={styles.uiItem}>
 												<h3>Loading Spinners</h3>
 												<div className={styles.spinnerDemo}>
-													<LoadingSpinner size="sm" variant="primary" />
-													<LoadingSpinner size="md" variant="accent" />
-													<LoadingSpinner size="lg" variant="secondary" />
+													<LoadingSpinner
+														size="sm"
+														variant="primary"
+													/>
+													<LoadingSpinner
+														size="md"
+														variant="accent"
+													/>
+													<LoadingSpinner
+														size="lg"
+														variant="secondary"
+													/>
 												</div>
 												<p>Available in multiple sizes and color variants</p>
 											</div>
@@ -173,7 +209,8 @@ export default function ComponentsPage() {
 														className={styles.demoButton}
 														onClick={() => {
 															// Demo the loading screen
-															const demoContainer = document.createElement('div');
+															const demoContainer =
+																document.createElement('div');
 															demoContainer.style.position = 'fixed';
 															demoContainer.style.top = '0';
 															demoContainer.style.left = '0';
@@ -181,7 +218,9 @@ export default function ComponentsPage() {
 															document.body.appendChild(demoContainer);
 
 															// Create a React root for the demo
-															const { createRoot } = require('react-dom/client');
+															const {
+																createRoot,
+															} = require('react-dom/client');
 															const root = createRoot(demoContainer);
 
 															let progress = 0;
@@ -197,10 +236,12 @@ export default function ComponentsPage() {
 																			clearInterval(interval);
 																			setTimeout(() => {
 																				root.unmount();
-																				document.body.removeChild(demoContainer);
+																				document.body.removeChild(
+																					demoContainer,
+																				);
 																			}, 500);
-																		}
-																	})
+																		},
+																	}),
 																);
 
 																if (progress >= 100) {
@@ -214,9 +255,11 @@ export default function ComponentsPage() {
 																				variant: 'brand',
 																				onComplete: () => {
 																					root.unmount();
-																					document.body.removeChild(demoContainer);
-																				}
-																			})
+																					document.body.removeChild(
+																						demoContainer,
+																					);
+																				},
+																			}),
 																		);
 																	}, 1000);
 																}
@@ -235,30 +278,37 @@ export default function ComponentsPage() {
 										<h3>Usage Examples</h3>
 										<div className={styles.codeBlock}>
 											<h4>Loading Spinner</h4>
-											<pre><code>{`<LoadingSpinner
+											<pre>
+												<code>{`<LoadingSpinner
   size="md"
   variant="primary"
-/>`}</code></pre>
+/>`}</code>
+											</pre>
 										</div>
 										<div className={styles.codeBlock}>
 											<h4>Loading Screen</h4>
-											<pre><code>{`<LoadingScreen
+											<pre>
+												<code>{`<LoadingScreen
   isVisible={isLoading}
   message="Loading content..."
   progress={loadingProgress}
   showProgress={true}
   variant="default"
   onComplete={() => setIsLoading(false)}
-/>`}</code></pre>
+/>`}</code>
+											</pre>
 										</div>
 									</div>
 								</section>
 
 								{/* Interactive Components */}
 								<section className={styles.componentSection}>
-									<h2 className={styles.componentTitle}>Interactive Elements</h2>
+									<h2 className={styles.componentTitle}>
+										Interactive Elements
+									</h2>
 									<p className={styles.componentDescription}>
-										Enhanced user interaction components including loading screens and page transitions.
+										Enhanced user interaction components including loading
+										screens and page transitions.
 									</p>
 
 									<div className={styles.componentDemo}>
@@ -267,10 +317,16 @@ export default function ComponentsPage() {
 											<div className={styles.uiItem}>
 												<h3>Coming Soon</h3>
 												<div className={styles.futureComponents}>
-													<div className={styles.futureItem}>✨ Animated Buttons</div>
+													<div className={styles.futureItem}>
+														✨ Animated Buttons
+													</div>
 													<div className={styles.futureItem}>🃏 3D Cards</div>
-													<div className={styles.futureItem}>📊 Progress Bars</div>
-													<div className={styles.futureItem}>📝 Form Elements</div>
+													<div className={styles.futureItem}>
+														📊 Progress Bars
+													</div>
+													<div className={styles.futureItem}>
+														📝 Form Elements
+													</div>
 												</div>
 												<p>More interactive components in development</p>
 											</div>
@@ -281,13 +337,15 @@ export default function ComponentsPage() {
 										<h3>Usage Examples</h3>
 										<div className={styles.codeBlock}>
 											<h4>Loading Screen</h4>
-											<pre><code>{`<LoadingScreen
+											<pre>
+												<code>{`<LoadingScreen
   isVisible={true}
   message="Loading content..."
   progress={75}
   variant="brand"
   showProgress={true}
-/>`}</code></pre>
+/>`}</code>
+											</pre>
 										</div>
 									</div>
 								</section>
@@ -305,7 +363,8 @@ export default function ComponentsPage() {
 								<div className={styles.featureIcon}>🚀</div>
 								<h3 className={styles.featureTitle}>Performance</h3>
 								<p className={styles.featureDescription}>
-									Optimized components with lazy loading and efficient animations
+									Optimized components with lazy loading and efficient
+									animations
 								</p>
 							</div>
 							<div className={styles.feature}>
@@ -319,14 +378,16 @@ export default function ComponentsPage() {
 								<div className={styles.featureIcon}>♿</div>
 								<h3 className={styles.featureTitle}>Accessible</h3>
 								<p className={styles.featureDescription}>
-									WCAG 2.1 AA compliant with proper ARIA labels and keyboard navigation
+									WCAG 2.1 AA compliant with proper ARIA labels and keyboard
+									navigation
 								</p>
 							</div>
 							<div className={styles.feature}>
 								<div className={styles.featureIcon}>🎨</div>
 								<h3 className={styles.featureTitle}>Customizable</h3>
 								<p className={styles.featureDescription}>
-									Easily customizable with CSS custom properties and SCSS variables
+									Easily customizable with CSS custom properties and SCSS
+									variables
 								</p>
 							</div>
 						</div>

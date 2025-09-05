@@ -1,8 +1,8 @@
 import { createScope } from 'animejs';
 import type {
-  AnimationState,
-  AnimationUtils,
-  MotionPreferences
+	AnimationState,
+	AnimationUtils,
+	MotionPreferences,
 } from '../types/animation.types';
 
 /**
@@ -54,7 +54,8 @@ class AnimationPerformanceMonitor {
 
 	getMetrics(): AnimationState['performance'] {
 		const now = performance.now();
-		const frameRate = this.frameCount > 0 ? 1000 / ((now - this.lastFrameTime) || 1) : 0;
+		const frameRate =
+			this.frameCount > 0 ? 1000 / (now - this.lastFrameTime || 1) : 0;
 
 		return {
 			frameRate: Math.round(frameRate),
@@ -92,14 +93,19 @@ const performanceMonitor = new AnimationPerformanceMonitor();
  * ```
  */
 export function getMotionPreferences(): MotionPreferences {
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion = window.matchMedia(
+		'(prefers-reduced-motion: reduce)',
+	).matches;
 
 	// Check for custom motion level in localStorage or other preference system
-	const customMotionLevel = localStorage.getItem('motion-preference') as MotionPreferences['motionLevel'] | null;
+	const customMotionLevel = localStorage.getItem('motion-preference') as
+		| MotionPreferences['motionLevel']
+		| null;
 
 	return {
 		prefersReducedMotion,
-		motionLevel: customMotionLevel || (prefersReducedMotion ? 'reduced' : 'full'),
+		motionLevel:
+			customMotionLevel || (prefersReducedMotion ? 'reduced' : 'full'),
 	};
 }
 
@@ -117,13 +123,17 @@ export function getMotionPreferences(): MotionPreferences {
  * setMotionPreference('full');    // Enable full motion
  * ```
  */
-export function setMotionPreference(level: MotionPreferences['motionLevel']): void {
+export function setMotionPreference(
+	level: MotionPreferences['motionLevel'],
+): void {
 	localStorage.setItem('motion-preference', level);
 
 	// Dispatch custom event for other components to listen to
-	window.dispatchEvent(new CustomEvent('motion-preference-changed', {
-		detail: { motionLevel: level }
-	}));
+	window.dispatchEvent(
+		new CustomEvent('motion-preference-changed', {
+			detail: { motionLevel: level },
+		}),
+	);
 }
 
 /**

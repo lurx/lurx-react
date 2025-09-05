@@ -1,6 +1,6 @@
 {
-  "prettier.configPath": "./.prettierrc",
-  "nxConsole.generateAiAgentRules": true,
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.suggest.autoImports": true
+	"prettier.configPath": "./.prettierrc",
+	"nxConsole.generateAiAgentRules": true,
+	"typescript.preferences.preferTypeOnlyAutoImports": true,
+	"typescript.suggest.autoImports": true
 }

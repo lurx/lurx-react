@@ -38,4 +38,5 @@ export * from './utils/animation.utils';
 // =============================================================================
 
 export const VANGUARDIS_VERSION = '1.0.0';
-export const VANGUARDIS_DESCRIPTION = 'Modern design system for React applications';
+export const VANGUARDIS_DESCRIPTION =
+	'Modern design system for React applications';

@@ -100,12 +100,17 @@ export default function NavigationHeader({
 	return (
 		<>
 			<header
-				className={`${styles.header} ${isVisible ? styles.visible : styles.hidden} ${isScrolled ? styles.scrolled : ''}`}
+				className={`${styles.header} ${
+					isVisible ? styles.visible : styles.hidden
+				} ${isScrolled ? styles.scrolled : ''}`}
 			>
 				<nav className={styles.nav}>
 					<div className={styles.container}>
 						{/* Logo */}
-						<FadeIn direction="right" delay={100}>
+						<FadeIn
+							direction="right"
+							delay={100}
+						>
 							<button
 								className={styles.logo}
 								onClick={handleLogoClick}
@@ -120,14 +125,22 @@ export default function NavigationHeader({
 						</FadeIn>
 
 						{/* Desktop Navigation */}
-						<FadeIn direction="down" delay={200}>
+						<FadeIn
+							direction="down"
+							delay={200}
+						>
 							<ul className={styles.navList}>
 								{items.map((item, index) => (
-									<li key={item.href} className={styles.navItem}>
+									<li
+										key={item.href}
+										className={styles.navItem}
+									>
 										<a
 											href={item.href}
-											className={`${styles.navLink} ${item.isActive ? styles.active : ''}`}
-											onClick={(e) => {
+											className={`${styles.navLink} ${
+												item.isActive ? styles.active : ''
+											}`}
+											onClick={e => {
 												e.preventDefault();
 												handleNavClick(item.href);
 											}}
@@ -143,9 +156,14 @@ export default function NavigationHeader({
 
 						{/* Mobile Menu Button */}
 						{showMobileNav && (
-							<FadeIn direction="left" delay={100}>
+							<FadeIn
+								direction="left"
+								delay={100}
+							>
 								<button
-									className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.open : ''}`}
+									className={`${styles.mobileMenuButton} ${
+										isMobileMenuOpen ? styles.open : ''
+									}`}
 									onClick={toggleMobileMenu}
 									aria-label="Toggle mobile menu"
 									aria-expanded={isMobileMenuOpen}
@@ -163,7 +181,9 @@ export default function NavigationHeader({
 			{/* Mobile Menu Overlay */}
 			{showMobileNav && (
 				<div
-					className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ''}`}
+					className={`${styles.mobileMenu} ${
+						isMobileMenuOpen ? styles.open : ''
+					}`}
 					aria-hidden={!isMobileMenuOpen}
 				>
 					<div className={styles.mobileMenuContent}>
@@ -173,14 +193,20 @@ export default function NavigationHeader({
 									key={item.href}
 									className={styles.mobileNavItem}
 									style={{
-										animationDelay: isMobileMenuOpen ? `${index * 100}ms` : '0ms',
-										transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : '0ms'
+										animationDelay: isMobileMenuOpen
+											? `${index * 100}ms`
+											: '0ms',
+										transitionDelay: isMobileMenuOpen
+											? `${index * 50}ms`
+											: '0ms',
 									}}
 								>
 									<a
 										href={item.href}
-										className={`${styles.mobileNavLink} ${item.isActive ? styles.active : ''}`}
-										onClick={(e) => {
+										className={`${styles.mobileNavLink} ${
+											item.isActive ? styles.active : ''
+										}`}
+										onClick={e => {
 											e.preventDefault();
 											handleNavClick(item.href);
 										}}

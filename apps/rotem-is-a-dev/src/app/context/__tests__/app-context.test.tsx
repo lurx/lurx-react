@@ -9,7 +9,11 @@ jest.mock('@/utils/env', () => ({
 // Test component to consume the context
 function TestComponent() {
 	const { isUnderConstruction } = useAppContext();
-	return <div data-testid="test-component">{isUnderConstruction ? 'Under Construction' : 'Live'}</div>;
+	return (
+		<div data-testid="test-component">
+			{isUnderConstruction ? 'Under Construction' : 'Live'}
+		</div>
+	);
 }
 
 describe('AppContext', () => {
@@ -18,7 +22,7 @@ describe('AppContext', () => {
 			render(
 				<AppProvider>
 					<TestComponent />
-				</AppProvider>
+				</AppProvider>,
 			);
 
 			expect(screen.getByTestId('test-component')).toHaveTextContent('Live');
@@ -29,7 +33,7 @@ describe('AppContext', () => {
 			render(
 				<AppProvider>
 					<div data-testid="child">{childText}</div>
-				</AppProvider>
+				</AppProvider>,
 			);
 
 			expect(screen.getByTestId('child')).toHaveTextContent(childText);
@@ -53,7 +57,7 @@ describe('AppContext', () => {
 			render(
 				<AppProvider>
 					<TestComponent />
-				</AppProvider>
+				</AppProvider>,
 			);
 
 			// The component should render without throwing an error
@@ -66,7 +70,7 @@ describe('AppContext', () => {
 			render(
 				<AppProvider>
 					<TestComponent />
-				</AppProvider>
+				</AppProvider>,
 			);
 
 			// Since we mocked IS_UNDER_CONSTRUCTION as false, it should show 'Live'

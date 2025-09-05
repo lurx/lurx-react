@@ -33,10 +33,30 @@ interface FooterProps {
  */
 export default function Footer({
 	socialLinks = [
-		{ name: 'GitHub', href: 'https://github.com', icon: 'GH', ariaLabel: 'Visit GitHub profile' },
-		{ name: 'LinkedIn', href: 'https://linkedin.com', icon: 'LI', ariaLabel: 'Visit LinkedIn profile' },
-		{ name: 'Twitter', href: 'https://twitter.com', icon: 'TW', ariaLabel: 'Visit Twitter profile' },
-		{ name: 'Email', href: 'mailto:hello@example.com', icon: '@', ariaLabel: 'Send email' },
+		{
+			name: 'GitHub',
+			href: 'https://github.com',
+			icon: 'GH',
+			ariaLabel: 'Visit GitHub profile',
+		},
+		{
+			name: 'LinkedIn',
+			href: 'https://linkedin.com',
+			icon: 'LI',
+			ariaLabel: 'Visit LinkedIn profile',
+		},
+		{
+			name: 'Twitter',
+			href: 'https://twitter.com',
+			icon: 'TW',
+			ariaLabel: 'Visit Twitter profile',
+		},
+		{
+			name: 'Email',
+			href: 'mailto:hello@example.com',
+			icon: '@',
+			ariaLabel: 'Send email',
+		},
 	],
 	email = 'hello@rotemhorovitz.dev',
 	copyright = 'Rotem Horovitz',
@@ -54,10 +74,14 @@ export default function Footer({
 				<div className={styles.content}>
 					{/* Contact Section */}
 					<div className={styles.section}>
-						<FadeIn direction="up" delay={100}>
+						<FadeIn
+							direction="up"
+							delay={100}
+						>
 							<h3 className={styles.sectionTitle}>Let&apos;s Connect</h3>
 							<p className={styles.sectionText}>
-								Ready to bring your ideas to life? Let&apos;s create something amazing together.
+								Ready to bring your ideas to life? Let&apos;s create something
+								amazing together.
 							</p>
 							<a
 								href={`mailto:${email}`}
@@ -70,7 +94,10 @@ export default function Footer({
 
 					{/* Social Links */}
 					<div className={styles.section}>
-						<SlideIn direction="up" delay={200}>
+						<SlideIn
+							direction="up"
+							delay={200}
+						>
 							<h3 className={styles.sectionTitle}>Follow Me</h3>
 							<div className={styles.socialLinks}>
 								{socialLinks.map((link, index) => (
@@ -93,13 +120,36 @@ export default function Footer({
 
 					{/* Quick Links */}
 					<div className={styles.section}>
-						<SlideIn direction="up" delay={300}>
+						<SlideIn
+							direction="up"
+							delay={300}
+						>
 							<h3 className={styles.sectionTitle}>Quick Links</h3>
 							<nav className={styles.quickLinks}>
-								<a href="#about" className={styles.quickLink}>About</a>
-								<a href="#projects" className={styles.quickLink}>Projects</a>
-								<a href="#experience" className={styles.quickLink}>Experience</a>
-								<a href="#contact" className={styles.quickLink}>Contact</a>
+								<a
+									href="#about"
+									className={styles.quickLink}
+								>
+									About
+								</a>
+								<a
+									href="#projects"
+									className={styles.quickLink}
+								>
+									Projects
+								</a>
+								<a
+									href="#experience"
+									className={styles.quickLink}
+								>
+									Experience
+								</a>
+								<a
+									href="#contact"
+									className={styles.quickLink}
+								>
+									Contact
+								</a>
 							</nav>
 						</SlideIn>
 					</div>
@@ -112,15 +162,21 @@ export default function Footer({
 
 				{/* Bottom Section */}
 				<div className={styles.bottom}>
-					<SlideIn direction="right" delay={500}>
+					<SlideIn
+						direction="right"
+						delay={500}
+					>
 						<p className={styles.copyright}>
 							© {currentYear} {copyright}. All rights reserved.
 						</p>
 					</SlideIn>
 
-					<SlideIn direction="left" delay={500}>
+					<SlideIn
+						direction="left"
+						delay={500}
+					>
 						<div className={styles.footerLinks}>
-							{footerLinks.map((link) => (
+							{footerLinks.map(link => (
 								<a
 									key={link.label}
 									href={link.href}
@@ -149,9 +205,18 @@ export default function Footer({
 
 			{/* Animated background elements */}
 			<div className={styles.backgroundElements}>
-				<div className={styles.bgElement} style={{ animationDelay: '0s' }} />
-				<div className={styles.bgElement} style={{ animationDelay: '2s' }} />
-				<div className={styles.bgElement} style={{ animationDelay: '4s' }} />
+				<div
+					className={styles.bgElement}
+					style={{ animationDelay: '0s' }}
+				/>
+				<div
+					className={styles.bgElement}
+					style={{ animationDelay: '2s' }}
+				/>
+				<div
+					className={styles.bgElement}
+					style={{ animationDelay: '4s' }}
+				/>
 			</div>
 		</footer>
 	);

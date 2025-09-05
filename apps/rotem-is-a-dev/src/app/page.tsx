@@ -29,7 +29,7 @@ export default function Home() {
 						building scalable design systems and delightful user interfaces.
 					</p>
 
-					<div className={styles.heroActions}>
+					{/* <div className={styles.heroActions}>
 						<a
 							href="#contact"
 							className={styles.primaryButton}
@@ -57,11 +57,11 @@ export default function Home() {
 						>
 							<span>View My Work</span>
 						</a>
-					</div>
+					</div> */}
 
 					<div className={styles.stats}>
 						<div className={styles.stat}>
-							<span className={styles.statNumber}>4+</span>
+							<span className={styles.statNumber}>13+</span>
 							<span className={styles.statLabel}>Years Experience</span>
 						</div>
 						<div className={styles.stat}>

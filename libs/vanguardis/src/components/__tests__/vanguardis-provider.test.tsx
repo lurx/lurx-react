@@ -8,7 +8,7 @@ describe('VanguardisProvider', () => {
 		render(
 			<VanguardisProvider>
 				<div>{testContent}</div>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		expect(screen.getByText(testContent)).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe('VanguardisProvider', () => {
 		render(
 			<VanguardisProvider>
 				<div>{testContent}</div>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		const provider = screen.getByText(testContent).parentElement;
@@ -35,7 +35,7 @@ describe('VanguardisProvider', () => {
 		render(
 			<VanguardisProvider className={customClass}>
 				<div>{testContent}</div>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		const provider = screen.getByText(testContent).parentElement;
@@ -48,7 +48,7 @@ describe('VanguardisProvider', () => {
 		render(
 			<VanguardisProvider className="">
 				<div>{testContent}</div>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		const provider = screen.getByText(testContent).parentElement;
@@ -62,7 +62,7 @@ describe('VanguardisProvider', () => {
 				<div>Child 1</div>
 				<div>Child 2</div>
 				<span>Child 3</span>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		expect(screen.getByText('Child 1')).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('VanguardisProvider', () => {
 				<VanguardisProvider className="inner-provider">
 					<div>Nested Content</div>
 				</VanguardisProvider>
-			</VanguardisProvider>
+			</VanguardisProvider>,
 		);
 
 		const content = screen.getByText('Nested Content');

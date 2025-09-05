@@ -14,12 +14,14 @@ const mockUnobserve = jest.fn();
 const mockDisconnect = jest.fn();
 
 beforeAll(() => {
-	global.IntersectionObserver = mockIntersectionObserver.mockImplementation((callback) => ({
-		observe: mockObserve,
-		unobserve: mockUnobserve,
-		disconnect: mockDisconnect,
-		callback,
-	}));
+	global.IntersectionObserver = mockIntersectionObserver.mockImplementation(
+		callback => ({
+			observe: mockObserve,
+			unobserve: mockUnobserve,
+			disconnect: mockDisconnect,
+			callback,
+		}),
+	);
 });
 
 describe('Reveal Animations', () => {
@@ -40,7 +42,7 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn>
 					<div>Fade in content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			const content = screen.getByText('Fade in content');
@@ -54,12 +56,12 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			expect(mockIntersectionObserver).toHaveBeenCalledWith(
 				expect.any(Function),
-				{ threshold: 0.1 }
+				{ threshold: 0.1 },
 			);
 			expect(mockObserve).toHaveBeenCalled();
 		});
@@ -68,7 +70,7 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn className="custom-fade">
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			const content = screen.getByText('Test content');
@@ -83,7 +85,7 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn delay={100}>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			// Get the callback function passed to IntersectionObserver
@@ -106,7 +108,7 @@ describe('Reveal Animations', () => {
 			const container = screen.getByText('Test content').parentElement;
 			expect(container).toHaveStyle({
 				opacity: '1',
-				transform: 'translateX(0) translateY(0)'
+				transform: 'translateX(0) translateY(0)',
 			});
 
 			jest.useRealTimers();
@@ -114,18 +116,24 @@ describe('Reveal Animations', () => {
 
 		it('should handle different directions', () => {
 			const { rerender } = render(
-				<FadeIn direction="up" distance={50}>
+				<FadeIn
+					direction="up"
+					distance={50}
+				>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			let container = screen.getByText('Test content').parentElement;
 			expect(container).toHaveStyle({ transform: 'translateY(50px)' });
 
 			rerender(
-				<FadeIn direction="left" distance={30}>
+				<FadeIn
+					direction="left"
+					distance={30}
+				>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			container = screen.getByText('Test content').parentElement;
@@ -139,7 +147,7 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			expect(mockIntersectionObserver).not.toHaveBeenCalled();
@@ -149,7 +157,7 @@ describe('Reveal Animations', () => {
 			const { unmount } = render(
 				<FadeIn>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			unmount();
@@ -161,7 +169,7 @@ describe('Reveal Animations', () => {
 			render(
 				<FadeIn once={true}>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			const observerCallback = mockIntersectionObserver.mock.calls[0][0];
@@ -181,15 +189,18 @@ describe('Reveal Animations', () => {
 	describe('SlideIn', () => {
 		it('should render with correct initial transform for direction', () => {
 			render(
-				<SlideIn direction="left" distance={100}>
+				<SlideIn
+					direction="left"
+					distance={100}
+				>
 					<div>Slide content</div>
-				</SlideIn>
+				</SlideIn>,
 			);
 
 			const container = screen.getByText('Slide content').parentElement;
 			expect(container).toHaveStyle({
 				opacity: '0',
-				transform: 'translateX(-100px)'
+				transform: 'translateX(-100px)',
 			});
 		});
 
@@ -205,10 +216,12 @@ describe('Reveal Animations', () => {
 				const { unmount } = render(
 					<SlideIn direction={direction}>
 						<div>{direction} content</div>
-					</SlideIn>
+					</SlideIn>,
 				);
 
-				const container = screen.getByText(`${direction} content`).parentElement;
+				const container = screen.getByText(
+					`${direction} content`,
+				).parentElement;
 				expect(container).toHaveStyle({ transform: expected });
 
 				unmount();
@@ -219,9 +232,12 @@ describe('Reveal Animations', () => {
 			jest.useFakeTimers();
 
 			render(
-				<SlideIn direction="right" delay={50}>
+				<SlideIn
+					direction="right"
+					delay={50}
+				>
 					<div>Slide content</div>
-				</SlideIn>
+				</SlideIn>,
 			);
 
 			const observerCallback = mockIntersectionObserver.mock.calls[0][0];
@@ -241,7 +257,7 @@ describe('Reveal Animations', () => {
 			const container = screen.getByText('Slide content').parentElement;
 			expect(container).toHaveStyle({
 				opacity: '1',
-				transform: 'translateX(0) translateY(0)'
+				transform: 'translateX(0) translateY(0)',
 			});
 
 			jest.useRealTimers();
@@ -253,13 +269,13 @@ describe('Reveal Animations', () => {
 			render(
 				<ScaleIn scale={0.5}>
 					<div>Scale content</div>
-				</ScaleIn>
+				</ScaleIn>,
 			);
 
 			const container = screen.getByText('Scale content').parentElement;
 			expect(container).toHaveStyle({
 				opacity: '0',
-				transform: 'scale(0.5)'
+				transform: 'scale(0.5)',
 			});
 		});
 
@@ -269,7 +285,7 @@ describe('Reveal Animations', () => {
 			render(
 				<ScaleIn>
 					<div>Scale content</div>
-				</ScaleIn>
+				</ScaleIn>,
 			);
 
 			const observerCallback = mockIntersectionObserver.mock.calls[0][0];
@@ -289,7 +305,7 @@ describe('Reveal Animations', () => {
 			const container = screen.getByText('Scale content').parentElement;
 			expect(container).toHaveStyle({
 				opacity: '1',
-				transform: 'scale(1)'
+				transform: 'scale(1)',
 			});
 
 			jest.useRealTimers();
@@ -299,12 +315,12 @@ describe('Reveal Animations', () => {
 			render(
 				<ScaleIn threshold={0.5}>
 					<div>Scale content</div>
-				</ScaleIn>
+				</ScaleIn>,
 			);
 
 			expect(mockIntersectionObserver).toHaveBeenCalledWith(
 				expect.any(Function),
-				{ threshold: 0.5 }
+				{ threshold: 0.5 },
 			);
 		});
 	});
@@ -336,7 +352,7 @@ describe('Reveal Animations', () => {
 				<StaggerFadeIn>
 					<div>Item 1</div>
 					<div>Item 2</div>
-				</StaggerFadeIn>
+				</StaggerFadeIn>,
 			);
 
 			expect(container.textContent).toContain('Item 1');
@@ -348,12 +364,12 @@ describe('Reveal Animations', () => {
 				<StaggerFadeIn threshold={0.3}>
 					<div>Item 1</div>
 					<div>Item 2</div>
-				</StaggerFadeIn>
+				</StaggerFadeIn>,
 			);
 
 			expect(mockIntersectionObserver).toHaveBeenCalledWith(
 				expect.any(Function),
-				{ threshold: 0.3 }
+				{ threshold: 0.3 },
 			);
 		});
 
@@ -362,7 +378,7 @@ describe('Reveal Animations', () => {
 				<StaggerFadeIn itemSelector=".stagger-item">
 					<div className="stagger-item">Item 1</div>
 					<div className="stagger-item">Item 2</div>
-				</StaggerFadeIn>
+				</StaggerFadeIn>,
 			);
 
 			// The querySelectorAll should be called (we can't easily test the exact selector due to mocking)
@@ -379,7 +395,7 @@ describe('Reveal Animations', () => {
 				render(
 					<StaggerFadeIn>
 						<div>Item 1</div>
-					</StaggerFadeIn>
+					</StaggerFadeIn>,
 				);
 			}).not.toThrow();
 		});
@@ -391,7 +407,7 @@ describe('Reveal Animations', () => {
 			render(
 				<StaggerFadeIn>
 					<div>Item 1</div>
-				</StaggerFadeIn>
+				</StaggerFadeIn>,
 			);
 
 			expect(mockIntersectionObserver).not.toHaveBeenCalled();
@@ -403,7 +419,7 @@ describe('Reveal Animations', () => {
 			const { container } = render(
 				<FadeIn>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			const observerCallback = mockIntersectionObserver.mock.calls[0][0];
@@ -420,13 +436,15 @@ describe('Reveal Animations', () => {
 		});
 
 		it('should handle animation duration from utils', () => {
-			const { getAnimationDuration } = require('../../../utils/animation.utils');
+			const {
+				getAnimationDuration,
+			} = require('../../../utils/animation.utils');
 			getAnimationDuration.mockReturnValue(500);
 
 			render(
 				<FadeIn duration={1000}>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			expect(getAnimationDuration).toHaveBeenCalledWith(1000);
@@ -436,7 +454,7 @@ describe('Reveal Animations', () => {
 			const { container } = render(
 				<FadeIn once={true}>
 					<div>Test content</div>
-				</FadeIn>
+				</FadeIn>,
 			);
 
 			const observerCallback = mockIntersectionObserver.mock.calls[0][0];

@@ -1,6 +1,5 @@
 //@ts-check
 
-
 const { composePlugins, withNx } = require('@nx/next');
 
 /**
@@ -18,9 +17,15 @@ const nextConfig = {
 		config.resolve.alias = {
 			...config.resolve.alias,
 			// Point to source for development and CMD+click navigation
-			'@lurx-react/vanguardis/src': require('path').resolve(__dirname, '../../libs/vanguardis/src'),
+			'@lurx-react/vanguardis/src': require('path').resolve(
+				__dirname,
+				'../../libs/vanguardis/src',
+			),
 			// Point style import to built CSS
-			'@lurx-react/vanguardis/style': require('path').resolve(__dirname, '../../dist/libs/vanguardis/style.css'),
+			'@lurx-react/vanguardis/style': require('path').resolve(
+				__dirname,
+				'../../dist/libs/vanguardis/style.css',
+			),
 		};
 
 		// Ensure proper module resolution for the library
