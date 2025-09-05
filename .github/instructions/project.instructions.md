@@ -213,7 +213,7 @@ import '@lurx-react/vanguardis/style';
 
 ### Running the Application
 
-Always check if port 4200 is free before running the app. If it's not, the project is already running.
+Always check if port 4200 is free before running the app. If it's not, the project is already running. Check other background terminal windows.
 
 ```bash
 # check if port 4200 is free, if it's free, serve the app. if not, do nothing.
@@ -330,6 +330,25 @@ useEffect(() => {
 23. **Use Vanguardis design tokens instead of hardcoded values**
 24. **Test Vanguardis components independently before integration**
 
+## Vanguardis Contribution Guidelines
+
+- All new UI components must be added to Vanguardis first
+- Components should never have hardcoded strings as default values; use props instead
+- Ensure all components are fully typed with TypeScript
+- Ensure all components have comprehensive unit tests with 100% coverage
+- Ensure all components follow the established animation and styling patterns
+- Ensure all components are generalized, not specific to any one app
+- In case of props like variant, types or anything that requires a map of values, use an object map instead of union types for easier extensibility
+- Use Generic types from the vanguardis @types folder
+- Follow SOLID principles in component design
+- Always fix TypeScript and ESLint errors
+- Each component must be in its own folder.
+- Component types must be in a .types.ts file in the same folder
+- Component styles must be in a .module.scss file in the same folder
+- Component tests must be in a **tests** folder in the same folder
+- Component stories must be in same folder as the component
+- Always update the Vanguardis documentation when adding new components or features
+
 ## Markdown Guidelines
 
 ### Markdownlint Compliance
@@ -345,17 +364,27 @@ useEffect(() => {
 - Use proper heading hierarchy (h1 → h2 → h3)
 - Add blank lines around all headings
 - Add blank lines around all lists
-- Specify language for all code blocks (`typescript, `scss, ```bash, etc.)
+- Specify language for all code blocks (`typescript`, `scss`, `bash`, etc.)
 - Add blank lines before and after code blocks
 - Use consistent list formatting
 - Ensure proper indentation for nested lists
 
 ### Example of Proper Markdown Structure
 
+```typescript
+// Code block with language specified
+const example = 'proper formatting';
+```
+
 ````markdown
 # Main Heading
 
 ## Section Heading
+
+```typescript
+// Code block with language specified
+const example = 'proper formatting';
+```
 
 ### Subsection Heading
 

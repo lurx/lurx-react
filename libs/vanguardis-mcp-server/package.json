@@ -1,0 +1,32 @@
+{
+  "name": "@lurx-react/vanguardis-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Vanguardis design system - provides programmatic access to components, types, and documentation",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/libs/vanguardis-mcp-server/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "design-system",
+    "vanguardis",
+    "react",
+    "components",
+    "typescript"
+  ],
+  "author": "Rotem Horovitz",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "fs-extra": "^11.3.1",
+    "glob": "^11.0.3"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

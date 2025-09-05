@@ -18,6 +18,7 @@
 			"@lurx-react/vanguardis": ["libs/vanguardis/src"],
 			"@lurx-react/vanguardis/src/*": ["libs/vanguardis/src/*"],
 			"@lurx-react/vanguardis/style": ["dist/libs/vanguardis/style.css"],
+			"@lurx-react/vanguardis-mcp-server": ["libs/vanguardis-mcp-server/src"],
 			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"]
 		}
 	},
