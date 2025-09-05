@@ -1,7 +1,7 @@
 'use client';
 
 import { VanguardisProvider } from '@lurx-react/vanguardis';
-import '@lurx-react/vanguardis/style';
+import '@lurx-react/vanguardis/src/styles/style.scss';
 import type { PropsWithChildren } from 'react';
 /**
  * VanguardisWrapper - Client-side wrapper for the VanguardisProvider
