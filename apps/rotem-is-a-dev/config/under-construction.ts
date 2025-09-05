@@ -1,1 +1,1 @@
-export const UNDER_CONSTRUCTION_WHITELIST = ['/'];
+export const UNDER_CONSTRUCTION_WHITELIST = ['/', '/animations', '/components'];
