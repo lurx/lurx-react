@@ -128,10 +128,10 @@
 // =============================================================================
 
 :root {
-  // Font families
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  --font-retro: 'Press Start 2P', monospace;
-  --font-mono: 'Fira Code', 'Cascadia Code', 'Monaco', 'Consolas', monospace;
+  // Font families - CSS variables from next/font
+  --font-primary: var(--font-inter, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif);
+  --font-secondary: var(--font-poppins, 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif);
+  --font-mono: var(--font-fira-code, 'Fira Code', 'Cascadia Code', 'Monaco', 'Consolas', monospace);
 
   // Font weights
   --font-weight-thin: 100;

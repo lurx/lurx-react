@@ -1,7 +1,7 @@
 .wrapper {
   background-color: #111;
   color: #fff;
-  font-family: 'Press Start 2P', monospace;
+  font-family: var(--font-primary);
   min-height: 100vh;
   display: flex;
   align-items: center;

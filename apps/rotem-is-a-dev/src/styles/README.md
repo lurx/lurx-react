@@ -84,7 +84,7 @@ Our color system is built around four primary palettes with semantic variants:
 #### Font Families
 
 - **Primary**: Inter (modern, readable sans-serif)
-- **Retro**: Press Start 2P (pixelated, nostalgic)
+- **Secondary**: Poppins (professional, elegant sans-serif)
 - **Mono**: Fira Code (code and technical content)
 
 #### Font Scale
