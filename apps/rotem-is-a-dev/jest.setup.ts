@@ -45,7 +45,7 @@ const localStorageMock = {
 	clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
-	value: localStorageMock
+	value: localStorageMock,
 });
 
 // Mock IntersectionObserver for animation components
