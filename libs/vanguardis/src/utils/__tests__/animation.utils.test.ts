@@ -44,7 +44,7 @@ describe('Animation Utils', () => {
 		global.matchMedia = mockMatchMedia;
 
 		// Set up performance mock
-		global.performance = { now: mockPerformanceNow } as Performance;
+		global.performance = { now: mockPerformanceNow } as unknown as Performance;
 
 		// Set up localStorage mock
 		Object.defineProperty(window, 'localStorage', {

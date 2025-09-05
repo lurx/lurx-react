@@ -26,7 +26,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/vanguardis-mcp-server/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/vanguardis-mcp-server/src/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "serve": {

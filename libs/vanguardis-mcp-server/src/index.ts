@@ -2,7 +2,7 @@
 
 /**
  * Vanguardis MCP Server
- * 
+ *
  * Provides programmatic access to the Vanguardis design system through MCP tools.
  * Allows clients to discover components, get documentation, generate code examples,
  * and interact with design tokens.
@@ -174,13 +174,13 @@ class VanguardisServer {
       try {
         switch (name) {
           case 'vanguardis_list_components':
-            return { content: [{ type: 'text', text: await this.tools.listComponents(args.category as string) }] };
+            return { content: [{ type: 'text', text: await this.tools.listComponents(args?.category as string) }] };
 
           case 'vanguardis_get_component':
             return {
               content: [{
                 type: 'text',
-                text: await this.tools.getComponent(args.componentName as string, args.includeExample !== false)
+                text: await this.tools.getComponent(args?.componentName as string, args?.includeExample !== false)
               }]
             };
 
@@ -188,7 +188,7 @@ class VanguardisServer {
             return {
               content: [{
                 type: 'text',
-                text: await this.tools.getDesignTokens((args.category as string) || 'all')
+                text: await this.tools.getDesignTokens((args?.category as string) || 'all')
               }]
             };
 
@@ -197,10 +197,10 @@ class VanguardisServer {
               content: [{
                 type: 'text',
                 text: await this.tools.generateComponentExample(
-                  args.componentName as string,
-                  (args.props as Record<string, unknown>) || {},
-                  args.includeImports !== false,
-                  args.wrapWithProvider !== false
+                  args?.componentName as string,
+                  (args?.props as Record<string, unknown>) || {},
+                  args?.includeImports !== false,
+                  args?.wrapWithProvider !== false
                 )
               }]
             };
@@ -209,7 +209,7 @@ class VanguardisServer {
             return {
               content: [{
                 type: 'text',
-                text: await this.tools.getHooks(args.hookName as string)
+                text: await this.tools.getHooks(args?.hookName as string)
               }]
             };
 
@@ -217,7 +217,7 @@ class VanguardisServer {
             return {
               content: [{
                 type: 'text',
-                text: await this.tools.getUtils(args.utilName as string)
+                text: await this.tools.getUtils(args?.utilName as string)
               }]
             };
 
@@ -225,7 +225,7 @@ class VanguardisServer {
             return {
               content: [{
                 type: 'text',
-                text: await this.tools.search(args.query as string, (args.type as string) || 'all')
+                text: await this.tools.search(args?.query as string, (args?.type as string) || 'all')
               }]
             };
 
