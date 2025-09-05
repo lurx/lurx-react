@@ -36,6 +36,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.d.ts",
     "**/*.js",
     "**/*.jsx",
     "../../apps/rotem-is-a-dev/.next/types/**/*.ts",
