@@ -22,10 +22,26 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 - **Language**: TypeScript with strict type checking
 - **Styling**: SCSS modules
 - **Animations**: AnimeJS 4.0.2 for complex animations and scroll-triggered effects
+- **Utilities**: es-toolkit 1.39.10 for modern utility functions (throttle, debounce, etc.)
+- **Hooks**: usehooks-ts 3.1.1 for modern React hooks (useMediaQuery, useLocalStorage, etc.)
 - **Monorepo**: Nx 20.3.0 with yarn package manager
 - **Testing**: Jest with React Testing Library
 - **E2E Testing**: Playwright
 - **Linting**: ESLint with Next.js config
+
+## Third-Party Tools Integration
+
+### es-toolkit
+- Modern utility library for JavaScript/TypeScript
+- Use for common utilities like `throttle`, `debounce`, `isEmpty`, `pick`, etc.
+- Replaces Lodash with better performance and tree-shaking
+- Always prefer es-toolkit over custom implementations for utility functions
+
+### usehooks-ts
+- Collection of essential React hooks written in TypeScript
+- Use for common patterns like `useMediaQuery`, `useLocalStorage`, `useDebounce`, etc.
+- Provides type-safe, well-tested hook implementations
+- Always prefer usehooks-ts over custom hook implementations for common patterns
 
 ## Key Features
 
@@ -56,6 +72,13 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 - No single-letter variables - use descriptive names
 - Always fix TypeScript errors before committing
 - Follow SOLID principles for better code architecture
+
+### Third-Party Tools Usage
+
+- **Always use es-toolkit** for utility functions instead of writing custom implementations
+- **Always use usehooks-ts** for common React hook patterns
+- Check es-toolkit and usehooks-ts documentation before implementing utility functions or hooks
+- These tools provide better performance, type safety, and are well-tested
 
 ### File Naming Conventions
 

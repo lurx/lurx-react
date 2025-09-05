@@ -8,10 +8,12 @@
 		"animejs": "^4.0.2",
 		"chance": "^1.1.12",
 		"classnames": "^2.5.1",
+		"es-toolkit": "1.39.10",
 		"next": "14.2.16",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
-		"the-new-css-reset": "^1.11.3"
+		"the-new-css-reset": "^1.11.3",
+		"usehooks-ts": "3.1.1"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.1.1",
