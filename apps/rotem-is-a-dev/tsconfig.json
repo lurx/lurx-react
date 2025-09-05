@@ -16,7 +16,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"incremental": true,
 		"paths": {
-			"@/*": ["./*"],
+			"@/*": ["./src/*", "./*"],
 			"@lurx-react/vanguardis": ["../../dist/libs/vanguardis"]
 		},
 		"baseUrl": ".",
