@@ -317,7 +317,7 @@ export type PolymorphicRef<T extends React.ElementType> =
 
 export type PolymorphicComponentPropsWithRef<
   T extends React.ElementType,
-  Props = {}
+  Props = Record<string, unknown>
 > = Props &
   PolymorphicComponentProp<T> &
   Omit<React.ComponentPropsWithRef<T>, keyof Props | 'as'> & {
