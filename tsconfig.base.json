@@ -15,8 +15,11 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-      "@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"]
-    }
+			"@lurx-react/vanguardis": ["libs/vanguardis/src"],
+			"@lurx-react/vanguardis/src/*": ["libs/vanguardis/src/*"],
+			"@lurx-react/vanguardis/style": ["dist/libs/vanguardis/style.css"],
+			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"]
+		}
 	},
 	"exclude": ["node_modules", "tmp"]
 }
