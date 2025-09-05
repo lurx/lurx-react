@@ -32,12 +32,14 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 ## Third-Party Tools Integration
 
 ### es-toolkit
+
 - Modern utility library for JavaScript/TypeScript
 - Use for common utilities like `throttle`, `debounce`, `isEmpty`, `pick`, etc.
 - Replaces Lodash with better performance and tree-shaking
 - Always prefer es-toolkit over custom implementations for utility functions
 
 ### usehooks-ts
+
 - Collection of essential React hooks written in TypeScript
 - Use for common patterns like `useMediaQuery`, `useLocalStorage`, `useDebounce`, etc.
 - Provides type-safe, well-tested hook implementations
@@ -123,8 +125,11 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 
 ### Running the Application
 
+Always check if port 4200 is free before running the app. If it's not, the project is already running.
+
 ```bash
-npx nx dev rotem-is-a-dev
+# check if port 4200 is free, if it's free, serve the app. if not, do nothing.
+if ! lsof -i:4200 >/dev/null 2>&1; then npx nx serve rotem-is-a-dev; fi
 ```
 
 ### Building for Production
