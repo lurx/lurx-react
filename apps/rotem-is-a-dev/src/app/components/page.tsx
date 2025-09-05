@@ -1,7 +1,7 @@
 'use client';
 
+import { FadeIn, ScaleIn, SlideIn } from '@lurx-react/vanguardis';
 import React, { useState } from 'react';
-import { FadeIn, ScaleIn, SlideIn } from '../../components/animations';
 import { Footer, NavigationHeader } from '../../components/layout';
 import { HeroSection } from '../../components/sections';
 import { LoadingScreen, LoadingSpinner } from '../../components/ui';

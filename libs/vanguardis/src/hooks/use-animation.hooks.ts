@@ -8,6 +8,7 @@ import type {
   MotionPreferences,
   UseAnimationConfig
 } from '../types/animation.types';
+import type { Nullable } from '../types/design-system.types';
 import {
   shouldReduceMotion,
   startAnimationMonitoring,
@@ -164,9 +165,7 @@ export function useAnimationState(
 		let startTime = performance.now();
 
 		const updateState = () => {
-			const currentTime = performance.now();
-
-			setState(prevState => ({
+			const currentTime = performance.now();                        setState((prevState: AnimationState) => ({
 				...prevState,
 				performance: {
 					...prevState.performance,
@@ -190,22 +189,19 @@ export function useAnimationState(
 		};
 	}, [animationId, enableMonitoring, state.isAnimating]);
 
-	const startAnimation = useCallback(() => {
-		setState(prev => ({ ...prev, isAnimating: true, progress: 0 }));
+	const startAnimation = useCallback(() => {                setState((prev: AnimationState) => ({ ...prev, isAnimating: true, progress: 0 }));
 		if (animationId && enableMonitoring) {
 			startAnimationMonitoring(animationId);
 		}
 	}, [animationId, enableMonitoring]);
 
-	const stopAnimation = useCallback(() => {
-		setState(prev => ({ ...prev, isAnimating: false, progress: 1 }));
+	const stopAnimation = useCallback(() => {                setState((prev: AnimationState) => ({ ...prev, isAnimating: false, progress: 1 }));
 		if (animationId && enableMonitoring) {
 			stopAnimationMonitoring(animationId);
 		}
 	}, [animationId, enableMonitoring]);
 
-	const updateProgress = useCallback((progress: number) => {
-		setState(prev => ({ ...prev, progress: Math.max(0, Math.min(1, progress)) }));
+	const updateProgress = useCallback((progress: number) => {                setState((prev: AnimationState) => ({ ...prev, progress: Math.max(0, Math.min(1, progress)) }));
 	}, []);
 
 	return {

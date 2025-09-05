@@ -1,6 +1,6 @@
 'use client';
 
-import { FadeIn, ScaleIn, SlideIn, StaggerFadeIn } from '../../components/animations';
+import { FadeIn, ScaleIn, SlideIn, StaggerFadeIn } from '@lurx-react/vanguardis';
 import styles from './page.module.scss';
 
 /**

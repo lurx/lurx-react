@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useEffect, useRef, useState } from 'react';
-import { shouldReduceMotion } from '../../utils/animation.utils';
+import { shouldReduceMotion } from '../utils/animation.utils';
 import styles from './loading-screen.module.scss';
 
 /**

@@ -3,6 +3,7 @@ import { AppProvider } from './context/app-context';
 import { firaCode, inter, poppins } from './fonts';
 import './globals.scss';
 import { InnerLayout } from './layout/inner-layout';
+import { VanguardisWrapper } from './vanguardis-wrapper';
 
 export const metadata = {
 	title: 'Rotem is a Dev',
@@ -13,9 +14,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} ${poppins.variable} ${firaCode.variable}`}>
-				<AppProvider>
-					<InnerLayout>{children}</InnerLayout>
-				</AppProvider>
+				<VanguardisWrapper>
+					<AppProvider>
+						<InnerLayout>{children}</InnerLayout>
+					</AppProvider>
+				</VanguardisWrapper>
 			</body>
 		</html>
 	);

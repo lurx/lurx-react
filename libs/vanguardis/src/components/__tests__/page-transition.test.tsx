@@ -7,7 +7,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock animation utilities
-jest.mock('../../../utils/animation.utils', () => ({
+jest.mock('../../utils/animation.utils', () => ({
   shouldReduceMotion: jest.fn(() => false),
 }));
 
@@ -84,7 +84,7 @@ describe('PageTransition', () => {
   });
 
   it('should handle reduced motion preference', () => {
-    const { shouldReduceMotion } = require('../../../utils/animation.utils');
+    const { shouldReduceMotion } = require('../../utils/animation.utils');
     shouldReduceMotion.mockReturnValue(true);
 
     const { usePathname } = require('next/navigation');

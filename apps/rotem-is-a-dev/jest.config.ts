@@ -1,4 +1,4 @@
-export default {
+const config = {
 	displayName: 'rotem-is-a-dev',
 	preset: '../../jest.preset.js',
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
@@ -14,7 +14,10 @@ export default {
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/$1',
+		'^@lurx-react/vanguardis$': '<rootDir>/../../libs/vanguardis/src/index.ts',
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 	},
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };
+
+export default config;

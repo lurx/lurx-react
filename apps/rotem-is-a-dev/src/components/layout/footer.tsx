@@ -1,6 +1,6 @@
 'use client';
 
-import { FadeIn, SlideIn } from '../animations';
+import { FadeIn, SlideIn } from '@lurx-react/vanguardis';
 import styles from './footer.module.scss';
 
 /**

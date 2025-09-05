@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { LoadingScreen, LoadingSpinner } from '../loading-screen';
 
 // Mock animation utilities
-jest.mock('../../../utils/animation.utils', () => ({
+jest.mock('../../utils/animation.utils', () => ({
   shouldReduceMotion: jest.fn(() => false),
 }));
 

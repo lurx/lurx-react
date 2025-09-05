@@ -8,6 +8,3 @@ export * from './sections';
 
 // UI components
 export * from './ui';
-
-// Animation components
-export * from './animations';

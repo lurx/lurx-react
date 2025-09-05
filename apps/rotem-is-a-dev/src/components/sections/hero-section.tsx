@@ -1,8 +1,8 @@
 'use client';
 
+import { FadeIn, SlideIn } from '@lurx-react/vanguardis';
 import { throttle } from 'es-toolkit';
 import { useEffect, useRef } from 'react';
-import { FadeIn, SlideIn } from '../animations';
 import styles from './hero-section.module.scss';
 
 /**

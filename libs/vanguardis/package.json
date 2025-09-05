@@ -1,0 +1,29 @@
+{
+	"name": "@lurx-react/vanguardis",
+	"version": "1.0.0",
+	"description": "A modern, comprehensive design system library for React applications",
+	"main": "./index.js",
+	"types": "./index.d.ts",
+	"exports": {
+		".": {
+			"import": "./index.mjs",
+			"require": "./index.js"
+		},
+		"./style": "./style.css"
+	},
+	"keywords": [
+		"design-system",
+		"react",
+		"typescript",
+		"ui-components",
+		"animation",
+		"accessibility",
+		"responsive"
+	],
+	"author": "Rotem Horovitz",
+	"license": "MIT",
+	"peerDependencies": {
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0"
+	}
+}

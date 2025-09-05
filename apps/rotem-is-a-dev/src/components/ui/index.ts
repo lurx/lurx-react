@@ -1,4 +1,3 @@
-// UI Components
-export * from './loading-screen';
-export * from './page-transition';
+// UI Components - Now importing from Vanguardis Design System
+export * from '@lurx-react/vanguardis';
 

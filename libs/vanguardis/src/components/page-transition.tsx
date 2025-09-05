@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { memo, useEffect, useRef, useState } from 'react';
-import { shouldReduceMotion } from '../../utils/animation.utils';
+import { shouldReduceMotion } from '../utils/animation.utils';
 import { LoadingScreen } from './loading-screen';
 import styles from './page-transition.module.scss';
 

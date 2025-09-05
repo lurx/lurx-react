@@ -1,4 +1,5 @@
 import type { Scope } from 'animejs';
+import type { Nullable } from './design-system.types';
 
 /**
  * Animation configuration for scroll-triggered animations

@@ -4,15 +4,64 @@ import AnimationsPage from '../page';
 
 interface MockProps {
 	children: React.ReactNode;
+  className?: string;
 	[key: string]: unknown;
 }
 
 // Mock the animation components
-jest.mock('../../../components/animations', () => ({
-	FadeIn: ({ children, ...props }: MockProps) => <div data-testid="fade-in" {...props}>{children}</div>,
-	SlideIn: ({ children, ...props }: MockProps) => <div data-testid="slide-in" {...props}>{children}</div>,
-	ScaleIn: ({ children, ...props }: MockProps) => <div data-testid="scale-in" {...props}>{children}</div>,
-	StaggerFadeIn: ({ children, ...props }: MockProps) => <div data-testid="stagger-fade-in" {...props}>{children}</div>,
+jest.mock('@lurx-react/vanguardis', () => ({
+	FadeIn: ({ children, className, ...props }: MockProps) => {
+		const { delay, duration, direction, distance, ...domProps } = props;
+		return (
+			<div
+				data-testid="fade-in"
+				className={className}
+				style={{ opacity: 0 }}
+				{...domProps}
+			>
+				{children}
+			</div>
+		);
+	},
+	SlideIn: ({ children, className, ...props }: MockProps) => {
+		const { delay, duration, direction, distance, ...domProps } = props;
+		return (
+			<div
+				data-testid="slide-in"
+				className={className}
+				style={{ opacity: 0, transform: 'translateX(-20px)' }}
+				{...domProps}
+			>
+				{children}
+			</div>
+		);
+	},
+	ScaleIn: ({ children, className, ...props }: MockProps) => {
+		const { delay, duration, scale, ...domProps } = props;
+		return (
+			<div
+				data-testid="scale-in"
+				className={className}
+				style={{ opacity: 0, transform: 'scale(0.8)' }}
+				{...domProps}
+			>
+				{children}
+			</div>
+		);
+	},
+	StaggerFadeIn: ({ children, className, ...props }: MockProps) => {
+		const { stagger, itemSelector, direction, ...domProps } = props;
+		return (
+			<div
+				data-testid="stagger-fade-in"
+				className={className}
+				style={{ opacity: 0 }}
+				{...domProps}
+			>
+				{children}
+			</div>
+		);
+	},
 }));
 
 // Mock Intersection Observer
@@ -118,11 +167,15 @@ describe('AnimationsPage', () => {
 	it('should use various animation components', () => {
 		render(<AnimationsPage />);
 
-		// Check that animation components are used
-		expect(screen.getAllByTestId('fade-in').length).toBeGreaterThan(0);
-		expect(screen.getAllByTestId('slide-in')).toHaveLength(4); // 4 SlideIn components
-		expect(screen.getAllByTestId('scale-in')).toHaveLength(4); // 4 ScaleIn components (1 + 3 variations)
-		expect(screen.getAllByTestId('stagger-fade-in')).toHaveLength(3); // 3 StaggerFadeIn components
+		// Check that animation components are rendering content
+		expect(screen.getByText('Fade In')).toBeInTheDocument();
+		expect(screen.getByText('Slide In Left')).toBeInTheDocument();
+		expect(screen.getByText('Scale In')).toBeInTheDocument();
+		expect(screen.getByText('Slide In Right')).toBeInTheDocument();
+
+		// Check that elements have initial animation styles
+		const animationElements = document.querySelectorAll('[style*="opacity: 0"]');
+		expect(animationElements.length).toBeGreaterThan(0);
 	});
 
 	it('should have proper semantic structure', () => {

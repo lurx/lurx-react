@@ -1,8 +1,8 @@
 'use client';
 
+import { FadeIn } from '@lurx-react/vanguardis';
 import { throttle } from 'es-toolkit';
 import React, { useEffect, useState } from 'react';
-import { FadeIn } from '../animations';
 import styles from './navigation-header.module.scss';
 
 /**
