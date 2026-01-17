@@ -52,6 +52,11 @@ apps/rotem-is-a-dev/.env
 apps/rotem-is-a-dev/.env.local
 apps/rotem-is-a-dev/.env*
 
+# apps/story-wise
+apps/story-wise/.env
+apps/story-wise/.env.local
+apps/story-wise/.env*
+
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
