@@ -1,0 +1,10 @@
+{
+	"name": "video-trimmer-e2e",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/video-trimmer-e2e/src",
+	"tags": [],
+	"implicitDependencies": ["video-trimmer"],
+	"// targets": "to see all targets run: nx show project video-trimmer-e2e --web",
+	"targets": {}
+}
