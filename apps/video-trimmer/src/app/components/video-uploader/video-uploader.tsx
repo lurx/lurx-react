@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ALLOWED_MIME_TYPES, formatFileSize } from '@lurx-react/video-processing';
 import { useVideoTrimmer } from '../../context/video-trimmer-context';
 
 /**
@@ -11,9 +10,11 @@ import { useVideoTrimmer } from '../../context/video-trimmer-context';
 export function VideoUploader() {
 	const { setSourceFile, processingStatus, processingError } =
 		useVideoTrimmer();
+	const [isPicking, setIsPicking] = useState(false);
 
 	const onDrop = useCallback(
 		(acceptedFiles: File[]) => {
+			setIsPicking(false);
 			if (acceptedFiles.length > 0) {
 				setSourceFile(acceptedFiles[0]);
 			}
@@ -21,25 +22,36 @@ export function VideoUploader() {
 		[setSourceFile],
 	);
 
+	const onFileDialogOpen = useCallback(() => {
+		setIsPicking(true);
+	}, []);
+
+	const onFileDialogCancel = useCallback(() => {
+		setIsPicking(false);
+	}, []);
+
 	const { getRootProps, getInputProps, isDragActive, isDragReject } =
 		useDropzone({
 			onDrop,
+			onFileDialogOpen,
+			onFileDialogCancel,
 			accept: {
 				// Use video/* for better iOS compatibility (HEVC videos may report unusual MIME types)
 				'video/*': ['.mp4', '.m4v', '.mov', '.webm', '.avi', '.mkv'],
 			},
 			maxFiles: 1,
-			disabled: processingStatus !== 'idle' && processingStatus !== 'error',
+			disabled: isPicking || (processingStatus !== 'idle' && processingStatus !== 'error'),
 		});
 
 	const isDisabled =
-		processingStatus !== 'idle' && processingStatus !== 'error';
+		isPicking || (processingStatus !== 'idle' && processingStatus !== 'error');
 
 	const dropzoneClasses = [
 		'flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-xl bg-base-200 cursor-pointer transition-all',
 		isDragActive && 'border-primary bg-base-300',
 		isDragReject && 'border-error bg-error/10',
 		isDisabled && 'opacity-50 cursor-not-allowed',
+		isPicking && 'border-primary bg-base-300',
 		!isDragActive && !isDragReject && !isDisabled && 'border-base-content/20 hover:border-primary hover:bg-base-300',
 	].filter(Boolean).join(' ');
 
@@ -48,29 +60,41 @@ export function VideoUploader() {
 			<div {...getRootProps()} className={dropzoneClasses}>
 				<input {...getInputProps()} />
 				<div className="flex flex-col items-center gap-4 text-center">
-					<svg
-						className="w-12 h-12 text-base-content/40"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-					>
-						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-						<polyline points="17 8 12 3 7 8" />
-						<line x1="12" y1="3" x2="12" y2="15" />
-					</svg>
-					{isDragActive ? (
-						<p className="text-lg text-base-content">Drop your video here...</p>
+					{isPicking ? (
+						<>
+							<span className="loading loading-spinner loading-lg text-primary"></span>
+							<p className="text-lg text-base-content">Loading video...</p>
+							<p className="text-sm text-base-content/60">
+								This may take a moment for large files
+							</p>
+						</>
 					) : (
 						<>
-							<p className="text-lg text-base-content">
-								Drag and drop your video here, or click to select
-							</p>
-							<p className="text-sm text-base-content/60">
-								Supports MP4, MOV, WebM, AVI (max 2GB)
-							</p>
+							<svg
+								className="w-12 h-12 text-base-content/40"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+								<polyline points="17 8 12 3 7 8" />
+								<line x1="12" y1="3" x2="12" y2="15" />
+							</svg>
+							{isDragActive ? (
+								<p className="text-lg text-base-content">Drop your video here...</p>
+							) : (
+								<>
+									<p className="text-lg text-base-content">
+										Drag and drop your video here, or click to select
+									</p>
+									<p className="text-sm text-base-content/60">
+										Supports MP4, MOV, WebM, AVI (max 2GB)
+									</p>
+								</>
+							)}
 						</>
 					)}
 				</div>
