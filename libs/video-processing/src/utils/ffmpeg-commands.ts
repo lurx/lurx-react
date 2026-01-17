@@ -50,7 +50,7 @@ export function buildSegmentArgs(options: {
 	quality: ProcessingQuality;
 	outputName: string;
 }): string[] {
-	const { startTime, segmentDuration, outputName } = options;
+	const { startTime, segmentDuration, outputFormat, outputName } = options;
 
 	const args: string[] = [
 		// Seek to start time (before input for fast seeking)
@@ -71,9 +71,18 @@ export function buildSegmentArgs(options: {
 		// Avoid negative timestamps
 		'-avoid_negative_ts',
 		'make_zero',
-		// Output file
-		outputName,
 	];
+
+	// MP4-specific flags for HEVC compatibility
+	if (outputFormat === 'mp4') {
+		// Tag HEVC streams for better compatibility (Apple devices)
+		args.push('-tag:v', 'hvc1');
+		// Optimize for streaming/playback
+		args.push('-movflags', '+faststart');
+	}
+
+	// Output file
+	args.push(outputName);
 
 	return args;
 }

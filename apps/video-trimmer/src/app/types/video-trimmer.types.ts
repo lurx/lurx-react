@@ -73,6 +73,6 @@ export interface VideoTrimmerActions {
 export type VideoTrimmerContextType = VideoTrimmerState & VideoTrimmerActions;
 
 /**
- * Default segment duration (45 seconds)
+ * Default segment duration (seconds)
  */
-export const DEFAULT_SEGMENT_DURATION = 45;
+export const DEFAULT_SEGMENT_DURATION = 59; // 59 seconds to allow for 1-second buffer
