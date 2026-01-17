@@ -1,5 +1,0 @@
-{
-	"buildCommand": "npx nx build rotem-is-a-dev",
-	"outputDirectory": "dist/apps/rotem-is-a-dev/.next",
-	"framework": "nextjs"
-}
