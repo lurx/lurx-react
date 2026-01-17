@@ -41,7 +41,7 @@ export function getCRF(quality: ProcessingQuality): number {
 
 /**
  * Build FFmpeg arguments for segment extraction
- * Uses stream copy for fast processing without re-encoding
+ * Re-encodes for FFmpeg.wasm compatibility (stream copy not supported)
  */
 export function buildSegmentArgs(options: {
 	startTime: number;
@@ -50,34 +50,49 @@ export function buildSegmentArgs(options: {
 	quality: ProcessingQuality;
 	outputName: string;
 }): string[] {
-	const { startTime, segmentDuration, outputFormat, outputName } = options;
+	const { startTime, segmentDuration, outputFormat, quality, outputName } = options;
 
 	const args: string[] = [
-		// Seek to start time (before input for fast seeking)
-		'-ss',
-		startTime.toString(),
-		// Input file
+		// Input file first (required for FFmpeg.wasm)
 		'-i',
 		'input',
+		// Seek to start time
+		'-ss',
+		startTime.toString(),
 		// Duration
 		'-t',
 		segmentDuration.toString(),
-		// Copy video stream without re-encoding (fast)
-		'-c:v',
-		'copy',
-		// Copy audio stream without re-encoding (fast)
-		'-c:a',
-		'copy',
-		// Avoid negative timestamps
-		'-avoid_negative_ts',
-		'make_zero',
 	];
 
-	// MP4-specific flags for HEVC compatibility
+	// Video encoding - use libx264 for MP4 (FFmpeg.wasm compatible)
 	if (outputFormat === 'mp4') {
-		// Tag HEVC streams for better compatibility (Apple devices)
-		args.push('-tag:v', 'hvc1');
-		// Optimize for streaming/playback
+		args.push(
+			'-c:v', 'libx264',
+			'-preset', getEncodingPreset(quality),
+			'-crf', getCRF(quality).toString(),
+			// Use yuv420p for maximum compatibility
+			'-pix_fmt', 'yuv420p',
+		);
+	} else {
+		// WebM format
+		args.push(
+			'-c:v', 'libvpx-vp9',
+			'-crf', getCRF(quality).toString(),
+			'-b:v', '0',
+		);
+	}
+
+	// Audio encoding
+	args.push(
+		'-c:a', 'aac',
+		'-b:a', '128k',
+	);
+
+	// Avoid negative timestamps
+	args.push('-avoid_negative_ts', 'make_zero');
+
+	// MP4-specific flags
+	if (outputFormat === 'mp4') {
 		args.push('-movflags', '+faststart');
 	}
 

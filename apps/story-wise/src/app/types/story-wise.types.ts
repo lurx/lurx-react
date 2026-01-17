@@ -17,6 +17,11 @@ export type ProcessingStatus =
 	| 'error';
 
 /**
+ * Processing mode - where the video is being processed
+ */
+export type ProcessingMode = 'client' | 'cloud' | null;
+
+/**
  * State for the story wise context
  */
 export interface StoryWiseState {
@@ -35,6 +40,8 @@ export interface StoryWiseState {
 	processingProgress: ProcessingProgress | null;
 	/** Processing error if any */
 	processingError: ProcessingError | null;
+	/** Current processing mode (client or cloud) */
+	processingMode: ProcessingMode;
 
 	/** Generated video segments */
 	segments: VideoSegment[];

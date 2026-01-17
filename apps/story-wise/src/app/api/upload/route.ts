@@ -1,13 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import { randomUUID } from 'crypto';
-
-const UPLOAD_DIR = join(process.cwd(), 'tmp', 'uploads');
-const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB for server processing
+import { getCloudConfig } from '../../../config/cloud.config';
+import { getR2Client } from '../../../lib/r2-client';
 
 export async function POST(request: NextRequest) {
+	console.log('[API] Upload request received');
 	try {
+		const config = getCloudConfig();
+
+		// Check if cloud processing is enabled
+		if (!config.enabled) {
+			console.warn('[API] Cloud processing is not enabled');
+			return NextResponse.json(
+				{ error: 'Cloud processing is not enabled' },
+				{ status: 503 },
+			);
+		}
+
+		console.log('[API] Cloud processing enabled, processing upload...');
 		const formData = await request.formData();
 		const file = formData.get('video') as File | null;
 
@@ -15,9 +25,12 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 		}
 
-		if (file.size > MAX_FILE_SIZE) {
+		// Check file size
+		if (file.size > config.processing.maxFileSize) {
 			return NextResponse.json(
-				{ error: 'File too large for server processing (max 500MB)' },
+				{
+					error: `File too large (max ${Math.round(config.processing.maxFileSize / 1024 / 1024)}MB)`,
+				},
 				{ status: 413 },
 			);
 		}
@@ -36,10 +49,8 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Create session directory
+		// Create session ID
 		const sessionId = randomUUID();
-		const sessionDir = join(UPLOAD_DIR, sessionId);
-		await mkdir(sessionDir, { recursive: true });
 
 		// Get file extension from MIME type
 		const extMap: Record<string, string> = {
@@ -49,23 +60,39 @@ export async function POST(request: NextRequest) {
 			'video/x-msvideo': 'avi',
 		};
 		const ext = extMap[file.type] || 'mp4';
+		const filename = `input.${ext}`;
 
-		// Write file to disk
-		const arrayBuffer = await file.arrayBuffer();
-		const uint8Array = new Uint8Array(arrayBuffer);
-		const filePath = join(sessionDir, `input.${ext}`);
-		await writeFile(filePath, uint8Array);
+		// Upload to R2
+		console.log('[API] Initializing R2 client...');
+		const r2Client = getR2Client();
+		const key = r2Client.generateVideoKey(sessionId, filename);
+
+		console.log('[API] Starting upload to R2:', { sessionId, key, fileSize: file.size });
+		await r2Client.uploadFileFromFile(key, file);
+		console.log('[API] ✓ Upload to R2 complete:', { sessionId, key });
 
 		return NextResponse.json({
 			sessionId,
 			message: 'Upload successful',
 			fileSize: file.size,
 			mimeType: file.type,
+			key, // Return the R2 key for reference
 		});
 	} catch (error) {
 		console.error('Upload error:', error);
+
+		// Handle specific R2 errors
+		if (error instanceof Error) {
+			if (error.message.includes('not enabled') || error.message.includes('not configured')) {
+				return NextResponse.json(
+					{ error: error.message },
+					{ status: 503 },
+				);
+			}
+		}
+
 		return NextResponse.json(
-			{ error: 'Upload failed' },
+			{ error: 'Upload failed', message: error instanceof Error ? error.message : 'Unknown error' },
 			{ status: 500 },
 		);
 	}

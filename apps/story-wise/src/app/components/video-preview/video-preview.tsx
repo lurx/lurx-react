@@ -4,6 +4,8 @@ import { useRef, useEffect, useState } from 'react';
 import { formatDuration } from '@lurx-react/video-processing';
 import { useStoryWise } from '../../context/story-wise-context';
 
+type AspectRatio = 'landscape' | 'portrait' | 'square';
+
 /**
  * VideoPreview - Video player with preview functionality
  */
@@ -13,6 +15,7 @@ export function VideoPreview() {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [aspectRatio, setAspectRatio] = useState<AspectRatio>('landscape');
 
 	// Get the video URL to display
 	const selectedSegment = segments.find(s => s.id === selectedSegmentId);
@@ -31,16 +34,32 @@ export function VideoPreview() {
 		const handlePause = () => setIsPlaying(false);
 		const handleEnded = () => setIsPlaying(false);
 
+		const handleLoadedMetadata = () => {
+			const { videoWidth, videoHeight } = video;
+			if (videoWidth && videoHeight) {
+				const ratio = videoWidth / videoHeight;
+				if (ratio < 0.9) {
+					setAspectRatio('portrait');
+				} else if (ratio > 1.1) {
+					setAspectRatio('landscape');
+				} else {
+					setAspectRatio('square');
+				}
+			}
+		};
+
 		video.addEventListener('timeupdate', handleTimeUpdate);
 		video.addEventListener('play', handlePlay);
 		video.addEventListener('pause', handlePause);
 		video.addEventListener('ended', handleEnded);
+		video.addEventListener('loadedmetadata', handleLoadedMetadata);
 
 		return () => {
 			video.removeEventListener('timeupdate', handleTimeUpdate);
 			video.removeEventListener('play', handlePlay);
 			video.removeEventListener('pause', handlePause);
 			video.removeEventListener('ended', handleEnded);
+			video.removeEventListener('loadedmetadata', handleLoadedMetadata);
 		};
 	}, []);
 
@@ -75,9 +94,16 @@ export function VideoPreview() {
 		return null;
 	}
 
+	// Determine container classes based on aspect ratio
+	const containerClasses = {
+		landscape: 'aspect-video',
+		portrait: 'aspect-[9/16] max-h-[70vh]',
+		square: 'aspect-square max-h-[50vh]',
+	};
+
 	return (
-		<div className="w-full bg-base-200 rounded-xl overflow-hidden">
-			<div className="relative w-full aspect-video bg-black">
+		<div className={`bg-base-200 rounded-xl overflow-hidden ${aspectRatio === 'portrait' ? 'max-w-sm mx-auto' : 'w-full'}`}>
+			<div className={`relative bg-black flex items-center justify-center ${containerClasses[aspectRatio]}`}>
 				<video
 					ref={videoRef}
 					className="w-full h-full object-contain"

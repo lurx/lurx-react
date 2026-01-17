@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readdir, stat } from 'fs/promises';
-import { join } from 'path';
 import { spawn } from 'child_process';
+import { writeFile, readFile, mkdir, readdir, unlink } from 'fs/promises';
+import { join } from 'path';
+import { GetObjectCommand } from '@aws-sdk/client-s3';
+import { getCloudConfig } from '../../../config/cloud.config';
+import { getR2Client } from '../../../lib/r2-client';
+import { buildSegmentArgs } from '@lurx-react/video-processing';
 
-const UPLOAD_DIR = join(process.cwd(), 'tmp', 'uploads');
+const TMP_DIR = join(process.cwd(), 'tmp', 'processing');
 
 interface ProcessRequestBody {
 	sessionId: string;
 	segmentDuration?: number;
+	outputFormat?: 'mp4' | 'webm';
+	quality?: 'high' | 'medium' | 'low';
 }
 
 /**
@@ -22,7 +28,7 @@ async function isFFmpegAvailable(): Promise<boolean> {
 }
 
 /**
- * Get video duration using FFmpeg
+ * Get video duration using FFprobe
  */
 async function getVideoDuration(inputPath: string): Promise<number> {
 	return new Promise((resolve, reject) => {
@@ -44,13 +50,32 @@ async function getVideoDuration(inputPath: string): Promise<number> {
 			output += data.toString();
 		});
 
+		process.stderr.on('data', data => {
+			// FFprobe outputs to stderr
+			output += data.toString();
+		});
+
 		process.on('close', code => {
-			if (code === 0) {
+			if (code === 0 || output.includes('Duration:')) {
+				// Try to parse duration from output
+				const durationMatch = output.match(/Duration:\s*(\d{2}):(\d{2}):(\d{2}\.\d+)/);
+				if (durationMatch) {
+					const hours = Number.parseInt(durationMatch[1], 10);
+					const minutes = Number.parseInt(durationMatch[2], 10);
+					const seconds = parseFloat(durationMatch[3]);
+					const duration = hours * 3600 + minutes * 60 + seconds;
+					resolve(duration);
+					return;
+				}
+
+				// Try parsing from stdout
 				const duration = parseFloat(output.trim());
-				resolve(isNaN(duration) ? 0 : duration);
-			} else {
-				reject(new Error('Failed to get video duration'));
+				if (!Number.isNaN(duration) && duration > 0) {
+					resolve(duration);
+					return;
+				}
 			}
+			reject(new Error('Failed to get video duration'));
 		});
 
 		process.on('error', reject);
@@ -58,46 +83,47 @@ async function getVideoDuration(inputPath: string): Promise<number> {
 }
 
 /**
- * Split video into segments using FFmpeg
+ * Process a single video segment
  */
-async function splitVideo(
+async function processSegment(
 	inputPath: string,
-	outputDir: string,
-	segmentDuration: number,
-): Promise<string[]> {
+	outputPath: string,
+	startTime: number,
+	duration: number,
+	outputFormat: 'mp4' | 'webm',
+	quality: 'high' | 'medium' | 'low',
+): Promise<void> {
 	return new Promise((resolve, reject) => {
-		const outputPattern = join(outputDir, 'segment_%03d.mp4');
+		const args = buildSegmentArgs({
+			startTime,
+			segmentDuration: duration,
+			outputFormat,
+			quality,
+			outputName: outputPath,
+		});
 
-		const args = [
-			'-i',
-			inputPath,
-			'-c:v',
-			'libx264',
-			'-c:a',
-			'aac',
-			'-f',
-			'segment',
-			'-segment_time',
-			segmentDuration.toString(),
-			'-reset_timestamps',
-			'1',
-			'-movflags',
-			'+faststart',
-			outputPattern,
-		];
+		// buildSegmentArgs returns ['-i', 'input', ...rest, outputName]
+		// Replace 'input' placeholder with actual input path and outputName with outputPath
+		const finalArgs = args.map((arg, index) => {
+			if (index === 1 && arg === 'input') return inputPath;
+			if (index === args.length - 1) return outputPath;
+			return arg;
+		});
 
-		const process = spawn('ffmpeg', args);
+		console.log('[API] FFmpeg args:', finalArgs.join(' '));
+		const process = spawn('ffmpeg', finalArgs);
 
-		process.on('close', async code => {
+		let errorOutput = '';
+
+		process.stderr.on('data', data => {
+			errorOutput += data.toString();
+		});
+
+		process.on('close', code => {
 			if (code === 0) {
-				// List generated segments
-				const files = await readdir(outputDir);
-				const segments = files
-					.filter(f => f.startsWith('segment_') && f.endsWith('.mp4'))
-					.sort();
-				resolve(segments);
+				resolve();
 			} else {
-				reject(new Error('FFmpeg processing failed'));
+				reject(new Error(`FFmpeg failed with code ${code}: ${errorOutput}`));
 			}
 		});
 
@@ -106,22 +132,43 @@ async function splitVideo(
 }
 
 export async function POST(request: NextRequest) {
+	console.log('[API] Process request received');
 	try {
+		const config = getCloudConfig();
+
+		// Check if cloud processing is enabled
+		if (!config.enabled) {
+			console.warn('[API] Cloud processing is not enabled');
+			return NextResponse.json(
+				{ error: 'Cloud processing is not enabled' },
+				{ status: 503 },
+			);
+		}
+
+		console.log('[API] Checking FFmpeg availability...');
 		// Check if FFmpeg is available
 		const ffmpegAvailable = await isFFmpegAvailable();
 		if (!ffmpegAvailable) {
+			console.error('[API] FFmpeg is not available');
 			return NextResponse.json(
 				{
 					error: 'Server-side processing unavailable',
 					message:
-						'FFmpeg is not installed on the server. Please use client-side processing.',
+						'FFmpeg is not installed on the server. Vercel serverless functions do not include FFmpeg. Consider using a separate processing service or Cloudflare Workers.',
 				},
 				{ status: 503 },
 			);
 		}
 
+		console.log('[API] ✓ FFmpeg is available');
+
 		const body = (await request.json()) as ProcessRequestBody;
-		const { sessionId, segmentDuration = 45 } = body;
+		const {
+			sessionId,
+			segmentDuration = config.processing.defaultSegmentDuration,
+			outputFormat = config.processing.outputFormat,
+			quality = config.processing.quality,
+		} = body;
 
 		if (!sessionId) {
 			return NextResponse.json(
@@ -130,53 +177,125 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const sessionDir = join(UPLOAD_DIR, sessionId);
+		// Get R2 client
+		console.log('[API] Initializing R2 client...');
+		const r2Client = getR2Client();
 
-		// Check if session directory exists
+		// Find input file in R2
+		console.log('[API] Searching for input file in R2:', { sessionId });
+		// Try common extensions
+		const extensions = ['mp4', 'mov', 'webm', 'avi'];
+		let inputKey: string | null = null;
+		let inputExt: string | null = null;
+
+		for (const ext of extensions) {
+			const key = r2Client.generateVideoKey(sessionId, `input.${ext}`);
+			const exists = await r2Client.fileExists(key);
+			if (exists) {
+				inputKey = key;
+				inputExt = ext;
+				console.log('[API] ✓ Input file found:', { key, ext });
+				break;
+			}
+		}
+
+		if (!inputKey) {
+			console.error('[API] Input file not found in R2:', { sessionId });
+			return NextResponse.json(
+				{ error: 'Input file not found in R2' },
+				{ status: 404 },
+			);
+		}
+
+		// Download file from R2 to temporary location
+		console.log('[API] Downloading file from R2 to temp location...');
+		const tmpDir = join(TMP_DIR, sessionId);
+		await mkdir(tmpDir, { recursive: true });
+		const inputPath = join(tmpDir, `input.${inputExt}`);
+
 		try {
-			await stat(sessionDir);
-		} catch {
+			const buffer = await r2Client.downloadFile(inputKey);
+			await writeFile(inputPath, buffer);
+			console.log('[API] ✓ File downloaded to temp location:', { inputPath, size: buffer.length });
+		} catch (error) {
+			console.error('[API] ✗ Error downloading from R2:', error);
 			return NextResponse.json(
-				{ error: 'Session not found' },
-				{ status: 404 },
+				{ error: 'Failed to download file from R2' },
+				{ status: 500 },
 			);
 		}
-
-		// Find input file
-		const files = await readdir(sessionDir);
-		const inputFile = files.find(f => f.startsWith('input.'));
-		if (!inputFile) {
-			return NextResponse.json(
-				{ error: 'Input file not found' },
-				{ status: 404 },
-			);
-		}
-
-		const inputPath = join(sessionDir, inputFile);
 
 		// Get video duration
+		console.log('[API] Getting video duration...');
 		const duration = await getVideoDuration(inputPath);
 		const totalSegments = Math.ceil(duration / segmentDuration);
+		console.log('[API] Video info:', { duration, totalSegments, segmentDuration });
 
-		// Split video
-		const segmentFiles = await splitVideo(
-			inputPath,
-			sessionDir,
-			segmentDuration,
-		);
+		// Process segments
+		console.log('[API] Starting segment processing...');
+		const segments: Array<{
+			index: number;
+			key: string;
+			startTime: number;
+			endTime: number;
+			duration: number;
+		}> = [];
 
-		// Build response with segment info
-		const segments = segmentFiles.map((filename, index) => ({
-			filename,
-			index,
-			downloadUrl: `/api/download/${sessionId}/${filename}`,
-		}));
+		for (let i = 0; i < totalSegments; i++) {
+			console.log(`[API] Processing segment ${i + 1}/${totalSegments}...`);
+			const startTime = i * segmentDuration;
+			const actualDuration = Math.min(segmentDuration, duration - startTime);
+			const outputPath = join(tmpDir, `segment_${String(i).padStart(3, '0')}.${outputFormat}`);
+
+			// Process segment
+			console.log(`[API] FFmpeg processing segment ${i + 1}...`);
+			await processSegment(inputPath, outputPath, startTime, actualDuration, outputFormat, quality);
+			console.log(`[API] ✓ Segment ${i + 1} processed`);
+
+			// Read processed segment
+			const segmentData = await readFile(outputPath);
+
+			// Upload to R2
+			const segmentKey = r2Client.generateSegmentKey(sessionId, i, outputFormat);
+			console.log(`[API] Uploading segment ${i + 1} to R2...`);
+			await r2Client.uploadFile(
+				segmentKey,
+				segmentData,
+				outputFormat === 'mp4' ? 'video/mp4' : 'video/webm',
+			);
+			console.log(`[API] ✓ Segment ${i + 1} uploaded to R2`);
+
+			// Generate signed URL
+			const signedUrl = await r2Client.getSignedUrl(
+				segmentKey,
+				config.processing.signedUrlExpiration,
+			);
+
+			segments.push({
+				index: i,
+				key: segmentKey,
+				startTime,
+				endTime: startTime + actualDuration,
+				duration: actualDuration,
+			});
+
+			// Clean up local file
+			await unlink(outputPath);
+		}
+
+		console.log('[API] ✓ All segments processed and uploaded');
+
+		// Clean up input file
+		await unlink(inputPath);
 
 		return NextResponse.json({
 			success: true,
 			duration,
 			totalSegments,
-			segments,
+			segments: segments.map(seg => ({
+				...seg,
+				downloadUrl: `/api/download/${sessionId}/${seg.index}`,
+			})),
 		});
 	} catch (error) {
 		console.error('Processing error:', error);
