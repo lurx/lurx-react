@@ -1,13 +1,13 @@
 'use client';
 
-import { useStoryWize } from './context/story-wize-context';
+import { useStoryWise } from './context/story-wise-context';
 import { VideoUploader } from './components/video-uploader/video-uploader';
 import { VideoPreview } from './components/video-preview/video-preview';
 import { SegmentList } from './components/segment-list/segment-list';
 import { ProgressIndicator } from './components/progress-indicator/progress-indicator';
 import { formatDuration } from '@lurx-react/video-processing';
 
-export default function StoryWizePage() {
+export default function StoryWisePage() {
 	const {
 		sourceFile,
 		sourceUrl,
@@ -19,7 +19,7 @@ export default function StoryWizePage() {
 		setSegmentDuration,
 		startProcessing,
 		reset,
-	} = useStoryWize();
+	} = useStoryWise();
 
 	const isProcessing =
 		processingStatus === 'loading-ffmpeg' ||
@@ -34,7 +34,7 @@ export default function StoryWizePage() {
 			<div className="max-w-5xl mx-auto">
 				<header className="text-center mb-12">
 					<h1 className="text-4xl font-bold text-base-content mb-2">
-						Story Wize
+						Story Wise
 					</h1>
 					<p className="text-lg text-base-content/60">
 						Split your videos into 45-second clips for stories

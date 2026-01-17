@@ -17,9 +17,9 @@ export type ProcessingStatus =
 	| 'error';
 
 /**
- * State for the story wize context
+ * State for the story wise context
  */
-export interface StoryWizeState {
+export interface StoryWiseState {
 	/** Source video file */
 	sourceFile: File | null;
 	/** Object URL for source video preview */
@@ -46,9 +46,9 @@ export interface StoryWizeState {
 }
 
 /**
- * Actions for the story wize context
+ * Actions for the story wise context
  */
-export interface StoryWizeActions {
+export interface StoryWiseActions {
 	/** Set the source video file */
 	setSourceFile: (file: File) => void;
 	/** Start processing the video */
@@ -70,7 +70,7 @@ export interface StoryWizeActions {
 /**
  * Combined context type
  */
-export type StoryWizeContextType = StoryWizeState & StoryWizeActions;
+export type StoryWiseContextType = StoryWiseState & StoryWiseActions;
 
 /**
  * Default segment duration (seconds)

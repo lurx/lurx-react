@@ -1,13 +1,13 @@
 'use client';
 
-import { useStoryWize } from '../../context/story-wize-context';
+import { useStoryWise } from '../../context/story-wise-context';
 
 /**
  * ProgressIndicator - Display processing progress
  */
 export function ProgressIndicator() {
 	const { processingStatus, processingProgress, cancelProcessing } =
-		useStoryWize();
+		useStoryWise();
 
 	if (
 		processingStatus === 'idle' ||

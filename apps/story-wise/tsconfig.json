@@ -30,8 +30,8 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
-    "../../apps/story-wize/.next/types/**/*.ts",
-    "../../dist/apps/story-wize/.next/types/**/*.ts",
+    "../../apps/story-wise/.next/types/**/*.ts",
+    "../../dist/apps/story-wise/.next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],

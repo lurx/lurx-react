@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDuration, formatFileSize } from '@lurx-react/video-processing';
-import { useStoryWize } from '../../context/story-wize-context';
+import { useStoryWise } from '../../context/story-wise-context';
 
 /**
  * SegmentList - Display list of video segments with download options
@@ -14,7 +14,7 @@ export function SegmentList() {
 		downloadSegment,
 		downloadAllSegments,
 		processingStatus,
-	} = useStoryWize();
+	} = useStoryWise();
 
 	if (segments.length === 0) {
 		return null;

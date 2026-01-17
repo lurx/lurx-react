@@ -17,20 +17,20 @@ import type {
 } from '@lurx-react/video-processing';
 import { validateVideoFile, formatDuration } from '@lurx-react/video-processing';
 import type {
-	StoryWizeContextType,
+	StoryWiseContextType,
 	ProcessingStatus,
-} from '../types/story-wize.types';
-import { DEFAULT_SEGMENT_DURATION } from '../types/story-wize.types';
+} from '../types/story-wise.types';
+import { DEFAULT_SEGMENT_DURATION } from '../types/story-wise.types';
 import { useFFmpeg } from '../hooks/use-ffmpeg';
 
-const StoryWizeContext = createContext<StoryWizeContextType | undefined>(
+const StoryWiseContext = createContext<StoryWiseContextType | undefined>(
 	undefined,
 );
 
 /**
- * Provider for the story wize context
+ * Provider for the story wise context
  */
-export function StoryWizeProvider({ children }: PropsWithChildren) {
+export function StoryWiseProvider({ children }: PropsWithChildren) {
 	// FFmpeg hook
 	const { load, splitVideo, getMetadata, isLoaded, terminate } = useFFmpeg();
 
@@ -256,7 +256,7 @@ export function StoryWizeProvider({ children }: PropsWithChildren) {
 		cancelledRef.current = false;
 	}, [sourceUrl, segments]);
 
-	const contextValue: StoryWizeContextType = {
+	const contextValue: StoryWiseContextType = {
 		// State
 		sourceFile,
 		sourceUrl,
@@ -280,20 +280,20 @@ export function StoryWizeProvider({ children }: PropsWithChildren) {
 	};
 
 	return (
-		<StoryWizeContext.Provider value={contextValue}>
+		<StoryWiseContext.Provider value={contextValue}>
 			{children}
-		</StoryWizeContext.Provider>
+		</StoryWiseContext.Provider>
 	);
 }
 
 /**
- * Hook to access the story wize context
+ * Hook to access the story wise context
  */
-export function useStoryWize(): StoryWizeContextType {
-	const context = useContext(StoryWizeContext);
+export function useStoryWise(): StoryWiseContextType {
+	const context = useContext(StoryWiseContext);
 	if (!context) {
 		throw new Error(
-			'useStoryWize must be used within a <StoryWizeProvider>',
+			'useStoryWise must be used within a <StoryWiseProvider>',
 		);
 	}
 	return context;

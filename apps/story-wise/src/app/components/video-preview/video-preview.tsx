@@ -2,14 +2,14 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { formatDuration } from '@lurx-react/video-processing';
-import { useStoryWize } from '../../context/story-wize-context';
+import { useStoryWise } from '../../context/story-wise-context';
 
 /**
  * VideoPreview - Video player with preview functionality
  */
 export function VideoPreview() {
 	const { sourceUrl, sourceDuration, segments, selectedSegmentId } =
-		useStoryWize();
+		useStoryWise();
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [isPlaying, setIsPlaying] = useState(false);

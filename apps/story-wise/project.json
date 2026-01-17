@@ -1,20 +1,20 @@
 {
-	"name": "story-wize",
+	"name": "story-wise",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "apps/story-wize",
+	"sourceRoot": "apps/story-wise",
 	"projectType": "application",
 	"tags": [],
 	"targets": {
 		"build": {
 			"executor": "@nx/next:build",
 			"options": {
-				"outputPath": "dist/apps/story-wize"
+				"outputPath": "dist/apps/story-wise"
 			}
 		},
 		"serve": {
 			"executor": "@nx/next:server",
 			"options": {
-				"buildTarget": "story-wize:build",
+				"buildTarget": "story-wise:build",
 				"dev": true
 			}
 		}
