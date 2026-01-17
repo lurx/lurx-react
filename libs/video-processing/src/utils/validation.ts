@@ -85,8 +85,14 @@ export function validateVideoFile(file: File): ValidationResult {
 
 /**
  * Check if a MIME type is supported
+ * Accepts any video/* type for iOS compatibility (HEVC videos may report unusual MIME types)
  */
 export function isValidMimeType(mimeType: string): mimeType is VideoMimeType {
+	// Accept any video/* type for broader compatibility
+	if (mimeType.startsWith('video/')) {
+		return true;
+	}
+	// Also check explicit list for edge cases
 	return ALLOWED_MIME_TYPES.includes(mimeType as VideoMimeType);
 }
 

@@ -99,7 +99,13 @@ describe('validation utilities', () => {
 			expect(isValidMimeType('video/x-msvideo')).toBe(true);
 		});
 
-		it('should return false for unsupported types', () => {
+		it('should return true for any video/* type (iOS compatibility)', () => {
+			expect(isValidMimeType('video/x-m4v')).toBe(true);
+			expect(isValidMimeType('video/hevc')).toBe(true);
+			expect(isValidMimeType('video/3gpp')).toBe(true);
+		});
+
+		it('should return false for non-video types', () => {
 			expect(isValidMimeType('text/plain')).toBe(false);
 			expect(isValidMimeType('audio/mp3')).toBe(false);
 			expect(isValidMimeType('image/png')).toBe(false);

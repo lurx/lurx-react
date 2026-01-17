@@ -25,10 +25,8 @@ export function VideoUploader() {
 		useDropzone({
 			onDrop,
 			accept: {
-				'video/mp4': ['.mp4', '.m4v'],
-				'video/quicktime': ['.mov'],
-				'video/webm': ['.webm'],
-				'video/x-msvideo': ['.avi'],
+				// Use video/* for better iOS compatibility (HEVC videos may report unusual MIME types)
+				'video/*': ['.mp4', '.m4v', '.mov', '.webm', '.avi', '.mkv'],
 			},
 			maxFiles: 1,
 			disabled: processingStatus !== 'idle' && processingStatus !== 'error',
