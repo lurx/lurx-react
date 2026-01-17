@@ -14,9 +14,20 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
+		"jsx": "react-jsx",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
 		"paths": {
-      "@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"]
-    }
+			"@lurx-react/vanguardis": ["libs/vanguardis/src/*"],
+			"@lurx-react/vanguardis-mcp-server": ["libs/vanguardis-mcp-server/src"],
+			"@lurx-react/vanguardis/src/*": ["libs/vanguardis/src/*"],
+			"@lurx-react/vanguardis/style": ["dist/libs/vanguardis/style.css"],
+			"@lurx-react/video-processing": ["libs/video-processing/src/index.ts"],
+			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"],
+			"@video-trimmer/*": ["apps/video-trimmer/src/*"]
+		}
 	},
 	"exclude": ["node_modules", "tmp"]
 }

@@ -5,15 +5,13 @@ import { useRedirectIfUnderConstruction } from '@/utils/redirect-under-construct
 import { type PropsWithChildren } from 'react';
 import { useAppContext } from '../context/app-context';
 
-
-
 export function InnerLayout({ children }: PropsWithChildren) {
-  const { isUnderConstruction } = useAppContext();
+	const { isUnderConstruction } = useAppContext();
 
-  useRedirectIfUnderConstruction(
-    isUnderConstruction,
-    UNDER_CONSTRUCTION_WHITELIST,
-  );
+	useRedirectIfUnderConstruction(
+		isUnderConstruction,
+		UNDER_CONSTRUCTION_WHITELIST,
+	);
 
-  return children;
+	return children;
 }
