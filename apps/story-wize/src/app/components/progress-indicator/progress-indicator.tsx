@@ -1,13 +1,13 @@
 'use client';
 
-import { useVideoTrimmer } from '../../context/video-trimmer-context';
+import { useStoryWize } from '../../context/story-wize-context';
 
 /**
  * ProgressIndicator - Display processing progress
  */
 export function ProgressIndicator() {
 	const { processingStatus, processingProgress, cancelProcessing } =
-		useVideoTrimmer();
+		useStoryWize();
 
 	if (
 		processingStatus === 'idle' ||

@@ -1,20 +1,20 @@
 {
-	"name": "video-trimmer",
+	"name": "story-wize",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "apps/video-trimmer",
+	"sourceRoot": "apps/story-wize",
 	"projectType": "application",
 	"tags": [],
 	"targets": {
 		"build": {
 			"executor": "@nx/next:build",
 			"options": {
-				"outputPath": "dist/apps/video-trimmer"
+				"outputPath": "dist/apps/story-wize"
 			}
 		},
 		"serve": {
 			"executor": "@nx/next:server",
 			"options": {
-				"buildTarget": "video-trimmer:build",
+				"buildTarget": "story-wize:build",
 				"dev": true
 			}
 		}

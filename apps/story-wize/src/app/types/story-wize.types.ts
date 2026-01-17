@@ -17,9 +17,9 @@ export type ProcessingStatus =
 	| 'error';
 
 /**
- * State for the video trimmer context
+ * State for the story wize context
  */
-export interface VideoTrimmerState {
+export interface StoryWizeState {
 	/** Source video file */
 	sourceFile: File | null;
 	/** Object URL for source video preview */
@@ -46,9 +46,9 @@ export interface VideoTrimmerState {
 }
 
 /**
- * Actions for the video trimmer context
+ * Actions for the story wize context
  */
-export interface VideoTrimmerActions {
+export interface StoryWizeActions {
 	/** Set the source video file */
 	setSourceFile: (file: File) => void;
 	/** Start processing the video */
@@ -70,7 +70,7 @@ export interface VideoTrimmerActions {
 /**
  * Combined context type
  */
-export type VideoTrimmerContextType = VideoTrimmerState & VideoTrimmerActions;
+export type StoryWizeContextType = StoryWizeState & StoryWizeActions;
 
 /**
  * Default segment duration (seconds)

@@ -17,20 +17,20 @@ import type {
 } from '@lurx-react/video-processing';
 import { validateVideoFile, formatDuration } from '@lurx-react/video-processing';
 import type {
-	VideoTrimmerContextType,
+	StoryWizeContextType,
 	ProcessingStatus,
-} from '../types/video-trimmer.types';
-import { DEFAULT_SEGMENT_DURATION } from '../types/video-trimmer.types';
+} from '../types/story-wize.types';
+import { DEFAULT_SEGMENT_DURATION } from '../types/story-wize.types';
 import { useFFmpeg } from '../hooks/use-ffmpeg';
 
-const VideoTrimmerContext = createContext<VideoTrimmerContextType | undefined>(
+const StoryWizeContext = createContext<StoryWizeContextType | undefined>(
 	undefined,
 );
 
 /**
- * Provider for the video trimmer context
+ * Provider for the story wize context
  */
-export function VideoTrimmerProvider({ children }: PropsWithChildren) {
+export function StoryWizeProvider({ children }: PropsWithChildren) {
 	// FFmpeg hook
 	const { load, splitVideo, getMetadata, isLoaded, terminate } = useFFmpeg();
 
@@ -256,7 +256,7 @@ export function VideoTrimmerProvider({ children }: PropsWithChildren) {
 		cancelledRef.current = false;
 	}, [sourceUrl, segments]);
 
-	const contextValue: VideoTrimmerContextType = {
+	const contextValue: StoryWizeContextType = {
 		// State
 		sourceFile,
 		sourceUrl,
@@ -280,20 +280,20 @@ export function VideoTrimmerProvider({ children }: PropsWithChildren) {
 	};
 
 	return (
-		<VideoTrimmerContext.Provider value={contextValue}>
+		<StoryWizeContext.Provider value={contextValue}>
 			{children}
-		</VideoTrimmerContext.Provider>
+		</StoryWizeContext.Provider>
 	);
 }
 
 /**
- * Hook to access the video trimmer context
+ * Hook to access the story wize context
  */
-export function useVideoTrimmer(): VideoTrimmerContextType {
-	const context = useContext(VideoTrimmerContext);
+export function useStoryWize(): StoryWizeContextType {
+	const context = useContext(StoryWizeContext);
 	if (!context) {
 		throw new Error(
-			'useVideoTrimmer must be used within a <VideoTrimmerProvider>',
+			'useStoryWize must be used within a <StoryWizeProvider>',
 		);
 	}
 	return context;

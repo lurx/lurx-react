@@ -2,14 +2,14 @@
 
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useVideoTrimmer } from '../../context/video-trimmer-context';
+import { useStoryWize } from '../../context/story-wize-context';
 
 /**
  * VideoUploader - Drag and drop video file upload component
  */
 export function VideoUploader() {
 	const { setSourceFile, processingStatus, processingError } =
-		useVideoTrimmer();
+		useStoryWize();
 	const [isPicking, setIsPicking] = useState(false);
 
 	const onDrop = useCallback(

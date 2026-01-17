@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDuration, formatFileSize } from '@lurx-react/video-processing';
-import { useVideoTrimmer } from '../../context/video-trimmer-context';
+import { useStoryWize } from '../../context/story-wize-context';
 
 /**
  * SegmentList - Display list of video segments with download options
@@ -14,7 +14,7 @@ export function SegmentList() {
 		downloadSegment,
 		downloadAllSegments,
 		processingStatus,
-	} = useVideoTrimmer();
+	} = useStoryWize();
 
 	if (segments.length === 0) {
 		return null;

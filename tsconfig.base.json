@@ -26,7 +26,7 @@
 			"@lurx-react/vanguardis/style": ["dist/libs/vanguardis/style.css"],
 			"@lurx-react/video-processing": ["libs/video-processing/src/index.ts"],
 			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"],
-			"@video-trimmer/*": ["apps/video-trimmer/src/*"]
+			"@story-wize/*": ["apps/story-wize/src/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
