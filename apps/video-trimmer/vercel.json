@@ -1,5 +1,0 @@
-{
-	"buildCommand": "cd ../.. && npx nx build video-trimmer",
-	"outputDirectory": ".next",
-	"framework": "nextjs"
-}
