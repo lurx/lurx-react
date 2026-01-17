@@ -21,10 +21,12 @@
 		"strict": true,
 		"paths": {
 			"@lurx-react/vanguardis": ["libs/vanguardis/src/*"],
+			"@lurx-react/vanguardis-mcp-server": ["libs/vanguardis-mcp-server/src"],
 			"@lurx-react/vanguardis/src/*": ["libs/vanguardis/src/*"],
 			"@lurx-react/vanguardis/style": ["dist/libs/vanguardis/style.css"],
-			"@lurx-react/vanguardis-mcp-server": ["libs/vanguardis-mcp-server/src"],
-			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"]
+			"@lurx-react/video-processing": ["libs/video-processing/src/index.ts"],
+			"@rotem-is-a-dev/*": ["apps/rotem-is-a-dev/*"],
+			"@video-trimmer/*": ["apps/video-trimmer/src/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
