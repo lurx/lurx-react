@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { spawn } from 'child_process';
-import { writeFile, readFile, mkdir, readdir, unlink } from 'fs/promises';
+import { writeFile, readFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
-import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { getCloudConfig } from '../../../config/cloud.config';
 import { getR2Client } from '../../../lib/r2-client';
 import { buildSegmentArgs } from '@lurx-react/video-processing';
@@ -58,7 +57,9 @@ async function getVideoDuration(inputPath: string): Promise<number> {
 		process.on('close', code => {
 			if (code === 0 || output.includes('Duration:')) {
 				// Try to parse duration from output
-				const durationMatch = output.match(/Duration:\s*(\d{2}):(\d{2}):(\d{2}\.\d+)/);
+				const durationMatch = output.match(
+					/Duration:\s*(\d{2}):(\d{2}):(\d{2}\.\d+)/,
+				);
 				if (durationMatch) {
 					const hours = Number.parseInt(durationMatch[1], 10);
 					const minutes = Number.parseInt(durationMatch[2], 10);
@@ -215,8 +216,11 @@ export async function POST(request: NextRequest) {
 
 		try {
 			const buffer = await r2Client.downloadFile(inputKey);
-			await writeFile(inputPath, buffer);
-			console.log('[API] ✓ File downloaded to temp location:', { inputPath, size: buffer.length });
+			await writeFile(inputPath, new Uint8Array(buffer));
+			console.log('[API] ✓ File downloaded to temp location:', {
+				inputPath,
+				size: buffer.length,
+			});
 		} catch (error) {
 			console.error('[API] ✗ Error downloading from R2:', error);
 			return NextResponse.json(
@@ -229,7 +233,11 @@ export async function POST(request: NextRequest) {
 		console.log('[API] Getting video duration...');
 		const duration = await getVideoDuration(inputPath);
 		const totalSegments = Math.ceil(duration / segmentDuration);
-		console.log('[API] Video info:', { duration, totalSegments, segmentDuration });
+		console.log('[API] Video info:', {
+			duration,
+			totalSegments,
+			segmentDuration,
+		});
 
 		// Process segments
 		console.log('[API] Starting segment processing...');
@@ -245,18 +253,32 @@ export async function POST(request: NextRequest) {
 			console.log(`[API] Processing segment ${i + 1}/${totalSegments}...`);
 			const startTime = i * segmentDuration;
 			const actualDuration = Math.min(segmentDuration, duration - startTime);
-			const outputPath = join(tmpDir, `segment_${String(i).padStart(3, '0')}.${outputFormat}`);
+			const outputPath = join(
+				tmpDir,
+				`segment_${String(i).padStart(3, '0')}.${outputFormat}`,
+			);
 
 			// Process segment
 			console.log(`[API] FFmpeg processing segment ${i + 1}...`);
-			await processSegment(inputPath, outputPath, startTime, actualDuration, outputFormat, quality);
+			await processSegment(
+				inputPath,
+				outputPath,
+				startTime,
+				actualDuration,
+				outputFormat,
+				quality,
+			);
 			console.log(`[API] ✓ Segment ${i + 1} processed`);
 
 			// Read processed segment
 			const segmentData = await readFile(outputPath);
 
 			// Upload to R2
-			const segmentKey = r2Client.generateSegmentKey(sessionId, i, outputFormat);
+			const segmentKey = r2Client.generateSegmentKey(
+				sessionId,
+				i,
+				outputFormat,
+			);
 			console.log(`[API] Uploading segment ${i + 1} to R2...`);
 			await r2Client.uploadFile(
 				segmentKey,
@@ -264,12 +286,6 @@ export async function POST(request: NextRequest) {
 				outputFormat === 'mp4' ? 'video/mp4' : 'video/webm',
 			);
 			console.log(`[API] ✓ Segment ${i + 1} uploaded to R2`);
-
-			// Generate signed URL
-			const signedUrl = await r2Client.getSignedUrl(
-				segmentKey,
-				config.processing.signedUrlExpiration,
-			);
 
 			segments.push({
 				index: i,

@@ -50,8 +50,8 @@ export class R2Client {
 			region: 'auto', // R2 uses 'auto' for region
 			endpoint: config.storage.endpoint,
 			credentials: {
-				accessKeyId: credentials.accessKeyId!,
-				secretAccessKey: credentials.secretAccessKey!,
+				accessKeyId: credentials.accessKeyId ?? '',
+				secretAccessKey: credentials.secretAccessKey ?? '',
 			},
 			forcePathStyle: config.storage.forcePathStyle || false,
 		});
@@ -114,8 +114,9 @@ export class R2Client {
 			await this.s3Client.send(command);
 			console.log('[R2] ✓ File exists:', { key });
 			return true;
-		} catch (error: any) {
-			if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
+		} catch (error: unknown) {
+			const s3Error = error as { name?: string; $metadata?: { httpStatusCode?: number } };
+			if (s3Error.name === 'NotFound' || s3Error.$metadata?.httpStatusCode === 404) {
 				console.log('[R2] File not found:', { key });
 				return false;
 			}
@@ -340,7 +341,7 @@ export class R2Client {
 			const chunks: Uint8Array[] = [];
 
 			if (response.Body) {
-				for await (const chunk of response.Body as any) {
+				for await (const chunk of response.Body as AsyncIterable<Uint8Array>) {
 					chunks.push(chunk);
 				}
 			}

@@ -75,9 +75,20 @@ export interface StoryWiseActions {
 }
 
 /**
+ * Service status
+ */
+export interface ServiceStatus {
+	online: boolean;
+	reason?: 'maintenance' | 'quota_exceeded';
+	message?: string;
+}
+
+/**
  * Combined context type
  */
-export type StoryWiseContextType = StoryWiseState & StoryWiseActions;
+export type StoryWiseContextType = StoryWiseState & StoryWiseActions & {
+	serviceStatus: ServiceStatus;
+};
 
 /**
  * Default segment duration (seconds)

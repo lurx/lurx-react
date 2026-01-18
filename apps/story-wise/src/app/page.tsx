@@ -5,11 +5,11 @@ import { VideoUploader } from './components/video-uploader/video-uploader';
 import { VideoPreview } from './components/video-preview/video-preview';
 import { SegmentList } from './components/segment-list/segment-list';
 import { ProgressIndicator } from './components/progress-indicator/progress-indicator';
+import { OfflineScreen } from './components/offline-screen/offline-screen';
 import { formatDuration } from '@lurx-react/video-processing';
 
 export default function StoryWisePage() {
 	const {
-		sourceFile,
 		sourceUrl,
 		sourceDuration,
 		processingStatus,
@@ -19,7 +19,13 @@ export default function StoryWisePage() {
 		setSegmentDuration,
 		startProcessing,
 		reset,
+		serviceStatus,
 	} = useStoryWise();
+
+	// Show offline screen if service is unavailable
+	if (!serviceStatus.online) {
+		return <OfflineScreen message={serviceStatus.message} />;
+	}
 
 	const isProcessing =
 		processingStatus === 'loading-ffmpeg' ||

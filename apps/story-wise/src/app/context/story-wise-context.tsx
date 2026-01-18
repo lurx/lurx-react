@@ -21,6 +21,7 @@ import type {
 	StoryWiseContextType,
 	ProcessingStatus,
 	ProcessingMode,
+	ServiceStatus,
 } from '../types/story-wise.types';
 import { DEFAULT_SEGMENT_DURATION } from '../types/story-wise.types';
 import { useFFmpeg } from '../hooks/use-ffmpeg';
@@ -57,6 +58,9 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 	const [selectedSegmentId, setSelectedSegmentId] = useState<string | null>(
 		null,
 	);
+	const [serviceStatus, setServiceStatus] = useState<ServiceStatus>({
+		online: true,
+	});
 
 	// Ref for cancellation
 	const cancelledRef = useRef(false);
@@ -103,6 +107,41 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 			}
 		};
 	}, [cleanupCloudSession]);
+
+	// Check service status on mount
+	useEffect(() => {
+		const checkStatus = async () => {
+			try {
+				const response = await fetch('/api/status');
+				const status = await response.json();
+				if (!status.online) {
+					setServiceStatus({
+						online: false,
+						reason: status.reason || 'maintenance',
+						message: status.message,
+					});
+				}
+			} catch {
+				// If status check fails, assume online
+			}
+		};
+		checkStatus();
+	}, []);
+
+	// Helper to detect quota exceeded errors
+	const isQuotaError = useCallback((error: unknown): boolean => {
+		if (error instanceof Error) {
+			const message = error.message.toLowerCase();
+			return (
+				message.includes('quota') ||
+				message.includes('limit') ||
+				message.includes('exceeded') ||
+				message.includes('too many requests') ||
+				message.includes('rate limit')
+			);
+		}
+		return false;
+	}, []);
 
 	const setSourceFile = useCallback((file: File) => {
 		// Validate file
@@ -234,7 +273,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 
 		// Convert to VideoSegment format
 		const newSegments: VideoSegment[] = processResult.segments.map(
-			(seg: any) => ({
+			(seg: { index: number; startTime: number; endTime: number; duration: number; downloadUrl: string }) => ({
 				id: `segment-${seg.index}`,
 				index: seg.index,
 				startTime: seg.startTime,
@@ -354,6 +393,19 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 				await processWithCloud(sourceFile);
 				console.log('[Client] ✓ Cloud processing successful');
 			} catch (cloudError) {
+				// Check if this is a quota error
+				if (isQuotaError(cloudError)) {
+					console.error('[Client] ✗ Quota exceeded, going offline');
+					setServiceStatus({
+						online: false,
+						reason: 'quota_exceeded',
+						message: 'Free usage limit reached. Please try again later.',
+					});
+					setProcessingStatus('idle');
+					setProcessingMode(null);
+					return;
+				}
+
 				console.warn('[Client] Cloud processing failed, falling back to client-side:', cloudError);
 				setProcessingMode('client');
 				console.log('[Client] Starting client-side processing with FFmpeg.wasm...');
@@ -362,6 +414,19 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 			}
 		} catch (error) {
 			console.error('[Client] ✗ Processing failed:', error);
+
+			// Check if this is a quota error
+			if (isQuotaError(error)) {
+				setServiceStatus({
+					online: false,
+					reason: 'quota_exceeded',
+					message: 'Free usage limit reached. Please try again later.',
+				});
+				setProcessingStatus('idle');
+				setProcessingMode(null);
+				return;
+			}
+
 			if (!cancelledRef.current) {
 				setProcessingStatus('error');
 				setProcessingMode(null);
@@ -374,7 +439,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 				});
 			}
 		}
-	}, [sourceFile, processWithCloud, processWithClient]);
+	}, [sourceFile, processWithCloud, processWithClient, isQuotaError]);
 
 	const cancelProcessing = useCallback(() => {
 		cancelledRef.current = true;
@@ -425,7 +490,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 				} catch (error) {
 					console.error('Download error:', error);
 					setProcessingError({
-						code: 'DOWNLOAD_FAILED',
+						code: 'PROCESSING_FAILED',
 						message: 'Failed to download segment',
 						recoverable: true,
 					});
@@ -537,6 +602,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 		segments,
 		segmentDuration,
 		selectedSegmentId,
+		serviceStatus,
 		// Actions
 		setSourceFile,
 		startProcessing,
