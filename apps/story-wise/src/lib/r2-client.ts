@@ -22,8 +22,11 @@ export class R2Client {
 		}
 
 		if (!hasR2Credentials()) {
-			console.error('[R2] R2 credentials are not configured');
-			throw new Error('R2 credentials are not configured');
+			const missing: string[] = [];
+			if (!credentials.accessKeyId) missing.push('R2_ACCESS_KEY_ID');
+			if (!credentials.secretAccessKey) missing.push('R2_SECRET_ACCESS_KEY');
+			console.error('[R2] R2 credentials are not configured. Missing:', missing.join(', '));
+			throw new Error(`R2 credentials are not configured. Missing: ${missing.join(', ')}`);
 		}
 
 		if (!config.storage.bucket) {
