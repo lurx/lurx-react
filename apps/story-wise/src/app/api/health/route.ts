@@ -9,6 +9,10 @@ export interface HealthStatus {
 		connected: boolean;
 		error?: string;
 	};
+	processor: {
+		configured: boolean;
+		url?: string;
+	};
 	mode: 'cloud' | 'client-only';
 	timestamp: string;
 }
@@ -16,11 +20,16 @@ export interface HealthStatus {
 /**
  * GET /api/health
  *
- * Health check endpoint that verifies R2 connection.
+ * Health check endpoint that verifies R2 connection and processor availability.
  */
 export async function GET() {
 	const config = getCloudConfig();
 	const timestamp = new Date().toISOString();
+
+	const processorInfo = {
+		configured: !!config.processor.url,
+		url: config.processor.url ? new URL(config.processor.url).host : undefined,
+	};
 
 	// If cloud not enabled, return client-only mode
 	if (!config.enabled) {
@@ -30,6 +39,7 @@ export async function GET() {
 				enabled: false,
 				connected: false,
 			},
+			processor: processorInfo,
 			mode: 'client-only',
 			timestamp,
 		});
@@ -48,6 +58,7 @@ export async function GET() {
 				connected: false,
 				error: `Missing credentials: ${missing.join(', ')}`,
 			},
+			processor: processorInfo,
 			mode: 'client-only',
 			timestamp,
 		});
@@ -66,6 +77,7 @@ export async function GET() {
 				connected: false,
 				error: `Missing config: ${missing.join(', ')}`,
 			},
+			processor: processorInfo,
 			mode: 'client-only',
 			timestamp,
 		});
@@ -77,13 +89,17 @@ export async function GET() {
 		// Try listing (limited to 1) to verify connection
 		await r2Client.listSessions();
 
+		// Determine mode based on processor availability
+		const mode = processorInfo.configured ? 'cloud' : 'client-only';
+
 		return NextResponse.json<HealthStatus>({
 			status: 'healthy',
 			cloud: {
 				enabled: true,
 				connected: true,
 			},
-			mode: 'cloud',
+			processor: processorInfo,
+			mode,
 			timestamp,
 		});
 	} catch (error) {
@@ -94,6 +110,7 @@ export async function GET() {
 				connected: false,
 				error: error instanceof Error ? error.message : 'Connection failed',
 			},
+			processor: processorInfo,
 			mode: 'client-only',
 			timestamp,
 		});

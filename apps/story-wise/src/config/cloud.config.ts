@@ -18,6 +18,13 @@ export interface CloudConfig {
 	enabled: boolean;
 	/** Cloud storage provider */
 	provider: 'r2' | 's3' | 'local';
+	/** External processor service configuration */
+	processor: {
+		/** URL of the external processor service */
+		url: string | null;
+		/** API key for authenticating with the processor */
+		apiKey: string | null;
+	};
 	/** R2/S3 configuration */
 	storage: {
 		/** Account ID (for R2) or region (for S3) */
@@ -65,6 +72,10 @@ export function getCloudConfig(): CloudConfig {
 	return {
 		enabled: isEnabled,
 		provider,
+		processor: {
+			url: process.env.PROCESSOR_URL || null,
+			apiKey: process.env.PROCESSOR_API_KEY || null,
+		},
 		storage: {
 			accountId: process.env.R2_ACCOUNT_ID || process.env.AWS_REGION,
 			endpoint: process.env.R2_ENDPOINT || process.env.AWS_ENDPOINT,

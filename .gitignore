@@ -65,3 +65,7 @@ vitest.config.*.timestamp*
 .vercel
 
 **/TODO.md
+
+# Railway secrets
+.env.railway
+.env.railway.*

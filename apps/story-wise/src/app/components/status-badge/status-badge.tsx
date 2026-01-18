@@ -25,6 +25,9 @@ export function StatusBadge() {
 						connected: false,
 						error: 'Failed to check health',
 					},
+					processor: {
+						configured: false,
+					},
 					mode: 'client-only',
 					timestamp: new Date().toISOString(),
 				});
@@ -100,6 +103,12 @@ export function StatusBadge() {
 							<div className="flex justify-between">
 								<span className="text-base-content/60">R2 Connected:</span>
 								<span className="font-medium">{health.cloud.connected ? 'Yes' : 'No'}</span>
+							</div>
+							<div className="flex justify-between">
+								<span className="text-base-content/60">Processor:</span>
+								<span className="font-medium">
+									{health.processor?.configured ? health.processor.url : 'Not configured'}
+								</span>
 							</div>
 							{health.cloud.error && (
 								<div className="pt-2 border-t border-base-300">

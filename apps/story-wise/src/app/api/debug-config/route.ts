@@ -14,6 +14,8 @@ export async function GET() {
 		R2_BUCKET_NAME: !!process.env.R2_BUCKET_NAME,
 		R2_ACCESS_KEY_ID: !!process.env.R2_ACCESS_KEY_ID,
 		R2_SECRET_ACCESS_KEY: !!process.env.R2_SECRET_ACCESS_KEY,
+		PROCESSOR_URL: !!process.env.PROCESSOR_URL,
+		PROCESSOR_API_KEY: !!process.env.PROCESSOR_API_KEY,
 	};
 
 	const allSet = Object.values(envVars).every(v => v === true || v === 'true');
