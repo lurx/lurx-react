@@ -196,35 +196,58 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 	const processWithCloud = useCallback(async (file: File): Promise<void> => {
 		console.log('[Client] Starting cloud processing...', { fileName: file.name, fileSize: file.size });
 
-		// Upload video
+		// Step 1: Get presigned URL for direct upload to R2
 		setProcessingStatus('analyzing');
 		setProcessingProgress({
 			stage: 'analyzing',
 			progress: 0,
+			message: 'Preparing upload...',
+		});
+
+		console.log('[Client] Getting presigned upload URL...');
+		const urlResponse = await fetch('/api/upload-url', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				filename: file.name,
+				contentType: file.type,
+				fileSize: file.size,
+			}),
+		});
+
+		if (!urlResponse.ok) {
+			const error = await urlResponse.json();
+			console.error('[Client] ✗ Failed to get upload URL:', error);
+			throw new Error(error.error || 'Failed to get upload URL');
+		}
+
+		const { sessionId, uploadUrl } = await urlResponse.json();
+		console.log('[Client] ✓ Got presigned URL:', { sessionId });
+
+		// Step 2: Upload directly to R2 using presigned URL
+		setProcessingProgress({
+			stage: 'analyzing',
+			progress: 5,
 			message: 'Uploading video...',
 		});
 
-		console.log('[Client] Uploading to R2...');
-		const formData = new FormData();
-		formData.append('video', file);
-
+		console.log('[Client] Uploading directly to R2...');
 		const uploadStartTime = Date.now();
-		const uploadResponse = await fetch('/api/upload', {
-			method: 'POST',
-			body: formData,
+		const uploadResponse = await fetch(uploadUrl, {
+			method: 'PUT',
+			body: file,
+			headers: {
+				'Content-Type': file.type,
+			},
 		});
 
 		if (!uploadResponse.ok) {
-			const error = await uploadResponse.json();
-			console.error('[Client] ✗ Upload failed:', error);
-			throw new Error(error.error || 'Upload failed');
+			console.error('[Client] ✗ Direct upload failed:', uploadResponse.status, uploadResponse.statusText);
+			throw new Error(`Upload failed: ${uploadResponse.statusText}`);
 		}
 
-		const uploadResult = await uploadResponse.json();
 		const uploadDuration = Date.now() - uploadStartTime;
-		console.log('[Client] ✓ Upload complete:', { sessionId: uploadResult.sessionId, duration: `${uploadDuration}ms` });
-
-		const { sessionId } = uploadResult;
+		console.log('[Client] ✓ Upload complete:', { sessionId, duration: `${uploadDuration}ms` });
 
 		// Store session ID for cleanup
 		cloudSessionIdRef.current = sessionId;
