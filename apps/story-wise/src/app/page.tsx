@@ -6,6 +6,7 @@ import { VideoPreview } from './components/video-preview/video-preview';
 import { SegmentList } from './components/segment-list/segment-list';
 import { ProgressIndicator } from './components/progress-indicator/progress-indicator';
 import { OfflineScreen } from './components/offline-screen/offline-screen';
+import { StatusBadge } from './components/status-badge/status-badge';
 import { formatDuration } from '@lurx-react/video-processing';
 
 export default function StoryWisePage() {
@@ -148,6 +149,7 @@ export default function StoryWisePage() {
 					</section>
 				)}
 			</div>
+			<StatusBadge />
 		</main>
 	);
 }
