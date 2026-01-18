@@ -63,3 +63,5 @@ apps/story-wise/.env*
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 .vercel
+
+**/TODO.md
