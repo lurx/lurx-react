@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import os from 'node:os';
 import { getConfig } from './config';
 import { StorageClient } from './r2-client';
 import { VideoProcessor } from './processor';
@@ -71,6 +72,28 @@ app.get('/health', async (_req, res) => {
 			timestamp: new Date().toISOString(),
 		});
 	}
+});
+
+// Vitals: memory, load, uptime — for ?showVitals debugging. No auth.
+app.get('/vitals', (_req, res) => {
+	const mem = process.memoryUsage();
+	const totalMem = os.totalmem();
+	const freeMem = os.freemem();
+	res.json({
+		memory: {
+			heapUsedMb: Math.round(mem.heapUsed / 1024 / 1024),
+			heapTotalMb: Math.round(mem.heapTotal / 1024 / 1024),
+			rssMb: Math.round(mem.rss / 1024 / 1024),
+			externalMb: Math.round((mem.external || 0) / 1024 / 1024),
+		},
+		system: {
+			freememMb: Math.round(freeMem / 1024 / 1024),
+			totalmemMb: Math.round(totalMem / 1024 / 1024),
+			loadAvg: os.loadavg(),
+		},
+		uptimeSeconds: Math.round(process.uptime()),
+		timestamp: new Date().toISOString(),
+	});
 });
 
 // Process video endpoint - now async, returns job ID immediately

@@ -103,13 +103,31 @@ export class VideoProcessor {
 	}
 
 	/**
-	 * Process a single segment
+	 * Parse FFmpeg stderr for `time=HH:MM:SS.xx` to compute progress within a segment.
+	 * Uses the last occurrence in the chunk (most recent). Returns progress 0–1.
+	 */
+	private parseFFmpegTimeStderr(stderrChunk: string, segDuration: number): number | null {
+		const matches = [...stderrChunk.matchAll(/time=(\d+):(\d{2}):(\d{2}\.?\d*)/g)];
+		const last = matches.at(-1);
+		if (!last || segDuration <= 0) return null;
+		const totalSeconds =
+			Number.parseInt(last[1], 10) * 3600 +
+			Number.parseInt(last[2], 10) * 60 +
+			Number.parseFloat(last[3]);
+		return Math.min(1, totalSeconds / segDuration);
+	}
+
+	/**
+	 * Process a single segment. Parses FFmpeg stderr for `time=` to report
+	 * progress during encoding so the UI doesn’t stay stuck at the same %.
 	 */
 	private async processSegment(
 		inputPath: string,
 		outputPath: string,
 		startTime: number,
-		duration: number,
+		segDuration: number,
+		segmentIndex: number,
+		totalSegments: number,
 		options: ProcessingOptions
 	): Promise<void> {
 		return new Promise((resolve, reject) => {
@@ -120,7 +138,7 @@ export class VideoProcessor {
 				'-y', // Overwrite output
 				'-ss', startTime.toString(),
 				'-i', inputPath,
-				'-t', duration.toString(),
+				'-t', segDuration.toString(),
 				...qualityArgs,
 				outputPath,
 			];
@@ -129,9 +147,37 @@ export class VideoProcessor {
 
 			const proc = spawn('ffmpeg', args);
 			let errorOutput = '';
+			let lastReportPercent = -1;
+			let lastReportTime = 0;
+			const progressThrottleMs = 500;
+			const minPercentDelta = 2;
 
 			proc.stderr.on('data', (data) => {
-				errorOutput += data.toString();
+				const chunk = data.toString();
+				errorOutput += chunk;
+
+				const progressInSegment = this.parseFFmpegTimeStderr(chunk, segDuration);
+				if (progressInSegment == null || !options.onProgress) return;
+
+				// Map to overall percent: processing phase for this segment = (i*2 + 0.5*progress) / (total*2) * 100
+				const overallPercent = Math.round(
+					((segmentIndex * 2 + 0.5 * progressInSegment) / (totalSegments * 2)) * 100
+				);
+				const now = Date.now();
+				const shouldReport =
+					Math.abs(overallPercent - lastReportPercent) >= minPercentDelta ||
+					now - lastReportTime >= progressThrottleMs;
+
+				if (shouldReport) {
+					lastReportPercent = overallPercent;
+					lastReportTime = now;
+					options.onProgress({
+						currentSegment: segmentIndex + 1,
+						totalSegments,
+						percent: overallPercent,
+						stage: 'processing',
+					});
+				}
 			});
 
 			proc.on('close', (code) => {
@@ -155,11 +201,11 @@ export class VideoProcessor {
 			return ['-c:v', 'libvpx-vp9', '-crf', crf.toString(), '-b:v', '0', '-c:a', 'libopus'];
 		}
 
-		// MP4 with H.264
+		// MP4 with H.264. Preset: ultrafast→slow; 'veryfast' is ~2–3× faster than 'fast' with similar output.
 		const crf = quality === 'high' ? 18 : quality === 'medium' ? 23 : 28;
 		return [
 			'-c:v', 'libx264',
-			'-preset', 'fast',
+			'-preset', this.config.processing.preset,
 			'-crf', crf.toString(),
 			'-c:a', 'aac',
 			'-b:a', '128k',
@@ -219,7 +265,7 @@ export class VideoProcessor {
 				onProgress?.({ currentSegment: i + 1, totalSegments, percent: processingPercent, stage: 'processing' });
 
 				console.log(`[Processor] Processing segment ${i + 1}/${totalSegments}...`);
-				await this.processSegment(inputPath, outputPath, startTime, segDuration, options);
+				await this.processSegment(inputPath, outputPath, startTime, segDuration, i, totalSegments, options);
 
 				// Read and upload segment
 				const segmentData = await readFile(outputPath);

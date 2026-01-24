@@ -22,6 +22,8 @@ export interface Config {
 		defaultSegmentDuration: number;
 		outputFormat: 'mp4' | 'webm';
 		quality: 'high' | 'medium' | 'low';
+		/** FFmpeg -preset: slower = better compression, faster = quicker encode. 'veryfast' ~2–3× faster than 'fast'. */
+		preset: string;
 		/** Temp directory for processing files */
 		tempDir: string;
 	};
@@ -67,6 +69,7 @@ export function getConfig(): Config {
 			defaultSegmentDuration: parseInt(process.env.DEFAULT_SEGMENT_DURATION || '59', 10),
 			outputFormat: (process.env.OUTPUT_FORMAT || 'mp4') as 'mp4' | 'webm',
 			quality: (process.env.PROCESSING_QUALITY || 'medium') as 'high' | 'medium' | 'low',
+			preset: process.env.PROCESSING_PRESET || 'veryfast',
 			tempDir: process.env.TEMP_DIR || '/tmp/story-wise',
 		},
 	};
