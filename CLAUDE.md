@@ -219,6 +219,7 @@ import '@lurx-react/vanguardis/style';
 - **Port Issues**: Check if development server is already running on port 4200
 - **Animation Issues**: Verify proper cleanup and scoping patterns
 - **Import Errors**: Check TypeScript path mapping in tsconfig.base.json
+- **Railway / network CLIs**: The agent's terminal has no network. Run `./scripts/railway-status.sh` in your Cursor terminal; the agent will read the output from the terminals folder. See `.cursor/rules/railway-network-cli.mdc`.
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
