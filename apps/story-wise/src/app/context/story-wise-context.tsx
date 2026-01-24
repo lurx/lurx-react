@@ -781,3 +781,6 @@ export function useStoryWise(): StoryWiseContextType {
 	}
 	return context;
 }
+
+/** Exported for tests: inject a custom context value via StoryWiseContext.Provider. */
+export { StoryWiseContext };

@@ -17,6 +17,13 @@
 				"buildTarget": "story-wise:build",
 				"dev": true
 			}
+		},
+		"test": {
+			"executor": "@nx/jest:jest",
+			"outputs": ["{workspaceRoot}/coverage/apps/story-wise"],
+			"options": {
+				"jestConfig": "apps/story-wise/jest.config.ts"
+			}
 		}
 	}
 }
