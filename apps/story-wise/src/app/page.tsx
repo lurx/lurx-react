@@ -1,5 +1,6 @@
 'use client';
 
+import { SEGMENT_DURATION_INPUT } from './constants/video-processing.constants';
 import { useStoryWise } from './context/story-wise-context';
 import { VideoUploader } from './components/video-uploader/video-uploader';
 import { VideoPreview } from './components/video-preview/video-preview';
@@ -76,11 +77,14 @@ export default function StoryWisePage() {
 									<input
 										id="segmentDuration"
 										type="number"
-										min={5}
-										max={120}
+										min={SEGMENT_DURATION_INPUT.MIN}
+										max={SEGMENT_DURATION_INPUT.MAX}
 										value={segmentDuration}
 										onChange={e =>
-											setSegmentDuration(parseInt(e.target.value) || 45)
+											setSegmentDuration(
+												parseInt(e.target.value, 10) ||
+													SEGMENT_DURATION_INPUT.FALLBACK,
+											)
 										}
 										className="input input-bordered w-24 tabular-nums"
 									/>

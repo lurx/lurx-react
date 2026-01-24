@@ -1,30 +1,48 @@
 'use client';
 
-import React, {
-	createContext,
-	useContext,
-	useCallback,
-	useState,
-	useRef,
-	useEffect,
-	type PropsWithChildren,
-} from 'react';
-import { saveAs } from 'file-saver';
 import type {
+	ProcessingError,
+	ProcessingProgress,
 	VideoMetadata,
 	VideoSegment,
-	ProcessingProgress,
-	ProcessingError,
 } from '@lurx-react/video-processing';
-import { validateVideoFile, formatDuration } from '@lurx-react/video-processing';
-import type {
-	StoryWiseContextType,
-	ProcessingStatus,
-	ProcessingMode,
-	ServiceStatus,
-} from '../types/story-wise.types';
-import { DEFAULT_SEGMENT_DURATION } from '../types/story-wise.types';
+import {
+	formatDuration,
+	validateVideoFile,
+} from '@lurx-react/video-processing';
+import { saveAs } from 'file-saver';
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+	type PropsWithChildren,
+} from 'react';
+import { CLOUD_POLLING_MAX_POLLS } from '../constants/cloud-polling.constants';
+import {
+	DOWNLOAD_CLEANUP_EXTRA_MS,
+	DOWNLOAD_DELAY_BETWEEN_MS,
+} from '../constants/downloads.constants';
+import {
+	CLOUD_PROGRESS,
+	DEFAULT_SEGMENT_DURATION,
+	MIN_SEGMENT_DURATION_SEC,
+	OUTPUT_FORMAT,
+	QUALITY,
+	PROGRESS_COMPLETE,
+	SHORT_VIDEO_MIN_SEGMENTS,
+} from '../constants/video-processing.constants';
+import { TIME_UNITS } from '../constants/time-units';
 import { useFFmpeg } from '../hooks/use-ffmpeg';
+import type {
+	ProcessingMode,
+	ProcessingStatus,
+	ServiceStatus,
+	StoryWiseContextType,
+} from '../types/story-wise.types';
+import type { Nullable } from '../types/utility-types.types';
 
 const StoryWiseContext = createContext<StoryWiseContextType | undefined>(
 	undefined,
@@ -38,19 +56,19 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 	const { load, splitVideo, getMetadata, isLoaded, terminate } = useFFmpeg();
 
 	// State
-	const [sourceFile, setSourceFileState] = useState<File | null>(null);
-	const [sourceUrl, setSourceUrl] = useState<string | null>(null);
+	const [sourceFile, setSourceFileState] = useState<Nullable<File>>(null);
+	const [sourceUrl, setSourceUrl] = useState<Nullable<string>>(null);
 	const [sourceDuration, setSourceDuration] = useState(0);
-	const [sourceMetadata, setSourceMetadata] = useState<VideoMetadata | null>(
-		null,
-	);
+	const [sourceMetadata, setSourceMetadata] =
+		useState<Nullable<VideoMetadata>>(null);
 	const [processingStatus, setProcessingStatus] =
 		useState<ProcessingStatus>('idle');
 	const [processingProgress, setProcessingProgress] =
 		useState<ProcessingProgress | null>(null);
 	const [processingError, setProcessingError] =
 		useState<ProcessingError | null>(null);
-	const [processingMode, setProcessingMode] = useState<ProcessingMode>(null);
+	const [processingMode, setProcessingMode] =
+		useState<Nullable<ProcessingMode>>(null);
 	const [segments, setSegments] = useState<VideoSegment[]>([]);
 	const [segmentDuration, setSegmentDurationState] = useState(
 		DEFAULT_SEGMENT_DURATION,
@@ -143,299 +161,342 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 		return false;
 	}, []);
 
-	const setSourceFile = useCallback((file: File) => {
-		// Validate file
-		const validation = validateVideoFile(file);
-		if (!validation.isValid) {
-			setProcessingError({
-				code: 'INVALID_FORMAT',
-				message: validation.errors[0]?.message || 'Invalid file',
-				recoverable: true,
-			});
-			return;
-		}
-
-		// Revoke previous URL
-		if (sourceUrl) {
-			URL.revokeObjectURL(sourceUrl);
-		}
-
-		// Create new URL
-		const url = URL.createObjectURL(file);
-		setSourceFileState(file);
-		setSourceUrl(url);
-		setProcessingError(null);
-		setSegments([]);
-		setProcessingStatus('idle');
-
-		// Reset user changed flag when loading new video
-		userChangedDurationRef.current = false;
-
-		// Get video duration from the video element
-		const video = document.createElement('video');
-		video.preload = 'metadata';
-		video.onloadedmetadata = () => {
-			const duration = video.duration;
-			setSourceDuration(duration);
-
-			// Smart segment duration: if video is shorter than default,
-			// calculate duration for 2 segments (unless user changed it)
-			if (!userChangedDurationRef.current && duration < DEFAULT_SEGMENT_DURATION) {
-				// For short videos, split into 2 segments (minimum 1 second each)
-				const smartDuration = Math.max(1, Math.floor(duration / 2));
-				setSegmentDurationState(smartDuration);
-			} else if (!userChangedDurationRef.current) {
-				// Reset to default for longer videos
-				setSegmentDurationState(DEFAULT_SEGMENT_DURATION);
-			}
-		};
-		video.src = url;
-	}, [sourceUrl]);
-
-	// Cloud processing function with polling
-	const processWithCloud = useCallback(async (file: File): Promise<void> => {
-		console.log('[Client] Starting cloud processing...', { fileName: file.name, fileSize: file.size });
-
-		// Step 1: Get presigned URL for direct upload to R2
-		setProcessingStatus('analyzing');
-		setProcessingProgress({
-			stage: 'analyzing',
-			progress: 0,
-			message: 'Preparing upload...',
-		});
-
-		console.log('[Client] Getting presigned upload URL...');
-		const urlResponse = await fetch('/api/upload-url', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				filename: file.name,
-				contentType: file.type,
-				fileSize: file.size,
-			}),
-		});
-
-		if (!urlResponse.ok) {
-			const error = await urlResponse.json();
-			console.error('[Client] ✗ Failed to get upload URL:', error);
-			throw new Error(error.error || 'Failed to get upload URL');
-		}
-
-		const { sessionId, uploadUrl } = await urlResponse.json();
-		console.log('[Client] ✓ Got presigned URL:', { sessionId });
-
-		// Step 2: Upload directly to R2 using presigned URL
-		setProcessingProgress({
-			stage: 'analyzing',
-			progress: 5,
-			message: 'Uploading video...',
-		});
-
-		console.log('[Client] Uploading directly to R2...');
-		const uploadStartTime = Date.now();
-		const uploadResponse = await fetch(uploadUrl, {
-			method: 'PUT',
-			body: file,
-			headers: {
-				'Content-Type': file.type,
-			},
-		});
-
-		if (!uploadResponse.ok) {
-			console.error('[Client] ✗ Direct upload failed:', uploadResponse.status, uploadResponse.statusText);
-			throw new Error(`Upload failed: ${uploadResponse.statusText}`);
-		}
-
-		const uploadDuration = Date.now() - uploadStartTime;
-		console.log('[Client] ✓ Upload complete:', { sessionId, duration: `${uploadDuration}ms` });
-
-		// Store session ID for cleanup
-		cloudSessionIdRef.current = sessionId;
-		downloadedSegmentsRef.current = new Set();
-
-		if (cancelledRef.current) return;
-
-		// Step 3: Start processing (returns job ID immediately)
-		setProcessingStatus('splitting');
-		setProcessingProgress({
-			stage: 'splitting',
-			progress: 10,
-			message: 'Starting processing...',
-		});
-
-		console.log('[Client] Starting video processing...', { sessionId, segmentDuration });
-		const processResponse = await fetch('/api/process', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				sessionId,
-				segmentDuration,
-				outputFormat: 'mp4',
-				quality: 'medium',
-			}),
-		});
-
-		if (!processResponse.ok) {
-			const error = await processResponse.json();
-			console.error('[Client] ✗ Failed to start processing:', error);
-			throw new Error(error.error || error.message || 'Processing failed');
-		}
-
-		const { jobId } = await processResponse.json();
-		console.log('[Client] ✓ Processing job started:', { jobId });
-
-		// Step 4: Poll for job status
-		const pollInterval = 2000; // 2 seconds
-		const maxPolls = 300; // 10 minutes max
-		let polls = 0;
-
-		while (polls < maxPolls) {
-			if (cancelledRef.current) return;
-
-			await new Promise(resolve => setTimeout(resolve, pollInterval));
-			polls++;
-
-			const statusResponse = await fetch(`/api/process-status/${jobId}`);
-			if (!statusResponse.ok) {
-				console.error('[Client] ✗ Failed to get job status');
-				continue;
-			}
-
-			const jobStatus = await statusResponse.json();
-			console.log('[Client] Job status:', jobStatus.status, jobStatus.progress);
-
-			// Update progress UI
-			if (jobStatus.progress) {
-				const stageMessage = jobStatus.progress.stage === 'downloading'
-					? 'Downloading video...'
-					: jobStatus.progress.stage === 'processing'
-					? `Processing segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`
-					: `Uploading segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`;
-
-				setProcessingProgress({
-					stage: 'splitting',
-					progress: 10 + (jobStatus.progress.percent * 0.9), // Scale to 10-100%
-					currentSegment: jobStatus.progress.currentSegment,
-					totalSegments: jobStatus.progress.totalSegments,
-					message: stageMessage,
+	const setSourceFile = useCallback(
+		(file: File) => {
+			// Validate file
+			const validation = validateVideoFile(file);
+			if (!validation.isValid) {
+				setProcessingError({
+					code: 'INVALID_FORMAT',
+					message: validation.errors[0]?.message || 'Invalid file',
+					recoverable: true,
 				});
-			}
-
-			if (jobStatus.status === 'complete' && jobStatus.result) {
-				console.log('[Client] ✓ Processing complete:', {
-					totalSegments: jobStatus.result.totalSegments,
-					duration: jobStatus.result.duration,
-				});
-
-				// Convert to VideoSegment format
-				const newSegments: VideoSegment[] = jobStatus.result.segments.map(
-					(seg: { index: number; startTime: number; endTime: number; duration: number; downloadUrl: string }) => ({
-						id: `segment-${seg.index}`,
-						index: seg.index,
-						startTime: seg.startTime,
-						endTime: seg.endTime,
-						duration: seg.duration,
-						data: undefined,
-						blobUrl: seg.downloadUrl,
-						status: 'ready' as const,
-						fileSize: undefined,
-					}),
-				);
-
-				setSegments(newSegments);
-				setSourceDuration(jobStatus.result.duration);
-				setProcessingStatus('complete');
-				setProcessingProgress({
-					stage: 'finalizing',
-					progress: 100,
-					totalSegments: jobStatus.result.totalSegments,
-					message: `Created ${jobStatus.result.totalSegments} segments`,
-				});
-
-				console.log('[Client] ✓ All segments ready:', { count: newSegments.length });
 				return;
 			}
 
-			if (jobStatus.status === 'error') {
-				throw new Error(jobStatus.error || 'Processing failed');
+			// Revoke previous URL
+			if (sourceUrl) {
+				URL.revokeObjectURL(sourceUrl);
 			}
-		}
 
-		throw new Error('Processing timed out');
-	}, [segmentDuration]);
+			// Create new URL
+			const url = URL.createObjectURL(file);
+			setSourceFileState(file);
+			setSourceUrl(url);
+			setProcessingError(null);
+			setSegments([]);
+			setProcessingStatus('idle');
 
-	// Client-side processing function
-	const processWithClient = useCallback(async (file: File): Promise<void> => {
-		// Load FFmpeg if not loaded
-		if (!isLoaded) {
-			setProcessingStatus('loading-ffmpeg');
-			setProcessingProgress({
-				stage: 'loading',
-				progress: 0,
-				message: 'Loading video processor...',
+			// Reset user changed flag when loading new video
+			userChangedDurationRef.current = false;
+
+			// Get video duration from the video element
+			const video = document.createElement('video');
+			video.preload = 'metadata';
+			video.onloadedmetadata = () => {
+				const duration = video.duration;
+				setSourceDuration(duration);
+
+				// Smart segment duration: if video is shorter than default,
+				// calculate duration for 2 segments (unless user changed it)
+				if (
+					!userChangedDurationRef.current &&
+					duration < DEFAULT_SEGMENT_DURATION
+				) {
+					// For short videos, split into N segments (minimum MIN_SEGMENT_DURATION_SEC each)
+					const smartDuration = Math.max(
+						MIN_SEGMENT_DURATION_SEC,
+						Math.floor(duration / SHORT_VIDEO_MIN_SEGMENTS),
+					);
+					setSegmentDurationState(smartDuration);
+				} else if (!userChangedDurationRef.current) {
+					// Reset to default for longer videos
+					setSegmentDurationState(DEFAULT_SEGMENT_DURATION);
+				}
+			};
+			video.src = url;
+		},
+		[sourceUrl],
+	);
+
+	// Cloud processing function with polling
+	const processWithCloud = useCallback(
+		async (file: File): Promise<void> => {
+			console.log('[Client] Starting cloud processing...', {
+				fileName: file.name,
+				fileSize: file.size,
 			});
-			await load();
-		}
 
-		if (cancelledRef.current) return;
+			// Step 1: Get presigned URL for direct upload to R2
+			setProcessingStatus('analyzing');
+			setProcessingProgress({
+				stage: 'analyzing',
+				progress: 0,
+				message: 'Preparing upload...',
+			});
 
-		// Analyze video
-		setProcessingStatus('analyzing');
-		setProcessingProgress({
-			stage: 'analyzing',
-			progress: 0,
-			message: 'Analyzing video...',
-		});
+			console.log('[Client] Getting presigned upload URL...');
+			const urlResponse = await fetch('/api/upload-url', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					filename: file.name,
+					contentType: file.type,
+					fileSize: file.size,
+				}),
+			});
 
-		const metadata = await getMetadata(file);
-		setSourceMetadata(metadata);
-		setSourceDuration(metadata.duration);
+			if (!urlResponse.ok) {
+				const error = await urlResponse.json();
+				console.error('[Client] ✗ Failed to get upload URL:', error);
+				throw new Error(error.error || 'Failed to get upload URL');
+			}
 
-		if (cancelledRef.current) return;
+			const { sessionId, uploadUrl } = await urlResponse.json();
+			console.log('[Client] ✓ Got presigned URL:', { sessionId });
 
-		// Split video
-		setProcessingStatus('splitting');
-		const totalSegments = Math.ceil(metadata.duration / segmentDuration);
+			// Step 2: Upload directly to R2 using presigned URL
+			setProcessingProgress({
+				stage: 'analyzing',
+				progress: 5,
+				message: 'Uploading video...',
+			});
 
-		const newSegments = await splitVideo({
-			inputFile: file,
-			segmentDuration,
-			outputFormat: 'mp4',
-			quality: 'medium',
-			onProgress: (progress, currentSegment, total) => {
-				if (!cancelledRef.current) {
+			console.log('[Client] Uploading directly to R2...');
+			const uploadStartTime = Date.now();
+			const uploadResponse = await fetch(uploadUrl, {
+				method: 'PUT',
+				body: file,
+				headers: {
+					'Content-Type': file.type,
+				},
+			});
+
+			if (!uploadResponse.ok) {
+				console.error(
+					'[Client] ✗ Direct upload failed:',
+					uploadResponse.status,
+					uploadResponse.statusText,
+				);
+				throw new Error(`Upload failed: ${uploadResponse.statusText}`);
+			}
+
+			const uploadDuration = Date.now() - uploadStartTime;
+			console.log('[Client] ✓ Upload complete:', {
+				sessionId,
+				duration: `${uploadDuration}ms`,
+			});
+
+			// Store session ID for cleanup
+			cloudSessionIdRef.current = sessionId;
+			downloadedSegmentsRef.current = new Set();
+
+			if (cancelledRef.current) return;
+
+			// Step 3: Start processing (returns job ID immediately)
+			setProcessingStatus('splitting');
+			setProcessingProgress({
+				stage: 'splitting',
+				progress: CLOUD_PROGRESS.BASE,
+				message: 'Starting processing...',
+			});
+
+			console.log('[Client] Starting video processing...', {
+				sessionId,
+				segmentDuration,
+			});
+			const processResponse = await fetch('/api/process', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					sessionId,
+					segmentDuration,
+					outputFormat: OUTPUT_FORMAT,
+					quality: QUALITY,
+				}),
+			});
+
+			if (!processResponse.ok) {
+				const error = await processResponse.json();
+				console.error('[Client] ✗ Failed to start processing:', error);
+				throw new Error(error.error || error.message || 'Processing failed');
+			}
+
+			const { jobId } = await processResponse.json();
+			console.log('[Client] ✓ Processing job started:', { jobId });
+
+			// Step 4: Poll for job status
+			const pollInterval = TIME_UNITS.SECOND; // 1 second — progress updates during FFmpeg appear more responsive
+			const maxPolls = CLOUD_POLLING_MAX_POLLS;
+			let polls = 0;
+
+			while (polls < maxPolls) {
+				if (cancelledRef.current) return;
+
+				await new Promise(resolve => setTimeout(resolve, pollInterval));
+				polls++;
+
+				const statusResponse = await fetch(`/api/process-status/${jobId}`);
+				if (!statusResponse.ok) {
+					console.error('[Client] ✗ Failed to get job status');
+					continue;
+				}
+
+				const jobStatus = await statusResponse.json();
+				console.log(
+					'[Client] Job status:',
+					jobStatus.status,
+					jobStatus.progress,
+				);
+
+				// Update progress UI
+				if (jobStatus.progress) {
+					const stageMessage =
+						jobStatus.progress.stage === 'downloading'
+							? 'Downloading video...'
+							: jobStatus.progress.stage === 'processing'
+							? `Processing segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`
+							: `Uploading segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`;
+
 					setProcessingProgress({
 						stage: 'splitting',
-						progress,
-						currentSegment,
-						totalSegments: total,
-						message: `Processing segment ${currentSegment} of ${total}...`,
+						progress:
+							CLOUD_PROGRESS.BASE +
+							jobStatus.progress.percent * CLOUD_PROGRESS.SCALE,
+						currentSegment: jobStatus.progress.currentSegment,
+						totalSegments: jobStatus.progress.totalSegments,
+						message: stageMessage,
 					});
 				}
-			},
-		});
 
-		if (cancelledRef.current) {
-			// Clean up segments if cancelled
-			newSegments.forEach(segment => {
-				if (segment.blobUrl) {
-					URL.revokeObjectURL(segment.blobUrl);
+				if (jobStatus.status === 'complete' && jobStatus.result) {
+					console.log('[Client] ✓ Processing complete:', {
+						totalSegments: jobStatus.result.totalSegments,
+						duration: jobStatus.result.duration,
+					});
+
+					// Convert to VideoSegment format
+					const newSegments: VideoSegment[] = jobStatus.result.segments.map(
+						(seg: {
+							index: number;
+							startTime: number;
+							endTime: number;
+							duration: number;
+							downloadUrl: string;
+						}) => ({
+							id: `segment-${seg.index}`,
+							index: seg.index,
+							startTime: seg.startTime,
+							endTime: seg.endTime,
+							duration: seg.duration,
+							data: undefined,
+							blobUrl: seg.downloadUrl,
+							status: 'ready' as const,
+							fileSize: undefined,
+						}),
+					);
+
+					setSegments(newSegments);
+					setSourceDuration(jobStatus.result.duration);
+					setProcessingStatus('complete');
+					setProcessingProgress({
+						stage: 'finalizing',
+						progress: PROGRESS_COMPLETE,
+						totalSegments: jobStatus.result.totalSegments,
+						message: `Created ${jobStatus.result.totalSegments} segments`,
+					});
+
+					console.log('[Client] ✓ All segments ready:', {
+						count: newSegments.length,
+					});
+					return;
 				}
-			});
-			return;
-		}
 
-		setSegments(newSegments);
-		setProcessingStatus('complete');
-		setProcessingProgress({
-			stage: 'finalizing',
-			progress: 100,
-			totalSegments,
-			message: `Created ${totalSegments} segments`,
-		});
-	}, [isLoaded, load, getMetadata, splitVideo, segmentDuration]);
+				if (jobStatus.status === 'error') {
+					throw new Error(jobStatus.error || 'Processing failed');
+				}
+			}
+
+			throw new Error('Processing timed out');
+		},
+		[segmentDuration],
+	);
+
+	// Client-side processing function
+	const processWithClient = useCallback(
+		async (file: File): Promise<void> => {
+			// Load FFmpeg if not loaded
+			if (!isLoaded) {
+				setProcessingStatus('loading-ffmpeg');
+				setProcessingProgress({
+					stage: 'loading',
+					progress: 0,
+					message: 'Loading video processor...',
+				});
+				await load();
+			}
+
+			if (cancelledRef.current) return;
+
+			// Analyze video
+			setProcessingStatus('analyzing');
+			setProcessingProgress({
+				stage: 'analyzing',
+				progress: 0,
+				message: 'Analyzing video...',
+			});
+
+			const metadata = await getMetadata(file);
+			setSourceMetadata(metadata);
+			setSourceDuration(metadata.duration);
+
+			if (cancelledRef.current) return;
+
+			// Split video
+			setProcessingStatus('splitting');
+			const totalSegments = Math.ceil(metadata.duration / segmentDuration);
+
+			const newSegments = await splitVideo({
+				inputFile: file,
+				segmentDuration,
+				outputFormat: OUTPUT_FORMAT,
+				quality: QUALITY,
+				onProgress: (progress, currentSegment, total) => {
+					if (!cancelledRef.current) {
+						setProcessingProgress({
+							stage: 'splitting',
+							progress,
+							currentSegment,
+							totalSegments: total,
+							message: `Processing segment ${currentSegment} of ${total}...`,
+						});
+					}
+				},
+			});
+
+			if (cancelledRef.current) {
+				// Clean up segments if cancelled
+				newSegments.forEach(segment => {
+					if (segment.blobUrl) {
+						URL.revokeObjectURL(segment.blobUrl);
+					}
+				});
+				return;
+			}
+
+			setSegments(newSegments);
+			setProcessingStatus('complete');
+			setProcessingProgress({
+				stage: 'finalizing',
+				progress: PROGRESS_COMPLETE,
+				totalSegments,
+				message: `Created ${totalSegments} segments`,
+			});
+		},
+		[isLoaded, load, getMetadata, splitVideo, segmentDuration],
+	);
 
 	const startProcessing = useCallback(async () => {
 		if (!sourceFile) {
@@ -473,9 +534,14 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 					return;
 				}
 
-				console.warn('[Client] Cloud processing failed, falling back to client-side:', cloudError);
+				console.warn(
+					'[Client] Cloud processing failed, falling back to client-side:',
+					cloudError,
+				);
 				setProcessingMode('client');
-				console.log('[Client] Starting client-side processing with FFmpeg.wasm...');
+				console.log(
+					'[Client] Starting client-side processing with FFmpeg.wasm...',
+				);
 				await processWithClient(sourceFile);
 				console.log('[Client] ✓ Client-side processing successful');
 			}
@@ -499,8 +565,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 				setProcessingMode(null);
 				setProcessingError({
 					code: 'PROCESSING_FAILED',
-					message:
-						error instanceof Error ? error.message : 'Processing failed',
+					message: error instanceof Error ? error.message : 'Processing failed',
 					recoverable: true,
 					suggestion: 'Try with a smaller file or different format',
 				});
@@ -525,7 +590,9 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 			if (segment.data) {
 				const blob = new Blob([segment.data], { type: 'video/mp4' });
 				const filename = sourceFile
-					? `${sourceFile.name.replace(/\.[^/.]+$/, '')}_${formatDuration(segment.startTime)}-${formatDuration(segment.endTime)}.mp4`
+					? `${sourceFile.name.replace(/\.[^/.]+$/, '')}_${formatDuration(
+							segment.startTime,
+					  )}-${formatDuration(segment.endTime)}.mp4`
 					: `segment_${segment.index + 1}.mp4`;
 
 				saveAs(blob, filename);
@@ -538,7 +605,9 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 					const response = await fetch(segment.blobUrl);
 					const blob = await response.blob();
 					const filename = sourceFile
-						? `${sourceFile.name.replace(/\.[^/.]+$/, '')}_${formatDuration(segment.startTime)}-${formatDuration(segment.endTime)}.mp4`
+						? `${sourceFile.name.replace(/\.[^/.]+$/, '')}_${formatDuration(
+								segment.startTime,
+						  )}-${formatDuration(segment.endTime)}.mp4`
 						: `segment_${segment.index + 1}.mp4`;
 
 					saveAs(blob, filename);
@@ -549,7 +618,9 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 
 						// If all segments downloaded, cleanup cloud storage
 						if (downloadedSegmentsRef.current.size === segments.length) {
-							console.log('[Client] All segments downloaded, cleaning up cloud storage...');
+							console.log(
+								'[Client] All segments downloaded, cleaning up cloud storage...',
+							);
 							cleanupCloudSession(cloudSessionIdRef.current);
 							cloudSessionIdRef.current = null;
 						}
@@ -579,7 +650,10 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 					: `segment_${index + 1}.mp4`;
 
 				// Add slight delay between downloads to prevent browser blocking
-				setTimeout(() => saveAs(blob, filename), index * 500);
+				setTimeout(
+					() => saveAs(blob, filename),
+					index * DOWNLOAD_DELAY_BETWEEN_MS,
+				);
 				continue;
 			}
 
@@ -593,7 +667,10 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 						: `segment_${index + 1}.mp4`;
 
 					// Add slight delay between downloads
-					setTimeout(() => saveAs(blob, filename), index * 500);
+					setTimeout(
+						() => saveAs(blob, filename),
+						index * DOWNLOAD_DELAY_BETWEEN_MS,
+					);
 				} catch (error) {
 					console.error(`Download error for segment ${index}:`, error);
 				}
@@ -603,13 +680,19 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 		// Cleanup cloud storage after all downloads initiated
 		if (cloudSessionIdRef.current) {
 			// Wait for downloads to complete before cleanup
-			setTimeout(() => {
-				if (cloudSessionIdRef.current) {
-					console.log('[Client] All downloads initiated, cleaning up cloud storage...');
-					cleanupCloudSession(cloudSessionIdRef.current);
-					cloudSessionIdRef.current = null;
-				}
-			}, segments.length * 500 + 1000);
+			setTimeout(
+				() => {
+					if (cloudSessionIdRef.current) {
+						console.log(
+							'[Client] All downloads initiated, cleaning up cloud storage...',
+						);
+						cleanupCloudSession(cloudSessionIdRef.current);
+						cloudSessionIdRef.current = null;
+					}
+				},
+				segments.length * DOWNLOAD_DELAY_BETWEEN_MS +
+					DOWNLOAD_CLEANUP_EXTRA_MS,
+			);
 		}
 	}, [segments, sourceFile, cleanupCloudSession]);
 
@@ -694,9 +777,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 export function useStoryWise(): StoryWiseContextType {
 	const context = useContext(StoryWiseContext);
 	if (!context) {
-		throw new Error(
-			'useStoryWise must be used within a <StoryWiseProvider>',
-		);
+		throw new Error('useStoryWise must be used within a <StoryWiseProvider>');
 	}
 	return context;
 }

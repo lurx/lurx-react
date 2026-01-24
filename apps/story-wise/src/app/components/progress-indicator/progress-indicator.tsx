@@ -1,5 +1,6 @@
 'use client';
 
+import { CLEANUP_DISPLAY_DAYS } from '../../constants/cleanup.constants';
 import { useStoryWise } from '../../context/story-wise-context';
 
 /**
@@ -53,7 +54,7 @@ export function ProgressIndicator() {
 				</div>
 				{processingMode === 'cloud' && (
 					<p className="text-xs text-base-content/50 text-center max-w-xs">
-						Video uploaded to cloud for fast processing. Files are automatically deleted after 7 days.
+						{`Video uploaded to cloud for fast processing. Files are automatically deleted after ${CLEANUP_DISPLAY_DAYS} days.`}
 					</p>
 				)}
 				{processingMode === 'client' && (

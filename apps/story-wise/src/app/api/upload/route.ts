@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
 import { getCloudConfig } from '../../../config/cloud.config';
 import { getR2Client } from '../../../lib/r2-client';
+import type { Nullable } from '../../types/utility-types.types';
 
 export async function POST(request: NextRequest) {
 	console.log('[API] Upload request received');
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
 
 		console.log('[API] Cloud processing enabled, processing upload...');
 		const formData = await request.formData();
-		const file = formData.get('video') as File | null;
+		const file = formData.get('video') as Nullable<File>;
 
 		if (!file) {
 			return NextResponse.json({ error: 'No file provided' }, { status: 400 });

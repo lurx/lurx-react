@@ -1,47 +1,47 @@
 import type {
+	ProcessingError,
+	ProcessingProgress,
 	VideoMetadata,
 	VideoSegment,
-	ProcessingProgress,
-	ProcessingError,
 } from '@lurx-react/video-processing';
+import {
+	PROCESSING_MODES,
+	PROCESSING_STATES,
+	SERVICE_STATUS_REASONS,
+} from '../constants/video-processing.constants';
+import type { ExtractObjectValues, Nullable } from './utility-types.types';
 
 /**
  * Processing status states
  */
-export type ProcessingStatus =
-	| 'idle'
-	| 'loading-ffmpeg'
-	| 'analyzing'
-	| 'splitting'
-	| 'complete'
-	| 'error';
+export type ProcessingStatus = ExtractObjectValues<typeof PROCESSING_STATES>;
 
 /**
  * Processing mode - where the video is being processed
  */
-export type ProcessingMode = 'client' | 'cloud' | null;
+export type ProcessingMode = ExtractObjectValues<typeof PROCESSING_MODES>;
 
 /**
  * State for the story wise context
  */
 export interface StoryWiseState {
 	/** Source video file */
-	sourceFile: File | null;
+	sourceFile: Nullable<File>;
 	/** Object URL for source video preview */
-	sourceUrl: string | null;
+	sourceUrl: Nullable<string>;
 	/** Source video duration in seconds */
 	sourceDuration: number;
 	/** Source video metadata */
-	sourceMetadata: VideoMetadata | null;
+	sourceMetadata: Nullable<VideoMetadata>;
 
 	/** Current processing status */
 	processingStatus: ProcessingStatus;
 	/** Processing progress information */
-	processingProgress: ProcessingProgress | null;
+	processingProgress: Nullable<ProcessingProgress>;
 	/** Processing error if any */
-	processingError: ProcessingError | null;
+	processingError: Nullable<ProcessingError>;
 	/** Current processing mode (client or cloud) */
-	processingMode: ProcessingMode;
+	processingMode: Nullable<ProcessingMode>;
 
 	/** Generated video segments */
 	segments: VideoSegment[];
@@ -49,7 +49,7 @@ export interface StoryWiseState {
 	segmentDuration: number;
 
 	/** Currently selected segment ID for preview */
-	selectedSegmentId: string | null;
+	selectedSegmentId: Nullable<string>;
 }
 
 /**
@@ -77,20 +77,21 @@ export interface StoryWiseActions {
 /**
  * Service status
  */
+
+type ServiceStatusReason = ExtractObjectValues<typeof SERVICE_STATUS_REASONS>;
 export interface ServiceStatus {
 	online: boolean;
-	reason?: 'maintenance' | 'quota_exceeded';
+	reason?: ServiceStatusReason;
 	message?: string;
 }
 
 /**
  * Combined context type
  */
-export type StoryWiseContextType = StoryWiseState & StoryWiseActions & {
-	serviceStatus: ServiceStatus;
-};
+export type StoryWiseContextType = StoryWiseState &
+	StoryWiseActions & {
+		serviceStatus: ServiceStatus;
+	};
 
-/**
- * Default segment duration (seconds)
- */
-export const DEFAULT_SEGMENT_DURATION = 59; // 59 seconds to allow for 1-second buffer
+/** Re-export for consumers that import from types. */
+export { DEFAULT_SEGMENT_DURATION } from '../constants/video-processing.constants';
