@@ -68,7 +68,7 @@ describe('StoryWisePage', () => {
 			sourceUrl: 'blob:http://localhost/fake',
 			processingStatus: 'splitting',
 		});
-		expect(screen.getByText(/processing/i)).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
 	});
 
 	it('shows VideoPreview, SegmentList, and Start Over when complete with segments', () => {

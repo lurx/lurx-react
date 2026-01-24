@@ -1,3 +1,6 @@
+// Force test env so React uses development build and act() works when the build runs with NODE_ENV=production (e.g. Vercel).
+process.env.NODE_ENV = 'test';
+
 const jestConfig = {
 	displayName: 'story-wise',
 	preset: '../../jest.preset.js',
