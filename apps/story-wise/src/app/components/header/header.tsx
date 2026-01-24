@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
+import { HeaderThemeSwitcher } from './components/header-theme-switcher.component';
 
 export function Header() {
 	return (
@@ -10,9 +10,7 @@ export function Header() {
 					Story Wise
 				</a>
 			</div>
-			<div className="flex-none gap-2">
-				<ThemeSwitcher />
-			</div>
+			<HeaderThemeSwitcher />
 		</header>
 	);
 }
