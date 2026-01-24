@@ -1,47 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-const DAISY_THEMES = [
-	'light',
-	'dark',
-	'cupcake',
-	'bumblebee',
-	'emerald',
-	'corporate',
-	'synthwave',
-	'retro',
-	'cyberpunk',
-	'valentine',
-	'halloween',
-	'garden',
-	'forest',
-	'aqua',
-	'lofi',
-	'pastel',
-	'fantasy',
-	'wireframe',
-	'black',
-	'luxury',
-	'dracula',
-	'cmyk',
-	'autumn',
-	'business',
-	'acid',
-	'lemonade',
-	'night',
-	'coffee',
-	'winter',
-	'dim',
-	'nord',
-	'sunset',
-] as const;
-
-type Theme = (typeof DAISY_THEMES)[number];
+import { AVAILABLE_THEMES, DEFAULT_THEME, type ThemeName } from '../../../config/themes';
 
 const STORAGE_KEY = 'story-wise-theme';
 
-function ThemePreview({ themeName }: { themeName: Theme }) {
+function ThemePreview({ themeName }: { themeName: string }) {
 	return (
 		<div
 			data-theme={themeName}
@@ -56,19 +20,19 @@ function ThemePreview({ themeName }: { themeName: Theme }) {
 }
 
 export function ThemeSwitcher() {
-	const [theme, setTheme] = useState<Theme>('dark');
+	const [theme, setTheme] = useState<ThemeName>(DEFAULT_THEME);
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		setMounted(true);
-		const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-		if (stored && DAISY_THEMES.includes(stored)) {
+		const stored = localStorage.getItem(STORAGE_KEY) as ThemeName | null;
+		if (stored && AVAILABLE_THEMES.includes(stored)) {
 			setTheme(stored);
 			document.documentElement.setAttribute('data-theme', stored);
 		}
 	}, []);
 
-	const handleThemeChange = (newTheme: Theme) => {
+	const handleThemeChange = (newTheme: ThemeName) => {
 		setTheme(newTheme);
 		localStorage.setItem(STORAGE_KEY, newTheme);
 		document.documentElement.setAttribute('data-theme', newTheme);
@@ -131,7 +95,7 @@ export function ThemeSwitcher() {
 				tabIndex={0}
 				className="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-56 max-h-96 overflow-y-auto flex-nowrap"
 			>
-				{DAISY_THEMES.map(t => (
+				{AVAILABLE_THEMES.map(t => (
 					<li key={t}>
 						<button
 							type="button"

@@ -213,8 +213,9 @@ export class VideoProcessor {
 				const segDuration = Math.min(segmentDuration, duration - startTime);
 				const outputPath = join(workDir, `segment_${String(i).padStart(3, '0')}.${outputFormat}`);
 
-				// Report processing progress
-				const processingPercent = Math.round(((i * 2) / (totalSegments * 2)) * 100);
+				// Report processing progress (each segment has 2 phases: process + upload)
+				// Progress: segment i processing = (i * 2) / (total * 2), segment i uploading = (i * 2 + 1) / (total * 2)
+				const processingPercent = Math.round(((i * 2 + 0.5) / (totalSegments * 2)) * 100);
 				onProgress?.({ currentSegment: i + 1, totalSegments, percent: processingPercent, stage: 'processing' });
 
 				console.log(`[Processor] Processing segment ${i + 1}/${totalSegments}...`);
@@ -225,7 +226,7 @@ export class VideoProcessor {
 				const segmentKey = keys.segmentKey(i, outputFormat);
 
 				// Report uploading progress
-				const uploadingPercent = Math.round(((i * 2 + 1) / (totalSegments * 2)) * 100);
+				const uploadingPercent = Math.round(((i * 2 + 1.5) / (totalSegments * 2)) * 100);
 				onProgress?.({ currentSegment: i + 1, totalSegments, percent: uploadingPercent, stage: 'uploading' });
 
 				console.log(`[Processor] Uploading segment ${i + 1}...`);
