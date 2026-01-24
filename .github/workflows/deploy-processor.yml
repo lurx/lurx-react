@@ -1,13 +1,11 @@
 # Deploy story-wise-processor to Railway when it changes on main.
 #
-# Setup:
-# 1. In Railway: Project → Settings → Tokens → Create Project Token.
-# 2. In GitHub: Repo → Settings → Secrets and variables → Actions:
-#    - RAILWAY_TOKEN = the project token
-#    - (Optional) RAILWAY_SERVICE_ID = service id if the project has multiple services
+# Setup (GitHub → Settings → Secrets and variables → Actions):
+# - RAILWAY_TOKEN = Project Token (Railway → project → Settings → Tokens)
+# - RAILWAY_SERVICE_ID = service ID (required if the project has multiple services)
+#   → Railway → your processor service → Settings, or from the service URL
 #
-# The Project Token must be from the Railway project that hosts the processor.
-# Root for the service in Railway should be: apps/story-wise-processor
+# Root for the service in Railway: apps/story-wise-processor
 
 name: Deploy processor
 
@@ -18,6 +16,10 @@ on:
       - 'apps/story-wise-processor/**'
   workflow_dispatch:
 
+concurrency:
+  group: deploy-processor
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,7 +29,16 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
         run: |
           cd apps/story-wise-processor
-          npx -y @railway/cli up --detach
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::RAILWAY_TOKEN is not set. Add it in GitHub → Settings → Secrets and variables → Actions. See apps/story-wise-processor/GITHUB_SECRETS.md"
+            exit 1
+          fi
+          if [ -z "$RAILWAY_SERVICE_ID" ]; then
+            echo "::error::RAILWAY_SERVICE_ID is not set (required when the project has multiple services). Add it in GitHub → Settings → Secrets and variables → Actions. See apps/story-wise-processor/GITHUB_SECRETS.md"
+            exit 1
+          fi
+          npx -y @railway/cli up --detach --service "$RAILWAY_SERVICE_ID"
         continue-on-error: false
