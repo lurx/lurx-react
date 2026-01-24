@@ -183,8 +183,22 @@ export function useFFmpeg(): UseFFmpegReturn {
 			// Re-write input file since getMetadata deleted it
 			await ffmpeg.writeFile('input', await fetchFile(inputFile));
 
+			// Set up progress handler for granular updates
+			let currentSegmentIndex = 0;
+			const progressHandler = ({ progress: p }: { progress: number }) => {
+				if (onProgress && totalSegments > 0) {
+					// Calculate overall progress: completed segments + current segment progress
+					const completedProgress = (currentSegmentIndex / totalSegments) * 100;
+					const currentSegmentProgress = (p * 100) / totalSegments;
+					const overallProgress = Math.min(99, completedProgress + currentSegmentProgress);
+					onProgress(overallProgress, currentSegmentIndex + 1, totalSegments);
+				}
+			};
+			ffmpeg.on('progress', progressHandler);
+
 			// Process each segment
 			for (let i = 0; i < totalSegments; i++) {
+				currentSegmentIndex = i;
 				const startTime = i * segmentDuration;
 				const actualDuration = Math.min(
 					segmentDuration,
@@ -237,11 +251,14 @@ export function useFFmpeg(): UseFFmpegReturn {
 				// Clean up output file
 				await ffmpeg.deleteFile(outputName);
 
-				// Report progress
+				// Report segment completion
 				if (onProgress) {
 					onProgress(((i + 1) / totalSegments) * 100, i + 1, totalSegments);
 				}
 			}
+
+			// Remove progress handler
+			ffmpeg.off('progress', progressHandler);
 
 			// Clean up input file
 			await ffmpeg.deleteFile('input');

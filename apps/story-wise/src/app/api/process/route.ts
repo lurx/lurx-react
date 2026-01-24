@@ -11,9 +11,8 @@ interface ProcessRequestBody {
 /**
  * POST /api/process
  *
- * Process a video that was uploaded to R2.
- * Calls the external processor service if configured,
- * otherwise returns 503 (Vercel doesn't have FFmpeg).
+ * Start processing a video that was uploaded to R2.
+ * Returns a job ID immediately - use /api/process-status to poll for completion.
  */
 export async function POST(request: NextRequest) {
 	console.log('[API] Process request received');
@@ -57,13 +56,13 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		console.log('[API] Calling external processor:', {
+		console.log('[API] Starting async processing:', {
 			url: config.processor.url,
 			sessionId,
 			segmentDuration,
 		});
 
-		// Call external processor service
+		// Call external processor service - now returns job ID immediately
 		const processorResponse = await fetch(`${config.processor.url}/process`, {
 			method: 'POST',
 			headers: {
@@ -90,23 +89,14 @@ export async function POST(request: NextRequest) {
 		}
 
 		const result = await processorResponse.json();
-		console.log('[API] Processing complete:', {
-			totalSegments: result.totalSegments,
-			duration: result.duration,
-		});
+		console.log('[API] Processing job started:', result);
 
-		// Return result with download URLs pointing to our API
+		// Return job ID for polling
 		return NextResponse.json({
-			success: true,
-			duration: result.duration,
-			totalSegments: result.totalSegments,
-			segments: result.segments.map((seg: { index: number; startTime: number; endTime: number; duration: number }) => ({
-				index: seg.index,
-				startTime: seg.startTime,
-				endTime: seg.endTime,
-				duration: seg.duration,
-				downloadUrl: `/api/download/${sessionId}/${seg.index}`,
-			})),
+			jobId: result.jobId,
+			sessionId,
+			status: 'pending',
+			message: 'Processing started',
 		});
 	} catch (error) {
 		console.error('[API] Processing error:', error);

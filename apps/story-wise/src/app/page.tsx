@@ -37,16 +37,13 @@ export default function StoryWisePage() {
 	const hasSegments = segments.length > 0;
 
 	return (
-		<main className="min-h-screen p-8 bg-base-100">
+		<main className="flex-1 p-8 bg-base-100">
 			<div className="max-w-5xl mx-auto">
-				<header className="text-center mb-12">
-					<h1 className="text-4xl font-bold text-base-content mb-2">
-						Story Wise
-					</h1>
+				<div className="text-center mb-12">
 					<p className="text-lg text-base-content/60">
-						Split your videos into 45-second clips for stories
+						Split your videos into story-sized clips
 					</p>
-				</header>
+				</div>
 
 				{!hasVideo && !isProcessing && (
 					<section className="max-w-xl mx-auto">

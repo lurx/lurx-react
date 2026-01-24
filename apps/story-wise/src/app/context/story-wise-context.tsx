@@ -192,7 +192,7 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 		video.src = url;
 	}, [sourceUrl]);
 
-	// Cloud processing function
+	// Cloud processing function with polling
 	const processWithCloud = useCallback(async (file: File): Promise<void> => {
 		console.log('[Client] Starting cloud processing...', { fileName: file.name, fileSize: file.size });
 
@@ -255,16 +255,15 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 
 		if (cancelledRef.current) return;
 
-		// Process video
+		// Step 3: Start processing (returns job ID immediately)
 		setProcessingStatus('splitting');
 		setProcessingProgress({
 			stage: 'splitting',
 			progress: 10,
-			message: 'Processing video...',
+			message: 'Starting processing...',
 		});
 
 		console.log('[Client] Starting video processing...', { sessionId, segmentDuration });
-		const processStartTime = Date.now();
 		const processResponse = await fetch('/api/process', {
 			method: 'POST',
 			headers: {
@@ -280,46 +279,91 @@ export function StoryWiseProvider({ children }: PropsWithChildren) {
 
 		if (!processResponse.ok) {
 			const error = await processResponse.json();
-			console.error('[Client] ✗ Processing failed:', error);
+			console.error('[Client] ✗ Failed to start processing:', error);
 			throw new Error(error.error || error.message || 'Processing failed');
 		}
 
-		const processResult = await processResponse.json();
-		const processDuration = Date.now() - processStartTime;
-		console.log('[Client] ✓ Processing complete:', {
-			totalSegments: processResult.totalSegments,
-			duration: processResult.duration,
-			processingTime: `${processDuration}ms`
-		});
+		const { jobId } = await processResponse.json();
+		console.log('[Client] ✓ Processing job started:', { jobId });
 
-		if (cancelledRef.current) return;
+		// Step 4: Poll for job status
+		const pollInterval = 2000; // 2 seconds
+		const maxPolls = 300; // 10 minutes max
+		let polls = 0;
 
-		// Convert to VideoSegment format
-		const newSegments: VideoSegment[] = processResult.segments.map(
-			(seg: { index: number; startTime: number; endTime: number; duration: number; downloadUrl: string }) => ({
-				id: `segment-${seg.index}`,
-				index: seg.index,
-				startTime: seg.startTime,
-				endTime: seg.endTime,
-				duration: seg.duration,
-				data: undefined, // Cloud segments don't have data, use downloadUrl
-				blobUrl: seg.downloadUrl,
-				status: 'ready' as const,
-				fileSize: undefined,
-			}),
-		);
+		while (polls < maxPolls) {
+			if (cancelledRef.current) return;
 
-		setSegments(newSegments);
-		setSourceDuration(processResult.duration);
-		setProcessingStatus('complete');
-		setProcessingProgress({
-			stage: 'finalizing',
-			progress: 100,
-			totalSegments: processResult.totalSegments,
-			message: `Created ${processResult.totalSegments} segments`,
-		});
+			await new Promise(resolve => setTimeout(resolve, pollInterval));
+			polls++;
 
-		console.log('[Client] ✓ All segments ready:', { count: newSegments.length });
+			const statusResponse = await fetch(`/api/process-status/${jobId}`);
+			if (!statusResponse.ok) {
+				console.error('[Client] ✗ Failed to get job status');
+				continue;
+			}
+
+			const jobStatus = await statusResponse.json();
+			console.log('[Client] Job status:', jobStatus.status, jobStatus.progress);
+
+			// Update progress UI
+			if (jobStatus.progress) {
+				const stageMessage = jobStatus.progress.stage === 'downloading'
+					? 'Downloading video...'
+					: jobStatus.progress.stage === 'processing'
+					? `Processing segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`
+					: `Uploading segment ${jobStatus.progress.currentSegment} of ${jobStatus.progress.totalSegments}...`;
+
+				setProcessingProgress({
+					stage: 'splitting',
+					progress: 10 + (jobStatus.progress.percent * 0.9), // Scale to 10-100%
+					currentSegment: jobStatus.progress.currentSegment,
+					totalSegments: jobStatus.progress.totalSegments,
+					message: stageMessage,
+				});
+			}
+
+			if (jobStatus.status === 'complete' && jobStatus.result) {
+				console.log('[Client] ✓ Processing complete:', {
+					totalSegments: jobStatus.result.totalSegments,
+					duration: jobStatus.result.duration,
+				});
+
+				// Convert to VideoSegment format
+				const newSegments: VideoSegment[] = jobStatus.result.segments.map(
+					(seg: { index: number; startTime: number; endTime: number; duration: number; downloadUrl: string }) => ({
+						id: `segment-${seg.index}`,
+						index: seg.index,
+						startTime: seg.startTime,
+						endTime: seg.endTime,
+						duration: seg.duration,
+						data: undefined,
+						blobUrl: seg.downloadUrl,
+						status: 'ready' as const,
+						fileSize: undefined,
+					}),
+				);
+
+				setSegments(newSegments);
+				setSourceDuration(jobStatus.result.duration);
+				setProcessingStatus('complete');
+				setProcessingProgress({
+					stage: 'finalizing',
+					progress: 100,
+					totalSegments: jobStatus.result.totalSegments,
+					message: `Created ${jobStatus.result.totalSegments} segments`,
+				});
+
+				console.log('[Client] ✓ All segments ready:', { count: newSegments.length });
+				return;
+			}
+
+			if (jobStatus.status === 'error') {
+				throw new Error(jobStatus.error || 'Processing failed');
+			}
+		}
+
+		throw new Error('Processing timed out');
 	}, [segmentDuration]);
 
 	// Client-side processing function

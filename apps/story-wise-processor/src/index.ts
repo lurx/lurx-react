@@ -3,6 +3,7 @@ import cors from 'cors';
 import { getConfig } from './config';
 import { StorageClient } from './r2-client';
 import { VideoProcessor } from './processor';
+import { jobStore } from './job-store';
 
 const config = getConfig();
 const app = express();
@@ -72,7 +73,7 @@ app.get('/health', async (_req, res) => {
 	}
 });
 
-// Process video endpoint
+// Process video endpoint - now async, returns job ID immediately
 app.post('/process', authenticate, async (req, res) => {
 	try {
 		const {
@@ -88,24 +89,80 @@ app.post('/process', authenticate, async (req, res) => {
 
 		console.log('[API] Process request:', { sessionId, segmentDuration, outputFormat, quality });
 
-		const result = await processor.process({
-			sessionId,
-			segmentDuration,
-			outputFormat,
-			quality,
-		});
+		// Create job and return immediately
+		const job = jobStore.create(sessionId);
 
-		res.json({
-			...result,
-			segments: result.segments.map((seg) => ({
-				...seg,
-				// Don't include internal key, client will use download endpoint
-			})),
+		// Process in background
+		(async () => {
+			try {
+				jobStore.updateStatus(job.id, 'processing');
+
+				const result = await processor.process({
+					sessionId,
+					segmentDuration,
+					outputFormat,
+					quality,
+					onProgress: (progress) => {
+						jobStore.updateProgress(job.id, progress);
+					},
+				});
+
+				jobStore.setResult(job.id, {
+					success: true,
+					duration: result.duration,
+					totalSegments: result.totalSegments,
+					segments: result.segments.map((seg) => ({
+						index: seg.index,
+						startTime: seg.startTime,
+						endTime: seg.endTime,
+						duration: seg.duration,
+					})),
+				});
+			} catch (error) {
+				console.error('[API] Process error:', error);
+				jobStore.setError(job.id, error instanceof Error ? error.message : 'Unknown error');
+			}
+		})();
+
+		// Return job ID immediately
+		res.status(202).json({
+			jobId: job.id,
+			status: 'pending',
+			message: 'Processing started',
 		});
 	} catch (error) {
 		console.error('[API] Process error:', error);
 		res.status(500).json({
-			error: 'Processing failed',
+			error: 'Failed to start processing',
+			message: error instanceof Error ? error.message : 'Unknown error',
+		});
+	}
+});
+
+// Get job status endpoint
+app.get('/jobs/:jobId', authenticate, async (req, res) => {
+	try {
+		const { jobId } = req.params;
+		const job = jobStore.get(jobId);
+
+		if (!job) {
+			return res.status(404).json({ error: 'Job not found' });
+		}
+
+		res.json({
+			jobId: job.id,
+			sessionId: job.sessionId,
+			status: job.status,
+			progress: job.progress,
+			result: job.result,
+			error: job.error,
+			createdAt: job.createdAt.toISOString(),
+			updatedAt: job.updatedAt.toISOString(),
+		});
+	} catch (error) {
+		console.error('[API] Job status error:', error);
+		res.status(500).json({
+			error: 'Failed to get job status',
 			message: error instanceof Error ? error.message : 'Unknown error',
 		});
 	}

@@ -1,5 +1,6 @@
 import './global.css';
 import { StoryWiseProvider } from './context/story-wise-context';
+import { Header } from './components/header/header';
 
 export const metadata = {
 	title: 'Story Wise - Split videos into 45s clips',
@@ -13,8 +14,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" data-theme="dark">
-			<body>
+		<html lang="en" data-theme="dark" suppressHydrationWarning>
+			<body className="min-h-screen flex flex-col">
+				<Header />
 				<StoryWiseProvider>{children}</StoryWiseProvider>
 			</body>
 		</html>

@@ -9,6 +9,12 @@ export interface ProcessingOptions {
 	segmentDuration: number;
 	outputFormat: 'mp4' | 'webm';
 	quality: 'high' | 'medium' | 'low';
+	onProgress?: (progress: {
+		currentSegment: number;
+		totalSegments: number;
+		percent: number;
+		stage: 'downloading' | 'processing' | 'uploading';
+	}) => void;
 }
 
 export interface ProcessingResult {
@@ -165,7 +171,7 @@ export class VideoProcessor {
 	 * Process a video into segments
 	 */
 	async process(options: ProcessingOptions): Promise<ProcessingResult> {
-		const { sessionId, segmentDuration, outputFormat, quality } = options;
+		const { sessionId, segmentDuration, outputFormat, quality, onProgress } = options;
 		const workDir = join(this.config.processing.tempDir, sessionId);
 
 		console.log('[Processor] Starting processing:', { sessionId, segmentDuration, outputFormat, quality });
@@ -186,6 +192,9 @@ export class VideoProcessor {
 			const inputExt = inputKey.split('.').pop() || 'mp4';
 			const inputPath = join(workDir, `input.${inputExt}`);
 
+			// Report download progress
+			onProgress?.({ currentSegment: 0, totalSegments: 0, percent: 0, stage: 'downloading' });
+
 			console.log('[Processor] Downloading input:', inputKey);
 			const inputBuffer = await this.storage.downloadFile(inputKey);
 			await writeFile(inputPath, inputBuffer);
@@ -204,12 +213,20 @@ export class VideoProcessor {
 				const segDuration = Math.min(segmentDuration, duration - startTime);
 				const outputPath = join(workDir, `segment_${String(i).padStart(3, '0')}.${outputFormat}`);
 
+				// Report processing progress
+				const processingPercent = Math.round(((i * 2) / (totalSegments * 2)) * 100);
+				onProgress?.({ currentSegment: i + 1, totalSegments, percent: processingPercent, stage: 'processing' });
+
 				console.log(`[Processor] Processing segment ${i + 1}/${totalSegments}...`);
 				await this.processSegment(inputPath, outputPath, startTime, segDuration, options);
 
 				// Read and upload segment
 				const segmentData = await readFile(outputPath);
 				const segmentKey = keys.segmentKey(i, outputFormat);
+
+				// Report uploading progress
+				const uploadingPercent = Math.round(((i * 2 + 1) / (totalSegments * 2)) * 100);
+				onProgress?.({ currentSegment: i + 1, totalSegments, percent: uploadingPercent, stage: 'uploading' });
 
 				console.log(`[Processor] Uploading segment ${i + 1}...`);
 				await this.storage.uploadFile(
@@ -233,6 +250,9 @@ export class VideoProcessor {
 			// Clean up input file and work directory
 			await unlink(inputPath);
 			await rm(workDir, { recursive: true, force: true });
+
+			// Report completion
+			onProgress?.({ currentSegment: totalSegments, totalSegments, percent: 100, stage: 'uploading' });
 
 			console.log('[Processor] Processing complete:', { totalSegments });
 
