@@ -6,8 +6,10 @@ Add these in **GitHub** → **Settings** → **Secrets and variables** → **Act
 
 | Secret name             | Where to get it                                                                 | Used by          |
 |-------------------------|----------------------------------------------------------------------------------|------------------|
-| `RAILWAY_TOKEN`         | Railway → your project → **Settings** → **Tokens** → **Create Project Token**   | `deploy-processor.yml` |
-| `RAILWAY_SERVICE_ID`    | Railway → your **processor service** → **Settings** (or from the service URL). Required when the project has multiple services. | `deploy-processor.yml` |
+| `RAILWAY_TOKEN`         | **Project Token** from the Railway project that contains the processor (Railway → that project → **Settings** → **Tokens** → Create Project Token). If the token is from a different project, deploys will go to the wrong place or fail. | `deploy-processor.yml` |
+| `RAILWAY_SERVICE_ID`    | Railway → the service that runs **story-wise-processor** → **Settings** (or from the service URL). In this project that service is named **"story-wise"**. | `deploy-processor.yml` |
+
+**If CI deploys to the wrong place:** (1) Ensure `RAILWAY_TOKEN` is a **Project Token** from the same Railway project that contains the "story-wise" service. (2) Ensure `RAILWAY_SERVICE_ID` is that service’s ID (from its Settings or URL). (3) In the workflow run, check the `railway up --verbose` logs to see which project/service/environment is targeted.
 
 ---
 
@@ -38,7 +40,7 @@ Optional (not in your .env.railway): `PROCESSING_PRESET`, `TEMP_DIR`.
 
 ### For GitHub Secrets (Actions)
 
-Both are used by `deploy-processor.yml` (required if the project has multiple Railway services):
+Both are used by `deploy-processor.yml`. Target the service that runs the processor (named "story-wise" in this project):
 
 ```
 RAILWAY_TOKEN

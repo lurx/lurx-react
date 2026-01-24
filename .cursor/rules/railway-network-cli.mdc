@@ -1,0 +1,31 @@
+---
+description: When agent terminal has no network, run CLI in user's terminal and read output
+alwaysApply: true
+---
+
+# Railway and other network-dependent CLIs
+
+The agent's run terminal is sandboxed and has **no network** (DNS/outbound often fail). For Railway CLI and similar tools, use the user's Cursor integrated terminal and read the output.
+
+## When to use
+
+- A command fails with `dns error`, `failed to lookup`, `Network access: Blocked`, or `Connection` errors.
+- The command needs outbound access (e.g. `railway`, `curl` to external APIs, `npm publish`).
+
+## Flow
+
+1. **Tell the user** to run the command in their **Cursor integrated terminal** (not the agent's).
+   - For Railway:  
+     `./scripts/railway-status.sh`  
+     (or from `apps/story-wise-processor`: `railway status` and `railway service status --all`.)
+   - For other CLIs: give the exact command and where to run it (e.g. repo root or app dir).
+
+2. **Read the output** from Cursor's terminal capture:
+   - List `~/.cursor/projects/` to find the project folder (name usually reflects the workspace path, e.g. `Users-rotemhorovitz-Projects-lurx-react`).
+   - In that project folder, open `terminals/*.txt` and read the most recently modified file that contains the command's output.
+
+3. **Use the output** (e.g. to interpret Railway services, debug, or continue the task).
+
+## Script
+
+- `./scripts/railway-status.sh` — runs `railway whoami`, `railway status`, and `railway service status --all` from `apps/story-wise-processor`. Run from repo root. Requires `railway` CLI and `railway link` in that app.
