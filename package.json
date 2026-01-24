@@ -2,7 +2,10 @@
 	"name": "@lurx-react/source",
 	"version": "0.0.0",
 	"license": "MIT",
-	"scripts": {},
+	"scripts": {
+		"check:before-push": "bash scripts/check-before-push.sh",
+		"prepare": "husky"
+	},
 	"private": true,
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.971.0",
@@ -63,6 +66,7 @@
 		"eslint-plugin-import": "2.31.0",
 		"eslint-plugin-jsx-a11y": "6.10.1",
 		"eslint-plugin-playwright": "^1.6.2",
+		"husky": "^9.1.7",
 		"eslint-plugin-react": "7.35.0",
 		"eslint-plugin-react-hooks": "5.0.0",
 		"identity-obj-proxy": "^3.0.0",
