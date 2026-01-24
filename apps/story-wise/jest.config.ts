@@ -1,4 +1,4 @@
-export default {
+const jestConfig = {
 	displayName: 'story-wise',
 	preset: '../../jest.preset.js',
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
@@ -18,3 +18,5 @@ export default {
 	coverageDirectory: '../../coverage/apps/story-wise',
 	testPathIgnorePatterns: ['/node_modules/', '/.next/'],
 };
+
+export default jestConfig;

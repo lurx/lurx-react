@@ -9,7 +9,11 @@ import {
 	PROCESSING_STATES,
 	SERVICE_STATUS_REASONS,
 } from '../constants/video-processing.constants';
-import type { ExtractObjectValues, Nullable } from './utility-types.types';
+import type {
+	ExtractObjectValues,
+	Nullable,
+	Prettify,
+} from './utility-types.types';
 
 /**
  * Processing status states
@@ -88,10 +92,12 @@ export interface ServiceStatus {
 /**
  * Combined context type
  */
-export type StoryWiseContextType = StoryWiseState &
-	StoryWiseActions & {
-		serviceStatus: ServiceStatus;
-	};
+export type StoryWiseContextType = Prettify<
+	StoryWiseState &
+		StoryWiseActions & {
+			serviceStatus: ServiceStatus;
+		}
+>;
 
 /** Re-export for consumers that import from types. */
 export { DEFAULT_SEGMENT_DURATION } from '../constants/video-processing.constants';

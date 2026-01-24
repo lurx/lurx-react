@@ -9,7 +9,8 @@
 			"executor": "@nx/next:build",
 			"options": {
 				"outputPath": "dist/apps/story-wise"
-			}
+			},
+			"dependsOn": ["test"]
 		},
 		"serve": {
 			"executor": "@nx/next:server",
