@@ -1,0 +1,33 @@
+# Deploy story-wise-processor to Railway when it changes on main.
+#
+# Setup:
+# 1. In Railway: Project → Settings → Tokens → Create Project Token.
+# 2. In GitHub: Repo → Settings → Secrets and variables → Actions:
+#    - RAILWAY_TOKEN = the project token
+#    - (Optional) RAILWAY_SERVICE_ID = service id if the project has multiple services
+#
+# The Project Token must be from the Railway project that hosts the processor.
+# Root for the service in Railway should be: apps/story-wise-processor
+
+name: Deploy processor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/story-wise-processor/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          cd apps/story-wise-processor
+          npx -y @railway/cli up --detach
+        continue-on-error: false
