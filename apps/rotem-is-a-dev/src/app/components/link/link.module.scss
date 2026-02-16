@@ -1,0 +1,14 @@
+@use 'mixins/spacing' as *;
+
+.link {
+	color: var(--color-accent);
+	text-decoration: none;
+	transition: color 0.2s;
+  display: flex;
+  gap: spacing(0.5);
+  align-items: center;
+
+	&:hover {
+		color: var(--color-accent-hover);
+	}
+}

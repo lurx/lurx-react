@@ -2,5 +2,6 @@
 	"prettier.configPath": "./.prettierrc",
 	"nxConsole.generateAiAgentRules": true,
 	"typescript.preferences.preferTypeOnlyAutoImports": true,
-	"typescript.suggest.autoImports": true
+	"typescript.suggest.autoImports": true,
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
