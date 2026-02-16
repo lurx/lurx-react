@@ -1,0 +1,7 @@
+@use 'mixins/spacing' as *;
+
+.contactGrid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: spacing(1) spacing(3);
+}

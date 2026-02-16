@@ -1,0 +1,18 @@
+@use 'mixins/spacing' as *;
+
+.appHeader {
+  padding-block: spacing(2);
+  padding-inline: spacing(2);
+  background: var(--color-bg);
+  position: sticky;
+  inset-block-start: 0;
+  box-shadow: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease;
+  z-index: 1;
+
+  &.scrolled {
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 12px rgb(0 0 0 / 0.15);
+  }
+}

@@ -1,26 +1,33 @@
-import type { PropsWithChildren } from 'react';
-import { AppProvider } from './context/app-context';
-import { firaCode, inter, poppins } from './fonts';
-import './globals.scss';
-import { InnerLayout } from './layout/inner-layout';
-import { VanguardisWrapper } from './vanguardis-wrapper';
+import { ThemeProvider } from '@/app/context/theme.context';
+import './styles/global.scss';
+
+
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { AppHeader } from './components/app-header';
+config.autoAddCss = false
 
 export const metadata = {
-	title: 'Rotem is a Dev',
-	description: 'Site under construction (but pixel perfect)',
+	title: 'Rotem Horovitz',
 };
 
-export default function RootLayout({ children }: PropsWithChildren) {
+const noFlashScript = `(function(){var t=localStorage.getItem('theme')||((window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');if(t==='light')document.documentElement.setAttribute('data-theme','light');})();`;
+
+export default function RootLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	return (
-		<html lang="en">
-			<body
-				className={`${inter.variable} ${poppins.variable} ${firaCode.variable}`}
-			>
-				<VanguardisWrapper>
-					<AppProvider>
-						<InnerLayout>{children}</InnerLayout>
-					</AppProvider>
-				</VanguardisWrapper>
+		<html lang="en" suppressHydrationWarning>
+			<head>
+				<script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
+			</head>
+			<body>
+				<ThemeProvider>
+          <AppHeader />
+					{children}
+				</ThemeProvider>
 			</body>
 		</html>
 	);

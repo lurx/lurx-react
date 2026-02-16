@@ -12,6 +12,9 @@ const nextConfig = {
 		svgr: false,
 	},
 	transpilePackages: ['@lurx-react/vanguardis'],
+	sassOptions: {
+		includePaths: ['./src/app/styles'],
+	},
 	webpack: (config, { isServer }) => {
 		// Handle SCSS imports and library resolution
 		config.resolve.alias = {

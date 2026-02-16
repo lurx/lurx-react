@@ -1,0 +1,5 @@
+@use 'variables' as *;
+
+@function spacing($size: 1) {
+	@return calc(#{$size} * var(--spacing-unit));
+}
