@@ -1,0 +1,8 @@
+@use 'mixins/spacing' as *;
+
+.demoContainer {
+	position: relative;
+	padding: spacing(1);
+	width: var(--demo-container-width, 100%);
+	height: var(--demo-container-height, 100%);
+}

@@ -1,6 +1,5 @@
 'use client';
 
-import { Card } from '@/app/components/card';
 import { FaIcon } from '@/app/components/fa-icon';
 import { Flex } from '@/app/components/flex/flex.component';
 import { useCV } from '@/app/context/cv.context';
@@ -22,7 +21,7 @@ export const Skills = () => {
 	const { skills } = useCV();
 
 	return (
-		<Card id="skills">
+		<Flex direction="column" id="skills">
 			<h3>Skills</h3>
 			<div className={styles.tags}>
 				{skills.map(skill => (
@@ -32,7 +31,7 @@ export const Skills = () => {
 					/>
 				))}
 			</div>
-		</Card>
+		</Flex>
 	);
 };
 

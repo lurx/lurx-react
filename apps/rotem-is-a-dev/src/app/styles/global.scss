@@ -55,8 +55,6 @@ body {
   }
 
   @include media('desktop') {
-    flex-direction: row;
-    align-items: flex-start;
     max-width: 1100px;
   }
 }

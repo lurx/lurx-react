@@ -60,6 +60,10 @@ export const generateCvPdf = async (): Promise<void> => {
 				}
 			});
 
+			// Hide the portfolio section — content is placeholder and not ready for print.
+			const portfolio = clonedElement.querySelector<HTMLElement>('#portfolio');
+			if (portfolio) portfolio.style.display = 'none';
+
 			// Hide Show More / Show Less toggle buttons so they don't appear in the PDF.
 			clonedElement.querySelectorAll<HTMLButtonElement>('button').forEach(btn => {
 				const text = btn.textContent ?? '';

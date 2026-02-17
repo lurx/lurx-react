@@ -1,6 +1,6 @@
 'use client';
 
-import { Card } from '@/app/components/card';
+import { Flex } from '@/app/components/flex';
 import { useCV } from '@/app/context/cv.context';
 import styles from './languages.module.scss';
 
@@ -8,7 +8,7 @@ export const Languages = () => {
 	const { languages } = useCV();
 
 	return (
-		<Card id="languages">
+		<Flex direction="column" id="languages">
 			<h3>Languages</h3>
 			<div className={styles.tags}>
 				{languages.map(language => (
@@ -20,6 +20,6 @@ export const Languages = () => {
 					</span>
 				))}
 			</div>
-		</Card>
+		</Flex>
 	);
 };

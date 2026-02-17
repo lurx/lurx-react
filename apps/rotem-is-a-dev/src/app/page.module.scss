@@ -1,8 +1,7 @@
 @use 'mixins/spacing' as *;
 @use 'mixins/media' as *;
 
-.left,
-.right {
+.columns {
   display: flex;
   flex-direction: column;
   gap: spacing(2);
@@ -11,11 +10,32 @@
   @include media('tablet') {
     gap: spacing(3);
   }
+
+  @include media('desktop') {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  width: 100%;
+
+
+  @include media('tablet') {
+    gap: spacing(3);
+  }
 }
 
 .right {
+  align-self: stretch;
+  height: 100%;
   @include media('desktop') {
     flex: 0 0 300px;
+
   }
 }
 

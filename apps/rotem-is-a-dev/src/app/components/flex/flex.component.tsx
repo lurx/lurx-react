@@ -6,26 +6,30 @@ type FlexDirection = 'row' | 'column';
 type FlexWrap = 'nowrap' | 'wrap';
 type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 type FlexAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-type FlexGap = 'none' | 'small' | 'medium' | 'large';
+type FlexGap = 'none' | 'small' | 'medium' | 'large' | 'xlarge';
 
 interface FlexProps {
-  tag?: React.ElementType;
+	tag?: React.ElementType;
 	direction?: FlexDirection;
 	wrap?: FlexWrap;
 	justify?: FlexJustify;
 	align?: FlexAlign;
 	gap?: FlexGap;
+	id?: string;
 	className?: string;
+  style?: React.CSSProperties;
 }
 
 export const Flex = ({
-  tag = "div",
+	id,
+	tag = 'div',
 	direction = 'row',
 	wrap = 'nowrap',
 	justify = 'start',
 	align = 'stretch',
 	gap = 'none',
 	className,
+  style,
 	children,
 }: PropsWithChildren<FlexProps>) => {
 	const flexDefaults = {
@@ -56,5 +60,13 @@ export const Flex = ({
 	];
 
 	const Tag = tag || 'div';
-	return <Tag className={classNames(...classNamesList)}>{children}</Tag>;
+	return (
+		<Tag
+			id={id}
+			className={classNames(...classNamesList)}
+      style={style}
+		>
+			{children}
+		</Tag>
+	);
 };

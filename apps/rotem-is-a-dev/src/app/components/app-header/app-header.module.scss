@@ -8,7 +8,7 @@
   inset-block-start: 0;
   box-shadow: none;
   transition: background 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease;
-  z-index: 1;
+  z-index: 5;
 
   &.scrolled {
     background: color-mix(in srgb, var(--color-bg) 70%, transparent);

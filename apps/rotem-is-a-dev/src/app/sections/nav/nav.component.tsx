@@ -1,5 +1,4 @@
 'use client';
-import { Card } from '@/app/components/card';
 import { FaIcon } from '@/app/components/fa-icon';
 import { Flex } from '@/app/components/flex/flex.component';
 import { Link } from '@/app/components/link';
@@ -35,6 +34,12 @@ const navItems: NavItem[] = [
 		label: 'Languages',
 		href: '#languages',
 		iconName: 'language',
+		iconGroup: 'fas',
+	},
+	{
+		label: 'Portfolio',
+		href: '#portfolio',
+		iconName: 'laptop-code',
 		iconGroup: 'fas',
 	},
 

@@ -1,0 +1,49 @@
+@use 'mixins/spacing' as *;
+@use 'mixins/media' as *;
+
+.grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: spacing(2);
+
+	@include media('tablet') {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@include media('desktop') {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(1);
+}
+
+.name {
+	font-weight: 600;
+	font-size: 0.95rem;
+	color: var(--color-text) !important;
+}
+
+.description {
+	font-size: 0.875rem;
+	line-height: 1.5;
+	flex: 1;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: spacing(0.5);
+}
+
+.tag {
+	display: inline-block;
+	padding: spacing(0.25) spacing(1);
+	background-color: var(--color-border);
+	border-radius: 100px;
+	font-size: 0.75rem;
+	color: var(--color-text-muted);
+}

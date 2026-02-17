@@ -18,6 +18,7 @@
 		"animejs": "^4.0.2",
 		"chance": "^1.1.12",
 		"classnames": "^2.5.1",
+		"embla-carousel-react": "^8.6.0",
 		"es-toolkit": "1.39.10",
 		"file-saver": "^2.0.5",
 		"fluent-ffmpeg": "^2.1.3",
