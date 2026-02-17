@@ -82,4 +82,7 @@
 	&-large {
 		--gap: #{spacing(3)};
 	}
+  &-xlarge {
+    --gap: #{spacing(4)};
+  }
 }
