@@ -1,0 +1,35 @@
+
+@use 'mixins/spacing' as *;
+
+.job + .job {
+	margin-top: spacing(3);
+	padding-top: spacing(3);
+	border-top: 1px solid var(--color-border);
+}
+
+// The Collapsible wraps children in an extra <div>, so .job + .job never
+// fires between the first (always-visible) job and the first job inside
+// the Collapsible. The jobs are grandchildren of the Collapsible Flex, so
+// we use a descendant combinator (space) instead of a child combinator (>).
+.job + * .job:first-child {
+	margin-top: spacing(3);
+	padding-top: spacing(3);
+	border-top: 1px solid var(--color-border);
+}
+
+.jobTitle {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--color-text) !important;
+}
+
+.jobMeta {
+	font-size: 0.85rem;
+	margin-top: spacing(0.5);
+  font-style: italic;
+}
+
+.jobDescription {
+	margin-top: spacing(1.5);
+	margin-bottom: spacing(1.5);
+}

@@ -1,1 +1,0 @@
-export { FaIcon } from './fa-icon.component';

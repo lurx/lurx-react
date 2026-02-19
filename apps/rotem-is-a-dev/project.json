@@ -4,14 +4,12 @@
 	"sourceRoot": "apps/rotem-is-a-dev/src",
 	"projectType": "application",
 	"tags": ["ui"],
-	"implicitDependencies": ["vanguardis"],
 	"targets": {
 		"build": {
 			"executor": "@nx/next:build",
 			"options": {
 				"outputPath": "dist/apps/rotem-is-a-dev"
-			},
-			"dependsOn": ["vanguardis:build"]
+			}
 		},
 		"serve": {
 			"executor": "@nx/next:server",
