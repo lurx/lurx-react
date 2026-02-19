@@ -1,0 +1,62 @@
+.socialBar {
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid var(--border);
+  background-color: var(--surface);
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  flex: 1;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.iconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 100%;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 16px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  border-left: 1px solid var(--border);
+}
+
+.username {
+  font-size: 13px;
+  color: var(--muted);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.githubIcon {
+  font-size: 16px;
+}
