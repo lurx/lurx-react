@@ -1,0 +1,288 @@
+.widget {
+	position: relative;
+	background: linear-gradient(
+		152deg,
+		rgba(23, 85, 83, 0.7) 1.7%,
+		rgba(67, 217, 173, 0.091) 81.8%
+	);
+	backdrop-filter: blur(32px);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	box-shadow: inset 0px 2px 0px 0px rgba(255, 255, 255, 0.3);
+
+	// Corner screws
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--border);
+		border: 1px solid #2a3f55;
+		z-index: 1;
+	}
+
+	&::before {
+		top: 12px;
+		left: 12px;
+	}
+
+	&::after {
+		top: 12px;
+		right: 12px;
+	}
+}
+
+.bottomScrews {
+	position: absolute;
+	bottom: 12px;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 12px;
+	pointer-events: none;
+
+	span {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--border);
+		border: 1px solid #2a3f55;
+		display: block;
+	}
+}
+
+.body {
+	display: flex;
+	gap: 24px;
+	align-items: flex-start;
+}
+
+// ── Game board (left column) ────────────────────────────────────────────────
+
+.gridWrapper {
+	position: relative;
+	flex-shrink: 0;
+	background-color: #1d293d;
+	border-radius: 8px;
+	box-shadow: inset 1px 5px 11px 0px rgba(2, 18, 27, 0.71);
+	width: 240px;
+	height: 400px;
+	overflow: hidden;
+}
+
+.gameCanvas {
+	display: block;
+	width: 240px;
+	height: 400px;
+}
+
+.startButton {
+	position: absolute;
+	left: 50%;
+	top: 75%;
+	transform: translate(-50%, 0);
+	background-color: var(--orange);
+	color: var(--bg);
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 450;
+	font-family: inherit;
+	transition: opacity 0.2s;
+	white-space: nowrap;
+
+	&:hover {
+		opacity: 0.85;
+	}
+}
+
+// ── Controls panel (right column) ───────────────────────────────────────────
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	flex: 0 0 180px;
+	width: 180px;
+	align-self: stretch;
+}
+
+.controlsTop {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.gameNav {
+	background-color: #1d293d;
+	border-radius: 8px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+	width: 100%;
+}
+
+.navComments {
+	width: 100%;
+}
+
+.comment {
+	font-size: 14px;
+	color: var(--text);
+	line-height: 1.4;
+}
+
+.foodSection {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: flex-start;
+	padding: 0 10px;
+	width: 100%;
+}
+
+// ── Arrow keys ───────────────────────────────────────────────────────────────
+
+.arrowKeys {
+	display: grid;
+	grid-template-areas:
+		'. up .'
+		'left down right';
+	grid-template-columns: repeat(3, 48px);
+	gap: 8px;
+}
+
+.arrowKey {
+	width: 48px;
+	height: 36px;
+	background-color: #0a0a0a;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	color: var(--muted);
+	transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+
+	&.up {
+		grid-area: up;
+	}
+
+	&.left {
+		grid-area: left;
+	}
+
+	&.down {
+		grid-area: down;
+	}
+
+	&.right {
+		grid-area: right;
+	}
+
+	&.pressed {
+		background-color: #1e2d3d;
+		border-color: var(--teal);
+		color: var(--teal);
+	}
+}
+
+// ── Food dots ────────────────────────────────────────────────────────────────
+
+.foodDots {
+	display: grid;
+	grid-template-columns: repeat(5, 21px);
+	gap: 8px;
+}
+
+.foodDot {
+	width: 21px;
+	height: 21px;
+	flex-shrink: 0;
+	transition: opacity 0.2s;
+
+	&.eaten {
+		opacity: 0.3;
+	}
+}
+
+// ── Skip button ──────────────────────────────────────────────────────────────
+
+.skipButton {
+	background: transparent;
+	border: 1px solid var(--text);
+	color: var(--text);
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: inherit;
+	transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.1);
+	}
+}
+
+// ── In-board game state overlay ──────────────────────────────────────────────
+
+.boardOverlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	pointer-events: none;
+}
+
+.overlayBar {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 96px;
+	background-color: rgba(1, 22, 39, 0.84);
+	box-shadow: inset 1px 5px 11px 0px rgba(2, 18, 27, 0.71);
+}
+
+.overlayTitle {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	font-size: 24px;
+	line-height: 1.4;
+	color: var(--cyan);
+	font-weight: 450;
+}
+
+.overlayAction {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	font-size: 14px;
+	color: var(--muted);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+	font-weight: 450;
+	pointer-events: auto;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
