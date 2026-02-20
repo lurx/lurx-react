@@ -1,0 +1,127 @@
+.section {
+	display: flex;
+	flex-direction: column;
+}
+
+.sectionHeader {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 24px;
+	cursor: pointer;
+	color: var(--text);
+	font-size: 16px;
+	line-height: 24px;
+	user-select: none;
+	transition: background-color 0.15s;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.04);
+	}
+}
+
+.sectionChevron {
+	flex-shrink: 0;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+.sectionItems {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+}
+
+.folderRow {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 2px 12px;
+	cursor: pointer;
+	color: var(--text);
+	font-size: 16px;
+	line-height: 24px;
+	user-select: none;
+	transition: background-color 0.15s;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.04);
+	}
+}
+
+.folderChevron {
+	flex-shrink: 0;
+	font-size: 12px;
+	color: var(--muted);
+}
+
+.folderIcon {
+	flex-shrink: 0;
+	color: var(--orange);
+	font-size: 16px;
+}
+
+.folderLabel {
+	flex: 1;
+}
+
+.nestedItems {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-left: 28px;
+}
+
+.fileRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 2px 12px;
+	cursor: pointer;
+	color: var(--text);
+	font-size: 16px;
+	line-height: 24px;
+	user-select: none;
+	transition: background-color 0.15s;
+
+	&.activeFile {
+		background-color: rgba(248, 250, 252, 0.06);
+	}
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.04);
+	}
+}
+
+.fileIcon {
+	flex-shrink: 0;
+	font-size: 14px;
+	color: var(--teal);
+}
+
+.fileLabel {
+	flex: 1;
+}
+
+// ─── Contacts ──────────────────────────────────────────────────────────────────
+
+.contactRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 2px 12px;
+	font-size: 16px;
+	line-height: 24px;
+	color: var(--muted);
+}
+
+.contactIcon {
+	flex-shrink: 0;
+	font-size: 14px;
+	color: var(--muted);
+}
+
+.contactLabel {
+	font-size: 14px;
+}
