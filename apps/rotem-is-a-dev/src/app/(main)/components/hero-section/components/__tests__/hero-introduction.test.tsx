@@ -14,7 +14,7 @@ describe('HeroIntroduction', () => {
 
 	it('renders the role line', () => {
 		render(<HeroIntroduction />);
-		expect(screen.getByText(/Front-end developer/)).toBeInTheDocument();
+		expect(screen.getByText(/front-end developer/)).toBeInTheDocument();
 	});
 
 	it('renders the GitHub profile link', () => {

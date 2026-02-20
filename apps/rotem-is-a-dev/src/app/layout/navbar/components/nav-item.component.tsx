@@ -1,8 +1,8 @@
+import { toCodeLike } from '@/app/utils/to-code-like.util';
 import classNames from 'classnames';
 import { isString } from 'es-toolkit';
 import styles from '../navbar.module.scss';
 import type { NavItemProps } from '../navbar.types';
-import { toCodeLike } from '@/app/utils/to-code-like.util';
 
 export const NavItem = ({
 	label,
@@ -18,7 +18,7 @@ export const NavItem = ({
 	const ariaLabel = hideLabel && isString(label) ? label : undefined;
 
 	const formattedLabel = isString(label)
-		? toCodeLike(label, { prefix: '_', convertCase: 'snake_case' })
+		? toCodeLike(label, { prefix: '_', convertCase: 'kebab-case' })
 		: label;
 
     if (!enabled) {

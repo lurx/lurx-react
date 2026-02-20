@@ -7,10 +7,15 @@ describe('AboutEditor', () => {
 		expect(screen.getByLabelText('Bio content')).toBeInTheDocument();
 	});
 
-	it('renders 16 line numbers', () => {
+	it('renders sequential line numbers starting at 1', () => {
 		render(<AboutEditor />);
-		expect(screen.getByText('1')).toBeInTheDocument();
-		expect(screen.getByText('16')).toBeInTheDocument();
+		const lineNumbers = screen
+			.getAllByRole('generic')
+			.filter((el) => el.className.split(' ').includes('lineNumber'));
+		expect(lineNumbers[0]).toHaveTextContent('1');
+		lineNumbers.forEach((el, index) => {
+			expect(el).toHaveTextContent(String(index + 1));
+		});
 	});
 
 	it('renders the JSDoc opening comment', () => {
