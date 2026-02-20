@@ -1,110 +1,125 @@
 .hero {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 48px;
-  gap: 146px;
-  overflow: hidden;
-
+	flex: 1;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 48px;
+	gap: 146px;
+	overflow: hidden;
 }
 
-.bgBlurs {
-  position: absolute;
-  left: 46%;
-  top: 50%;
-  transform: translateY(-55%);
-  width: 780px;
-  height: 742px;
-  pointer-events: none;
-  z-index: 0;
+.heroBlurs {
+	position: absolute;
+	left: 46%;
+	top: 50%;
+	transform: translateY(-55%);
+	width: 780px;
+	height: 742px;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.greenBlur,
+.blueBlur {
+	position: absolute;
+}
+
+.greenBlur {
+	top: 0;
+	left: 0;
+}
+
+.blueBlur {
+	left: 50%;
+	top: 50%;
+	transform: translate(-20%, -20%);
 }
 
 .left,
 .right {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 }
 
 .left {
-  flex: 0 1 504px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+	flex: 0 1 504px;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
 }
 
 .greeting {
-  font-size: 18px;
-  color: var(--muted);
-  margin-bottom: 8px;
+	font-size: 18px;
+	color: var(--muted);
+	margin-bottom: 8px;
 }
 
 .name {
-  font-size: clamp(36px, 4vw, 60px);
-  font-weight: 400;
-  color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1.1;
+	font-size: clamp(36px, 4vw, 60px);
+	font-weight: 400;
+	color: var(--text);
+	margin-bottom: 12px;
+	line-height: 1.1;
 }
 
 .role {
-  font-size: clamp(20px, 2vw, 30px);
-  color: var(--keyword);
-  margin-bottom: 32px;
+	font-size: clamp(20px, 2vw, 30px);
+	color: var(--keyword);
+	margin-bottom: 32px;
 }
 
 .codeBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .codeLine {
-  font-size: 14px;
-  line-height: 1.8;
+	font-size: 14px;
+	line-height: 1.8;
 }
 
 .commentText {
-  color: var(--muted);
+	color: var(--muted);
 }
 
 .constLine {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	gap: 0;
+	flex-wrap: wrap;
 }
 
 .keyword {
-  color: var(--keyword);
+	color: var(--keyword);
 }
 
 .varName {
-  color: var(--cyan);
+	color: var(--cyan);
 }
 
 .equals {
-  color: var(--text);
-  margin: 0 4px;
+	color: var(--text);
+	margin: 0 4px;
 }
 
 .stringValue {
-  color: var(--pink);
+	color: var(--pink);
 
-  &:hover {
-    text-decoration: underline;
-  }
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 .hidden {
-  visibility: hidden;
-  pointer-events: none;
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .right {
-  flex: 0 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	flex: 0 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
