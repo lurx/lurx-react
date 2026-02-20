@@ -1,19 +1,18 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { GRID_COLS, GRID_ROWS, INITIAL_FOOD_COUNT, useSnakeGame } from './hooks/use-snake-game.hook';
+import {
+	GRID_COLS,
+	GRID_ROWS,
+	INITIAL_FOOD_COUNT,
+	useSnakeGame,
+} from './hooks/use-snake-game.hook';
 import styles from './snake-game.module.scss';
 import type { Position } from './snake-game.types';
+import { GameControls } from './components/game-controls.component';
 
 const CELL = 240 / GRID_COLS; // 16px per cell
 const SNAKE_COLOR = '#43d9ad';
-
-const KEY_LABELS: Record<string, string> = {
-	ArrowUp: '▲',
-	ArrowDown: '▼',
-	ArrowLeft: '◀',
-	ArrowRight: '▶',
-};
 
 interface SnakeGameProps {
 	onWin: () => void;
@@ -22,7 +21,7 @@ interface SnakeGameProps {
 
 export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const { snake, food, gameState, activeKey, startGame, resetGame } =
+	const { snake, food, gameState, startGame, resetGame } =
 		useSnakeGame();
 
 	const totalFood = INITIAL_FOOD_COUNT;
@@ -96,23 +95,6 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 		}
 	}, [snake, food]);
 
-	const foodDots = Array.from({ length: totalFood }, (_, i) => (
-		<svg
-			key={i}
-			xmlns="http://www.w3.org/2000/svg"
-			width="21"
-			height="21"
-			viewBox="0 0 21 21"
-			fill="none"
-			className={`${styles.foodDot}${i >= displayedRemaining ? ` ${styles.eaten}` : ''}`}
-			aria-hidden="true"
-		>
-			<circle opacity="0.1" cx="10.3456" cy="10.3456" r="10.3456" fill="#46ECD5" />
-			<circle opacity="0.2" cx="10.3456" cy="10.3456" r="7.34558" fill="#46ECD5" />
-			<circle cx="10.3457" cy="10.3456" r="4" fill="#46ECD5" />
-		</svg>
-	));
-
 	return (
 		<div className={styles.widget}>
 			<div className={styles.body}>
@@ -164,61 +146,11 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 						</div>
 					)}
 				</div>
-
-				<div className={styles.controls}>
-					<div className={styles.controlsTop}>
-						<div className={styles.gameNav}>
-							<div className={styles.navComments}>
-								<p className={styles.comment}>{'// use keyboard'}</p>
-								<p className={styles.comment}>{'// arrows to play'}</p>
-							</div>
-							<div
-								className={styles.arrowKeys}
-								aria-label="Arrow key controls"
-							>
-								{(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const).map(
-									(key) => {
-										const dirClass =
-											key === 'ArrowUp'
-												? styles.up
-												: key === 'ArrowDown'
-													? styles.down
-													: key === 'ArrowLeft'
-														? styles.left
-														: styles.right;
-										return (
-											<div
-												key={key}
-												className={`${styles.arrowKey} ${dirClass}${activeKey === key ? ` ${styles.pressed}` : ''}`}
-												aria-label={key.replace('Arrow', '')}
-											>
-												{KEY_LABELS[key]}
-											</div>
-										);
-									},
-								)}
-							</div>
-						</div>
-
-						<div className={styles.foodSection}>
-							<p className={styles.comment}>{'// food left'}</p>
-							<div
-								className={styles.foodDots}
-								aria-label={`${displayedRemaining} food items remaining`}
-							>
-								{foodDots}
-							</div>
-						</div>
-					</div>
-
-					<button
-						className={styles.skipButton}
-						onClick={() => onSkip()}
-						aria-label="Skip game"
-					>
-						skip
-					</button>
-				</div>
+				<GameControls
+					totalFood={INITIAL_FOOD_COUNT}
+					displayedRemaining={displayedRemaining}
+					onSkip={onSkip}
+				/>
 			</div>
 
 			<div
