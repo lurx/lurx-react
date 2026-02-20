@@ -5,9 +5,9 @@ import styles from '../navbar.module.scss';
 import { NavItem } from './nav-item.component';
 
 const NAV_ITEMS = [
-	{ label: '_hello', href: '/', enabled: true },
-	{ label: '_about-me', href: '/about-me', enabled: true },
-	{ label: '_projects', href: '/projects', enabled: false },
+	{ label: 'hello', href: '/', enabled: true },
+	{ label: 'about-me', href: '/about-me', enabled: true },
+	{ label: 'projects', href: '/projects', enabled: true },
 ];
 
 export const NavItemsList = () => {

@@ -1,0 +1,108 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 407px;
+	flex-shrink: 0;
+}
+
+.cardTitle {
+	white-space: pre-wrap;
+}
+
+.cardTitleNumber {
+	font-weight: 700;
+	color: var(--keyword);
+}
+
+.cardTitleSeparator {
+	font-weight: 400;
+	color: var(--muted);
+}
+
+.cardTitleSlug {
+	font-weight: 400;
+	color: var(--muted);
+}
+
+.cardBody {
+	display: flex;
+	flex-direction: column;
+	border-radius: 16px;
+	border: 1px solid #1d293d;
+	overflow: hidden;
+	position: relative;
+}
+
+// ─── Image Area ────────────────────────────────────────────────────────────────
+
+.imageWrapper {
+	position: relative;
+	height: 145px;
+	background-color: #0d1b2e;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.imagePlaceholder {
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(
+			ellipse at 70% 40%,
+			rgba(97, 95, 255, 0.18) 0%,
+			transparent 65%
+		),
+		linear-gradient(135deg, #0d1b2e 0%, #0f172b 100%);
+}
+
+.techBadge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	background-color: #a3b3ff;
+	border-radius: 4px;
+	color: #0f172b;
+	font-size: 1.286rem;
+	line-height: 1;
+}
+
+// ─── Text Content ──────────────────────────────────────────────────────────────
+
+.textContent {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 21px;
+	padding: 32px;
+	background-color: #020618;
+	border-top: none;
+}
+
+.description {
+	line-height: 1.5;
+	color: var(--muted);
+}
+
+.viewButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 12px;
+	background-color: #45556c;
+	border-radius: 8px;
+	color: var(--text);
+	cursor: pointer;
+	text-decoration: none;
+	align-self: flex-start;
+	border: none;
+	font-family: inherit;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: #536277;
+	}
+}

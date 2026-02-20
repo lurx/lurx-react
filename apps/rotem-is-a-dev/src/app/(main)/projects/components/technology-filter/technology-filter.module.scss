@@ -1,0 +1,90 @@
+.filter {
+	display: flex;
+	flex-direction: column;
+}
+
+// ─── Accordion Section ─────────────────────────────────────────────────────────
+
+.sectionHeader {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 24px;
+	cursor: default;
+	color: var(--text);
+	user-select: none;
+}
+
+.chevron {
+	flex-shrink: 0;
+	font-size: 0.857rem;
+	color: var(--muted);
+}
+
+.sectionLabel {
+	flex: 1;
+}
+
+// ─── Technology Rows ───────────────────────────────────────────────────────────
+
+.techList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+}
+
+.techRow {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	padding: 2px 12px;
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.15s;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.04);
+	}
+}
+
+// ─── Checkbox ─────────────────────────────────────────────────────────────────
+
+.checkbox {
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #62748e;
+	border-radius: 2px;
+	background-color: #0f172b;
+	color: var(--text);
+	font-size: 0.857rem;
+	transition: background-color 0.15s;
+
+	&.checked {
+		background-color: #62748e;
+	}
+}
+
+// ─── Tech Label ────────────────────────────────────────────────────────────────
+
+.techLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--text);
+}
+
+.techIcon {
+	flex-shrink: 0;
+	font-size: 1.286rem;
+	color: var(--text);
+}
+
+.techName {
+	flex-shrink: 0;
+}

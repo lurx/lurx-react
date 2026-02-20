@@ -1,3 +1,4 @@
+import { toCodeLike } from '@/app/utils/to-code-like.util';
 import styles from '../hero-section.module.scss';
 
 const GITHUB_URL = 'https://github.com/lurx';
@@ -5,7 +6,7 @@ const GITHUB_URL = 'https://github.com/lurx';
 export const GithubLink = () => (
 	<div className={styles.codeBlock}>
 		<p className={`${styles.codeLine} ${styles.commentText}`}>
-			{'// find my profile on Github:'}
+			{toCodeLike('find my profile on Github:', { convertCase: 'comment' })}
 		</p>
 		<p className={`${styles.codeLine} ${styles.constLine}`}>
 			<span className={styles.keyword}>const&nbsp;</span>
@@ -19,7 +20,7 @@ export const GithubLink = () => (
 				aria-label="GitHub profile"
 			>
 				&quot;{GITHUB_URL}&quot;
-			</a>
+			</a>;
 		</p>
 	</div>
 );

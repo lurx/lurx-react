@@ -10,8 +10,6 @@
 	padding: 12px 24px;
 	cursor: pointer;
 	color: var(--text);
-	font-size: 16px;
-	line-height: 24px;
 	user-select: none;
 	transition: background-color 0.15s;
 
@@ -22,7 +20,7 @@
 
 .sectionChevron {
 	flex-shrink: 0;
-	font-size: 12px;
+	font-size: 0.857rem;
 	color: var(--muted);
 }
 
@@ -40,8 +38,6 @@
 	padding: 2px 12px;
 	cursor: pointer;
 	color: var(--text);
-	font-size: 16px;
-	line-height: 24px;
 	user-select: none;
 	transition: background-color 0.15s;
 
@@ -52,14 +48,13 @@
 
 .folderChevron {
 	flex-shrink: 0;
-	font-size: 12px;
+	font-size: 0.857rem;
 	color: var(--muted);
 }
 
 .folderIcon {
 	flex-shrink: 0;
 	color: var(--orange);
-	font-size: 16px;
 }
 
 .folderLabel {
@@ -80,8 +75,6 @@
 	padding: 2px 12px;
 	cursor: pointer;
 	color: var(--text);
-	font-size: 16px;
-	line-height: 24px;
 	user-select: none;
 	transition: background-color 0.15s;
 
@@ -96,7 +89,6 @@
 
 .fileIcon {
 	flex-shrink: 0;
-	font-size: 14px;
 	color: var(--teal);
 }
 
@@ -111,17 +103,14 @@
 	align-items: center;
 	gap: 8px;
 	padding: 2px 12px;
-	font-size: 16px;
-	line-height: 24px;
 	color: var(--muted);
 }
 
 .contactIcon {
 	flex-shrink: 0;
-	font-size: 14px;
 	color: var(--muted);
 }
 
 .contactLabel {
-	font-size: 14px;
+	color: var(--muted);
 }
