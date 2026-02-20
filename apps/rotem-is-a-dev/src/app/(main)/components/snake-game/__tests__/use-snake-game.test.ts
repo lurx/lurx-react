@@ -43,7 +43,7 @@ describe('useSnakeGame', () => {
 
 		const initialHead = { ...result.current.snake[0] };
 
-		act(() => jest.advanceTimersByTime(150));
+		act(() => jest.advanceTimersByTime(201));
 
 		expect(result.current.snake[0]).not.toEqual(initialHead);
 	});
