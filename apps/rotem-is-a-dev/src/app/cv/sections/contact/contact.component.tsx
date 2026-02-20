@@ -1,5 +1,5 @@
 'use client';
-import { FaIcon } from '@/app/cv/components/fa-icon';
+import { FaIcon } from '@/app/components/fa-icon';
 import { Flex } from '@/app/cv/components/flex/flex.component';
 import { Link } from '@/app/cv/components/link';
 import { useCV } from '@/app/cv/context/cv.context';

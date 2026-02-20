@@ -1,7 +1,7 @@
 'use client';
 
+import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
 import { Button } from '@/app/cv/components/button/button.component';
-import { FaIcon } from '@/app/cv/components/fa-icon/fa-icon.component';
 import { useTheme } from '@/app/cv/context/theme.context';
 import styles from './theme-toggle.module.scss';
 
