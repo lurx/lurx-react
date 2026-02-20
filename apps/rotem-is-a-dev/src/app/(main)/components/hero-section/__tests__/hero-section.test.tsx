@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
-// Stub SnakeGame to control win/skip callbacks
+// Stub SnakeGame to control win/skip callbacks via HeroGame
 jest.mock('../../snake-game/snake-game.component', () => ({
 	SnakeGame: ({
 		onWin,
@@ -17,6 +17,9 @@ jest.mock('../../snake-game/snake-game.component', () => ({
 	),
 }));
 
+beforeEach(() => jest.useFakeTimers());
+afterEach(() => jest.useRealTimers());
+
 describe('HeroSection', () => {
 	it('renders the greeting', () => {
 		render(<HeroSection />);
@@ -30,43 +33,40 @@ describe('HeroSection', () => {
 
 	it('renders the role with arrow prefix', () => {
 		render(<HeroSection />);
-		expect(
-			screen.getByText(/Front-end developer/),
-		).toBeInTheDocument();
+		expect(screen.getByText(/Front-end developer/)).toBeInTheDocument();
 	});
 
-	it('renders the code comment lines', () => {
+	it('renders the github comment', () => {
 		render(<HeroSection />);
-		expect(
-			screen.getByText('// complete the game to continue'),
-		).toBeInTheDocument();
 		expect(
 			screen.getByText('// find my profile on Github:'),
 		).toBeInTheDocument();
 	});
 
-	it('hides the GitHub link initially', () => {
+	it('renders the GitHub link immediately', () => {
 		render(<HeroSection />);
-		const githubLink = screen.queryByRole('link', { name: 'GitHub profile' });
-		expect(githubLink?.closest('.hidden') ?? githubLink?.parentElement).toBeTruthy();
+		expect(
+			screen.getByRole('link', { name: 'GitHub profile' }),
+		).toHaveAttribute('href', 'https://github.com/lurx');
 	});
 
-	it('reveals GitHub link when skip is triggered', () => {
-		render(<HeroSection />);
-		fireEvent.click(screen.getByText('skip'));
-		const githubLink = screen.getByRole('link', { name: 'GitHub profile' });
-		expect(githubLink).toHaveAttribute('href', 'https://github.com/lurx');
-	});
-
-	it('reveals GitHub link when win is triggered', () => {
-		render(<HeroSection />);
-		fireEvent.click(screen.getByText('win'));
-		const githubLink = screen.getByRole('link', { name: 'GitHub profile' });
-		expect(githubLink).toBeInTheDocument();
-	});
-
-	it('renders the snake game', () => {
+	it('renders the snake game initially', () => {
 		render(<HeroSection />);
 		expect(screen.getByTestId('snake-game')).toBeInTheDocument();
+		expect(screen.queryByTestId('hero-snippets')).not.toBeInTheDocument();
+	});
+
+	it('hides the snake game and shows snippets when skip is triggered', () => {
+		render(<HeroSection />);
+		fireEvent.click(screen.getByText('skip'));
+		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
+		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
+	});
+
+	it('hides the snake game and shows snippets when win is triggered', () => {
+		render(<HeroSection />);
+		fireEvent.click(screen.getByText('win'));
+		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
+		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
 	});
 });
