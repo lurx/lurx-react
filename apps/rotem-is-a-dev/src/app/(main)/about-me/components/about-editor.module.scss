@@ -1,0 +1,27 @@
+.editor {
+	flex: 1;
+	display: flex;
+	gap: 40px;
+	padding: 12px 40px;
+	font-size: 18px;
+	line-height: 27px;
+	color: var(--muted);
+	overflow-y: auto;
+	border-right: 1px solid var(--border);
+}
+
+.lineNumbers {
+	text-align: right;
+	color: var(--muted);
+	user-select: none;
+	flex-shrink: 0;
+}
+
+.lineNumber {
+	display: block;
+}
+
+.codeContent {
+	flex: 1;
+	white-space: pre-wrap;
+}
