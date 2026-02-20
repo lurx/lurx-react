@@ -12,7 +12,7 @@ export const Navbar = () => {
 		>
 			<span className={styles.logo}>
 				rotem-horovitz
-				<FontAwesomeIcon icon={byPrefixAndName.fal['rectangle-beta']} size="lg" />
+				<FontAwesomeIcon icon={byPrefixAndName.fal['rectangle-beta']} size="xl" className={styles.betaIcon} />
 			</span>
 			<NavItemsList />
 

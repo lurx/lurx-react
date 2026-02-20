@@ -40,7 +40,7 @@ describe('Navbar', () => {
 
 	it('has correct href attributes', () => {
 		render(<Navbar />);
-		expect(screen.getByText('_hello')).toHaveAttribute('href', '/#hello');
+		expect(screen.getByText('_hello')).toHaveAttribute('href', '/');
 		expect(screen.getByText('_about-me')).toHaveAttribute('href', '/about-me');
 		expect(screen.getByText('_contact-me')).toHaveAttribute(
 			'href',

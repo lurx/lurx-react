@@ -1,12 +1,6 @@
 import classNames from 'classnames';
 import styles from '../navbar.module.scss';
-
-interface NavItemProps {
-	label: string;
-	href: string;
-	active: boolean;
-	enabled?: boolean;
-}
+import type { NavItemProps } from '../navbar.types';
 
 export const NavItem = ({
 	label,
