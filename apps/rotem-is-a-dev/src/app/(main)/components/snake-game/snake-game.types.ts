@@ -5,6 +5,12 @@ export interface Position {
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
+export type ArrowDirection =
+	| 'ArrowUp'
+	| 'ArrowDown'
+	| 'ArrowLeft'
+	| 'ArrowRight';
+
 export type GameState = 'idle' | 'playing' | 'won' | 'lost';
 
 export interface SnakeGameState {
