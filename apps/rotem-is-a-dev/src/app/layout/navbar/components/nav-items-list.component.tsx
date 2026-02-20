@@ -3,8 +3,8 @@ import { NavItem } from './nav-item.component';
 
 const NAV_ITEMS = [
 	{ label: '_hello', href: '#hello', active: true, enabled: true },
-	{ label: '_about-me', href: '#about-me', active: false, enabled: false },
-	{ label: '_projects', href: '#projects', active: false, enabled: true },
+	{ label: '_about-me', href: '#about-me', active: false, enabled: true },
+	{ label: '_projects', href: '#projects', active: false, enabled: false },
 ];
 
 export const NavItemsList = () => (
