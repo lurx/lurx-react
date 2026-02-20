@@ -1,0 +1,47 @@
+export const BlueBlur = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		width="881"
+		height="783"
+		viewBox="0 0 881 783"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+    role="presentation"
+		{...props}
+	>
+		<g
+			opacity="0.4"
+			filter="url(#filter0_f_26532_1459)"
+		>
+			<path
+				d="M477.283 656.128L263.368 604.741L174 540.077L200.563 369.565L375.985 349.999L374.377 228.256L576.645 174L706.939 205.299L624.502 471.405L497.229 504.595L477.283 656.128Z"
+				fill="#615FFF"
+			/>
+		</g>
+		<defs>
+			<filter
+				id="filter0_f_26532_1459"
+				x="0"
+				y="0"
+				width="880.939"
+				height="830.128"
+				filterUnits="userSpaceOnUse"
+				colorInterpolationFilters="sRGB"
+			>
+				<feFlood
+					floodOpacity="0"
+					result="BackgroundImageFix"
+				/>
+				<feBlend
+					mode="normal"
+					in="SourceGraphic"
+					in2="BackgroundImageFix"
+					result="shape"
+				/>
+				<feGaussianBlur
+					stdDeviation="87"
+					result="effect1_foregroundBlur_26532_1459"
+				/>
+			</filter>
+		</defs>
+	</svg>
+);
