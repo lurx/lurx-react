@@ -2,8 +2,8 @@
 
 import { generateCvPdf } from '@/app/cv/utils/generate-pdf';
 import { useState } from 'react';
+import { FaIcon } from '../../../components/fa-icon/fa-icon.component';
 import { Button } from '../button/button.component';
-import { FaIcon } from '../fa-icon/fa-icon.component';
 
 export const DownloadPdfButton = () => {
 	const [isGenerating, setIsGenerating] = useState(false);
