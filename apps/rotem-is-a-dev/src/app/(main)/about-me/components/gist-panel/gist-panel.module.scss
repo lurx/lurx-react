@@ -9,8 +9,6 @@
 }
 
 .panelTitle {
-	font-size: 18px;
-	line-height: 27px;
 	color: var(--muted);
 }
 
@@ -48,7 +46,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 13px;
+	font-size: 0.929rem;
 	font-weight: 700;
 	color: #fff;
 	flex-shrink: 0;
@@ -61,16 +59,12 @@
 }
 
 .username {
-	font-size: 14px;
 	font-weight: 700;
 	color: var(--keyword);
-	line-height: 19.6px;
 }
 
 .createdAt {
-	font-size: 14px;
 	color: var(--muted);
-	line-height: 19.6px;
 }
 
 .actions {
@@ -83,13 +77,11 @@
 	display: flex;
 	align-items: center;
 	gap: 7px;
-	font-size: 14px;
 	color: var(--muted);
-	line-height: 19.6px;
 }
 
 .actionIcon {
-	font-size: 16px;
+	// inherits root size
 }
 
 // ─── Code Block ────────────────────────────────────────────────────────────────
@@ -104,8 +96,7 @@
 }
 
 .code {
-	font-size: 14px;
-	line-height: 19.6px;
+	line-height: 1.4;
 	color: #62748e;
 	white-space: pre;
 	overflow: hidden;

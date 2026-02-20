@@ -1,0 +1,65 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	overflow: hidden;
+}
+
+// ─── Tab Bar ───────────────────────────────────────────────────────────────────
+
+.tabBar {
+	display: flex;
+	align-items: stretch;
+	border-bottom: 1px solid var(--border);
+	flex-shrink: 0;
+	min-height: 48px;
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 24px;
+	color: var(--text);
+	border-right: 1px solid var(--border);
+	white-space: nowrap;
+}
+
+.tabClose {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	color: var(--muted);
+	cursor: pointer;
+	background: none;
+	border: none;
+	padding: 0;
+	font-family: inherit;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
+// ─── Projects Grid ─────────────────────────────────────────────────────────────
+
+.grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	padding: 64px;
+	overflow-y: auto;
+	flex: 1;
+	align-content: flex-start;
+}
+
+.empty {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 64px;
+	color: var(--muted);
+}
