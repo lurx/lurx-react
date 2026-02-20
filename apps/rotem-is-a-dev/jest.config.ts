@@ -13,8 +13,9 @@ const config = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	moduleNameMapper: {
-		'^@/(.*)$': '<rootDir>/$1',
-'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+		'^@/(.*)$': '<rootDir>/src/$1',
+		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+		'\\?raw$': '<rootDir>/src/__mocks__/raw-file.js',
 	},
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };

@@ -4,6 +4,7 @@ import './styles/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { AppHeader } from './components/app-header';
+import type { PropsWithChildren } from 'react';
 config.autoAddCss = false;
 
 export const metadata = {
@@ -14,9 +15,7 @@ const noFlashScript = `(function(){var t=localStorage.getItem('theme')||((window
 
 export default function CvLayout({
 	children,
-}: {
-	children: React.ReactNode;
-}) {
+}: PropsWithChildren) {
 	return (
 		<>
 			<script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
