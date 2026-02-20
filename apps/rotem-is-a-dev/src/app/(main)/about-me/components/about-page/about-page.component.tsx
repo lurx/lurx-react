@@ -1,7 +1,7 @@
 import { FaIcon } from '@/app/components';
-import { AboutEditor } from './about-editor.component';
-import { FileTree } from './file-tree.component';
-import { GistPanel } from './gist-panel.component';
+import { AboutEditor } from '../about-editor/about-editor.component';
+import { FileTree } from '../file-tree/file-tree.component';
+import { GistPanel } from '../gist-panel/gist-panel.component';
 import styles from './about-page.module.scss';
 
 export const AboutPage = () => {

@@ -66,7 +66,7 @@ export const FileTree = () => {
 			</div>
 
 			{/* contacts section */}
-			<div className={styles.section}>
+			{/* <div className={styles.section}>
 				<div className={styles.sectionHeader}>
 					<span className={styles.sectionChevron}>
 						<FaIcon
@@ -99,7 +99,7 @@ export const FileTree = () => {
 						<span className={styles.contactLabel}>+972526430444</span>
 					</div>
 				</div>
-			</div>
+			</div> */}
 		</>
 	);
 };
