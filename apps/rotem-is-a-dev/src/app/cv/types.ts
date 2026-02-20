@@ -12,7 +12,7 @@ export interface ExperienceItem {
 export interface CvContextValue {
 	name: string;
 	titles: string[];
-  intro: string;
+	intro: string;
 	contact: {
 		email: string;
 		phone: string;
@@ -33,4 +33,10 @@ export interface SkillObject {
 	level: number;
 }
 
-export type IconGroupName = 'fab' | 'fas' | 'far'
+export type IconGroupName =
+	| 'fab' // brands
+  | "fal" // light
+  | 'far' // regular
+	| 'fas' // solid
+  | 'fass'; // sharp solid
+
