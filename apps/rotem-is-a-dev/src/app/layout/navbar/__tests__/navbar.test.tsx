@@ -1,21 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import { Navbar } from '../navbar.component';
 
+jest.mock('next/navigation', () => ({
+	usePathname: () => '/',
+}));
+
 describe('Navbar', () => {
 	it('renders the logo name', () => {
 		render(<Navbar />);
 		expect(screen.getByText('rotem-horovitz')).toBeInTheDocument();
 	});
 
-	it('renders all nav items', () => {
+	it('renders all enabled nav items', () => {
 		render(<Navbar />);
 		expect(screen.getByText('_hello')).toBeInTheDocument();
-		expect(screen.getByText('_projects')).toBeInTheDocument();
+		expect(screen.getByText('_about-me')).toBeInTheDocument();
 	});
 
 	it('does not render disabled nav items', () => {
 		render(<Navbar />);
-		expect(screen.queryByText('_about-me')).not.toBeInTheDocument();
+		expect(screen.queryByText('_projects')).not.toBeInTheDocument();
 	});
 
 	it('renders the contact link', () => {
@@ -23,21 +27,21 @@ describe('Navbar', () => {
 		expect(screen.getByText('_contact-me')).toBeInTheDocument();
 	});
 
-	it('marks _hello as the active nav item', () => {
+	it('marks _hello as the active nav item when on the home page', () => {
 		render(<Navbar />);
 		const helloLink = screen.getByText('_hello');
 		expect(helloLink).toHaveAttribute('aria-current', 'page');
 	});
 
-	it('does not mark other nav items as active', () => {
+	it('does not mark _about-me as active when on the home page', () => {
 		render(<Navbar />);
-		expect(screen.getByText('_projects')).not.toHaveAttribute('aria-current');
+		expect(screen.getByText('_about-me')).not.toHaveAttribute('aria-current');
 	});
 
 	it('has correct href attributes', () => {
 		render(<Navbar />);
-		expect(screen.getByText('_hello')).toHaveAttribute('href', '#hello');
-		expect(screen.getByText('_projects')).toHaveAttribute('href', '#projects');
+		expect(screen.getByText('_hello')).toHaveAttribute('href', '/#hello');
+		expect(screen.getByText('_about-me')).toHaveAttribute('href', '/about-me');
 		expect(screen.getByText('_contact-me')).toHaveAttribute(
 			'href',
 			'#contact-me',
