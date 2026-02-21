@@ -3,8 +3,8 @@
 import { Nav } from '@/app/cv/sections';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
+import { Flex } from '../../../components/flex';
 import { DownloadPdfButton } from '../download-pdf-button/download-pdf-button.component';
-import { Flex } from '../flex';
 import { ThemeToggle } from '../theme-toggle/theme-toggle.component';
 import styles from './app-header.module.scss';
 

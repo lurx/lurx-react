@@ -1,4 +1,4 @@
-import { Flex } from '@/app/cv/components/flex';
+import { Flex } from '@/app/components/flex';
 import classNames from 'classnames';
 import { type PropsWithChildren } from 'react';
 

@@ -1,9 +1,9 @@
+import { Flex } from '@/app/components/flex/flex.component';
+import { Link } from '@/app/components/link';
 import classNames from 'classnames';
 import { Bangers } from 'next/font/google';
 import { DemoContainer } from '../demo-container/demo-container.component';
 import styles from './sheep.module.scss';
-import { Flex } from '@/app/cv/components/flex/flex.component';
-import { Link } from '@/app/cv/components/link';
 
 const bangers = Bangers({
 	subsets: ['latin'],

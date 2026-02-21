@@ -1,6 +1,6 @@
+import { Flex } from '@/app/components/flex';
 import { Button } from '@/app/cv/components/button';
 import type { PropsWithChildren } from 'react';
-import { Flex } from '../flex';
 
 interface CollapsibleProps {
 	isCollapsed: boolean;

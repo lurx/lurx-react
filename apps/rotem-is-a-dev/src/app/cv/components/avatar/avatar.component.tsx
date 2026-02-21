@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Flex } from '../flex';
+import { Flex } from '../../../components/flex';
 import styles from './avatar.module.scss';
 
 interface AvatarProps {

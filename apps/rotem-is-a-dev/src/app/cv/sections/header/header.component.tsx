@@ -1,8 +1,8 @@
 'use client';
 
+import { Flex } from '@/app/components/flex';
 import { Avatar } from '@/app/cv/components/avatar/avatar.component';
 import { Card } from '@/app/cv/components/card';
-import { Flex } from '@/app/cv/components/flex';
 import { useCV } from '@/app/cv/context/cv.context';
 import { Contact } from '../contact';
 import { Intro } from '../intro';
