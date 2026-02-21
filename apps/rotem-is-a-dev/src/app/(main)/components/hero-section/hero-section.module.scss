@@ -10,6 +10,7 @@
 }
 
 .heroBlurs {
+  --blurs-base-animation-duration: 15s;
 	position: absolute;
 	left: 46%;
 	top: 50%;
@@ -18,22 +19,26 @@
 	height: 742px;
 	pointer-events: none;
 	z-index: 0;
+	animation: rotate-blurs-wrapper var(--blurs-base-animation-duration) linear infinite;
 }
 
 .greenBlur,
 .blueBlur {
 	position: absolute;
+
 }
 
 .greenBlur {
 	top: 0;
 	left: 0;
+  animation: rotate-green-blur calc(var(--blurs-base-animation-duration) / 1.25) linear infinite;
 }
 
 .blueBlur {
 	left: 50%;
 	top: 50%;
 	transform: translate(-20%, -20%);
+  animation: rotate-blue-blue calc(var(--blurs-base-animation-duration) / 1.5) linear infinite;
 }
 
 .left,
@@ -122,4 +127,31 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+@keyframes rotate-blurs-wrapper {
+	from {
+		transform: translateY(-55%) rotate(0deg);
+	}
+	to {
+		transform: translateY(-55%) rotate(360deg);
+	}
+}
+
+@keyframes rotate-green-blur {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-blue-blue {
+  from {
+    transform: translate(-20%, -20%) rotate(0deg);
+  }
+  to {
+    transform: translate(-20%, -20%) rotate(-360deg);
+  }
 }

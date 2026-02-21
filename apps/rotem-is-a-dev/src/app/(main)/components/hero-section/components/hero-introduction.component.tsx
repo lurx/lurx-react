@@ -5,8 +5,8 @@ import { heroSectionStrings } from '../hero-section.strings';
 
 export const HeroIntroduction = () => (
 	<div className={styles.left}>
-		<p className={styles.greeting}>{heroSectionStrings.greeting}</p>
-		<h1 className={styles.name}>{heroSectionStrings.name}</h1>
+		<p className={styles.greeting} data-hero-intro="greeting">{heroSectionStrings.greeting}</p>
+		<h1 className={styles.name} data-hero-intro="name">{heroSectionStrings.name}</h1>
 		<RoleLine />
 		<GithubLink />
 	</div>

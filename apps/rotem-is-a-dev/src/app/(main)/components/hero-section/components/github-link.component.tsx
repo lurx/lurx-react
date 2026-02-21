@@ -5,10 +5,10 @@ const GITHUB_URL = 'https://github.com/lurx';
 
 export const GithubLink = () => (
 	<div className={styles.codeBlock}>
-		<p className={`${styles.codeLine} ${styles.commentText}`}>
+		<p className={`${styles.codeLine} ${styles.commentText}`} data-hero-intro="comment">
 			{toCodeLike('find my profile on Github:', { convertCase: 'comment' })}
 		</p>
-		<p className={`${styles.codeLine} ${styles.constLine}`}>
+		<p className={`${styles.codeLine} ${styles.constLine}`} data-hero-intro="const">
 			<span className={styles.keyword}>const&nbsp;</span>
 			<span className={styles.varName}>githubLink</span>
 			<span className={styles.equals}>&nbsp;=&nbsp;</span>

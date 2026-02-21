@@ -5,5 +5,5 @@ import { heroSectionStrings } from '../hero-section.strings';
 export const RoleLine = () => {
   const formattedRole = toCodeLike(heroSectionStrings.role, { prefix: '> ' });
   return (
-	<p className={styles.role}>{formattedRole}</p>
+	<p className={styles.role} data-hero-intro="role">{formattedRole}</p>
 )};

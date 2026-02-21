@@ -96,9 +96,9 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	}, [snake, food]);
 
 	return (
-		<div className={styles.widget}>
+		<div className={styles.widget} data-hero-widget>
 			<div className={styles.body}>
-				<div className={styles.gridWrapper}>
+				<div className={styles.gridWrapper} data-hero-section="grid">
 					<canvas
 						ref={canvasRef}
 						width={CELL * GRID_COLS}
@@ -113,6 +113,7 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 							className={styles.startButton}
 							onClick={startGame}
 							aria-label="Start game"
+							data-hero-text="start-game"
 						>
 							start-game
 						</button>
