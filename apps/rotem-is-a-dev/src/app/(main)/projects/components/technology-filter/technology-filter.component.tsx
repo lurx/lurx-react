@@ -10,7 +10,7 @@ const TECH_ICON_MAP: Record<
 	React: { iconName: 'react', iconGroup: 'fab' },
 	TypeScript: { iconName: 'js', iconGroup: 'fab' },
 	HTML: { iconName: 'html5', iconGroup: 'fab' },
-	CSS: { iconName: 'css3-alt', iconGroup: 'fab' },
+	CSS: { iconName: 'css', iconGroup: 'fab' },
 	SCSS: { iconName: 'sass', iconGroup: 'fab' },
 };
 

@@ -77,6 +77,12 @@
 	color: var(--muted);
 	border-right: 1px solid var(--border);
 	white-space: nowrap;
+	cursor: pointer;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
 
 	&.activeTab {
 		color: var(--text);
@@ -84,6 +90,12 @@
 }
 
 .tabClose {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: none;
+	border: none;
+	padding: 0;
 	line-height: 1;
 	color: var(--muted);
 	cursor: pointer;

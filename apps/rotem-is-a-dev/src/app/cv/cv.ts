@@ -69,7 +69,7 @@ const cv: CvContextValue = {
 		{ name: 'css', icon: 'css', iconGroup: 'fab', level: 10 },
 		{ name: 'javascript', icon: 'js', iconGroup: 'fab', level: 10 },
 		{ name: 'react', icon: 'react', iconGroup: 'fab', level: 10 },
-		{ name: 'css-in-js', icon: 'css3-alt', iconGroup: 'fab', level: 10 },
+		{ name: 'css-in-js', icon: 'css', iconGroup: 'fab', level: 10 },
 		{ name: 'scss', icon: 'sass', iconGroup: 'fab', level: 10 },
 		{ name: 'git', icon: 'git', iconGroup: 'fab', level: 8 },
 		{ name: 'vue js', icon: 'vuejs', iconGroup: 'fab', level: 5 },
