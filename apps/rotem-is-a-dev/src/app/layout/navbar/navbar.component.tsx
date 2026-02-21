@@ -1,7 +1,5 @@
-import { FaIcon } from '@/app/components';
 import { toCodeLike } from '@/app/utils/to-code-like.util';
 import { AccessibilityWidget } from './components/accessibility-widget/accessibility-widget.component';
-import { NavItem } from './components/nav-item.component';
 import { NavItemsList } from './components/nav-items-list.component';
 import { NavLogo } from './components/navbar-logo.component';
 import styles from './navbar.module.scss';
