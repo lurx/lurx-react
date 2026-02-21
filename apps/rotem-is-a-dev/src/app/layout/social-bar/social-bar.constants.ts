@@ -8,7 +8,7 @@ export const leftSideSocialLinks: SocialLinks = {
 	twitter: {
 		url: TWITTER_URL,
 		label: 'X (Twitter)',
-    hideLabel: true,
+		hideLabel: true,
 		icon: {
 			iconName: 'x-twitter',
 			iconGroup: 'fab',
@@ -17,7 +17,7 @@ export const leftSideSocialLinks: SocialLinks = {
 	linkedin: {
 		url: LINKEDIN_URL,
 		label: 'LinkedIn',
-    hideLabel: true,
+		hideLabel: true,
 		icon: {
 			iconName: 'linkedin',
 			iconGroup: 'fab',

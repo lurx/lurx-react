@@ -5,7 +5,7 @@ export const GreenBlur = (props: React.SVGProps<SVGSVGElement>) => (
 		viewBox="0 0 864 742"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-    role="presentation"
+		role="presentation"
 		{...props}
 	>
 		<g

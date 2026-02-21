@@ -1,7 +1,7 @@
 import type { IconGroupName } from '@/app/cv/types';
 import {
-  byPrefixAndName,
-  type IconDefinition,
+	byPrefixAndName,
+	type IconDefinition,
 } from '@awesome.me/kit-1d40de302b/icons';
 import type { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import { isNil } from 'es-toolkit';
 export interface FaIconProps {
 	iconName: string;
 	iconGroup?: IconGroupName;
-  size?: SizeProp;
+	size?: SizeProp;
 	className?: string;
 }
 
@@ -17,7 +17,7 @@ export const FaIcon = ({
 	iconName,
 	iconGroup = 'fas',
 	className,
-  size = 'lg',
+	size = 'lg',
 	...dataAttributes
 }: WithDataAttributes<FaIconProps>) => {
 	const icon: IconDefinition | undefined = byPrefixAndName[iconGroup][iconName];
