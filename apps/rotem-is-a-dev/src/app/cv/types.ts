@@ -35,8 +35,8 @@ export interface SkillObject {
 
 export type IconGroupName =
 	| 'fab' // brands
-  | "fal" // light
-  | 'far' // regular
+	| 'fal' // light
+	| 'far' // regular
 	| 'fas' // solid
-  | 'fass'; // sharp solid
+	| 'fass'; // sharp solid
 

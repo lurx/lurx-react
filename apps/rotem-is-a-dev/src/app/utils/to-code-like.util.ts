@@ -65,13 +65,13 @@ const handleCaseConversion = (
 	const normalizedString = normalizeString(str);
 	if (!convertCase) return str;
 
-  const converter = stringConverter[convertCase];
+	const converter = stringConverter[convertCase];
 
-  if (!converter) {
-    console.warn(`Unsupported convertCase option: ${convertCase}. Returning original string.`);
-    return str;
-  }
-  return converter(normalizedString);
+	if (!converter) {
+		console.warn(`Unsupported convertCase option: ${convertCase}. Returning original string.`);
+		return str;
+	}
+	return converter(normalizedString);
 };
 
 export const toCodeLike = (str: string, options?: ToCodeLikeOptions) => {
@@ -79,6 +79,6 @@ export const toCodeLike = (str: string, options?: ToCodeLikeOptions) => {
 		...TO_CODE_LIKE_DEFAULT_OPTIONS,
 		...options,
 	};
-  const convertedString = handleCaseConversion(str, convertCase);
-  return `${prefix}${convertedString}`;
+	const convertedString = handleCaseConversion(str, convertCase);
+	return `${prefix}${convertedString}`;
 };

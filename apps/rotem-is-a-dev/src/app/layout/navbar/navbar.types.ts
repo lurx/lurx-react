@@ -5,8 +5,8 @@ export interface NavItemProps {
 	href: string;
 	active: boolean;
 	enabled?: boolean;
-  icon?: ReactNode;
-  iconOnly?: boolean;
-  className?: string;
-  'data-animate-text'?: string;
+	icon?: ReactNode;
+	iconOnly?: boolean;
+	className?: string;
+	'data-animate-text'?: string;
 }

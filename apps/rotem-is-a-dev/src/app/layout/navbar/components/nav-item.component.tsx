@@ -11,8 +11,8 @@ export const NavItem = ({
 	icon,
 	iconOnly = false,
 	enabled = true,
-  className,
-  'data-animate-text': dataAnimateText,
+	className,
+	'data-animate-text': dataAnimateText,
 }: NavItemProps) => {
 	const ariaCurrentValue = active ? 'page' : undefined;
 	const hasIcon = Boolean(icon);
@@ -23,7 +23,7 @@ export const NavItem = ({
 		? toCodeLike(label, { prefix: '_', convertCase: 'kebab-case' })
 		: label;
 
-    if (!enabled) {
+	if (!enabled) {
 		return null;
 	}
 	return (
