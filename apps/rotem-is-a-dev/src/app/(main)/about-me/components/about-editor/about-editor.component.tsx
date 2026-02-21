@@ -10,8 +10,8 @@ interface BioContent {
 const BIO: BioContent = {
 	title: 'About me',
 	paragraphs: [
-		'I have 6 years of experience in web development, specializing in React, TypeScript, and modern frontend architecture. I enjoy building high-quality, performant UIs with a strong focus on clean code, design systems, and developer experience.',
-		'When I am not coding, I enjoy gaming, hiking, and exploring new technologies.',
+		'I’m Rotem, a Senior Frontend Developer and CSS Expert with over 16 years of experience building for the web. My journey began with hand-coding landing pages and has evolved into architecting robust design systems and frontend infrastructures for global platforms.',
+		'I pride myself on being entirely self-taught, driven by a stubborn refusal to ship anything less than pixel-perfect. Whether I’m mentoring developers, interviewing new talent, or defining the next frontend stack, my goal is always the same: creating scalable, high-quality user experiences that last.',
 	],
 };
 
