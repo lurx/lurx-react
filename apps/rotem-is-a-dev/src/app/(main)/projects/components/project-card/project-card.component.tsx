@@ -6,7 +6,7 @@ const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
 	React: { iconName: 'react', iconGroup: 'fab' },
 	TypeScript: { iconName: 'js', iconGroup: 'fab' },
 	HTML: { iconName: 'html5', iconGroup: 'fab' },
-	CSS: { iconName: 'css3-alt', iconGroup: 'fab' },
+	CSS: { iconName: 'css', iconGroup: 'fab' },
 };
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {

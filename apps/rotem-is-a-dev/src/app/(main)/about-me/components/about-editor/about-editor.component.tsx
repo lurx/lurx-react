@@ -1,19 +1,10 @@
+'use client';
+
+import { useMemo } from 'react';
+import type { AboutFileContent } from '../../data/about-files.data';
 import styles from './about-editor.module.scss';
 
 const COMMENT_WRAP_WIDTH = 38;
-
-interface BioContent {
-	title: string;
-	paragraphs: string[];
-}
-
-const BIO: BioContent = {
-	title: 'About me',
-	paragraphs: [
-		'I’m Rotem, a Senior Frontend Developer and CSS Expert with over 16 years of experience building for the web. My journey began with hand-coding landing pages and has evolved into architecting robust design systems and frontend infrastructures for global platforms.',
-		'I pride myself on being entirely self-taught, driven by a stubborn refusal to ship anything less than pixel-perfect. Whether I’m mentoring developers, interviewing new talent, or defining the next frontend stack, my goal is always the same: creating scalable, high-quality user experiences that last.',
-	],
-};
 
 const wrapWords = (text: string, maxWidth: number): string[] => {
 	const words = text.split(' ');
@@ -35,7 +26,7 @@ const wrapWords = (text: string, maxWidth: number): string[] => {
 	return lines;
 };
 
-const toJsdocLines = ({ title, paragraphs }: BioContent): string[] => {
+const toJsdocLines = ({ title, paragraphs }: AboutFileContent): string[] => {
 	const lines = ['/**', ` * ${title}`];
 
 	paragraphs.forEach((paragraph, index) => {
@@ -49,16 +40,20 @@ const toJsdocLines = ({ title, paragraphs }: BioContent): string[] => {
 	return lines;
 };
 
-const BIO_LINES = toJsdocLines(BIO);
+export interface AboutEditorProps {
+	content: AboutFileContent;
+}
 
-export const AboutEditor = () => {
+export const AboutEditor = ({ content }: AboutEditorProps) => {
+	const lines = useMemo(() => toJsdocLines(content), [content]);
+
 	return (
 		<div
 			className={styles.editor}
-			aria-label="Bio content"
+			aria-label={`${content.title} content`}
 		>
 			<div className={styles.lineNumbers}>
-				{BIO_LINES.map((_, index) => (
+				{lines.map((_, index) => (
 					<span
 						key={index}
 						className={styles.lineNumber}
@@ -68,7 +63,7 @@ export const AboutEditor = () => {
 				))}
 			</div>
 			<div className={styles.codeContent}>
-				{BIO_LINES.map((line, index) => (
+				{lines.map((line, index) => (
 					<span key={index}>
 						{line}
 						{'\n'}

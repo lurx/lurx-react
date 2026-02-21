@@ -1,6 +1,7 @@
 .section {
 	display: flex;
 	flex-direction: column;
+  border-bottom: 1px solid var(--border)
 }
 
 .sectionHeader {
@@ -73,6 +74,11 @@
 	align-items: center;
 	gap: 8px;
 	padding: 2px 12px;
+	width: 100%;
+	text-align: left;
+	background: none;
+	border: none;
+	font: inherit;
 	cursor: pointer;
 	color: var(--text);
 	user-select: none;
