@@ -1,6 +1,6 @@
 import styles from '../wolverine.module.scss';
 import type { WolverineSideProp } from '../wolverine.types';
-import { leftRight } from '../wolverrine.constants';
+import { leftRight } from '../wolverine.constants';
 
 export const WolverineCowlSide = ({ side }: WolverineSideProp) => (
 	<div className={styles[`cowl-${side}`]}>
