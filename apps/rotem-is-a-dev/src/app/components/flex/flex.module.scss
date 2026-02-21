@@ -1,0 +1,88 @@
+@use 'mixins/spacing' as *;
+
+.flex {
+	--direction: row;
+	--wrap: initial;
+	--justify-content: initial;
+	--align-items: initial;
+	--flex: initial;
+	--gap: initial;
+	display: flex;
+	flex-direction: var(--direction);
+	flex-wrap: var(--wrap);
+	justify-content: var(--justify-content);
+	align-items: var(--align-items);
+  gap: var(--gap);
+}
+
+.direction {
+	&-row {
+		--direction: row;
+	}
+	&-column {
+		--direction: column;
+	}
+}
+
+.wrap {
+	&-nowrap {
+		--wrap: nowrap;
+	}
+	&-wrap {
+		--wrap: wrap;
+	}
+}
+
+.justify {
+	&-start {
+		--justify-content: flex-start;
+	}
+	&-center {
+		--justify-content: center;
+	}
+	&-end {
+		--justify-content: flex-end;
+	}
+	&-between {
+		--justify-content: space-between;
+	}
+	&-around {
+		--justify-content: space-around;
+	}
+	&-evenly {
+		--justify-content: space-evenly;
+	}
+}
+
+.align {
+	&-start {
+		--align-items: flex-start;
+	}
+	&-center {
+		--align-items: center;
+	}
+	&-end {
+		--align-items: flex-end;
+	}
+	&-stretch {
+		--align-items: stretch;
+	}
+	&-baseline {
+		--align-items: baseline;
+	}
+}
+
+.gap {
+	&-small {
+		--gap: #{spacing(1)};
+	}
+	&-medium {
+		--gap: #{spacing(2)};
+	}
+	&-large {
+		--gap: #{spacing(3)};
+	}
+  &-xlarge {
+    --gap: #{spacing(4)};
+  }
+}

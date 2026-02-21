@@ -3,8 +3,8 @@
 import { Card } from '@/app/cv/components/card';
 import { useCV } from '@/app/cv/context/cv.context';
 
+import { Flex } from '@/app/components/flex';
 import { Collapsible } from '@/app/cv/components/collapsible/collapsible.component';
-import { Flex } from '@/app/cv/components/flex';
 import { useState } from 'react';
 import { JobItem } from './experience-item.component';
 
