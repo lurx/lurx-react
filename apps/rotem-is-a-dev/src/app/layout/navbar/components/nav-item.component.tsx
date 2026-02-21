@@ -11,6 +11,8 @@ export const NavItem = ({
 	icon,
 	iconOnly = false,
 	enabled = true,
+  className,
+  'data-animate-text': dataAnimateText,
 }: NavItemProps) => {
 	const ariaCurrentValue = active ? 'page' : undefined;
 	const hasIcon = Boolean(icon);
@@ -28,12 +30,14 @@ export const NavItem = ({
 		<a
 			key={label?.toString()}
 			href={href}
-			className={classNames(styles.navItem, { [styles.active]: active })}
+			className={classNames(styles.navItem, { [styles.active]: active }, className)}
 			aria-current={ariaCurrentValue}
 			aria-label={ariaLabel}
 		>
 			{icon}
-			{!hideLabel && formattedLabel}
+			{!hideLabel && (
+				<span data-animate-text={dataAnimateText}>{formattedLabel}</span>
+			)}
 		</a>
 	);
 };

@@ -7,4 +7,6 @@ export interface NavItemProps {
 	enabled?: boolean;
   icon?: ReactNode;
   iconOnly?: boolean;
+  className?: string;
+  'data-animate-text'?: string;
 }

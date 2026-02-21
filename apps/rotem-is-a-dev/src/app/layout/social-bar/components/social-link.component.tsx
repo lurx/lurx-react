@@ -8,8 +8,6 @@ interface SocialLinkItemProps {
 	iconPosition?: 'start' | 'end' | 'hide';
 }
 
-const EmptyComponent = () => <Fragment />;
-
 export const SocialLinkItem = ({
 	link,
 	iconPosition = 'start',
@@ -17,9 +15,18 @@ export const SocialLinkItem = ({
 	const shouldHideIcon = iconPosition === 'hide';
 	const shouldHideLabel = link.hideLabel;
 
-	const icon: JSX.Element = shouldHideIcon ? <EmptyComponent /> : <SocialIcon link={link} />;
+	const icon: JSX.Element = shouldHideIcon ? <Fragment /> : <SocialIcon link={link} />;
 	const visibleText = link.displayText ?? link.label;
-	const label: JSX.Element = shouldHideLabel ? <EmptyComponent /> : <span className={styles.label}>{visibleText}</span>;
+	const label: JSX.Element = shouldHideLabel ? (
+		<Fragment />
+	) : (
+		<span
+			className={styles.label}
+			data-animate-text={link.displayText ? 'footer-username' : undefined}
+		>
+			{visibleText}
+		</span>
+	);
 
 	const iconFirst = [icon, label];
 	const labelFirst = iconFirst.slice().reverse();
@@ -27,7 +34,7 @@ export const SocialLinkItem = ({
   const renderOrder: JSX.Element[] = iconPosition === 'end' ? labelFirst : iconFirst;
 
 	return (
-		<span className={styles.iconWrapper}>
+		<span className={styles.iconWrapper} data-animate-icon>
 			<a
 				href={link.url}
 				target="_blank"

@@ -15,31 +15,37 @@ export const Navbar = () => {
 			aria-label="Main navigation"
 		>
 			<span className={styles.logo}>
-				{title}
-				<FontAwesomeIcon
-					icon={byPrefixAndName.fal['rectangle-beta']}
-					size="xl"
-					className={styles.betaIcon}
-				/>
+				<span data-animate-text="logo">{title}</span>
+				<span data-animate-icon aria-hidden="true">
+					<FontAwesomeIcon
+						icon={byPrefixAndName.fal['rectangle-beta']}
+						size="xl"
+						className={styles.betaIcon}
+					/>
+				</span>
 			</span>
 			<NavItemsList />
 
 			<NavItem
 				label="Download CV"
 				icon={
-					<FaIcon
-						iconName="file-pdf"
-						iconGroup="fal"
-						className={styles.downloadIcon}
-					/>
+					<span data-animate-icon aria-hidden="true">
+						<FaIcon
+							iconName="file-pdf"
+							iconGroup="fal"
+							className={styles.downloadIcon}
+						/>
+					</span>
 				}
 				href="#downloadPdf"
 				active={false}
+				data-animate-text="download-cv"
 			/>
 			<a
 				href="#contact-me"
 				className={styles.contact}
 				aria-label="Contact me"
+				data-animate-text="contact"
 			>
 				_contact-me
 			</a>
