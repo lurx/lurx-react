@@ -11,6 +11,7 @@ const TECH_ICON_MAP: Record<
 	TypeScript: { iconName: 'js', iconGroup: 'fab' },
 	HTML: { iconName: 'html5', iconGroup: 'fab' },
 	CSS: { iconName: 'css3-alt', iconGroup: 'fab' },
+	SCSS: { iconName: 'sass', iconGroup: 'fab' },
 };
 
 export const TechnologyFilter = ({

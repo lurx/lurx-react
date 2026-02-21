@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { TechnologyFilter } from '../technology-filter.component';
 import type { Technology } from '../../../data/projects.data';
 
-const TECHNOLOGIES: Technology[] = ['React', 'HTML', 'CSS', 'Vue'];
+const TECHNOLOGIES: Technology[] = ['React', 'HTML', 'CSS', 'SCSS'];
 
 describe('TechnologyFilter', () => {
 	it('renders the accordion section label', () => {
@@ -27,7 +27,7 @@ describe('TechnologyFilter', () => {
 		expect(screen.getByText('React')).toBeInTheDocument();
 		expect(screen.getByText('HTML')).toBeInTheDocument();
 		expect(screen.getByText('CSS')).toBeInTheDocument();
-		expect(screen.getByText('Vue')).toBeInTheDocument();
+		expect(screen.getByText('SCSS')).toBeInTheDocument();
 	});
 
 	it('calls onToggle with the technology when a row is clicked', () => {

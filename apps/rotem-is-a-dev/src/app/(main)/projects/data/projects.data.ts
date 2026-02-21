@@ -43,15 +43,6 @@ export const PROJECTS: Project[] = [
 	},
 	{
 		id: 3,
-		number: 3,
-		slug: '_design-system',
-		description:
-			'Vanguardis — a component library and design system built with React and SCSS modules.',
-		technologies: ['React', 'TypeScript'],
-		liveUrl: '#',
-	},
-	{
-		id: 4,
 		number: 4,
 		slug: '_portfolio-v1',
 		description:
@@ -60,7 +51,7 @@ export const PROJECTS: Project[] = [
 		liveUrl: '#',
 	},
 	{
-		id: 5,
+		id: 4,
 		number: 5,
 		slug: '_wolverine-css',
 		description:
