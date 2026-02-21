@@ -27,6 +27,7 @@ export const NavItemsList = () => {
 					href={href}
 					active={isActivePath(href)}
 					enabled={enabled}
+					data-animate-text="nav-item"
 				/>
 			))}
 		</ul>

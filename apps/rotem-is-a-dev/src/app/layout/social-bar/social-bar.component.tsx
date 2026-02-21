@@ -12,7 +12,7 @@ export const SocialBar = () => {
 			aria-label="Social links"
 		>
 			<div className={styles.left}>
-				<span className={styles.label}>find me in:</span>
+				<span className={styles.label} data-animate-text="footer-label">find me in:</span>
 				<SocialLinkList links={leftSideSocialLinks} />
 			</div>
 			<div className={styles.right}>
