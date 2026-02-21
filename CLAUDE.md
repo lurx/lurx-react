@@ -12,8 +12,6 @@ This is Rotem's personal portfolio website built with Next.js 14, React 18, and 
 
 - **Framework**: Nx 20.3.0 workspace with TypeScript and Yarn package manager
 - **Apps**: `apps/rotem-is-a-dev/` - Main Next.js application, `apps/rotem-is-a-dev-e2e/` - E2E tests
-- **Libraries**: `libs/vanguardis/` - Custom design system library
-- **Dependencies**: Vanguardis library must be built before the main app can run
 
 ### Technology Stack
 
@@ -23,15 +21,6 @@ This is Rotem's personal portfolio website built with Next.js 14, React 18, and 
 - **Utilities**: es-toolkit 1.39.10 for modern utility functions, usehooks-ts 3.1.1 for React hooks
 - **Testing**: Jest with React Testing Library, Playwright for E2E
 - **Linting**: ESLint with Next.js configuration
-
-### Vanguardis Design System
-
-Vanguardis is the single source of truth for all UI components and styling:
-
-- **Build Target**: Built to `dist/libs/vanguardis/` with source maps
-- **Core Components**: VanguardisProvider, LoadingScreen, PageTransition, Animation components
-- **Architecture**: TypeScript paths point to source during development, distribution at runtime
-- **Requirements**: 100% test coverage for all components
 
 ## Common Development Commands
 
@@ -45,11 +34,7 @@ if ! lsof -i:4200 >/dev/null 2>&1; then npx nx serve rotem-is-a-dev; fi
 ### Building
 
 ```bash
-# Build main application (requires Vanguardis first)
 npx nx build rotem-is-a-dev
-
-# Build design system library
-npx nx build vanguardis
 
 # Build everything
 npx nx run-many --target=build --all
@@ -60,9 +45,6 @@ npx nx run-many --target=build --all
 ```bash
 # Unit tests for main app
 npx nx test rotem-is-a-dev
-
-# Unit tests for design system
-npx nx test vanguardis
 
 # E2E tests
 npx nx e2e rotem-is-a-dev-e2e
@@ -76,12 +58,6 @@ npx nx run-many --target=test --all
 ```bash
 # Lint main application
 npx nx lint rotem-is-a-dev
-
-# Lint design system
-npx nx lint vanguardis
-
-# TypeScript check (via Vite plugin)
-npx nx typecheck vanguardis
 ```
 
 ### Project Management
@@ -103,7 +79,6 @@ npx nx g @nx/next:app demo
 ### TypeScript Configuration
 
 - **Strict mode enabled**: No `any` types allowed
-- **Path mapping**: `@lurx-react/vanguardis` → `libs/vanguardis/src`, styles → `dist/libs/vanguardis/style.css`
 - **Import types**: Use `import type` for type-only imports
 - **Custom types**: Define in `src/types/` directories
 
@@ -112,18 +87,16 @@ npx nx g @nx/next:app demo
 - **AnimeJS Integration**: Complex timelines with scroll-triggered animations
 - **Scoped Animations**: Use `createScope()` for proper cleanup
 - **Performance**: Respect `prefers-reduced-motion` preferences
-- **Vanguardis Components**: FadeIn, SlideIn, ScaleIn, StaggerFadeIn
 
 ### Styling Conventions
 
 - **SCSS Modules**: All styles use `.module.scss` files imported as objects
-- **Design Tokens**: Use Vanguardis design tokens instead of hardcoded values
+- **Design Tokens**: Use CSS custom properties for design tokens
 - **BEM-like Naming**: Follow established patterns in SCSS
 - **Theming**: CSS custom properties for dynamic theming
 
 ### Component Development
 
-- **Vanguardis First**: All UI components must be added to Vanguardis library first
 - **Functional Components**: Use hooks, proper TypeScript typing for refs and state
 - **File Structure**: Component folder with .tsx, .types.ts, .module.scss, **tests**/
 - **100% Test Coverage**: Comprehensive unit tests required
@@ -187,35 +160,8 @@ createTimeline({
 });
 ```
 
-### Vanguardis Usage Pattern
+## Troubleshooting
 
-```typescript
-// Import components from Vanguardis
-import { FadeIn, SlideIn, VanguardisProvider } from '@lurx-react/vanguardis';
-import '@lurx-react/vanguardis/style';
-
-// Wrap app with provider
-<VanguardisProvider>
-  <App />
-</VanguardisProvider>
-
-// Use animation components
-<FadeIn delay={200} duration={600}>
-  <ComponentToAnimate />
-</FadeIn>
-```
-
-## Build Dependencies
-
-### Critical Build Order
-
-1. **Vanguardis must be built first**: Main app depends on built distribution
-2. **Development vs Production**: TypeScript paths point to source, runtime loads from dist
-3. **Style Loading**: CSS imported separately via `@lurx-react/vanguardis/style`
-
-### Troubleshooting
-
-- **Build Failures**: Ensure Vanguardis is built before main app
 - **Port Issues**: Check if development server is already running on port 4200
 - **Animation Issues**: Verify proper cleanup and scoping patterns
 - **Import Errors**: Check TypeScript path mapping in tsconfig.base.json

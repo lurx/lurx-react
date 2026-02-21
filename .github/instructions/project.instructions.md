@@ -12,7 +12,6 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 
 - Modern React 18 with Next.js 14
 - Advanced animations using AnimeJS
-- Custom Vanguardis design system library
 - TypeScript for type safety
 - SCSS for styling
 - Nx workspace for project management
@@ -56,93 +55,10 @@ This is a personal portfolio website showcasing Rotem's development skills. The 
 - Timeline-based animations with easing functions
 - Proper cleanup of animation instances
 
-## Vanguardis Design System
-
-Vanguardis is a custom design system library built specifically for this project. It provides a comprehensive set of UI components, animations, and utilities that serve as the single source of truth for styling and interactions.
-
-### Architecture
-
-- **Location**: `libs/vanguardis/` - Standalone Nx library
-- **Build**: Vite-based library build with TypeScript and SCSS
-- **Testing**: Jest with React Testing Library (100% test coverage)
-- **Distribution**: Built to `dist/libs/vanguardis/` with source maps
-
-### Core Components
-
-- **VanguardisProvider**: Context provider for global design system configuration
-- **LoadingScreen**: Customizable loading screens with progress indicators
-- **PageTransition**: Advanced page transitions (fade, slide, curtain, ripple)
-- **Animation Components**: FadeIn, SlideIn, ScaleIn, StaggerFadeIn for reveal animations
-
-### Styling Foundation
-
-- **Global Styles**: CSS reset, design tokens, and utility classes
-- **Design Tokens**: Centralized color palette, typography, spacing, and breakpoints
-- **SCSS Architecture**: Modular SCSS with design token integration
-- **CSS Custom Properties**: Dynamic theming support
-
-### Animation System
-
-- **AnimeJS Integration**: Sophisticated animations with timeline support
-- **Scroll Animations**: Intersection Observer-based reveal animations
-- **Motion Preferences**: Respects `prefers-reduced-motion` for accessibility
-- **Performance**: Scoped animations with proper cleanup
-
-### TypeScript Integration
-
-- **Full Type Safety**: Comprehensive TypeScript definitions
-- **Design System Types**: Centralized type definitions for consistency
-- **Component Props**: Strongly typed component interfaces
-- **Animation Types**: Type-safe animation configuration
-
-### Usage Patterns
-
-```typescript
-// Import components from Vanguardis
-import { FadeIn, SlideIn, VanguardisProvider } from '@lurx-react/vanguardis';
-
-// Import styles (handled automatically via provider)
-import '@lurx-react/vanguardis/style';
-
-// Wrap app with provider
-<VanguardisProvider>
-  <App />
-</VanguardisProvider>
-
-// Use animation components
-<FadeIn delay={200} duration={600}>
-  <ComponentToAnimate />
-</FadeIn>
-```
-
-### Development Guidelines
-
-- **Single Source of Truth**: All UI components and styles should use Vanguardis
-- **No External UI Libraries**: Vanguardis replaces the need for Bootstrap, Material-UI, etc.
-- **Component Development**: New UI components should be added to Vanguardis first
-- **Style Consistency**: Use Vanguardis design tokens for colors, spacing, typography
-- **Animation Standards**: Use Vanguardis animation components for consistency
-
-### Build and Distribution
-
-- **Development**: TypeScript paths point to source (`libs/vanguardis/src`)
-- **Runtime**: CSS and JS load from built distribution (`dist/libs/vanguardis/`)
-- **Source Maps**: Full source map support for debugging and CMD+click navigation
-- **Package Exports**: Proper module exports for both development and production
-
-### Testing Standards
-
-- **Jest Configuration**: Custom Jest setup with DOM testing utilities
-- **Test Coverage**: Maintain 100% test coverage for all components
-- **Component Testing**: React Testing Library for component behavior
-- **Animation Testing**: Mock animation utilities for consistent testing
-- **TypeScript Testing**: Full type checking in test files
-
 ### Project Structure
 
 - `apps/rotem-is-a-dev/` - Main Next.js application
 - `apps/rotem-is-a-dev-e2e/` - E2E tests
-- `libs/vanguardis/` - Custom design system library
 - Personal data in `src/data/my-details.json`
 - Type definitions in `src/types/`
 - Modular SCSS with CSS modules
@@ -176,21 +92,18 @@ import '@lurx-react/vanguardis/style';
 
 ### Animation Guidelines
 
-- Use Vanguardis animation components (FadeIn, SlideIn, etc.) for consistency
 - Always use scoped animations with `createScope()`
 - Properly cleanup animations in useEffect cleanup
 - Use timeline-based animations for complex sequences
 - Debug scroll animations with `debug: true` during development
-- Respect motion preferences via Vanguardis utilities
+- Respect `prefers-reduced-motion` preferences
 
 ### Styling Conventions
 
 - Use SCSS modules (`.module.scss` files)
 - Import styles as `styles` object
-- Use Vanguardis design tokens for consistency
+- Use CSS custom properties for design tokens
 - Follow BEM-like naming in SCSS
-- Leverage Vanguardis CSS custom properties for theming
-- Always import global styles via `@lurx-react/vanguardis/style`
 
 ### Component Structure
 
@@ -237,23 +150,6 @@ npx nx e2e rotem-is-a-dev-e2e
 
 ```bash
 npx nx lint rotem-is-a-dev
-npx nx lint vanguardis
-```
-
-### Vanguardis Development
-
-```bash
-# Build the design system library
-npx nx build vanguardis
-
-# Test the design system
-npx nx test vanguardis
-
-# Lint the design system
-npx nx lint vanguardis
-
-# Build and test everything
-npx nx run-many --target=build,test --all
 ```
 
 ## Animation Patterns
@@ -324,30 +220,6 @@ useEffect(() => {
 17. Ensure accessibility in all components according to WCAG 2.1AA standards (ARIA roles, keyboard navigation, color contrast)
 18. Use React Testing Library for component tests
 19. Use Playwright for end-to-end tests
-20. **Always use Vanguardis as the single source of truth for styling**
-21. **Build Vanguardis library before testing dependent apps**
-22. **Add new UI components to Vanguardis first, then consume them**
-23. **Use Vanguardis design tokens instead of hardcoded values**
-24. **Test Vanguardis components independently before integration**
-
-## Vanguardis Contribution Guidelines
-
-- All new UI components must be added to Vanguardis first
-- Components should never have hardcoded strings as default values; use props instead
-- Ensure all components are fully typed with TypeScript
-- Ensure all components have comprehensive unit tests with 100% coverage
-- Ensure all components follow the established animation and styling patterns
-- Ensure all components are generalized, not specific to any one app
-- In case of props like variant, types or anything that requires a map of values, use an object map instead of union types for easier extensibility
-- Use Generic types from the vanguardis @types folder
-- Follow SOLID principles in component design
-- Always fix TypeScript and ESLint errors
-- Each component must be in its own folder.
-- Component types must be in a .types.ts file in the same folder
-- Component styles must be in a .module.scss file in the same folder
-- Component tests must be in a **tests** folder in the same folder
-- Component stories must be in same folder as the component
-- Always update the Vanguardis documentation when adding new components or features
 
 ## Markdown Guidelines
 
