@@ -1,1 +1,1 @@
-export * from './portfolio.component';
+export { Portfolio } from './portfolio.component';
