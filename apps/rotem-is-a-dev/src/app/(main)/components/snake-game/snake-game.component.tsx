@@ -45,9 +45,9 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 		ctx.clearRect(0, 0, CELL * GRID_COLS, CELL * GRID_ROWS);
 
 		// Food — three concentric circles matching the scoreboard SVG, scaled to cell
-		food.forEach((f: Position) => {
-			const cx = f.x * CELL + CELL / 2;
-			const cy = f.y * CELL + CELL / 2;
+		food.forEach((foodItem: Position) => {
+			const cx = foodItem.x * CELL + CELL / 2;
+			const cy = foodItem.y * CELL + CELL / 2;
 
 			ctx.fillStyle = 'rgba(70, 236, 213, 0.1)';
 			ctx.beginPath();
@@ -82,10 +82,10 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 			ctx.lineJoin = 'round';
 
 			ctx.beginPath();
-			for (let i = snake.length - 1; i >= 0; i--) {
-				const x = snake[i].x * CELL + CELL / 2;
-				const y = snake[i].y * CELL + CELL / 2;
-				if (i === snake.length - 1) {
+			for (let index = snake.length - 1; index >= 0; index--) {
+				const x = snake[index].x * CELL + CELL / 2;
+				const y = snake[index].y * CELL + CELL / 2;
+				if (index === snake.length - 1) {
 					ctx.moveTo(x, y);
 				} else {
 					ctx.lineTo(x, y);

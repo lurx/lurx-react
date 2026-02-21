@@ -12,10 +12,10 @@ export const Experience = () => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const { work_experience } = useCV();
 
-	const sortedExperience = [...work_experience].sort((a, b) => {
-		if (a.duration.end === 'Present') return -1;
-		if (b.duration.end === 'Present') return 1;
-		return b.duration.end - a.duration.end;
+	const sortedExperience = [...work_experience].sort((jobA, jobB) => {
+		if (jobA.duration.end === 'Present') return -1;
+		if (jobB.duration.end === 'Present') return 1;
+		return jobB.duration.end - jobA.duration.end;
 	});
 
 	const toggleCollapse = () => {

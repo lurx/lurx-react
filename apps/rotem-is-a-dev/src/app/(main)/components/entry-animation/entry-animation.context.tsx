@@ -54,5 +54,5 @@ export const EntryAnimationProvider = ({
 export const useEntryAnimation = (): EntryAnimationContextValue => {
 	const ctx = useContext(EntryAnimationContext);
 	// Safe default outside provider (e.g. in tests)
-	return ctx ?? { isShellLoaded: true, setIsShellLoaded: () => {}, animationKey: 0, triggerReplay: () => {} };
+	return ctx ?? { isShellLoaded: true, setIsShellLoaded: () => undefined, animationKey: 0, triggerReplay: () => undefined };
 };
