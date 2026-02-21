@@ -36,7 +36,10 @@ export const EntryAnimation = () => {
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
 			Boolean(sessionStorage.getItem(SESSION_KEY));
 
-		if (shouldSkip) return;
+		if (shouldSkip) {
+			setIsShellLoaded(true);
+			return;
+		}
 
 		const pageEl = document.querySelector('[data-page]') as HTMLElement | null;
 		if (!pageEl) {
