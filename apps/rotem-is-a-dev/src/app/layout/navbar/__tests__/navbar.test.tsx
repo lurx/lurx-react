@@ -39,7 +39,7 @@ describe('Navbar', () => {
 		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('href', '/');
 		expect(screen.getByText('_about-me').closest('a')).toHaveAttribute('href', '/about-me');
 		expect(screen.getByText('_projects').closest('a')).toHaveAttribute('href', '/projects');
-		expect(screen.getByText('_contact-me')).toHaveAttribute(
+		expect(screen.getByText('_contact-me').closest('a')).toHaveAttribute(
 			'href',
 			'#contact-me',
 		);
