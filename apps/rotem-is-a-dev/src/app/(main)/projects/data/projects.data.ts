@@ -2,7 +2,8 @@ export type Technology =
 	| 'React'
 	| 'TypeScript'
 	| 'HTML'
-	| 'CSS';
+	| 'CSS'
+	| 'SCSS';
 
 export interface Project {
 	id: number;
@@ -18,6 +19,7 @@ export const ALL_TECHNOLOGIES: Technology[] = [
 	'TypeScript',
 	'HTML',
 	'CSS',
+	'SCSS',
 ];
 
 export const PROJECTS: Project[] = [
@@ -56,5 +58,14 @@ export const PROJECTS: Project[] = [
 			'First iteration of my personal portfolio built with plain HTML, CSS, and vanilla JS.',
 		technologies: ['HTML', 'CSS'],
 		liveUrl: '#',
+	},
+	{
+		id: 5,
+		number: 5,
+		slug: '_wolverine-css',
+		description:
+			'Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
+		technologies: ['CSS', 'SCSS', 'React', 'TypeScript'],
+		liveUrl: '/demo/wolverine-css',
 	},
 ];

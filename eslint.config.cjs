@@ -23,6 +23,7 @@ module.exports = [
 					],
 				},
 			],
+			'id-length': ['error', { min: 2, exceptions: ['x', 'y', '_'] }],
 		},
 	},
 	{

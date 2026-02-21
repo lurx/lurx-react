@@ -13,19 +13,19 @@ export const ProjectsPage = () => {
 	>([]);
 
 	const toggleTechnology = (tech: Technology) => {
-		setSelectedTechnologies((prev) =>
-			prev.includes(tech) ? prev.filter((t) => t !== tech) : [...prev, tech],
+		setSelectedTechnologies(prev =>
+			prev.includes(tech) ? prev.filter(item => item !== tech) : [...prev, tech],
 		);
 	};
 
 	const filteredProjects =
 		selectedTechnologies.length === 0
 			? PROJECTS
-			: PROJECTS.filter((project) =>
-					project.technologies.some((tech) =>
+			: PROJECTS.filter(project =>
+					project.technologies.some(tech =>
 						selectedTechnologies.includes(tech),
 					),
-				);
+			  );
 
 	return (
 		<div className={styles.page}>

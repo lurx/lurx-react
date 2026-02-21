@@ -24,8 +24,8 @@ const SNIPPETS = [
 
 const TOTAL_SNIPPETS = SNIPPETS.length;
 
-function getOpacity(i: number, active: number): number {
-	let rel = (((i - active) % TOTAL_SNIPPETS) + TOTAL_SNIPPETS) % TOTAL_SNIPPETS;
+function getOpacity(index: number, active: number): number {
+	let rel = (((index - active) % TOTAL_SNIPPETS) + TOTAL_SNIPPETS) % TOTAL_SNIPPETS;
 	if (rel > Math.floor(TOTAL_SNIPPETS / 2)) rel -= TOTAL_SNIPPETS;
 	const dist = Math.abs(rel);
 	if (dist === 0) return 1;
@@ -76,11 +76,11 @@ export const HeroSnippets = () => {
 			data-testid="hero-snippets"
 		>
 			<div className={styles.emblaContainer}>
-				{SNIPPETS.map((snippet, i) => (
+				{SNIPPETS.map((snippet, index) => (
 					<div
 						key={snippet.title}
 						className={styles.slide}
-						style={{ opacity: getOpacity(i, activeIndex) }}
+						style={{ opacity: getOpacity(index, activeIndex) }}
 					>
 						<p className={styles.slideLabel}>{snippet.title}</p>
 						<pre className={styles.code}>

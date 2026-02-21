@@ -39,7 +39,7 @@ function buildInitialSnake(): Position[] {
 	const centerX = Math.floor(GRID_COLS / 2); // 7
 	const centerY = Math.floor(GRID_ROWS / 2); // 12
 	// SNAKE_LENGTH segments facing UP: middle segment at (centerX, centerY)
-	return Array.from({ length: SNAKE_LENGTH }, (_, i) => ({ x: centerX, y: centerY - Math.floor(SNAKE_LENGTH / 2) + i }));
+	return Array.from({ length: SNAKE_LENGTH }, (_, index) => ({ x: centerX, y: centerY - Math.floor(SNAKE_LENGTH / 2) + index }));
 }
 
 function positionKey(pos: Position): string {
@@ -129,7 +129,7 @@ export function useSnakeGame(): UseSnakeGameReturn {
 		}
 
 		const ateFood = currentFood.find(
-			(f) => f.x === newHead.x && f.y === newHead.y,
+			(foodItem) => foodItem.x === newHead.x && foodItem.y === newHead.y,
 		);
 
 		const newSnake = ateFood
@@ -137,7 +137,7 @@ export function useSnakeGame(): UseSnakeGameReturn {
 			: [newHead, ...currentSnake.slice(0, -1)];
 
 		const newFood = ateFood
-			? currentFood.filter((f) => !(f.x === newHead.x && f.y === newHead.y))
+			? currentFood.filter((foodItem) => !(foodItem.x === newHead.x && foodItem.y === newHead.y))
 			: currentFood;
 
 		syncSnake(newSnake);

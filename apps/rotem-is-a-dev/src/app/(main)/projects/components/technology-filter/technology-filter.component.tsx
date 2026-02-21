@@ -48,8 +48,8 @@ export const TechnologyFilter = ({
 							aria-checked={isChecked}
 							aria-label={tech}
 							tabIndex={0}
-							onKeyDown={(e) => {
-								if (e.key === ' ' || e.key === 'Enter') onToggle(tech);
+							onKeyDown={(event) => {
+								if (event.key === ' ' || event.key === 'Enter') onToggle(tech);
 							}}
 						>
 							<span

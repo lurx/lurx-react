@@ -17,7 +17,7 @@ interface ThemeContextValue {
 
 const themeContext = createContext<ThemeContextValue>({
 	theme: 'dark',
-	toggleTheme: () => {},
+	toggleTheme: () => void 0,
 });
 
 export const useTheme = () => useContext(themeContext);

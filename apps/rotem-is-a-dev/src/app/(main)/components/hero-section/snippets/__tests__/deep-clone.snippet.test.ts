@@ -2,18 +2,18 @@ import { deepClone } from '../deep-clone.snippet';
 
 describe('deepClone', () => {
 	it('clones a plain object', () => {
-		const obj = { a: 1, b: 'hello' };
+		const obj = { alpha: 1, beta: 'hello' };
 		const clone = deepClone(obj);
 		expect(clone).toEqual(obj);
 		expect(clone).not.toBe(obj);
 	});
 
 	it('clones nested objects without shared references', () => {
-		const obj = { a: { b: { c: 42 } } };
+		const obj = { outer: { middle: { inner: 42 } } };
 		const clone = deepClone(obj);
 		expect(clone).toEqual(obj);
-		clone.a.b.c = 99;
-		expect(obj.a.b.c).toBe(42);
+		clone.outer.middle.inner = 99;
+		expect(obj.outer.middle.inner).toBe(42);
 	});
 
 	it('clones arrays', () => {

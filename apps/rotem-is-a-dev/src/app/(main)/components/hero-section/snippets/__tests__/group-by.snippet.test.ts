@@ -3,16 +3,16 @@ import { groupBy } from '../group-by.snippet';
 describe('groupBy', () => {
 	it('groups items by a string key', () => {
 		const items = [
-			{ type: 'a', val: 1 },
-			{ type: 'b', val: 2 },
-			{ type: 'a', val: 3 },
+			{ type: 'alpha', val: 1 },
+			{ type: 'beta', val: 2 },
+			{ type: 'alpha', val: 3 },
 		];
 		expect(groupBy(items, 'type')).toEqual({
-			a: [
-				{ type: 'a', val: 1 },
-				{ type: 'a', val: 3 },
+			alpha: [
+				{ type: 'alpha', val: 1 },
+				{ type: 'alpha', val: 3 },
 			],
-			b: [{ type: 'b', val: 2 }],
+			beta: [{ type: 'beta', val: 2 }],
 		});
 	});
 

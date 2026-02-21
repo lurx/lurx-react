@@ -15,16 +15,16 @@ export const GameControls = ({
 	displayedRemaining,
 	onSkip,
 }: GameControlsProps) => {
-	const foodDots = Array.from({ length: totalFood }, (_, i) => (
+	const foodDots = Array.from({ length: totalFood }, (_, index) => (
 		<svg
-			key={i}
+			key={index}
 			xmlns="http://www.w3.org/2000/svg"
 			width="21"
 			height="21"
 			viewBox="0 0 21 21"
 			fill="none"
 			className={`${styles.foodDot}${
-				i >= displayedRemaining ? ` ${styles.eaten}` : ''
+				index >= displayedRemaining ? ` ${styles.eaten}` : ''
 			}`}
 			aria-hidden="true"
 		>

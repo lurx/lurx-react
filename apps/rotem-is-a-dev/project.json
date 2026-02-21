@@ -17,6 +17,15 @@
 				"buildTarget": "rotem-is-a-dev:build",
 				"dev": true
 			}
-		}
+		},
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/rotem-is-a-dev/src/**/*.{ts,tsx,js,jsx}",
+          "apps/rotem-is-a-dev/*.{ts,tsx,js,jsx,cjs,mjs}"
+        ]
+      }
+    }
 	}
 }

@@ -9,7 +9,7 @@ interface AvatarProps {
 
 const getInitials = (name: string) => {
 	const names = name.split(' ');
-	const initials = names.map(n => n.charAt(0).toUpperCase()).join('');
+	const initials = names.map(part => part.charAt(0).toUpperCase()).join('');
 	return initials.toUpperCase();
 };
 

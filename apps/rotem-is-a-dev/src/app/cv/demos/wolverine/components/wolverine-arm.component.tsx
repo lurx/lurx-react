@@ -7,9 +7,9 @@ const claws = Array(3).fill(0);
 
 const Fingers = () => (
 	<>
-		{fingers.map((_, i) => (
+		{fingers.map((_, index) => (
 			<div
-				key={i}
+				key={index}
 				className={styles.finger}
 			/>
 		))}
@@ -18,9 +18,9 @@ const Fingers = () => (
 
 const Claws = () => (
 	<div className={styles['wolverine-claws']}>
-		{claws.map((_, i) => (
+		{claws.map((_, index) => (
 			<div
-				key={i}
+				key={index}
 				className={styles['wolverine-claw']}
 			/>
 		))}

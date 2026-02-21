@@ -12,13 +12,13 @@ const typewrite = (el: HTMLElement) => {
 	el.style.minHeight = `${height}px`;
 	el.setAttribute('data-full-text', full);
 	el.textContent = '';
-	const obj = { n: 0 };
+	const obj = { count: 0 };
 	return gsap.to(obj, {
-		n: full.length,
+		count: full.length,
 		duration: Math.max(0.4, full.length * 0.055),
 		ease: 'none',
 		onUpdate() {
-			el.textContent = full.slice(0, Math.round(obj.n));
+			el.textContent = full.slice(0, Math.round(obj.count));
 		},
 		onComplete() {
 			el.textContent = full;
@@ -61,13 +61,13 @@ export const EntryAnimation = () => {
 		const tl = gsap.timeline();
 
 		// Phase 1 — navbar typewriter, left to right
-		navbarTextEls.forEach((el, i) => {
-			tl.add(typewrite(el), i === 0 ? 0 : '<+=0.15');
+		navbarTextEls.forEach((el, index) => {
+			tl.add(typewrite(el), index === 0 ? 0 : '<+=0.15');
 		});
 
 		// Phase 2 — footer typewriter, left to right (starts when navbar finishes)
-		footerTextEls.forEach((el, i) => {
-			tl.add(typewrite(el), i === 0 ? '>' : '<+=0.15');
+		footerTextEls.forEach((el, index) => {
+			tl.add(typewrite(el), index === 0 ? '>' : '<+=0.15');
 		});
 
 		// Phase 3 — horizontal border draw
