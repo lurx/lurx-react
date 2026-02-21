@@ -28,6 +28,8 @@ html {
 body {
   background-color: var(--bg);
   color: var(--text);
+  line-height: var(--a11y-line-height, normal);
+  letter-spacing: var(--a11y-letter-spacing, normal);
   -webkit-font-smoothing: antialiased;
 }
 

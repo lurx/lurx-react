@@ -19,7 +19,7 @@
 
 .panel {
 	position: absolute;
-	top: 100%;
+	top: calc(100% + 1px); // push it below the border of the navbar
 	right: 0;
 	z-index: 100;
 	min-width: 220px;
@@ -32,11 +32,32 @@
 	gap: 12px;
 }
 
+.sectionHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .sectionLabel {
 	font-size: 0.75rem;
 	color: var(--muted);
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
+}
+
+.sectionReset {
+	font-size: 0.75rem;
+	color: var(--muted);
+	transition: color 0.2s;
+
+	&:hover:not(:disabled) {
+		color: var(--text);
+	}
+
+	&:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
 }
 
 .scaleControls {
@@ -74,6 +95,11 @@
 	font-size: 0.875rem;
 	color: var(--teal);
 	font-variant-numeric: tabular-nums;
+}
+
+.divider {
+	border-top: 1px solid var(--border);
+	padding-top: 4px;
 }
 
 .resetButton {
