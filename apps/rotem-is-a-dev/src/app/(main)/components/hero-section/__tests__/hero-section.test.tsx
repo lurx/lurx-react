@@ -1,6 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
+// Stub entry animation so GSAP typewrite doesn't clear text in JSDOM
+jest.mock('../use-hero-entry-animation.hook', () => ({
+	useHeroEntryAnimation: () => undefined,
+}));
+
 // Stub SnakeGame to control win/skip callbacks via HeroGame
 jest.mock('../../snake-game/snake-game.component', () => ({
 	SnakeGame: ({

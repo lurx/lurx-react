@@ -15,7 +15,11 @@ describe('Navbar', () => {
 		render(<Navbar />);
 		expect(screen.getByText('_hello')).toBeInTheDocument();
 		expect(screen.getByText('_about-me')).toBeInTheDocument();
-		expect(screen.getByText('_projects')).toBeInTheDocument();
+	});
+
+	it('does not render disabled nav items', () => {
+		render(<Navbar />);
+		expect(screen.queryByText('_projects')).not.toBeInTheDocument();
 	});
 
 	it('renders the contact link', () => {
@@ -38,7 +42,6 @@ describe('Navbar', () => {
 		render(<Navbar />);
 		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('href', '/');
 		expect(screen.getByText('_about-me').closest('a')).toHaveAttribute('href', '/about-me');
-		expect(screen.getByText('_projects').closest('a')).toHaveAttribute('href', '/projects');
 		expect(screen.getByText('_contact-me').closest('a')).toHaveAttribute(
 			'href',
 			'#contact-me',

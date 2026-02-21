@@ -7,7 +7,7 @@ import { NavItem } from './nav-item.component';
 const NAV_ITEMS = [
 	{ label: 'hello', href: '/', enabled: true },
 	{ label: 'about-me', href: '/about-me', enabled: true },
-	{ label: 'projects', href: '/projects', enabled: true },
+	{ label: 'projects', href: '/projects', enabled: false },
 ];
 
 export const NavItemsList = () => {

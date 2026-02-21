@@ -31,7 +31,7 @@ export const rightSideSocialLinks: SocialLinks = {
 		label: 'GitHub',
 		displayText: '@lurx',
 		icon: {
-			iconName: 'square-github',
+			iconName: 'github',
 			iconGroup: 'fab',
 		},
 	},
