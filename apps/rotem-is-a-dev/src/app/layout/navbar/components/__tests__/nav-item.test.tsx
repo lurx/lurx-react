@@ -9,17 +9,17 @@ describe('NavItem', () => {
 
 	it('renders a link with the correct href', () => {
 		render(<NavItem label="hello" href="#hello" active={false} />);
-		expect(screen.getByText('_hello')).toHaveAttribute('href', '#hello');
+		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('href', '#hello');
 	});
 
 	it('sets aria-current="page" when active', () => {
 		render(<NavItem label="hello" href="#hello" active={true} />);
-		expect(screen.getByText('_hello')).toHaveAttribute('aria-current', 'page');
+		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('aria-current', 'page');
 	});
 
 	it('does not set aria-current when not active', () => {
 		render(<NavItem label="hello" href="#hello" active={false} />);
-		expect(screen.getByText('_hello')).not.toHaveAttribute('aria-current');
+		expect(screen.getByText('_hello').closest('a')).not.toHaveAttribute('aria-current');
 	});
 
 	it('renders nothing when enabled is false', () => {

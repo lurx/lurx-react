@@ -25,20 +25,20 @@ describe('Navbar', () => {
 
 	it('marks _hello as the active nav item when on the home page', () => {
 		render(<Navbar />);
-		const helloLink = screen.getByText('_hello');
+		const helloLink = screen.getByText('_hello').closest('a');
 		expect(helloLink).toHaveAttribute('aria-current', 'page');
 	});
 
 	it('does not mark _about-me as active when on the home page', () => {
 		render(<Navbar />);
-		expect(screen.getByText('_about-me')).not.toHaveAttribute('aria-current');
+		expect(screen.getByText('_about-me').closest('a')).not.toHaveAttribute('aria-current');
 	});
 
 	it('has correct href attributes', () => {
 		render(<Navbar />);
-		expect(screen.getByText('_hello')).toHaveAttribute('href', '/');
-		expect(screen.getByText('_about-me')).toHaveAttribute('href', '/about-me');
-		expect(screen.getByText('_projects')).toHaveAttribute('href', '/projects');
+		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('href', '/');
+		expect(screen.getByText('_about-me').closest('a')).toHaveAttribute('href', '/about-me');
+		expect(screen.getByText('_projects').closest('a')).toHaveAttribute('href', '/projects');
 		expect(screen.getByText('_contact-me')).toHaveAttribute(
 			'href',
 			'#contact-me',
