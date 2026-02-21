@@ -52,7 +52,7 @@ export const GameControls = ({
 	));
 
 	return (
-		<div className={styles.controls}>
+		<div className={styles.controls} data-hero-section="controls">
 			<div className={styles.controlsTop}>
 				<div className={styles.gameNav}>
 					<SnakeGameInstructions />
@@ -60,7 +60,7 @@ export const GameControls = ({
 				</div>
 
 				<div className={styles.foodSection}>
-					<p className={styles.comment}>{'// food left'}</p>
+					<p className={styles.comment} data-hero-text="food-label">{'// food left'}</p>
 					<div
 						className={styles.foodDots}
 						aria-label={`${displayedRemaining} food items remaining`}
@@ -74,6 +74,7 @@ export const GameControls = ({
 				className={styles.skipButton}
 				onClick={() => onSkip()}
 				aria-label="Skip game"
+				data-hero-text="skip"
 			>
 				Skip
 			</button>
