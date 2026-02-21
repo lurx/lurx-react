@@ -1,0 +1,769 @@
+$belt-color: #a31e22;
+$buckle-color: blue;
+$suit-yellow: #f8c90f;
+$suit-yellow-hilight: #ffdb30;
+$suit-blue: #1e3056;
+$suit-blue-hilight: #284573;
+$claws: #e5e5e4;
+$skin: #e9ae78;
+$mouth-cavity: #bf5645;
+$tongue: #d2785f;
+$teeth: #fff;
+$hair: #a97549;
+
+@mixin abs-center() {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+}
+@mixin drop-shadow() {
+	filter: drop-shadow(3em 0 0.5em rgba(#000, 0.2));
+}
+.wolverineContainer {
+	position: relative;
+	width: var(--demo-container-width);
+	height: var(--demo-container-height);
+	--wolverine-scale: 1;
+	font-size: calc(var(--demo-container-height) / 55 * var(--wolverine-scale));
+}
+
+.logo {
+	width: 45em;
+	// position: fixed;
+	left: 50%;
+	z-index: -1;
+	transform: translateX(-50%);
+	opacity: 0.7;
+	img {
+		max-width: 100%;
+	}
+}
+
+.wrapper {
+	height: var(--demo-container-height);
+	aspect-ratio: 4 / 3;
+	@include abs-center;
+	z-index: 4;
+}
+
+.wolverine {
+	width: 34.2em;
+	height: 40.6em;
+	@include abs-center;
+
+	&::after {
+		content: '';
+		width: 113.6%;
+		height: 1em;
+		position: absolute;
+		bottom: 0;
+		left: -8.7%;
+		border-radius: 1em;
+		background: $claws;
+	}
+	&-body {
+		$body-w: 11em;
+		$body-h: 24em;
+		width: $body-w;
+		height: $body-h;
+		@include abs-center;
+		left: -0.8em;
+		border-radius: $body-w;
+		@include drop-shadow;
+	}
+	&-torso {
+		$torso-w: 11em;
+		width: 100%;
+		height: 80%;
+		background: $suit-yellow;
+		position: absolute;
+		border-radius: $torso-w $torso-w 0 0;
+		.peck {
+			height: 40.5%;
+			background: $suit-yellow-hilight;
+			position: absolute;
+			top: 26.5%;
+			.shoulderpad {
+				background: $suit-blue;
+				position: absolute;
+				z-index: -1;
+				&::before {
+					content: '';
+					width: 65%;
+					height: 24%;
+					position: absolute;
+					background: $suit-blue-hilight;
+					top: 0.5em;
+					z-index: -1;
+				}
+			}
+			&::before {
+				content: '';
+				width: 100%;
+				background: $suit-yellow;
+				position: absolute;
+				transform: translateY(calc(-100% + 1.5em));
+				z-index: -1;
+			}
+			&.left {
+				width: 76%;
+				left: -15%;
+				border-radius: 0 1.3em 1.3em 1.8em;
+				&::before {
+					height: 90%;
+					border-radius: 100% 0 0 0;
+				}
+				.shoulderpad {
+					width: 60%;
+					height: 75%;
+					transform: translateX(calc(-100% + 15%));
+					border-radius: 0 0 0 100%;
+					&::before {
+						width: 65%;
+						right: 14%;
+						border-radius: 1em 0 0 1em;
+					}
+				}
+			}
+			&.right {
+				width: 57%;
+				right: -18%;
+				border-radius: 1.3em 0 1.8em 1.8em;
+				&::before {
+					height: 80%;
+					border-radius: 0 100% 0 0;
+				}
+				.shoulderpad {
+					width: 55%;
+					height: 68%;
+					right: 0;
+					transform: translateX(calc(100% - 18%));
+					border-radius: 0 0 100% 0;
+					&::before {
+						width: 60%;
+						left: 18%;
+						border-radius: 0 1em 1em 0;
+					}
+				}
+			}
+		}
+	}
+	&-belt {
+		height: 3.3em;
+		width: 108%;
+		background: $belt-color;
+		left: -4%;
+		position: absolute;
+		bottom: 17%;
+		.buckle {
+			width: 4.4em;
+			height: 3.3em;
+			color: pink;
+			box-sizing: border-box;
+			border: 0.6em solid currentColor;
+			position: absolute;
+			right: 2.4em;
+			overflow: hidden;
+			&::before,
+			&::after {
+				content: '';
+				width: 0.6em;
+				height: 200%;
+				@include abs-center;
+				background: currentColor;
+				transform-origin: center center;
+			}
+			&::before {
+				transform: rotate(55deg);
+			}
+			&::after {
+				transform: rotate(-55deg);
+			}
+		}
+	}
+	&-crotch {
+		width: 100%;
+		height: 20%;
+		background: $suit-blue;
+		position: absolute;
+		bottom: 0;
+		border-radius: 0 0 11em 11em;
+	}
+	&-leg {
+		$left-leg-rotate: 50deg;
+		$right-leg-rotate: -63deg;
+		position: absolute;
+		background: $suit-yellow;
+		border-radius: 6em;
+		transform-origin: top center;
+		.boot {
+			height: 5em;
+			width: 3em;
+			background: $suit-blue;
+			position: absolute;
+			&::before {
+				content: '';
+				position: absolute;
+				background: $suit-blue;
+			}
+			.chevron {
+				width: 5em;
+				height: 5em;
+				position: absolute;
+				left: -1em;
+				top: -1em;
+				&::before,
+				&::after {
+					content: '';
+					width: 50%;
+					height: 100%;
+					position: absolute;
+					background: $suit-blue;
+				}
+				&::before {
+					border-radius: 0 5em 5em 0;
+					transform-origin: 100% 100%;
+					transform: rotate(45deg);
+					top: -1.5em;
+					left: 1.4em;
+				}
+
+				&::after {
+					border-radius: 5em 0 0 5em;
+					right: 67%;
+					transform: rotate(-42deg);
+					top: -2em;
+				}
+			}
+		}
+		&.left {
+			width: 5.5em;
+			height: 8em;
+			transform: rotate($left-leg-rotate);
+			bottom: -4.4em;
+			.boot {
+				$left-leg-rotate: $left-leg-rotate * -1;
+				transform: rotate($left-leg-rotate) translateY(60%);
+				bottom: -0.7em;
+				right: 0.1em;
+				&::before {
+					width: 176%;
+					height: 1.7em;
+					bottom: -0.6em;
+					right: -0.5em;
+					border-radius: 5em 5em 0 0;
+				}
+			}
+		}
+		&.right {
+			width: 4.3em;
+			height: 8.5em;
+			right: 0.6em;
+			transform: rotate($right-leg-rotate);
+			bottom: -5.5em;
+			.boot {
+				$right-leg-rotate: $right-leg-rotate * -1;
+				transform: rotate($right-leg-rotate) translateY(59%) skew(-22deg);
+				bottom: 0.5em;
+				right: 2.7em;
+				&::before {
+					width: 235%;
+					height: 1.7em;
+					bottom: -0.6em;
+					left: -0.5px;
+					transform: skew(22deg);
+					border-radius: 5em 5em 0 0;
+				}
+				.chevron {
+					transform: skew(22deg);
+					&::before {
+						display: none;
+					}
+					&::after {
+						width: 55%;
+						background: $suit-blue;
+						border-radius: 5em 0 0 5em;
+						right: 49%;
+						transform: rotate(-46deg);
+						top: -2.3em;
+					}
+				}
+			}
+		}
+	}
+	&-head {
+		width: 7.8em;
+		height: 9em;
+		background: $suit-yellow-hilight;
+		position: absolute;
+		top: -4.8em;
+		right: -1em;
+		left: 0;
+		margin: auto;
+		border-radius: 7.8em 7.8em 0 0;
+		&::before {
+			content: '';
+			width: 1.3em;
+			height: 1.3em;
+			background: lighten($suit-yellow-hilight, 10%);
+			border-radius: 1.3em;
+			position: absolute;
+			left: 4.2em;
+			top: 1em;
+		}
+
+		.cowl {
+			&-left,
+			&-right {
+				height: 66%;
+				position: absolute;
+				background: $suit-blue;
+				bottom: 0;
+				&::before {
+					content: '';
+					background: $suit-blue;
+					position: absolute;
+				}
+				.eye {
+					width: 1.5em;
+					height: 0.7em;
+					background: #fff;
+					position: absolute;
+					top: 1em;
+					border-radius: 0 0 1.2em 1.2em;
+				}
+			}
+			&-left {
+				width: 55%;
+				left: 0;
+				&::before {
+					width: 100%;
+					height: 120%;
+					transform-origin: 100% 100%;
+					border-radius: 100% 0% 0% 100% / 50% 50% 0% 50%;
+					transform: translateY(-100%) rotate(-45deg);
+				}
+				.eye {
+					right: 0.5em;
+				}
+			}
+			&-right {
+				width: 30%;
+				right: 0;
+				&::before {
+					width: 150%;
+					height: 96%;
+
+					transform-origin: 0% 100%;
+					border-radius: 0% 100% 100% 0% / 50% 50% 50% 50%;
+					transform: translateY(-100%) rotate(45deg);
+				}
+				.eye {
+					left: 0.3em;
+				}
+			}
+		}
+		.face {
+			width: 6.9em;
+			height: 3.7em;
+			background: $skin;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			border-radius: 15% 15% 0% 0% / 50% 50% 0% 0%;
+			.mouth {
+				width: 4.3em;
+				height: 2.1em;
+				position: absolute;
+				background: $mouth-cavity;
+				border-radius: 50% 0% 0% 0% / 95% 50% 0% 0%;
+				bottom: 0.6em;
+				left: 0.7em;
+				overflow: hidden;
+				.teeth {
+					width: 3.8em;
+					height: 0.7em;
+					background: $teeth;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					&::before,
+					&::after {
+						content: '';
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 0.4em 0.4em 0.4em;
+						border-color: transparent transparent $teeth transparent;
+						position: absolute;
+						transform: translateY(-100%);
+					}
+					&::before {
+						right: 50%;
+					}
+					&::after {
+						right: 0;
+					}
+				}
+				.tongue {
+					width: 2.4em;
+					height: 1.4em;
+					background: $tongue;
+					position: absolute;
+					bottom: 0;
+					left: 0.5em;
+					border-radius: 2.4em 2.4em 0 0;
+				}
+			}
+		}
+	}
+	&-arm {
+		position: absolute;
+		background: $skin;
+		width: 7.3em;
+		height: 11.8em;
+		top: 2.3em;
+		border-radius: 10em 10em;
+		z-index: -1;
+		&::before,
+		&::after {
+			content: '';
+			width: 0.7em;
+			height: 3.5em;
+			background: $hair;
+			position: absolute;
+			transform: rotate(90deg);
+			border-radius: 1.7em;
+		}
+
+		&.left {
+			left: -3.1em;
+			transform-origin: 100% 0%;
+			transform: rotate(24deg);
+			&::before,
+			&::after {
+				left: 0.8em;
+			}
+			&::before {
+				top: 4.3em;
+			}
+			&::after {
+				top: 5.9em;
+			}
+			.forearm {
+				width: 80%;
+				height: 15%;
+				bottom: 0;
+				left: 0.3em;
+				transform: rotate(5deg);
+			}
+			.fist {
+				width: 6.5em;
+				height: 6.5em;
+				bottom: -4.4em;
+				right: 1.3em;
+				transform: rotate(5deg);
+				border-radius: 100%;
+				.finger {
+					&:nth-child(1) {
+						height: 2.2em;
+						top: 40%;
+						left: -0.8em;
+						transform: rotate(3deg);
+					}
+					&:nth-child(2),
+					&:nth-child(3),
+					&:nth-child(4) {
+						height: 1.8em;
+						transform: rotate(95deg);
+						bottom: 0;
+					}
+					&:nth-child(2) {
+						left: -0.8em;
+					}
+					&:nth-child(3) {
+						left: 1em;
+						bottom: -2%;
+					}
+					&:nth-child(4) {
+						left: 2.7em;
+						bottom: -1%;
+					}
+				}
+			}
+			.wolverine-claws {
+				border-radius: 0 0 1em 0;
+			}
+		}
+		&.right {
+			height: 12.3em;
+			right: 0.3em;
+			transform-origin: 0% 0%;
+			transform: rotate(-24deg);
+			&::before,
+			&::after {
+				right: 0.8em;
+			}
+			&::before {
+				top: 4.6em;
+			}
+			&::after {
+				right: 1em;
+				top: 6.3em;
+			}
+			.fist {
+				width: 5.2em;
+				height: 6.3em;
+				bottom: -4.4em;
+				right: -2.1em;
+				transform: rotate(-40deg);
+				bottom: -6.9em;
+				left: 0;
+				margin: auto;
+				transform-origin: 50% 0;
+				.finger {
+					&:nth-child(1) {
+						height: 2.2em;
+						top: 47%;
+						right: -1.1em;
+						transform: rotate(3deg);
+					}
+					&:nth-child(2),
+					&:nth-child(3),
+					&:nth-child(4) {
+						height: 1.8em;
+						transform: rotate(95deg);
+						bottom: 0;
+					}
+					&:nth-child(2) {
+						left: -0.8em;
+					}
+					&:nth-child(3) {
+						left: 1em;
+						bottom: -2%;
+					}
+					&:nth-child(4) {
+						left: 2.7em;
+						bottom: -1%;
+					}
+				}
+				.wolverine-claw {
+					&s {
+						bottom: 0;
+					}
+					&:nth-child(1) {
+						left: 0.7em;
+						height: 8.4em;
+					}
+					&:nth-child(2) {
+						height: 9em;
+						left: 2.3em;
+					}
+					&:nth-child(3) {
+						height: 8em;
+						left: 3.8em;
+					}
+				}
+			}
+			.forearm {
+				width: 63%;
+				height: 48%;
+				bottom: -26%;
+				left: 2.3em;
+				transform: rotate(-40deg);
+			}
+			.wolverine-claw {
+				border-radius: 0 0 0 1em;
+				&s {
+					transform: rotate(-1deg);
+				}
+			}
+		}
+		.forearm {
+			background: $skin;
+			position: absolute;
+		}
+		.fist {
+			position: absolute;
+			background: $suit-blue;
+			.finger {
+				width: 3.5em;
+				height: 2.3em;
+				background: #f00;
+				position: absolute;
+				border-radius: 3.5em;
+				&:nth-child(1) {
+					background: lighten(desaturate(adjust-hue($suit-blue, -5deg), 3), 5);
+				}
+				&:nth-child(2),
+				&:nth-child(3),
+				&:nth-child(4) {
+					background: lighten(desaturate(adjust-hue($suit-blue, -5deg), 1), 3);
+				}
+			}
+		}
+	}
+	&-claw {
+		background: $claws;
+		width: 1em;
+		height: 5em;
+		position: absolute;
+		border-radius: 0 0 1em 0;
+		transition: 0.1s height linear;
+		border: 1px solid rgba(#000, 0.25);
+		box-sizing: border-box;
+		&:nth-child(1) {
+			left: 0.7em;
+		}
+		&:nth-child(2) {
+			height: 5.8em;
+			left: 2em;
+		}
+		&:nth-child(3) {
+			height: 4.8em;
+			left: 3.5em;
+		}
+		&s {
+			height: 0.1em;
+			width: 80%;
+			background: transparent;
+			position: absolute;
+			bottom: 0;
+			transform: rotate(7deg);
+			z-index: -1;
+		}
+	}
+}
+
+.snikt {
+	font-family: var(--font-chelsea-market);
+	text-transform: uppercase;
+	position: absolute;
+	top: 50%;
+	opacity: 0;
+	transition: 0.1s opacity linear;
+	font-size: 2.4em;
+	&.left {
+		left: -10%;
+		transform: rotate(-15deg);
+	}
+	&.right {
+		right: -10%;
+		transform: rotate(15deg);
+	}
+}
+
+.title {
+	position: absolute;
+	bottom: 1em;
+	left: 0;
+	right: 0;
+	margin: auto;
+	height: 3em;
+	font-family: var(--font-chelsea-market);
+	text-align: center;
+	a {
+		color: $suit-yellow;
+		transition: 0.1s all ease-in-out;
+		&:hover {
+			color: $suit-yellow-hilight;
+		}
+	}
+}
+//animations
+.wolverine {
+	&-torso {
+		animation: 2s breathe-torso infinite;
+	}
+	&-head {
+		animation: 1.8s breathe-head infinite;
+	}
+	.peck {
+		.wolverine-arm {
+			&.left,
+			&.right {
+				.wolverine-claw {
+					height: 0;
+				}
+			}
+			&.left {
+				.wolverine-claw {
+					transition-delay: 0s;
+				}
+			}
+			&.right {
+				.wolverine-claw {
+					transition-delay: 0.2s;
+				}
+			}
+		}
+	}
+	.snikt {
+		&.left {
+			transition-delay: 0s;
+		}
+		&.right {
+			transition-delay: 0.2s;
+		}
+	}
+	&:hover,
+	&:active {
+		.peck {
+			&.left {
+				.wolverine-claw {
+					height: 5em;
+					&:nth-child(2) {
+						height: 5.8em;
+					}
+					&:nth-child(3) {
+						left: 3.5em;
+					}
+				}
+			}
+
+			&.right {
+				.wolverine-claw {
+					&:nth-child(1) {
+						height: 8.4em;
+					}
+					&:nth-child(2) {
+						height: 9em;
+					}
+					&:nth-child(3) {
+						height: 8em;
+					}
+				}
+			}
+		}
+		.snikt {
+			opacity: 1;
+		}
+	}
+}
+
+@keyframes breathe-torso {
+	0% {
+		top: 0;
+	}
+	50% {
+		top: 0.5em;
+	}
+	100% {
+		top: 0;
+	}
+}
+
+@keyframes breathe-head {
+	0% {
+		top: -4.8em;
+	}
+	50% {
+		top: -4.3em;
+	}
+	100% {
+		top: -4.8em;
+	}
+}
