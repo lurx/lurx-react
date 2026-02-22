@@ -11,7 +11,7 @@ export const leftSideSocialLinks: SocialLinks = {
 		displayText: '@lurx',
     hideLabel: true,
 		icon: {
-			iconName: 'github',
+			iconName: 'github-alt',
 			iconGroup: 'fab',
 		},
 	},
@@ -29,20 +29,7 @@ export const leftSideSocialLinks: SocialLinks = {
 		label: 'LinkedIn',
 		hideLabel: true,
 		icon: {
-			iconName: 'linkedin',
-			iconGroup: 'fab',
-		},
-	},
-};
-
-export const rightSideSocialLinks: SocialLinks = {
-	github: {
-		url: GITHUB_URL,
-		label: 'GitHub',
-		displayText: '@lurx',
-    hideLabel: true,
-		icon: {
-			iconName: 'github',
+			iconName: 'linkedin-in',
 			iconGroup: 'fab',
 		},
 	},
