@@ -1,6 +1,6 @@
 import { Card } from '@/app/cv/components/card';
-import { DemoCarousel } from '@/app/cv/demos/demo-carousel';
-import { WolverineDemo, SheepDemo } from '@/app/cv/demos';
+import { DemoCarousel } from '@/demos/demo-carousel';
+import { WolverineDemo, SheepDemo } from '@/demos';
 
 
 export const Portfolio = () => {
