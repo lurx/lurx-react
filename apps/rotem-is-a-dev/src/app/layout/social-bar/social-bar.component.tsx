@@ -1,8 +1,6 @@
+import { AccessibilityWidget } from '../accessibility-widget/accessibility-widget.component';
 import { SocialLinkList } from './components/social-links-list.component';
-import {
-	leftSideSocialLinks,
-	rightSideSocialLinks,
-} from './social-bar.constants';
+import { leftSideSocialLinks } from './social-bar.constants';
 import styles from './social-bar.module.scss';
 
 export const SocialBar = () => {
@@ -16,7 +14,7 @@ export const SocialBar = () => {
 				<SocialLinkList links={leftSideSocialLinks} />
 			</div>
 			<div className={styles.right}>
-				<SocialLinkList links={rightSideSocialLinks} />
+				<AccessibilityWidget />
 			</div>
 		</footer>
 	);

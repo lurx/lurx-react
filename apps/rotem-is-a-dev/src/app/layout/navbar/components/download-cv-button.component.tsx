@@ -14,6 +14,7 @@ export const DownloadCVButton = () => (
 			/>
 		}
 		href="#downloadPdf"
+		className={styles.downloadCv}
 		active={false}
 		data-animate-text="download-cv"
 	/>

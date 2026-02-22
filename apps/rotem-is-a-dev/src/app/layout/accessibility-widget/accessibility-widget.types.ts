@@ -14,7 +14,7 @@ export const LINE_HEIGHT_VALUES: ReadonlyArray<'Normal' | number> = [
 	'Normal',
 	1.5,
 	1.75,
-	2.0,
+	2,
 ];
 
 export const LETTER_SPACING_VALUES: ReadonlyArray<'Normal' | number> = [

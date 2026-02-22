@@ -15,11 +15,9 @@ export const SocialLink = ({
 	const shouldHideIcon = iconPosition === 'hide';
 	const shouldHideLabel = link.hideLabel;
 
-	const icon: JSX.Element = shouldHideIcon ? <Fragment /> : <SocialIcon link={link} />;
+	const icon: Optional<JSX.Element> = shouldHideIcon ? undefined : <SocialIcon link={link} />;
 	const visibleText = link.displayText ?? link.label;
-	const label: JSX.Element = shouldHideLabel ? (
-		<Fragment />
-	) : (
+	const label: Optional<JSX.Element> = shouldHideLabel ? undefined : (
 		<span
 			className={styles.label}
 			data-animate-text={link.displayText ? 'footer-username' : undefined}
@@ -31,7 +29,7 @@ export const SocialLink = ({
 	const iconFirst = [icon, label];
 	const labelFirst = iconFirst.slice().reverse();
 
-	const renderOrder: JSX.Element[] = iconPosition === 'end' ? labelFirst : iconFirst;
+	const renderOrder: Optional<JSX.Element>[] = iconPosition === 'end' ? labelFirst : iconFirst;
 
 	return (
 		<span className={styles.iconWrapper} data-animate-icon>

@@ -1,5 +1,6 @@
 import { toCodeLike } from '@/app/utils/to-code-like.util';
-import { AccessibilityWidget } from './components/accessibility-widget/accessibility-widget.component';
+
+import { MobileMenu } from './components/mobile-menu/mobile-menu.component';
 import { NavItemsList } from './components/nav-items-list.component';
 import { NavbarLogo } from './components/navbar-logo.component';
 import styles from './navbar.module.scss';
@@ -18,7 +19,7 @@ export const Navbar = () => {
 				<NavItemsList />
 				<DownloadCVButton />
 				<ContactButton />
-				<AccessibilityWidget />
+		<MobileMenu />
 			</nav>
 		</header>
 	);

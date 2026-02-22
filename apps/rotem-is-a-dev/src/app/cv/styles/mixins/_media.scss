@@ -12,3 +12,11 @@ $breakpoints: (
     @warn "Unknown breakpoint: #{$breakpoint}. Available: #{map-keys($breakpoints)}";
   }
 }
+
+@mixin media-below($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - 1px) { @content; }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}. Available: #{map-keys($breakpoints)}";
+  }
+}

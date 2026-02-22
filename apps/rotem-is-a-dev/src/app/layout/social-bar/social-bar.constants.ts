@@ -5,6 +5,16 @@ const LINKEDIN_URL = 'https://linkedin.com/in/rotem-lurx-horovitz-9601705';
 const GITHUB_URL = 'https://github.com/lurx';
 
 export const leftSideSocialLinks: SocialLinks = {
+  github: {
+		url: GITHUB_URL,
+		label: 'GitHub',
+		displayText: '@lurx',
+    hideLabel: true,
+		icon: {
+			iconName: 'github',
+			iconGroup: 'fab',
+		},
+	},
 	twitter: {
 		url: TWITTER_URL,
 		label: 'X (Twitter)',
@@ -30,6 +40,7 @@ export const rightSideSocialLinks: SocialLinks = {
 		url: GITHUB_URL,
 		label: 'GitHub',
 		displayText: '@lurx',
+    hideLabel: true,
 		icon: {
 			iconName: 'github',
 			iconGroup: 'fab',

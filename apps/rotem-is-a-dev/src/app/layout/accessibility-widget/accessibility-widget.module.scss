@@ -1,13 +1,13 @@
 .wrapper {
-	position: relative;
+	display: flex;
+	align-items: center;
 }
 
 .trigger {
 	display: flex;
 	align-items: center;
-	padding: 0 20px;
+	padding: 0;
 	color: var(--muted);
-	border-left: 1px solid var(--border);
 	height: 100%;
 	transition: color 0.2s;
 
@@ -15,17 +15,20 @@
 	&.active {
 		color: var(--text);
 	}
+
+  @media (max-width: 767px) {
+		padding: 0 20px;
+	}
 }
 
 .panel {
 	position: absolute;
-	top: calc(100% + 1px); // push it below the border of the navbar
+	bottom: 100%;
 	right: 0;
 	z-index: var(--z-overlay);
 	min-width: 220px;
 	background-color: var(--surface);
 	border: 1px solid var(--border);
-	border-top: none;
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
