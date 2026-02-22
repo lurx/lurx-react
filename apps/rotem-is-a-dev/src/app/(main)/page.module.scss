@@ -1,10 +1,15 @@
 .backdrop {
+  --backdrop-padding: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
   background-color: var(--bg);
-  padding: 70px;
+  padding: var(--backdrop-padding);
+  	@media (max-width: 767px) {
+		--backdrop-padding: 16px;
+	}
+
 }
 
 .page {

@@ -3,10 +3,9 @@
 	align-items: stretch;
 	border-top: 1px solid var(--border);
 	background-color: var(--surface);
-	height: 48px;
+	height: var(--social-bar-height);
 	flex-shrink: 0;
-	container-type: size;
-	overflow-y: hidden;
+  position: relative;
 }
 
 .left {
@@ -15,12 +14,16 @@
 	gap: 16px;
 	padding: 0 24px;
 	flex: 1 0 auto;
+	container-type: size;
+	overflow-y: hidden;
+	@media (max-width: 767px) {
+		padding-right: 0;
+	}
 }
 
 .socialLinksList {
 	list-style-type: none;
 	display: flex;
-	// gap: 16px;
 	padding: 0;
 	margin: 0;
 }
@@ -28,9 +31,14 @@
 .label {
 	font-size: 0.929rem;
 	color: var(--muted);
+	&.hideLabelInMobile {
+		@media (max-width: 767px) {
+			display: none;
+		}
+	}
 }
 .iconWrapper {
-  --icon-wrapper-border: 1px solid var(--border);
+	--icon-wrapper-border: 1px solid var(--border);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -59,7 +67,6 @@
 	align-items: center;
 	justify-content: center;
 	height: 100%;
-	// border-left: 1px solid var(--border);
 	color: var(--muted);
 	transition: color 0.2s;
 	gap: 5px;
@@ -74,6 +81,9 @@
 	gap: 8px;
 	padding: 0 24px;
 	border-left: 1px solid var(--border);
+	@media (max-width: 767px) {
+		padding: 0;
+	}
 }
 
 .username {
@@ -88,4 +98,3 @@
 		color: var(--text);
 	}
 }
-
