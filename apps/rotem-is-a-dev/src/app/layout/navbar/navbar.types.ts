@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export interface NavItemProps {
+export type NavItemProps = WithDataAttributes<{
 	label: ReactNode;
 	href: string;
 	active: boolean;
@@ -8,5 +8,4 @@ export interface NavItemProps {
 	icon?: ReactNode;
 	iconOnly?: boolean;
 	className?: string;
-	'data-animate-text'?: string;
-}
+}>;

@@ -12,7 +12,7 @@ export const NavItem = ({
 	iconOnly = false,
 	enabled = true,
 	className,
-	'data-animate-text': dataAnimateText,
+	...dataAttributes
 }: NavItemProps) => {
 	const ariaCurrentValue = active ? 'page' : undefined;
 	const hasIcon = Boolean(icon);
@@ -36,7 +36,7 @@ export const NavItem = ({
 		>
 			{icon}
 			{!hideLabel && (
-				<span data-animate-text={dataAnimateText}>{formattedLabel}</span>
+				<span {...dataAttributes}>{formattedLabel}</span>
 			)}
 		</a>
 	);
