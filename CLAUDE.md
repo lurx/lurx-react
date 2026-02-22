@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is Rotem's personal portfolio website built with Next.js 14, React 18, and AnimeJS in an Nx monorepo workspace. The project showcases advanced frontend development skills through a modern design system, sophisticated animations, and clean architecture.
+This is Rotem's personal portfolio website built with Next.js 14, React 18, and GSAP in an Nx monorepo workspace. The project showcases advanced frontend development skills through a modern design system, sophisticated animations, and clean architecture.
 
 ## Architecture
 
@@ -17,7 +17,7 @@ This is Rotem's personal portfolio website built with Next.js 14, React 18, and 
 
 - **Frontend**: Next.js 14.2.16, React 18.3.1, TypeScript 5.6.2
 - **Styling**: SCSS modules with CSS custom properties for theming
-- **Animations**: AnimeJS 4.0.2 for complex animations and scroll-triggered effects
+- **Animations**: GSAP 3.14.2 for complex timelines and scroll-triggered effects
 - **Utilities**: es-toolkit 1.39.10 for modern utility functions, usehooks-ts 3.1.1 for React hooks
 - **Testing**: Jest with React Testing Library, Playwright for E2E
 - **Linting**: ESLint with Next.js configuration
@@ -84,8 +84,8 @@ npx nx g @nx/next:app demo
 
 ### Animation Architecture
 
-- **AnimeJS Integration**: Complex timelines with scroll-triggered animations
-- **Scoped Animations**: Use `createScope()` for proper cleanup
+- **GSAP Integration**: Complex timelines with `gsap.timeline()` for sequenced animations
+- **Cleanup**: Kill timelines and clear props in useEffect return for proper cleanup
 - **Performance**: Respect `prefers-reduced-motion` preferences
 
 ### Styling Conventions
@@ -134,30 +134,21 @@ npx nx g @nx/next:app demo
 ### Animation Implementation
 
 ```typescript
-// Scoped animation setup
-const animationScope = useRef<Nullable<Scope>>(null);
-
+// GSAP timeline with proper cleanup
 useEffect(() => {
-	animationScope.current = createScope({ root }).add(scopedAnimations => {
-		// Animation logic here
+	const tl = gsap.timeline();
+
+	tl.from('[data-animate]', {
+		opacity: 0,
+		duration: 0.45,
+		ease: 'power2.inOut',
 	});
 
-	return () => animationScope.current?.revert();
+	return () => {
+		tl.kill();
+		gsap.set('[data-animate]', { clearProps: 'all' });
+	};
 }, []);
-```
-
-### Scroll-Triggered Animations
-
-```typescript
-createTimeline({
-	defaults: { ease: 'linear', duration: 500, composition: 'blend' },
-	autoplay: onScroll({
-		target: `.${styles.element}`,
-		enter: 'top top',
-		leave: 'bottom bottom',
-		sync: 0.1,
-	}),
-});
 ```
 
 ## Troubleshooting
