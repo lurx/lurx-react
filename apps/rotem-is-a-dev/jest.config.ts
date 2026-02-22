@@ -17,6 +17,13 @@ const config = {
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'\\?raw$': '<rootDir>/src/__mocks__/raw-file.js',
 	},
+	coveragePathIgnorePatterns: [
+		'/node_modules/',
+		'/__tests__/',
+		'/__mocks__/',
+		'/src/app/components/index\\.ts$',
+		'/src/app/components/[^/]+/index\\.ts$',
+	],
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };
 

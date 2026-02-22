@@ -4,7 +4,7 @@ import styles from './file-tree.module.scss';
 
 const FileItem = ({
 	label,
-	active = false,
+	active,
 	onClick,
 }: {
 	label: string;

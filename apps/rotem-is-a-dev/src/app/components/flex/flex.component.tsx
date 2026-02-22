@@ -59,7 +59,7 @@ export const Flex = ({
 		className,
 	];
 
-	const Tag = tag || 'div';
+	const Tag = tag;
 	return (
 		<Tag
 			id={id}

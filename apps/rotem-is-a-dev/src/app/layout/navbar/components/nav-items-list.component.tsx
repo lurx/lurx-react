@@ -13,11 +13,7 @@ const NAV_ITEMS = [
 export const NavItemsList = () => {
 	const pathname = usePathname();
 
-	const isActivePath = (href: string) => {
-		if (!href) return false;
-
-		return pathname === href;
-	};
+	const isActivePath = (href: string) => pathname === href;
 	return (
 		<ul className={styles.nav}>
 			{NAV_ITEMS.map(({ label, href, enabled }) => (

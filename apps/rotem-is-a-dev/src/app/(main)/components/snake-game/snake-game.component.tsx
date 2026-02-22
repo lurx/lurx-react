@@ -38,6 +38,7 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	// Draw the game onto the canvas every time snake/food changes
 	useEffect(() => {
 		const canvas = canvasRef.current;
+		/* istanbul ignore if -- ref is always set after mount */
 		if (!canvas) return;
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return;

@@ -46,4 +46,33 @@ describe('ProjectCard', () => {
 			screen.getByRole('article', { name: /project: _ui-animations/i }),
 		).toBeInTheDocument();
 	});
+
+	it('renders without a tech badge when technology has no icon mapping', () => {
+		const project: Project = {
+			...mockProject,
+			technologies: ['SCSS'],
+		};
+		render(<ProjectCard project={project} />);
+		// Should still render the card
+		expect(screen.getByText('view-project')).toBeInTheDocument();
+	});
+
+	it('falls back to # when liveUrl is undefined', () => {
+		const project: Project = {
+			...mockProject,
+			liveUrl: undefined,
+		};
+		render(<ProjectCard project={project} />);
+		const link = screen.getByRole('link', { name: /view project/i });
+		expect(link).toHaveAttribute('href', '#');
+	});
+
+	it('renders without tech badge when technologies array is empty', () => {
+		const project: Project = {
+			...mockProject,
+			technologies: [],
+		};
+		render(<ProjectCard project={project} />);
+		expect(screen.queryByLabelText('React')).not.toBeInTheDocument();
+	});
 });
