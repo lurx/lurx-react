@@ -13,7 +13,7 @@ interface EntryAnimationContextValue {
 }
 
 export const entryAnimationContext =
-	createContext<EntryAnimationContextValue | null>(null);
+	createContext<Nullable<EntryAnimationContextValue>>(null);
 
 export const EntryAnimationProvider = ({
 	children,

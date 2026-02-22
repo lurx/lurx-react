@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
+import { useOnClickOutside } from '@/hooks';
 import { FaIcon } from '@/app/components';
 import classNames from 'classnames';
 import styles from './accessibility-widget.module.scss';
@@ -88,7 +88,7 @@ export const AccessibilityWidget = () => {
 	);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
-	useOnClickOutside(wrapperRef as React.RefObject<HTMLDivElement>, () => setIsOpen(false));
+	useOnClickOutside(wrapperRef, () => setIsOpen(false));
 
 	useEffect(() => {
 		applyTextScale(textScale);

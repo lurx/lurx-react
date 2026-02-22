@@ -19,7 +19,7 @@ export const Navbar = () => {
 				<NavItemsList />
 				<DownloadCVButton />
 				<ContactButton />
-		<MobileMenu />
+				<MobileMenu />
 			</nav>
 		</header>
 	);

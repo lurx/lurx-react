@@ -72,13 +72,13 @@ export function useSnakeGame(): UseSnakeGameReturn {
 	const [food, setFood] = useState<Position[]>([]);
 	const [direction, setDirection] = useState<Direction>('UP');
 	const [gameState, setGameState] = useState<GameState>('idle');
-	const [activeKey, setActiveKey] = useState<string | null>(null);
+	const [activeKey, setActiveKey] = useState<Nullable<string>>(null);
 
 	const directionRef = useRef<Direction>('UP');
 	const snakeRef = useRef<Position[]>(initialSnake);
 	const foodRef = useRef<Position[]>([]);
 	const gameStateRef = useRef<GameState>('idle');
-	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const intervalRef = useRef<Nullable<ReturnType<typeof setInterval>>>(null);
 
 	const syncDirection = (dir: Direction) => {
 		directionRef.current = dir;

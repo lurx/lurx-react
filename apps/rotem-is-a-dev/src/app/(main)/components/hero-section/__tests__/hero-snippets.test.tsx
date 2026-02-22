@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 let mockGameCompleted = true;
 
-let mockOnSelectHandler: (() => void) | null = null;
+let mockOnSelectHandler: Nullable<() => void> = null;
 const mockScrollNext = jest.fn();
 const mockSelectedScrollSnap = jest.fn(() => 0);
 const mockOn = jest.fn((event: string, handler: () => void) => {
@@ -18,7 +18,7 @@ const mockEmblaApi = {
 
 const mockEmblaRef = jest.fn();
 
-let mockCurrentEmblaApi: typeof mockEmblaApi | null = mockEmblaApi;
+let mockCurrentEmblaApi: Nullable<typeof mockEmblaApi> = mockEmblaApi;
 
 jest.mock('embla-carousel-react', () => ({
 	__esModule: true,
