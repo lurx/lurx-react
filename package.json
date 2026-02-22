@@ -17,7 +17,6 @@
 		"@fortawesome/fontawesome-svg-core": "^7.2.0",
 		"@fortawesome/react-fontawesome": "^3.2.0",
 		"@module-federation/nextjs-mf": "^8.8.56",
-		"animejs": "^4.0.2",
 		"chance": "^1.1.12",
 		"classnames": "^2.5.1",
 		"embla-carousel-react": "^8.6.0",
