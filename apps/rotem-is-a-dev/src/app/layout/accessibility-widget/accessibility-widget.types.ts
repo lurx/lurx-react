@@ -6,6 +6,10 @@ export const DEFAULT_TEXT_SCALE: TextScale = 100;
 
 export const BASE_FONT_SIZE_PX = 14;
 
+export const MOBILE_BASE_FONT_SIZE_PX = 16;
+
+export const MOBILE_BREAKPOINT_PX = 767;
+
 export const TEXT_SCALE_STORAGE_KEY = 'accessibility-text-scale';
 
 export type SpacingLevel = 0 | 1 | 2 | 3;

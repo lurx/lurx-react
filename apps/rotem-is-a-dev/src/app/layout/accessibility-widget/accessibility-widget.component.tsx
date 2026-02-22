@@ -13,6 +13,8 @@ import {
 	LETTER_SPACING_VALUES,
 	LINE_HEIGHT_STORAGE_KEY,
 	LINE_HEIGHT_VALUES,
+	MOBILE_BASE_FONT_SIZE_PX,
+	MOBILE_BREAKPOINT_PX,
 	TEXT_SCALE_STORAGE_KEY,
 	TEXT_SCALES,
 	type SpacingLevel,
@@ -45,8 +47,18 @@ function readStoredLevel(key: string): SpacingLevel {
 	return DEFAULT_SPACING_LEVEL;
 }
 
+function getBaseFontSize(): number {
+	return globalThis.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches
+		? MOBILE_BASE_FONT_SIZE_PX
+		: BASE_FONT_SIZE_PX;
+}
+
 function applyTextScale(scale: TextScale): void {
-	const fontSize = (BASE_FONT_SIZE_PX * scale) / 100;
+	if (scale === DEFAULT_TEXT_SCALE) {
+		document.documentElement.style.removeProperty('--root-font-size');
+		return;
+	}
+	const fontSize = (getBaseFontSize() * scale) / 100;
 	document.documentElement.style.setProperty('--root-font-size', `${fontSize}px`);
 }
 
