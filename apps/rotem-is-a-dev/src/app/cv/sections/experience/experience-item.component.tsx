@@ -1,7 +1,6 @@
-import type { ExperienceItem as ExperienceItemData } from '@/app/cv/types';
 import styles from './experience.module.scss';
 
-export const ExperienceItem = ({ job }: { job: ExperienceItemData }) => {
+export const ExperienceItem = ({ job }: { job: ExperienceItem }) => {
 	return (
 		<div
 			key={job.position}

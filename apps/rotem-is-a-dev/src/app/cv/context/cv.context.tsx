@@ -1,7 +1,6 @@
 'use client';
 
-import cv from '@/app/cv/cv';
-import type { CvContextValue } from '@/app/cv/types';
+import cv from '@/data/cv';
 import { createContext, useContext, type PropsWithChildren } from 'react';
 
 export const cvContext = createContext<CvContextValue>(cv);
