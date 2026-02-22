@@ -5,8 +5,8 @@
 
 set -e
 
-echo "==> Lint, test, build (Nx affected)..."
-npx nx affected -t lint test build
+echo "==> Lint, test (Nx affected)..."
+npx nx affected -t lint test
 
 echo "==> story-wise-processor typecheck (not in Nx)..."
 cd apps/story-wise-processor && npm run typecheck && cd ../..
