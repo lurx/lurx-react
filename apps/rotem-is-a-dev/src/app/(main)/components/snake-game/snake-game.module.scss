@@ -24,7 +24,7 @@
 		border-radius: 50%;
 		background-color: var(--border);
 		border: 1px solid #2a3f55;
-		z-index: 1;
+		z-index: var(--z-content);
 	}
 
 	&::before {
@@ -260,7 +260,7 @@
 
 .overlayTitle {
 	position: relative;
-	z-index: 1;
+	z-index: var(--z-content);
 	text-align: center;
 	font-size: 1.714rem;
 	line-height: 1.4;
@@ -270,7 +270,7 @@
 
 .overlayAction {
 	position: relative;
-	z-index: 1;
+	z-index: var(--z-content);
 	text-align: center;
 	font-size: 1rem;
 	color: var(--muted);
