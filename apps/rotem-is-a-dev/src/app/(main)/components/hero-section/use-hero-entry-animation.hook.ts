@@ -2,29 +2,8 @@
 
 import gsap from 'gsap';
 import { useEffect } from 'react';
+import { typewrite } from '@/app/utils/typewrite.util';
 import { useEntryAnimation } from '../entry-animation/entry-animation.context';
-
-const typewrite = (el: HTMLElement) => {
-	const full = el.textContent ?? '';
-	const { width, height } = el.getBoundingClientRect();
-	el.style.minWidth = `${width}px`;
-	el.style.minHeight = `${height}px`;
-	el.textContent = '';
-	const obj = { count: 0 };
-	return gsap.to(obj, {
-		count: full.length,
-		duration: Math.max(0.3, full.length * 0.05),
-		ease: 'none',
-		onUpdate() {
-			el.textContent = full.slice(0, Math.round(obj.count));
-		},
-		onComplete() {
-			el.textContent = full;
-			el.style.minWidth = '';
-			el.style.minHeight = '';
-		},
-	});
-};
 
 const INTRO_ORDER = ['greeting', 'name', 'role', 'comment', 'const'] as const;
 type IntroKey = (typeof INTRO_ORDER)[number];
@@ -73,6 +52,7 @@ export const useHeroEntryAnimation = () => {
 			if (el) savedTexts.set(el, el.textContent ?? '');
 		});
 
+		const heroTypewriteOpts = { baseDuration: 0.3, charSpeed: 0.05 };
 		const tl = gsap.timeline();
 
 		// Phase 1: Reveal intro lines one by one
@@ -92,7 +72,7 @@ export const useHeroEntryAnimation = () => {
 				);
 			} else {
 				tl.set(el, { opacity: 1 }, position);
-				tl.add(typewrite(el));
+				tl.add(typewrite(el, heroTypewriteOpts));
 			}
 		});
 
@@ -105,12 +85,12 @@ export const useHeroEntryAnimation = () => {
 
 		// Phase 3: Fade in the grid section, then typewrite the start-game button
 		tl.to('[data-hero-section="grid"]', { opacity: 1, duration: 0.35, ease: 'power2.out' }, '>+=0.1');
-		if (startBtn) tl.add(typewrite(startBtn), '>');
+		if (startBtn) tl.add(typewrite(startBtn, heroTypewriteOpts), '>');
 
 		// Phase 4: Fade in the controls section, then typewrite the labels
 		tl.to('[data-hero-section="controls"]', { opacity: 1, duration: 0.35, ease: 'power2.out' }, '>+=0.1');
-		if (foodLabel) tl.add(typewrite(foodLabel), '>');
-		if (skipBtn) tl.add(typewrite(skipBtn), '<+=0.2');
+		if (foodLabel) tl.add(typewrite(foodLabel, heroTypewriteOpts), '>');
+		if (skipBtn) tl.add(typewrite(skipBtn, heroTypewriteOpts), '<+=0.2');
 
 		return () => {
 			tl.kill();

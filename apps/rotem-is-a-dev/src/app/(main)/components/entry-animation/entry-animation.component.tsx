@@ -2,31 +2,8 @@
 
 import gsap from 'gsap';
 import { useEffect } from 'react';
+import { typewrite } from '@/app/utils/typewrite.util';
 import { SESSION_KEY, useEntryAnimation } from './entry-animation.context';
-
-const typewrite = (el: HTMLElement) => {
-	const full = el.textContent ?? '';
-	// Lock dimensions before clearing so the layout doesn't collapse
-	const { width, height } = el.getBoundingClientRect();
-	el.style.minWidth = `${width}px`;
-	el.style.minHeight = `${height}px`;
-	el.setAttribute('data-full-text', full);
-	el.textContent = '';
-	const obj = { count: 0 };
-	return gsap.to(obj, {
-		count: full.length,
-		duration: Math.max(0.4, full.length * 0.055),
-		ease: 'none',
-		onUpdate() {
-			el.textContent = full.slice(0, Math.round(obj.count));
-		},
-		onComplete() {
-			el.textContent = full;
-			el.style.minWidth = '';
-			el.style.minHeight = '';
-		},
-	});
-};
 
 export const EntryAnimation = () => {
 	const { setIsShellLoaded, animationKey } = useEntryAnimation();
@@ -64,13 +41,15 @@ export const EntryAnimation = () => {
 		const tl = gsap.timeline();
 
 		// Phase 1 — navbar typewriter, left to right
+		const shellTypewriteOpts = { setDataFullText: true };
+
 		navbarTextEls.forEach((el, index) => {
-			tl.add(typewrite(el), index === 0 ? 0 : '<+=0.15');
+			tl.add(typewrite(el, shellTypewriteOpts), index === 0 ? 0 : '<+=0.15');
 		});
 
 		// Phase 2 — footer typewriter, left to right (starts when navbar finishes)
 		footerTextEls.forEach((el, index) => {
-			tl.add(typewrite(el), index === 0 ? '>' : '<+=0.15');
+			tl.add(typewrite(el, shellTypewriteOpts), index === 0 ? '>' : '<+=0.15');
 		});
 
 		// Phase 3 — horizontal border draw
