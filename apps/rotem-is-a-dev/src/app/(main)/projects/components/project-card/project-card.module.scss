@@ -29,7 +29,7 @@
 	display: flex;
 	flex-direction: column;
 	border-radius: 16px;
-	border: 1px solid #1d293d;
+	border: 1px solid var(--surface-alt);
 	overflow: hidden;
 	position: relative;
 }
@@ -52,7 +52,7 @@
 			rgba(97, 95, 255, 0.18) 0%,
 			transparent 65%
 		),
-		linear-gradient(135deg, #0d1b2e 0%, #0f172b 100%);
+		linear-gradient(135deg, #0d1b2e 0%, var(--surface) 100%);
 }
 
 .techBadge {
@@ -65,7 +65,7 @@
 	padding: 4px;
 	background-color: #a3b3ff;
 	border-radius: 4px;
-	color: #0f172b;
+	color: var(--surface);
 	font-size: 1.286rem;
 	line-height: 1;
 }
@@ -78,7 +78,7 @@
 	flex-direction: column;
 	gap: 21px;
 	padding: 32px;
-	background-color: #020618;
+	background-color: var(--bg);
 	border-top: none;
 }
 

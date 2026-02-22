@@ -49,7 +49,7 @@
 	justify-content: center;
 	font-size: 0.929rem;
 	font-weight: 700;
-	color: #fff;
+	color: var(--text);
 	flex-shrink: 0;
 }
 
@@ -98,7 +98,7 @@
 
 .code {
 	line-height: 1.4;
-	color: #62748e;
+	color: var(--muted-dim);
 	white-space: pre;
 	overflow: hidden;
 }
@@ -108,7 +108,7 @@
 }
 
 .fn {
-	color: #dab2ff;
+	color: var(--purple);
 }
 
 .type {
