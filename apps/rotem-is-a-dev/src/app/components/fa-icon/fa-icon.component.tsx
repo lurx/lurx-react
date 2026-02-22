@@ -20,7 +20,7 @@ export const FaIcon = ({
 	size = 'lg',
 	...dataAttributes
 }: WithDataAttributes<FaIconProps>) => {
-	const icon: IconDefinition | undefined = byPrefixAndName[iconGroup][iconName];
+	const icon: Optional<IconDefinition> = byPrefixAndName[iconGroup][iconName];
 
 	if (isNil(icon)) {
 		return null;

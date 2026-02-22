@@ -18,7 +18,7 @@ export interface SnakeGameState {
 	food: Position[];
 	direction: Direction;
 	gameState: GameState;
-	activeKey: string | null;
+	activeKey: Nullable<string>;
 }
 
 export interface UseSnakeGameReturn extends SnakeGameState {

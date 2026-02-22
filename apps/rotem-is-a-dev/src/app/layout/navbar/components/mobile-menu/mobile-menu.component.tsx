@@ -15,28 +15,26 @@ export const MobileMenu = () => {
 	const pathname = usePathname();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
-
 	const toggle = useCallback(() => {
-    setIsOpen(prev => !prev);
+		setIsOpen(prev => !prev);
 	}, []);
 
 	const close = useCallback(() => {
-    setIsOpen(false);
+		setIsOpen(false);
 	}, []);
 
-  const handleEscape = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      close();
-    }
-  };
+	const handleEscape = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			close();
+		}
+	};
 
-  useOnClickOutside(wrapperRef, close, 'mousedown'); // Use the custom hook for outside clicks
-  useEventListener('keydown', handleEscape); // Use the custom hook for outside clicks
+	useOnClickOutside(wrapperRef, close, 'mousedown');
+	useEventListener('keydown', handleEscape);
 
 	useEffect(() => {
 		close();
 	}, [pathname, close]);
-
 
 	return (
 		<div ref={wrapperRef} className={styles.wrapper}>

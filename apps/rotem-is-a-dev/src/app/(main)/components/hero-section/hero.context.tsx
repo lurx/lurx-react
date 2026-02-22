@@ -8,7 +8,7 @@ interface HeroContextValue {
 	handleComplete: () => void;
 }
 
-export const heroContext = createContext<HeroContextValue | null>(null);
+export const heroContext = createContext<Nullable<HeroContextValue>>(null);
 
 export const HeroProvider = ({ children }: { children: ReactNode }) => {
 	const [gameCompleted, setGameCompleted] = useState(false);

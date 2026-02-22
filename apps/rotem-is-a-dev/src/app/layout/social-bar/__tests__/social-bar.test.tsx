@@ -25,14 +25,12 @@ describe('SocialBar', () => {
 		);
 	});
 
-	it('renders the GitHub username link', () => {
+	it('renders the GitHub link', () => {
 		render(<SocialBar />);
-		const githubLink = screen.getByText('@lurx');
+		const githubLink = screen.getByRole('link', { name: 'GitHub' });
 		expect(githubLink).toBeInTheDocument();
-		expect(githubLink.closest('a')).toHaveAttribute(
-			'href',
-			'https://github.com/lurx',
-		);
+		expect(githubLink).toHaveAttribute('href', 'https://github.com/lurx');
+		expect(githubLink).toHaveAttribute('target', '_blank');
 	});
 
 	it('has a footer landmark', () => {

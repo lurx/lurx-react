@@ -1,4 +1,4 @@
-import { Fragment, type JSX } from 'react';
+import type { JSX } from 'react';
 import styles from '../social-bar.module.scss';
 import type { SocialLink as SocialLinkData } from '../social-bar.types';
 import { SocialIcon } from './social-icon.component';
@@ -8,6 +8,11 @@ interface SocialLinkProps {
 	iconPosition?: 'start' | 'end' | 'hide';
 }
 
+interface RenderItem {
+	key: string;
+	element: Optional<JSX.Element>;
+}
+
 export const SocialLink = ({
 	link,
 	iconPosition = 'start',
@@ -15,21 +20,24 @@ export const SocialLink = ({
 	const shouldHideIcon = iconPosition === 'hide';
 	const shouldHideLabel = link.hideLabel;
 
-	const icon: Optional<JSX.Element> = shouldHideIcon ? undefined : <SocialIcon link={link} />;
+	const icon: RenderItem = {
+		key: 'icon',
+		element: shouldHideIcon ? undefined : <SocialIcon link={link} />,
+	};
 	const visibleText = link.displayText ?? link.label;
-	const label: Optional<JSX.Element> = shouldHideLabel ? undefined : (
-		<span
-			className={styles.label}
-			data-animate-text={link.displayText ? 'footer-username' : undefined}
-		>
-			{visibleText}
-		</span>
-	);
+	const label: RenderItem = {
+		key: 'label',
+		element: shouldHideLabel ? undefined : (
+			<span
+				className={styles.label}
+				data-animate-text={link.displayText ? 'footer-username' : undefined}
+			>
+				{visibleText}
+			</span>
+		),
+	};
 
-	const iconFirst = [icon, label];
-	const labelFirst = iconFirst.slice().reverse();
-
-	const renderOrder: Optional<JSX.Element>[] = iconPosition === 'end' ? labelFirst : iconFirst;
+	const renderOrder: RenderItem[] = iconPosition === 'end' ? [label, icon] : [icon, label];
 
 	return (
 		<span className={styles.iconWrapper} data-animate-icon>
@@ -40,8 +48,8 @@ export const SocialLink = ({
 				className={styles.iconLink}
 				aria-label={link.label}
 			>
-				{renderOrder.map((Component, index) => (
-					<Fragment key={index}>{Component}</Fragment>
+				{renderOrder.map(({ key, element }) => (
+					<span key={key}>{element}</span>
 				))}
 			</a>
 		</span>

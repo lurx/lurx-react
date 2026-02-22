@@ -18,7 +18,7 @@ export const EntryAnimation = () => {
 			return;
 		}
 
-		const pageEl = document.querySelector('[data-page]') as HTMLElement | null;
+		const pageEl = document.querySelector('[data-page]') as Nullable<HTMLElement>;
 		if (!pageEl) {
 			setIsShellLoaded(true);
 			return;
