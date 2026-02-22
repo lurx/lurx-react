@@ -1,6 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AboutPage } from '../about-page.component';
 
+jest.mock('../components/about-editor/use-shiki-tokens.hook', () => ({
+	useShikiTokens: ({ code }: { code: string }) =>
+		code.split('\n').map((line: string) => ({
+			tokens: [{ content: line, color: '#90a1b9' }],
+		})),
+}));
+
 describe('AboutPage', () => {
 	it('renders the about sections sidebar', () => {
 		render(<AboutPage />);
@@ -10,7 +17,7 @@ describe('AboutPage', () => {
 	it('renders the professional info sidebar button', () => {
 		render(<AboutPage />);
 		expect(
-			screen.getByRole('button', { name: 'Professional info' }),
+			screen.getByRole('button', { name: 'Work experience' }),
 		).toBeInTheDocument();
 	});
 
@@ -21,11 +28,11 @@ describe('AboutPage', () => {
 		).toBeInTheDocument();
 	});
 
-	it('renders the hobbies sidebar button', () => {
+	it('does not render sidebar buttons for empty sections', () => {
 		render(<AboutPage />);
 		expect(
-			screen.getByRole('button', { name: 'Hobbies' }),
-		).toBeInTheDocument();
+			screen.queryByRole('button', { name: 'Hobbies' }),
+		).not.toBeInTheDocument();
 	});
 
 	it('renders the file tree navigation', () => {
@@ -67,11 +74,8 @@ describe('AboutPage', () => {
 	it('does not duplicate tab when clicking already-open file', () => {
 		render(<AboutPage />);
 
-		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
-
-		const fileTree = screen.getByRole('navigation', { name: 'File tree' });
-		const bioButton = fileTree.querySelector('button') as HTMLButtonElement;
-		fireEvent.click(bioButton);
+		fireEvent.click(screen.getByRole('button', { name: 'interests' }));
+		fireEvent.click(screen.getByRole('button', { name: 'bio' }));
 
 		const tabs = screen.getAllByRole('tab');
 		expect(tabs).toHaveLength(2);
@@ -87,13 +91,23 @@ describe('AboutPage', () => {
 		expect(tabs).toHaveLength(1);
 	});
 
-	it('prevents closing the last remaining tab', () => {
+	it('shows empty state when closing the last tab', () => {
 		render(<AboutPage />);
 
 		fireEvent.click(screen.getByLabelText('Close bio tab'));
 
-		const tabs = screen.getAllByRole('tab');
-		expect(tabs).toHaveLength(1);
+		expect(screen.queryAllByRole('tab')).toHaveLength(0);
+		expect(screen.getByText('choose a file')).toBeInTheDocument();
+	});
+
+	it('opens a file from the empty state', () => {
+		render(<AboutPage />);
+
+		fireEvent.click(screen.getByLabelText('Close bio tab'));
+		fireEvent.click(screen.getByRole('button', { name: /bio/ }));
+
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+		expect(screen.queryByText('choose a file')).not.toBeInTheDocument();
 	});
 
 	it('switches active tab when clicking a tab directly', () => {
@@ -135,5 +149,67 @@ describe('AboutPage', () => {
 		fireEvent.click(screen.getByLabelText('Close interests tab'));
 		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
 		expect(screen.getAllByRole('tab')).toHaveLength(1);
+	});
+
+	it('shows all section folders in the file tree', () => {
+		render(<AboutPage />);
+
+		expect(screen.getByText('personal-info')).toBeInTheDocument();
+		expect(screen.getByText('work-experience')).toBeInTheDocument();
+		expect(screen.getByText('payoneer')).toBeInTheDocument();
+		expect(screen.getByText('startup-booster')).toBeInTheDocument();
+	});
+
+	it('opens a work-experience file as a tab with JSON content', () => {
+		render(<AboutPage />);
+
+		fireEvent.click(screen.getByRole('button', { name: /payoneer/ }));
+
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('payoneer');
+		expect(screen.getByLabelText('payoneer content')).toBeInTheDocument();
+	});
+
+	it('highlights the matching sidebar button based on active file', () => {
+		render(<AboutPage />);
+
+		// bio is in personal-info section
+		const personalInfoButton = screen.getByRole('button', { name: 'Personal info' });
+		expect(personalInfoButton).toHaveAttribute('aria-pressed', 'true');
+
+		// Open a work-experience file
+		fireEvent.click(screen.getByRole('button', { name: /payoneer/ }));
+
+		const workExpButton = screen.getByRole('button', { name: 'Work experience' });
+		expect(workExpButton).toHaveAttribute('aria-pressed', 'true');
+		expect(personalInfoButton).toHaveAttribute('aria-pressed', 'false');
+	});
+
+	it('opens the default personal-info file when clicking the sidebar button', () => {
+		render(<AboutPage />);
+
+		// Close bio, then click Personal info sidebar button
+		fireEvent.click(screen.getByLabelText('Close bio tab'));
+		fireEvent.click(screen.getByRole('button', { name: 'Personal info' }));
+
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+	});
+
+	it('opens the default work-experience file when clicking the sidebar button', () => {
+		render(<AboutPage />);
+
+		fireEvent.click(screen.getByRole('button', { name: 'Work experience' }));
+
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('payoneer');
+	});
+
+	it('clears sidebar highlight when no file is active', () => {
+		render(<AboutPage />);
+
+		fireEvent.click(screen.getByLabelText('Close bio tab'));
+
+		const personalInfoButton = screen.getByRole('button', { name: 'Personal info' });
+		const workExpButton = screen.getByRole('button', { name: 'Work experience' });
+		expect(personalInfoButton).toHaveAttribute('aria-pressed', 'false');
+		expect(workExpButton).toHaveAttribute('aria-pressed', 'false');
 	});
 });
