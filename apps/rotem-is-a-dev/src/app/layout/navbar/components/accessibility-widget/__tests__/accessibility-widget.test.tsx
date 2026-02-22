@@ -550,6 +550,118 @@ describe('AccessibilityWidget', () => {
 		});
 	});
 
+	describe('Edge cases and error handling', () => {
+		it('falls back to default when localStorage has invalid text scale', () => {
+			mockGetItem.mockReturnValue(JSON.stringify(999));
+			render(<AccessibilityWidget />);
+			openPanel();
+			expect(screen.getByText('100%')).toBeInTheDocument();
+		});
+
+		it('falls back to default when localStorage has unparseable text scale', () => {
+			mockGetItem.mockReturnValue('{{bad json');
+			render(<AccessibilityWidget />);
+			openPanel();
+			expect(screen.getByText('100%')).toBeInTheDocument();
+		});
+
+		it('falls back to default when localStorage has invalid line height level', () => {
+			mockGetItem.mockImplementation((key: string) => {
+				if (key === LINE_HEIGHT_STORAGE_KEY) return JSON.stringify(99);
+				return null;
+			});
+			render(<AccessibilityWidget />);
+			openPanel();
+			expect(screen.getAllByText('Normal')).toHaveLength(2);
+		});
+
+		it('falls back to default when localStorage has unparseable spacing data', () => {
+			mockGetItem.mockImplementation((key: string) => {
+				if (key === LETTER_SPACING_STORAGE_KEY) return '{{bad';
+				return null;
+			});
+			render(<AccessibilityWidget />);
+			openPanel();
+			expect(screen.getAllByText('Normal')).toHaveLength(2);
+		});
+
+		it('ignores non-Escape keydown when panel is open', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			fireEvent.keyDown(document, { key: 'Enter' });
+			expect(screen.getByRole('dialog')).toBeInTheDocument();
+		});
+
+		it('does not change text scale when clicking decrease at minimum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			fireEvent.click(
+				screen.getByRole('button', { name: 'Decrease text size' }),
+			);
+			expect(screen.getByText('100%')).toBeInTheDocument();
+		});
+
+		it('does not change text scale when clicking increase at maximum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			const btn = screen.getByRole('button', { name: 'Increase text size' });
+			fireEvent.click(btn);
+			fireEvent.click(btn);
+			fireEvent.click(btn);
+			fireEvent.click(btn); // now at 200%
+			fireEvent.click(btn); // click again at max
+			expect(screen.getByText('200%')).toBeInTheDocument();
+		});
+
+		it('does not change line height when clicking decrease at minimum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			fireEvent.click(
+				screen.getByRole('button', { name: 'Decrease line height' }),
+			);
+			expect(screen.getAllByText('Normal')).toHaveLength(2);
+		});
+
+		it('does not change line height when clicking increase at maximum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			const btn = screen.getByRole('button', { name: 'Increase line height' });
+			fireEvent.click(btn);
+			fireEvent.click(btn);
+			fireEvent.click(btn); // now at max
+			fireEvent.click(btn); // click again at max
+			expect(
+				screen.getByText(
+					String(LINE_HEIGHT_VALUES[LINE_HEIGHT_VALUES.length - 1]),
+				),
+			).toBeInTheDocument();
+		});
+
+		it('does not change letter spacing when clicking decrease at minimum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			fireEvent.click(
+				screen.getByRole('button', { name: 'Decrease letter spacing' }),
+			);
+			expect(screen.getAllByText('Normal')).toHaveLength(2);
+		});
+
+		it('does not change letter spacing when clicking increase at maximum', () => {
+			render(<AccessibilityWidget />);
+			openPanel();
+			const btn = screen.getByRole('button', { name: 'Increase letter spacing' });
+			fireEvent.click(btn);
+			fireEvent.click(btn);
+			fireEvent.click(btn); // now at max
+			fireEvent.click(btn); // click again at max
+			expect(
+				screen.getByText(
+					`${LETTER_SPACING_VALUES[LETTER_SPACING_VALUES.length - 1]}em`,
+				),
+			).toBeInTheDocument();
+		});
+	});
+
 	describe('Reset all', () => {
 		it('resets all settings to defaults', () => {
 			render(<AccessibilityWidget />);

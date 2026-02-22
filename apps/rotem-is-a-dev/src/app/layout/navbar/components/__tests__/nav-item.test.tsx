@@ -33,4 +33,54 @@ describe('NavItem', () => {
 		render(<NavItem label="hello" href="#hello" active={false} enabled={true} />);
 		expect(screen.getByText('_hello')).toBeInTheDocument();
 	});
+
+	it('renders an icon and hides label when iconOnly is true', () => {
+		render(
+			<NavItem
+				label="settings"
+				href="#settings"
+				active={false}
+				icon={<span data-testid="icon">icon</span>}
+				iconOnly={true}
+			/>,
+		);
+		expect(screen.getByTestId('icon')).toBeInTheDocument();
+		// Label text should not be visible
+		expect(screen.queryByText('_settings')).not.toBeInTheDocument();
+		// aria-label should be set
+		expect(screen.getByLabelText('settings')).toBeInTheDocument();
+	});
+
+	it('renders both icon and label when iconOnly is false', () => {
+		render(
+			<NavItem
+				label="home"
+				href="#home"
+				active={false}
+				icon={<span data-testid="icon">icon</span>}
+				iconOnly={false}
+			/>,
+		);
+		expect(screen.getByTestId('icon')).toBeInTheDocument();
+		expect(screen.getByText('_home')).toBeInTheDocument();
+	});
+
+	it('renders a non-string label (JSX)', () => {
+		render(
+			<NavItem
+				label={<span data-testid="jsx-label">custom</span>}
+				href="#custom"
+				active={false}
+			/>,
+		);
+		expect(screen.getByTestId('jsx-label')).toBeInTheDocument();
+	});
+
+	it('applies className prop', () => {
+		render(
+			<NavItem label="test" href="#test" active={false} className="extra-class" />,
+		);
+		const link = screen.getByText('_test').closest('a');
+		expect(link?.className).toContain('extra-class');
+	});
 });

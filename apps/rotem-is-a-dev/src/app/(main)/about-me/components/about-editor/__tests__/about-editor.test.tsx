@@ -50,4 +50,37 @@ describe('AboutEditor', () => {
 		expect(screen.getByLabelText('Other File content')).toBeInTheDocument();
 		expect(screen.getByText(/Other File/)).toBeInTheDocument();
 	});
+
+	it('renders blank separator lines between multiple paragraphs', () => {
+		const multiParagraph: AboutFileContent = {
+			title: 'Multi',
+			paragraphs: ['First paragraph.', 'Second paragraph.'],
+		};
+		render(<AboutEditor content={multiParagraph} />);
+		expect(screen.getByText(/First paragraph/)).toBeInTheDocument();
+		expect(screen.getByText(/Second paragraph/)).toBeInTheDocument();
+	});
+
+	it('wraps long paragraphs across multiple lines', () => {
+		const longContent: AboutFileContent = {
+			title: 'Long',
+			paragraphs: [
+				'This is a very long paragraph that definitely exceeds the thirty eight character wrap width limit and should be split across multiple lines in the editor display',
+			],
+		};
+		render(<AboutEditor content={longContent} />);
+		const text = screen.getByLabelText('Long content').textContent;
+		// Word wrapping produces multiple " * ..." lines
+		expect(text).toContain('This is');
+		expect(text).toContain('character');
+	});
+
+	it('handles empty paragraph strings gracefully', () => {
+		const emptyParagraph: AboutFileContent = {
+			title: 'Empty',
+			paragraphs: [''],
+		};
+		render(<AboutEditor content={emptyParagraph} />);
+		expect(screen.getByLabelText('Empty content')).toBeInTheDocument();
+	});
 });

@@ -66,4 +66,43 @@ describe('TechnologyFilter', () => {
 		const htmlCheckbox = screen.getByRole('checkbox', { name: 'HTML' });
 		expect(htmlCheckbox).toHaveAttribute('aria-checked', 'false');
 	});
+
+	it('calls onToggle when Space key is pressed on a checkbox', () => {
+		const onToggle = jest.fn();
+		render(
+			<TechnologyFilter
+				technologies={TECHNOLOGIES}
+				selected={[]}
+				onToggle={onToggle}
+			/>,
+		);
+		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'HTML' }), { key: ' ' });
+		expect(onToggle).toHaveBeenCalledWith('HTML');
+	});
+
+	it('calls onToggle when Enter key is pressed on a checkbox', () => {
+		const onToggle = jest.fn();
+		render(
+			<TechnologyFilter
+				technologies={TECHNOLOGIES}
+				selected={[]}
+				onToggle={onToggle}
+			/>,
+		);
+		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'CSS' }), { key: 'Enter' });
+		expect(onToggle).toHaveBeenCalledWith('CSS');
+	});
+
+	it('does not call onToggle for unrelated key presses', () => {
+		const onToggle = jest.fn();
+		render(
+			<TechnologyFilter
+				technologies={TECHNOLOGIES}
+				selected={[]}
+				onToggle={onToggle}
+			/>,
+		);
+		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'React' }), { key: 'Tab' });
+		expect(onToggle).not.toHaveBeenCalled();
+	});
 });

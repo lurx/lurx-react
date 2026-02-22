@@ -95,4 +95,45 @@ describe('AboutPage', () => {
 		const tabs = screen.getAllByRole('tab');
 		expect(tabs).toHaveLength(1);
 	});
+
+	it('switches active tab when clicking a tab directly', () => {
+		render(<AboutPage />);
+
+		// Open a second tab
+		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
+
+		// Click back on the bio tab
+		const bioTab = screen.getByRole('tab', { name: /bio/ });
+		fireEvent.click(bioTab);
+
+		const activeTab = screen.getByRole('tab', { selected: true });
+		expect(activeTab).toHaveTextContent('bio');
+	});
+
+	it('falls back to last remaining tab when closing the active tab', () => {
+		render(<AboutPage />);
+
+		// Open second tab and make it active
+		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('interests');
+
+		// Close the active tab (interests) — should fall back to bio
+		fireEvent.click(screen.getByLabelText('Close interests tab'));
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+	});
+
+	it('closes an inactive tab without changing the active tab', () => {
+		render(<AboutPage />);
+
+		// Open second tab (interests is now active)
+		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
+		// Switch back to bio
+		fireEvent.click(screen.getByRole('tab', { name: /bio/ }));
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+
+		// Close the inactive interests tab
+		fireEvent.click(screen.getByLabelText('Close interests tab'));
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+		expect(screen.getAllByRole('tab')).toHaveLength(1);
+	});
 });

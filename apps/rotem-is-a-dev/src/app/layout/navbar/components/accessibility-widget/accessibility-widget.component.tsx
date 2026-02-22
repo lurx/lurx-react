@@ -130,40 +130,28 @@ export const AccessibilityWidget = () => {
 	const isDefault = isTextScaleDefault && isLineHeightDefault && isLetterSpacingDefault;
 
 	const decrease = useCallback(() => {
-		if (canDecrease) {
-			setTextScaleState(TEXT_SCALES[currentIndex - 1]);
-		}
-	}, [canDecrease, currentIndex]);
+		setTextScaleState(TEXT_SCALES[currentIndex - 1]);
+	}, [currentIndex]);
 
 	const increase = useCallback(() => {
-		if (canIncrease) {
-			setTextScaleState(TEXT_SCALES[currentIndex + 1]);
-		}
-	}, [canIncrease, currentIndex]);
+		setTextScaleState(TEXT_SCALES[currentIndex + 1]);
+	}, [currentIndex]);
 
 	const decreaseLineHeight = useCallback(() => {
-		if (canDecreaseLineHeight) {
-			setLineHeight(prev => (prev - 1) as SpacingLevel);
-		}
-	}, [canDecreaseLineHeight]);
+		setLineHeight(prev => (prev - 1) as SpacingLevel);
+	}, []);
 
 	const increaseLineHeight = useCallback(() => {
-		if (canIncreaseLineHeight) {
-			setLineHeight(prev => (prev + 1) as SpacingLevel);
-		}
-	}, [canIncreaseLineHeight]);
+		setLineHeight(prev => (prev + 1) as SpacingLevel);
+	}, []);
 
 	const decreaseLetterSpacing = useCallback(() => {
-		if (canDecreaseLetterSpacing) {
-			setLetterSpacing(prev => (prev - 1) as SpacingLevel);
-		}
-	}, [canDecreaseLetterSpacing]);
+		setLetterSpacing(prev => (prev - 1) as SpacingLevel);
+	}, []);
 
 	const increaseLetterSpacing = useCallback(() => {
-		if (canIncreaseLetterSpacing) {
-			setLetterSpacing(prev => (prev + 1) as SpacingLevel);
-		}
-	}, [canIncreaseLetterSpacing]);
+		setLetterSpacing(prev => (prev + 1) as SpacingLevel);
+	}, []);
 
 	const resetTextScale = useCallback(() => {
 		setTextScaleState(DEFAULT_TEXT_SCALE);

@@ -3,9 +3,36 @@ import { SnakeGame } from '../snake-game.component';
 
 const noop = jest.fn();
 
+// Mock canvas context so drawing code executes
+const mockGradient = { addColorStop: jest.fn() };
+const mockCtx = {
+	clearRect: jest.fn(),
+	beginPath: jest.fn(),
+	arc: jest.fn(),
+	fill: jest.fn(),
+	moveTo: jest.fn(),
+	lineTo: jest.fn(),
+	stroke: jest.fn(),
+	createLinearGradient: jest.fn(() => mockGradient),
+	fillStyle: '',
+	strokeStyle: '',
+	lineWidth: 0,
+	lineCap: '',
+	lineJoin: '',
+};
+
+const originalGetContext = HTMLCanvasElement.prototype.getContext;
+beforeAll(() => {
+	HTMLCanvasElement.prototype.getContext = jest.fn(() => mockCtx) as unknown as typeof originalGetContext;
+});
+afterAll(() => {
+	HTMLCanvasElement.prototype.getContext = originalGetContext;
+});
+
 beforeEach(() => {
 	jest.useFakeTimers();
 	noop.mockClear();
+	jest.clearAllMocks();
 });
 
 afterEach(() => {
@@ -106,7 +133,6 @@ describe('SnakeGame', () => {
 			/>,
 		);
 		act(() => fireEvent.click(screen.getByRole('button', { name: 'Start game' })));
-		// Let the snake travel right into the wall (no key press needed)
 		advanceGame(150 * 20);
 
 		expect(screen.getByText('GAME OVER!')).toBeInTheDocument();
@@ -138,5 +164,23 @@ describe('SnakeGame', () => {
 		act(() => fireEvent.click(screen.getByRole('button', { name: 'Start again' })));
 		expect(screen.queryByText('GAME OVER!')).not.toBeInTheDocument();
 		expect(screen.getByRole('button', { name: 'Start game' })).not.toBeDisabled();
+	});
+
+	it('draws food and snake on the canvas when game starts', () => {
+		render(
+			<SnakeGame
+				onWin={noop}
+				onSkip={noop}
+			/>,
+		);
+		act(() => fireEvent.click(screen.getByRole('button', { name: 'Start game' })));
+		advanceGame(200);
+
+		expect(mockCtx.clearRect).toHaveBeenCalled();
+		expect(mockCtx.arc).toHaveBeenCalled();
+		expect(mockCtx.fill).toHaveBeenCalled();
+		expect(mockCtx.createLinearGradient).toHaveBeenCalled();
+		expect(mockGradient.addColorStop).toHaveBeenCalled();
+		expect(mockCtx.stroke).toHaveBeenCalled();
 	});
 });

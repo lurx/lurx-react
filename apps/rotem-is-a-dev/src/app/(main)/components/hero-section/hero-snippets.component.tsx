@@ -1,7 +1,7 @@
 'use client';
 
 import useEmblaCarousel from 'embla-carousel-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './hero-snippets.module.scss';
 import { useHeroContext } from './hero.context';
 import chunkRaw from './snippets/chunk.snippet.ts?raw';
@@ -45,18 +45,14 @@ export const HeroSnippets = () => {
 		watchDrag: false,
 	});
 
-	const onSelect = useCallback(() => {
-		if (!emblaApi) return;
-		setActiveIndex(emblaApi.selectedScrollSnap());
-	}, [emblaApi]);
-
 	useEffect(() => {
 		if (!emblaApi) return;
+		const onSelect = () => setActiveIndex(emblaApi.selectedScrollSnap());
 		emblaApi.on('select', onSelect);
 		return () => {
 			emblaApi.off('select', onSelect);
 		};
-	}, [emblaApi, onSelect]);
+	}, [emblaApi]);
 
 	useEffect(() => {
 		if (!gameCompleted || paused || !emblaApi) return;
