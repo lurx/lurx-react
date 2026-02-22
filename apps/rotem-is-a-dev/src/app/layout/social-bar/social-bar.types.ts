@@ -1,5 +1,3 @@
-import type { IconGroupName } from '@/app/cv/types';
-
 export type SocialLink = {
 	url: string;
 	label: string;

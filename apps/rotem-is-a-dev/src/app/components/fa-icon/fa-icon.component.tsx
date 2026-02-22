@@ -1,4 +1,3 @@
-import type { IconGroupName } from '@/app/cv/types';
 import {
 	byPrefixAndName,
 	type IconDefinition,

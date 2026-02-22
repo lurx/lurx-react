@@ -1,4 +1,4 @@
-export interface ExperienceItem {
+interface ExperienceItem {
 	company: string;
 	position: string;
 	duration: {
@@ -9,7 +9,7 @@ export interface ExperienceItem {
 	achievements?: string[];
 }
 
-export interface CvContextValue {
+interface CvContextValue {
 	name: string;
 	titles: string[];
 	intro: string;
@@ -26,17 +26,16 @@ export interface CvContextValue {
 	languages: string[];
 }
 
-export interface SkillObject {
+interface SkillObject {
 	name: string;
 	icon?: string;
 	iconGroup?: IconGroupName;
 	level: number;
 }
 
-export type IconGroupName =
+type IconGroupName =
 	| 'fab' // brands
 	| 'fal' // light
 	| 'far' // regular
 	| 'fas' // solid
 	| 'fass'; // sharp solid
-
