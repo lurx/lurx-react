@@ -69,7 +69,7 @@
 .gridWrapper {
 	position: relative;
 	flex-shrink: 0;
-	background-color: #1d293d;
+	background-color: var(--surface-alt);
 	border-radius: 8px;
 	box-shadow: inset 1px 5px 11px 0px rgba(2, 18, 27, 0.71);
 	width: 240px;
@@ -124,7 +124,7 @@
 }
 
 .gameNav {
-	background-color: #1d293d;
+	background-color: var(--surface-alt);
 	border-radius: 8px;
 	padding: 10px;
 	display: flex;

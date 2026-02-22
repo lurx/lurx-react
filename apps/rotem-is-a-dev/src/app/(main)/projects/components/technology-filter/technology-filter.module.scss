@@ -58,15 +58,15 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid #62748e;
+	border: 1px solid var(--muted-dim);
 	border-radius: 2px;
-	background-color: #0f172b;
+	background-color: var(--surface);
 	color: var(--text);
 	font-size: 0.857rem;
 	transition: background-color 0.15s;
 
 	&.checked {
-		background-color: #62748e;
+		background-color: var(--muted-dim);
 	}
 }
 
