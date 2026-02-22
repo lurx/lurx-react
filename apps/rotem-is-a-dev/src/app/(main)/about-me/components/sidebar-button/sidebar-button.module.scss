@@ -1,0 +1,22 @@
+.sidebarIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	color: var(--muted);
+	cursor: pointer;
+	transition: color 0.2s;
+	background: none;
+	border: none;
+	padding: 0;
+	font-size: 1.286rem;
+
+	&:hover {
+		color: var(--text);
+	}
+
+	&.activeIcon {
+		color: var(--text);
+	}
+}
