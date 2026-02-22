@@ -16,7 +16,7 @@
 		color 0.2s,
 		border-color 0.2s,
 		opacity 0.3s;
-	z-index: 50;
+	z-index: var(--z-floating);
 
 	&:hover {
 		color: var(--text);

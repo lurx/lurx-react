@@ -23,7 +23,7 @@
 	width: 780px;
 	height: 742px;
 	pointer-events: none;
-	z-index: 0;
+	z-index: var(--z-base);
 	animation: rotate-blurs-wrapper var(--blurs-base-animation-duration) linear infinite;
 }
 
@@ -49,7 +49,7 @@
 .left,
 .right {
 	position: relative;
-	z-index: 1;
+	z-index: var(--z-content);
 }
 
 .left {

@@ -21,7 +21,7 @@
 	position: absolute;
 	top: calc(100% + 1px); // push it below the border of the navbar
 	right: 0;
-	z-index: 100;
+	z-index: var(--z-overlay);
 	min-width: 220px;
 	background-color: var(--surface);
 	border: 1px solid var(--border);

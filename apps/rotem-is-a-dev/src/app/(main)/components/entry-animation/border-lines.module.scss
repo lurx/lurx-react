@@ -7,7 +7,7 @@
 	background: var(--border);
 	transform-origin: center;
 	pointer-events: none;
-	z-index: 10;
+	z-index: var(--z-decoration);
 }
 
 .footerBorder {
@@ -19,5 +19,5 @@
 	background: var(--border);
 	transform-origin: right;
 	pointer-events: none;
-	z-index: 10;
+	z-index: var(--z-decoration);
 }
