@@ -15,12 +15,15 @@ interface ThemeContextValue {
 	toggleTheme: () => void;
 }
 
-const themeContext = createContext<ThemeContextValue>({
-	theme: 'dark',
-	toggleTheme: () => void 0,
-});
+const themeContext = createContext<ThemeContextValue | null>(null);
 
-export const useTheme = () => useContext(themeContext);
+export const useTheme = (): ThemeContextValue => {
+	const ctx = useContext(themeContext);
+	if (!ctx) {
+		throw new Error('useTheme must be used within ThemeProvider');
+	}
+	return ctx;
+};
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
 	const [theme, setTheme] = useState<Theme>('dark');
