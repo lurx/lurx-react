@@ -1,6 +1,16 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
+// Stub entry animation context so component renders without provider
+jest.mock('../../entry-animation/entry-animation.context', () => ({
+	useEntryAnimation: () => ({
+		isShellLoaded: true,
+		setIsShellLoaded: jest.fn(),
+		animationKey: 0,
+		triggerReplay: jest.fn(),
+	}),
+}));
+
 // Stub entry animation so GSAP typewrite doesn't clear text in JSDOM
 jest.mock('../use-hero-entry-animation.hook', () => ({
 	useHeroEntryAnimation: () => undefined,

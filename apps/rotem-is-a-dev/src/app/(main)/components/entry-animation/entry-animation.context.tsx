@@ -12,7 +12,7 @@ interface EntryAnimationContextValue {
 	triggerReplay: () => void;
 }
 
-export const EntryAnimationContext =
+export const entryAnimationContext =
 	createContext<EntryAnimationContextValue | null>(null);
 
 export const EntryAnimationProvider = ({
@@ -43,16 +43,18 @@ export const EntryAnimationProvider = ({
 	}, []);
 
 	return (
-		<EntryAnimationContext.Provider
+		<entryAnimationContext.Provider
 			value={{ isShellLoaded, setIsShellLoaded, animationKey, triggerReplay }}
 		>
 			{children}
-		</EntryAnimationContext.Provider>
+		</entryAnimationContext.Provider>
 	);
 };
 
 export const useEntryAnimation = (): EntryAnimationContextValue => {
-	const ctx = useContext(EntryAnimationContext);
-	// Safe default outside provider (e.g. in tests)
-	return ctx ?? { isShellLoaded: true, setIsShellLoaded: () => undefined, animationKey: 0, triggerReplay: () => undefined };
+	const ctx = useContext(entryAnimationContext);
+	if (!ctx) {
+		throw new Error('useEntryAnimation must be used within EntryAnimationProvider');
+	}
+	return ctx;
 };
