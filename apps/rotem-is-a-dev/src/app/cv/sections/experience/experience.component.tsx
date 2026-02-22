@@ -6,7 +6,7 @@ import { useCV } from '@/app/cv/context/cv.context';
 import { Flex } from '@/app/components/flex';
 import { Collapsible } from '@/app/cv/components/collapsible/collapsible.component';
 import { useState } from 'react';
-import { JobItem } from './experience-item.component';
+import { ExperienceItem } from './experience-item.component';
 
 export const Experience = () => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
@@ -31,14 +31,14 @@ export const Experience = () => {
 				direction="column"
 				gap="medium"
 			>
-				<JobItem job={firstJob} />
+				<ExperienceItem job={firstJob} />
 				<Collapsible
 					numberOfItems={otherJobs.length}
 					isCollapsed={isCollapsed}
 					onToggle={toggleCollapse}
 				>
 					{otherJobs.map(job => (
-						<JobItem
+						<ExperienceItem
 							key={job.company + job.position}
 							job={job}
 						/>

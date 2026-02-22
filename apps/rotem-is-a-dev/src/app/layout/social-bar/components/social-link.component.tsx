@@ -1,17 +1,17 @@
 import { Fragment, type JSX } from 'react';
 import styles from '../social-bar.module.scss';
-import type { SocialLink } from '../social-bar.types';
+import type { SocialLink as SocialLinkData } from '../social-bar.types';
 import { SocialIcon } from './social-icon.component';
 
-interface SocialLinkItemProps {
-	link: SocialLink;
+interface SocialLinkProps {
+	link: SocialLinkData;
 	iconPosition?: 'start' | 'end' | 'hide';
 }
 
-export const SocialLinkItem = ({
+export const SocialLink = ({
 	link,
 	iconPosition = 'start',
-}: SocialLinkItemProps) => {
+}: SocialLinkProps) => {
 	const shouldHideIcon = iconPosition === 'hide';
 	const shouldHideLabel = link.hideLabel;
 
@@ -31,7 +31,7 @@ export const SocialLinkItem = ({
 	const iconFirst = [icon, label];
 	const labelFirst = iconFirst.slice().reverse();
 
-  const renderOrder: JSX.Element[] = iconPosition === 'end' ? labelFirst : iconFirst;
+	const renderOrder: JSX.Element[] = iconPosition === 'end' ? labelFirst : iconFirst;
 
 	return (
 		<span className={styles.iconWrapper} data-animate-icon>

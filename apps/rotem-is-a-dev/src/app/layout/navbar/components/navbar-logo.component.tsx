@@ -6,7 +6,7 @@ interface NavBarLogoProps {
 	title: string;
 }
 
-export const NavLogo = ({ title }: NavBarLogoProps) => (
+export const NavbarLogo = ({ title }: NavBarLogoProps) => (
 	<span className={styles.logo}>
 		<span data-animate-text="logo">{title}</span>
 		<span
