@@ -12,7 +12,6 @@ export const Navbar = () => {
 		<header>
 			<nav
 				className={styles.navbar}
-				role="navigation"
 				aria-label="Main navigation"
 			>
 				<NavbarLogo title={title} />
