@@ -1,7 +1,6 @@
 'use client';
 
 import { Flex } from '@/app/components/flex';
-import { Avatar } from '@/app/cv/components/avatar/avatar.component';
 import { Card } from '@/app/cv/components/card';
 import { useCV } from '@/app/cv/context/cv.context';
 import { Contact } from '../contact';
@@ -14,18 +13,12 @@ export const Header = () => {
 	return (
 		<Card id="about">
 			<Flex direction="column">
-				<Flex gap="medium">
-					<Avatar
-						name={name}
-						image="/me.jpg"
-					/>
-					<Flex direction="column">
-						<h1>{name}</h1>
-						<h2>{titleString}</h2>
-						<Contact />
-					</Flex>
+				<Flex direction="column">
+					<h1>{name}</h1>
+					<h2>{titleString}</h2>
+					<Contact />
 				</Flex>
-        <Intro />
+				<Intro />
 			</Flex>
 		</Card>
 	);

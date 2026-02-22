@@ -1,7 +1,7 @@
 import { Flex } from '../components/flex';
 import { Card } from './components/card';
 import styles from './page.module.scss';
-import { Experience, Header, Languages, Portfolio, Skills } from './sections';
+import { Experience, Header, Languages, Skills } from './sections';
 
 export default function CV() {
 	return (
@@ -23,7 +23,6 @@ export default function CV() {
 					</Card>
 				</div>
 			</div>
-			<Portfolio />
 		</div>
 	);
 }
