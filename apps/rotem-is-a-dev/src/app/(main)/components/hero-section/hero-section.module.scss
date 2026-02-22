@@ -7,6 +7,11 @@
 	padding: 40px 48px;
 	gap: 146px;
 	overflow: hidden;
+	transition: opacity 0.5s ease;
+}
+
+.heroHidden {
+	opacity: 0;
 }
 
 .heroBlurs {
