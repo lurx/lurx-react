@@ -8,4 +8,3 @@ export function memoize<T extends (...args: unknown[]) => unknown>(fn: T): T {
 		return result;
 	}) as T;
 }
-

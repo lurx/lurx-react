@@ -1,5 +1,6 @@
 'use client';
 
+import { useShikiTokens } from '@/lib/shiki';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useEffect, useState } from 'react';
 import styles from './hero-snippets.module.scss';
@@ -32,6 +33,46 @@ function getOpacity(index: number, active: number): number {
 	if (dist === 1) return 0.4;
 	return 0.1;
 }
+
+const SnippetSlide = ({
+	title,
+	code,
+	opacity,
+}: {
+	title: string;
+	code: string;
+	opacity: number;
+}) => {
+	const shikiLines = useShikiTokens({ code, language: 'typescript' });
+
+	return (
+		<div
+			className={styles.slide}
+			style={{ opacity }}
+		>
+			<p className={styles.slideLabel}>{title}</p>
+			<pre className={styles.code}>
+				<code>
+					{shikiLines
+						? shikiLines.map((line, index) => (
+								<span key={index}>
+									{line.tokens.map((token, tokenIndex) => (
+										<span
+											key={tokenIndex}
+											style={{ color: token.color }}
+										>
+											{token.content}
+										</span>
+									))}
+									{'\n'}
+								</span>
+							))
+						: code}
+				</code>
+			</pre>
+		</div>
+	);
+};
 
 export const HeroSnippets = () => {
 	const { gameCompleted } = useHeroContext();
@@ -73,16 +114,12 @@ export const HeroSnippets = () => {
 		>
 			<div className={styles.emblaContainer}>
 				{SNIPPETS.map((snippet, index) => (
-					<div
+					<SnippetSlide
 						key={snippet.title}
-						className={styles.slide}
-						style={{ opacity: getOpacity(index, activeIndex) }}
-					>
-						<p className={styles.slideLabel}>{snippet.title}</p>
-						<pre className={styles.code}>
-							<code>{snippet.code}</code>
-						</pre>
-					</div>
+						title={snippet.title}
+						code={snippet.code}
+						opacity={getOpacity(index, activeIndex)}
+					/>
 				))}
 			</div>
 		</div>

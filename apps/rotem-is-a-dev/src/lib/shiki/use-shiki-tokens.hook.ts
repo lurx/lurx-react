@@ -7,7 +7,7 @@ export interface ShikiLine {
 
 interface UseShikiTokensParams {
 	code: string;
-	language: 'javascript' | 'json';
+	language: 'javascript' | 'typescript' | 'json';
 }
 
 export function useShikiTokens({ code, language }: UseShikiTokensParams): ShikiLine[] | null {

@@ -12,6 +12,7 @@ export async function getHighlighter(): Promise<HighlighterCore> {
 				themes: [import('shiki/themes/night-owl')],
 				langs: [
 					import('shiki/langs/javascript'),
+					import('shiki/langs/typescript'),
 					import('shiki/langs/json'),
 				],
 				engine: createOnigurumaEngine(import('shiki/wasm')),

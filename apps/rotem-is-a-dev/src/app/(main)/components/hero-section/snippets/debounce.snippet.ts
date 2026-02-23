@@ -10,4 +10,3 @@ export function debounce<T extends (...args: unknown[]) => void>(
 		}, delay);
 	};
 }
-

@@ -5,4 +5,3 @@ export function flatten<T>(arr: (T | T[])[]): T[] {
 		[],
 	);
 }
-
