@@ -5,7 +5,7 @@ describe('NAV_ITEMS', () => {
 		expect(NAV_ITEMS).toEqual([
 			{ label: 'hello', href: '/', enabled: true },
 			{ label: 'about-me', href: '/about-me', enabled: true },
-			{ label: 'projects', href: '/projects', enabled: false },
+			{ label: 'projects', href: '/projects', enabled: true },
 		]);
 	});
 
