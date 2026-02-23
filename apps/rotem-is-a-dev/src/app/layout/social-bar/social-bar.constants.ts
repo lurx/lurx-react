@@ -1,6 +1,6 @@
 import type { SocialLinks } from './social-bar.types';
 
-const TWITTER_URL = 'https://x.com/lurxie';
+const TWITTER_URL = 'https://x.com/lurx';
 const LINKEDIN_URL = 'https://linkedin.com/in/rotem-lurx-horovitz-9601705';
 const GITHUB_URL = 'https://github.com/lurx';
 
