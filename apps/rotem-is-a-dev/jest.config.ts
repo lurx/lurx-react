@@ -13,6 +13,7 @@ const config = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	moduleNameMapper: {
+		'^@/(.*)\\.ts\\?raw$': '<rootDir>/src/__mocks__/raw-file.js',
 		'^@/(.*)$': '<rootDir>/src/$1',
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'\\?raw$': '<rootDir>/src/__mocks__/raw-file.js',
