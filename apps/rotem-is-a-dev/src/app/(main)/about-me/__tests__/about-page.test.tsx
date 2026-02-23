@@ -8,6 +8,10 @@ jest.mock('@/lib/shiki', () => ({
 		})),
 }));
 
+jest.mock('@/hooks', () => ({
+	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
+}));
+
 describe('AboutPage', () => {
 	it('renders the about sections sidebar', () => {
 		render(<AboutPage />);

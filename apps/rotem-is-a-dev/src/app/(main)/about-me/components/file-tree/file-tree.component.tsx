@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useResponsive } from '@/hooks';
 import type { AboutFileId } from '../../data/about-files.data';
 import { SECTIONS, SECTION_FILES } from '../../data/about-files.data';
 import { FileTreeSection } from './components/filte-tree-section.component';
@@ -12,6 +13,7 @@ export interface FileTreeProps {
 }
 
 export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
+	const { isMobile } = useResponsive();
 	const [collapsedSections, setCollapsedSections] = useState<Set<string>>(
 		new Set(),
 	);
@@ -33,7 +35,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 			className={styles.fileTree}
 			aria-label="File tree"
 		>
-			<h2 className={styles.mobileTitle}>_about-me</h2>
+			{isMobile && <h2 className={styles.mobileTitle}>_about-me</h2>}
 
 			{SECTIONS.map(({ id }) => {
 				const files = SECTION_FILES[id];
@@ -50,6 +52,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 						toggleSection={toggleSection}
 						isCollapsed={isCollapsed}
 						onFileSelect={onFileSelect}
+						isMobile={isMobile}
 					/>
 				);
 			})}

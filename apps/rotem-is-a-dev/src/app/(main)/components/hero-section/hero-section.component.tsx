@@ -1,5 +1,6 @@
 'use client';
 
+import { useResponsive } from '@/hooks';
 import classNames from 'classnames';
 import { useEntryAnimation } from '../entry-animation/entry-animation.context';
 import { HeroBlurs } from './components/hero-blurs.component';
@@ -11,6 +12,7 @@ import { HeroSnippets } from './hero-snippets.component';
 import { HeroProvider } from './hero.context';
 
 export const HeroSection = () => {
+	const { isMobile } = useResponsive();
 	const { isShellLoaded } = useEntryAnimation();
 
 	return (
@@ -22,10 +24,12 @@ export const HeroSection = () => {
 				<HeroBlurs />
 				<HeroIntroduction />
 
-				<div className={styles.right}>
-					<HeroGame />
-					<HeroSnippets />
-				</div>
+				{!isMobile && (
+					<div className={styles.right}>
+						<HeroGame />
+						<HeroSnippets />
+					</div>
+				)}
 			</section>
 		</HeroProvider>
 	);
