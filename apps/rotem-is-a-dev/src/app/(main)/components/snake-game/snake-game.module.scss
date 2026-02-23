@@ -28,21 +28,21 @@
 	}
 
 	&::before {
-		top: 12px;
-		left: 12px;
+		inset-block-start: 12px;
+		inset-inline-start: 12px;
 	}
 
 	&::after {
-		top: 12px;
-		right: 12px;
+		inset-block-start: 12px;
+		inset-inline-end: 12px;
 	}
 }
 
 .bottomScrews {
 	position: absolute;
-	bottom: 12px;
-	left: 0;
-	right: 0;
+	inset-block-end: 12px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
 	display: flex;
 	justify-content: space-between;
 	padding: 0 12px;
@@ -85,8 +85,8 @@
 
 .startButton {
 	position: absolute;
-	left: 50%;
-	top: 75%;
+	inset-inline-start: 50%;
+	inset-block-start: 75%;
 	transform: translate(-50%, 0);
 	background-color: var(--orange);
 	color: var(--bg);
@@ -252,8 +252,8 @@
 
 .overlayBar {
 	position: absolute;
-	left: 0;
-	right: 0;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
 	height: 96px;
 	background-color: rgba(1, 22, 39, 0.84);
 	box-shadow: inset 1px 5px 11px 0px rgba(2, 18, 27, 0.71);

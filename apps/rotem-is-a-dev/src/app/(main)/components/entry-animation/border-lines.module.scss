@@ -1,8 +1,8 @@
 .navBorder {
 	position: absolute;
-	top: 56px;
-	left: 0;
-	right: 0;
+	inset-block-start: 56px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
 	height: 1px;
 	background: var(--border);
 	transform-origin: center;
@@ -12,9 +12,9 @@
 
 .footerBorder {
 	position: absolute;
-	bottom: 48px;
-	left: 0;
-	right: 0;
+	inset-block-end: 48px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
 	height: 1px;
 	background: var(--border);
 	transform-origin: right;

@@ -3,7 +3,7 @@
 .socialBar {
 	display: flex;
 	align-items: stretch;
-	border-top: 1px solid var(--border);
+	border-block-start: 1px solid var(--border);
 	background-color: var(--surface);
 	height: var(--social-bar-height);
 	flex-shrink: 0;
@@ -19,7 +19,7 @@
 	container-type: size;
 	overflow-y: hidden;
 	@include media-below('tablet') {
-		padding-right: 0;
+		padding-inline-end: 0;
 	}
 }
 
@@ -50,12 +50,12 @@
 	aspect-ratio: 1 / 1;
 	color: var(--muted);
 
-	border-right: var(--icon-wrapper-border);
+	border-inline-end: var(--icon-wrapper-border);
 
 	.socialLinksList & {
 		&:first-child {
 			.left & {
-				border-left: var(--icon-wrapper-border);
+				border-inline-start: var(--icon-wrapper-border);
 			}
 		}
 		.right & {
@@ -82,7 +82,7 @@
 	align-items: center;
 	gap: 8px;
 	padding: 0 24px;
-	border-left: 1px solid var(--border);
+	border-inline-start: 1px solid var(--border);
 	@include media-below('tablet') {
 		padding: 0;
 	}

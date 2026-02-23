@@ -3,7 +3,7 @@
 
 .sidebar {
 	width: #{normalize-to-grid(69px)};
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 	display: flex;
 	flex-direction: column;
 	align-items: center;

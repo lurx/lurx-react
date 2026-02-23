@@ -2,7 +2,7 @@
 
 .fileTree {
 	width: 242px;
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 	flex-shrink: 0;
 	overflow-y: auto;
 	display: flex;
@@ -10,8 +10,8 @@
 
 	@include media-below('tablet') {
 		width: 100%;
-		border-right: none;
-		border-bottom: 1px solid var(--border);
+		border-inline-end: none;
+		border-block-end: 1px solid var(--border);
 	}
 }
 
@@ -21,15 +21,15 @@
 
 	@include media-below('tablet') {
 		&[data-section='personal-info'] > .folderRow {
-			border-left: 3px solid var(--orange);
+			border-inline-start: 3px solid var(--orange);
 		}
 
 		&[data-section='work-experience'] > .folderRow {
-			border-left: 3px solid var(--teal);
+			border-inline-start: 3px solid var(--teal);
 		}
 
 		&[data-section='hobbies'] > .folderRow {
-			border-left: 3px solid var(--purple);
+			border-inline-start: 3px solid var(--purple);
 		}
 	}
 }
@@ -68,7 +68,7 @@
 	gap: 6px;
 	padding: 12px;
 	width: 100%;
-	text-align: left;
+	text-align: start;
 	background: none;
 	border: none;
 	font: inherit;
@@ -115,7 +115,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	padding-left: 36px;
+	padding-inline-start: 36px;
 }
 
 .fileRow {
@@ -124,7 +124,7 @@
 	gap: 8px;
 	padding: 2px 12px;
 	width: 100%;
-	text-align: left;
+	text-align: start;
 	background: none;
 	border: none;
 	font: inherit;

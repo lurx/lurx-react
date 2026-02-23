@@ -34,9 +34,9 @@
 	justify-content: center;
 	color: var(--muted);
 	font-size: 1rem;
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 
 	@include media-below('tablet') {
-		border-right: none;
+		border-inline-end: none;
 	}
 }

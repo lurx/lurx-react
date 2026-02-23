@@ -19,7 +19,7 @@
 .slide {
   flex: 0 0 auto;
   min-height: 0;
-  margin-bottom: #{normalize-to-grid(13px)}; // gap between slides
+  margin-block-end: #{normalize-to-grid(13px)}; // gap between slides
   background-color: var(--surface-alt);
   border: 1px solid var(--border);
   border-radius: 8px;

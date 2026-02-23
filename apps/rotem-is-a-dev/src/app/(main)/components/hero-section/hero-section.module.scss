@@ -22,8 +22,8 @@
   --blurs-base-animation-duration: 15s;
 	--blurs-translate-x: 0%;
 	position: absolute;
-	left: 46%;
-	top: 50%;
+	inset-inline-start: 46%;
+	inset-block-start: 50%;
 	transform: translateX(var(--blurs-translate-x)) translateY(-55%);
 	width: 780px;
 	height: 742px;
@@ -39,14 +39,14 @@
 }
 
 .greenBlur {
-	top: 0;
-	left: 0;
+	inset-block-start: 0;
+	inset-inline-start: 0;
   animation: rotate-green-blur calc(var(--blurs-base-animation-duration) / 1.25) linear infinite;
 }
 
 .blueBlur {
-	left: 50%;
-	top: 50%;
+	inset-inline-start: 50%;
+	inset-block-start: 50%;
 	transform: translate(-20%, -20%);
   animation: rotate-blue-blue calc(var(--blurs-base-animation-duration) / 1.5) linear infinite;
 }
@@ -63,28 +63,28 @@
 	flex-direction: column;
 	gap: 0;
   @include media-below('tablet') {
-		margin-top: 64px;
+		margin-block-start: 64px;
 	}
 }
 
 .greeting {
 	font-size: 1.286rem;
 	color: var(--muted);
-	margin-bottom: 8px;
+	margin-block-end: 8px;
 }
 
 .name {
 	font-size: clamp(2.571rem, 4vw, 4.286rem);
 	font-weight: 400;
 	color: var(--text);
-	margin-bottom: 12px;
+	margin-block-end: 12px;
 	line-height: 1.1;
 }
 
 .role {
 	font-size: clamp(1.429rem, 2vw, 2.143rem);
 	color: var(--keyword);
-	margin-bottom: 32px;
+	margin-block-end: 32px;
 }
 
 .codeBlock {
@@ -130,7 +130,7 @@
 	}
 
   @include media-below('tablet') {
-		margin-left: 2ch; // tab-like indent for better readability on mobile
+		margin-inline-start: 2ch; // tab-like indent for better readability on mobile
 	}
 }
 
@@ -164,7 +164,7 @@
 
 	.heroBlurs {
 		--blurs-translate-x: -50%;
-		left: 50%;
+		inset-inline-start: 50%;
 	}
 
 	.name {
@@ -173,7 +173,7 @@
 
 	.role {
 		font-size: clamp(1.25rem, 5vw, 2.143rem);
-		margin-bottom: spacing(9);
+		margin-block-end: spacing(9);
 	}
 }
 
