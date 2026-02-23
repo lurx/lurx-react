@@ -209,8 +209,9 @@
 }
 
 .foodDot {
-	width: 21px;
-	height: 21px;
+  --food-dot-size: #{normalize-to-grid(21px)};
+	width: var(--food-dot-size);
+	height: var(--food-dot-size);
 	flex-shrink: 0;
 	transition: opacity 0.2s;
 

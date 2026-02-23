@@ -1,4 +1,5 @@
 @use 'mixins/media' as *;
+@use 'mixins/normalize-to-grid' as *;
 
 .page {
 	display: flex;
@@ -13,7 +14,7 @@
 // ─── Filter Panel ──────────────────────────────────────────────────────────────
 
 .filterPanel {
-	width: 311px;
+	width: #{normalize-to-grid(311px)};
 	border-right: 1px solid var(--border);
 	flex-shrink: 0;
 	overflow-y: auto;
