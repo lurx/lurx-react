@@ -54,7 +54,14 @@ export const TabBar = ({
 					className={`${styles.tab} ${tabId === activeFileId ? styles.activeTab : ''}`}
 					role="tab"
 					aria-selected={tabId === activeFileId}
+					tabIndex={tabId === activeFileId ? 0 : -1}
 					onClick={() => onTabSelect(tabId)}
+					onKeyDown={event => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							onTabSelect(tabId);
+						}
+					}}
 					onContextMenu={event => handleContextMenu(tabId, event)}
 				>
 					<span>{ABOUT_FILES[tabId].title}</span>
@@ -76,7 +83,7 @@ export const TabBar = ({
 			{contextMenu && (
 				<TabContextMenu
 					position={{ x: contextMenu.x, y: contextMenu.y }}
-					onClose={() => onTabClose(contextMenu.tabId, { stopPropagation: () => {} } as React.MouseEvent)}
+					onClose={() => onTabClose(contextMenu.tabId, { stopPropagation: () => { /* noop — synthetic event for context menu close */ } } as React.MouseEvent)}
 					onCloseOthers={() => onCloseOthers(contextMenu.tabId)}
 					onCloseAll={onCloseAll}
 					onDismiss={dismissMenu}
