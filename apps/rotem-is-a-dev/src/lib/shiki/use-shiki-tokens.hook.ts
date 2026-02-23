@@ -10,8 +10,8 @@ interface UseShikiTokensParams {
 	language: 'javascript' | 'typescript' | 'json';
 }
 
-export function useShikiTokens({ code, language }: UseShikiTokensParams): ShikiLine[] | null {
-	const [lines, setLines] = useState<ShikiLine[] | null>(null);
+export function useShikiTokens({ code, language }: UseShikiTokensParams): Nullable<ShikiLine[]> {
+	const [lines, setLines] = useState<Nullable<ShikiLine[]>>(null);
 
 	useEffect(() => {
 		let cancelled = false;
