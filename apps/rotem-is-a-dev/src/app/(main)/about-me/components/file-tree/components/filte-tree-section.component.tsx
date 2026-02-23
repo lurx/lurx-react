@@ -10,6 +10,7 @@ interface FileTreeSectionProps {
 	toggleSection: (sectionId: string) => void;
 	isCollapsed: boolean;
 	onFileSelect: (fileId: AboutFileId) => void;
+	isMobile: boolean;
 }
 
 export const FileTreeSection = ({
@@ -19,6 +20,7 @@ export const FileTreeSection = ({
 	toggleSection,
 	isCollapsed,
 	onFileSelect,
+	isMobile,
 }: FileTreeSectionProps) => {
 	return (
 		<div
@@ -32,18 +34,21 @@ export const FileTreeSection = ({
 				aria-expanded={!isCollapsed}
 				onClick={() => toggleSection(id)}
 			>
-				<span className={`${styles.folderChevron} ${isCollapsed ? styles.collapsed : ''}`}>
-					<FaIcon
-						iconName="chevron-down"
-						iconGroup="fas"
-					/>
-				</span>
-				<span className={styles.folderIcon}>
-					<FaIcon
-						iconName={isCollapsed ? 'folder-plus' : 'folder-minus'}
-						iconGroup="fal"
-					/>
-				</span>
+				{isMobile ? (
+					<span className={`${styles.folderChevron} ${isCollapsed ? styles.collapsed : ''}`}>
+						<FaIcon
+							iconName="chevron-down"
+							iconGroup="fas"
+						/>
+					</span>
+				) : (
+					<span className={styles.folderIcon}>
+						<FaIcon
+							iconName={isCollapsed ? 'folder-plus' : 'folder-minus'}
+							iconGroup="fal"
+						/>
+					</span>
+				)}
 				<span className={styles.folderLabel}>{id}</span>
 			</button>
 

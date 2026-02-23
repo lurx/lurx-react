@@ -1,6 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
+jest.mock('@/hooks', () => ({
+	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
+}));
+
 jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
 		code.split('\n').map((line: string) => ({

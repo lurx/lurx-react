@@ -6,6 +6,11 @@ jest.mock('next/navigation', () => ({
 	usePathname: () => mockPathname,
 }));
 
+jest.mock('@/hooks', () => ({
+	...jest.requireActual('@/hooks'),
+	useResponsive: () => ({ isMobile: true, isTablet: false, isDesktop: false }),
+}));
+
 import { MobileMenu } from '../mobile-menu.component';
 
 describe('MobileMenu', () => {

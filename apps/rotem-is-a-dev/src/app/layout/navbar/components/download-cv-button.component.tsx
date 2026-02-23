@@ -1,12 +1,16 @@
 'use client';
 
 import { FaIcon } from '@/app/components';
+import { useResponsive } from '@/hooks';
 import { useState } from 'react';
 import styles from '../navbar.module.scss';
 import { NavItem } from './nav-item.component';
 
 export const DownloadCVButton = () => {
+	const { isMobile } = useResponsive();
 	const [isGenerating, setIsGenerating] = useState(false);
+
+	if (isMobile) return null;
 
 	const handleClick = async () => {
 		if (isGenerating) return;

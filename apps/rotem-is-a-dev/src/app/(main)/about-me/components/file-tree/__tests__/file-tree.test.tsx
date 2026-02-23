@@ -1,10 +1,31 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { useResponsive } from '@/hooks';
 import { FileTree } from '../file-tree.component';
+
+jest.mock('@/hooks', () => ({
+	useResponsive: jest.fn(),
+}));
+
+jest.mock('@/app/components', () => ({
+	FaIcon: ({ iconName }: { iconName: string }) => (
+		<span data-testid="icon">{iconName}</span>
+	),
+}));
+
+const mockUseResponsive = useResponsive as jest.Mock;
 
 const defaultProps = {
 	activeFileId: 'bio' as const,
 	onFileSelect: jest.fn(),
 };
+
+beforeEach(() => {
+	mockUseResponsive.mockReturnValue({
+		isMobile: false,
+		isTablet: false,
+		isDesktop: true,
+	});
+});
 
 describe('FileTree', () => {
 	it('renders the personal-info folder', () => {
@@ -61,9 +82,32 @@ describe('FileTree', () => {
 		expect(interestsButton?.className).toContain('activeFile');
 	});
 
-	it('renders the mobile title', () => {
+	it('does not render the mobile title on desktop', () => {
+		render(<FileTree {...defaultProps} />);
+		expect(screen.queryByText('_about-me')).not.toBeInTheDocument();
+	});
+
+	it('renders the mobile title on mobile', () => {
+		mockUseResponsive.mockReturnValue({ isMobile: true, isTablet: false, isDesktop: false });
 		render(<FileTree {...defaultProps} />);
 		expect(screen.getByText('_about-me')).toBeInTheDocument();
+	});
+
+	it('renders folder icons on desktop', () => {
+		render(<FileTree {...defaultProps} />);
+		const icons = screen.getAllByTestId('icon');
+		const folderIcons = icons.filter(
+			icon => icon.textContent === 'folder-minus' || icon.textContent === 'folder-plus',
+		);
+		expect(folderIcons.length).toBeGreaterThanOrEqual(2);
+	});
+
+	it('renders chevron icons on mobile', () => {
+		mockUseResponsive.mockReturnValue({ isMobile: true, isTablet: false, isDesktop: false });
+		render(<FileTree {...defaultProps} />);
+		const icons = screen.getAllByTestId('icon');
+		const chevronIcons = icons.filter(icon => icon.textContent === 'chevron-down');
+		expect(chevronIcons.length).toBeGreaterThanOrEqual(2);
 	});
 
 	it('renders data-section attributes on section wrappers', () => {
@@ -73,12 +117,6 @@ describe('FileTree', () => {
 
 		const workExperience = screen.getByText('work-experience').closest('[data-section]');
 		expect(workExperience).toHaveAttribute('data-section', 'work-experience');
-	});
-
-	it('renders chevron icons on folder rows', () => {
-		render(<FileTree {...defaultProps} />);
-		const folderButtons = screen.getAllByRole('button', { expanded: true });
-		expect(folderButtons.length).toBeGreaterThanOrEqual(2);
 	});
 
 	it('collapses a folder when clicking it', () => {

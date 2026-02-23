@@ -1,13 +1,15 @@
 'use client';
 
 import { FaIcon } from '@/app/components';
+import { useResponsive } from '@/hooks';
 import { useEntryAnimation } from './entry-animation.context';
 import styles from './replay-button.module.scss';
 
 export const ReplayButton = () => {
+	const { isMobile } = useResponsive();
 	const { isShellLoaded, triggerReplay } = useEntryAnimation();
 
-	if (!isShellLoaded) return null;
+	if (isMobile || !isShellLoaded) return null;
 
 	return (
 		<button

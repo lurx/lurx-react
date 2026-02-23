@@ -1,6 +1,7 @@
 'use client';
 
 import { FaIcon } from '@/app/components';
+import { useResponsive } from '@/hooks';
 import { useState } from 'react';
 import type { AboutFileId } from '../../data/about-files.data';
 import { ABOUT_FILES } from '../../data/about-files.data';
@@ -30,7 +31,10 @@ export const TabBar = ({
 	onCloseOthers,
 	onCloseAll,
 }: TabBarProps) => {
+	const { isMobile } = useResponsive();
 	const [contextMenu, setContextMenu] = useState<Nullable<ContextMenuState>>(null);
+
+	if (isMobile) return null;
 
 	const handleContextMenu = (tabId: AboutFileId, event: React.MouseEvent) => {
 		event.preventDefault();
