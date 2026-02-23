@@ -57,21 +57,21 @@ describe('TabBar', () => {
 
 	it('opens context menu on right-click', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		expect(screen.getByTestId('tab-context-menu')).toBeInTheDocument();
 	});
 
 	it('prevents default browser context menu', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		const prevented = !fireEvent.contextMenu(bioTab);
 		expect(prevented).toBe(true);
 	});
 
 	it('calls onCloseOthers via context menu', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close Others'));
 		expect(defaultProps.onCloseOthers).toHaveBeenCalledWith('bio');
@@ -79,7 +79,7 @@ describe('TabBar', () => {
 
 	it('calls onCloseAll via context menu', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close All'));
 		expect(defaultProps.onCloseAll).toHaveBeenCalled();
@@ -87,7 +87,7 @@ describe('TabBar', () => {
 
 	it('calls onTabClose via context menu Close', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close'));
 		expect(defaultProps.onTabClose).toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('TabBar', () => {
 
 	it('dismisses context menu on Escape', () => {
 		render(<TabBar {...defaultProps} />);
-		const bioTab = screen.getByText('bio').closest('[role="tab"]')!;
+		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		expect(screen.getByTestId('tab-context-menu')).toBeInTheDocument();
 		fireEvent.keyDown(document, { key: 'Escape' });
