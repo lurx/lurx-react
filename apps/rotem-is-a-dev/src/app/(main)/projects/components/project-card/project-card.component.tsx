@@ -12,6 +12,7 @@ const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
 export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
+	const DemoComponent = project.demo;
 
 	return (
 		<article
@@ -26,7 +27,15 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 
 			<div className={styles.cardBody}>
 				<div className={styles.imageWrapper}>
-					<div className={styles.imagePlaceholder} />
+					{DemoComponent ? (
+						<div className={styles.demoPreview} aria-hidden="true">
+							<div className={styles.demoPreviewScaler}>
+								<DemoComponent />
+							</div>
+						</div>
+					) : (
+						<div className={styles.imagePlaceholder} />
+					)}
 					{techIcon && (
 						<div
 							className={styles.techBadge}

@@ -46,7 +46,7 @@
 
 .imageWrapper {
 	position: relative;
-	height: #{normalize-to-grid(145px)};
+	height: #{normalize-to-grid(260px)};
 	background-color: #0d1b2e;
 	overflow: hidden;
 	flex-shrink: 0;
@@ -61,6 +61,22 @@
 			transparent 65%
 		),
 		linear-gradient(135deg, #0d1b2e 0%, var(--surface) 100%);
+}
+
+.demoPreview {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.demoPreviewScaler {
+	flex-shrink: 0;
+	transform: scale(0.5);
+	transform-origin: center center;
 }
 
 .techBadge {
@@ -83,16 +99,22 @@
 .textContent {
 	flex: 1;
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 	gap: 20px;
-	padding: 32px;
+	padding: spacing(3);
 	background-color: var(--bg);
 	border-block-start: none;
 }
 
 .description {
+	flex: 1;
+	min-width: 0;
 	line-height: 1.5;
 	color: var(--muted);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .viewButton {
@@ -105,9 +127,10 @@
 	color: var(--text);
 	cursor: pointer;
 	text-decoration: none;
-	align-self: flex-start;
+	flex-shrink: 0;
 	border: none;
 	font-family: inherit;
+	white-space: nowrap;
 	transition: background-color 0.2s;
 
 	&:hover {
