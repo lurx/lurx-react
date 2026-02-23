@@ -4,6 +4,10 @@
 	gap: 16px;
 	width: 407px;
 	flex-shrink: 0;
+
+	@media (max-width: 767px) {
+		width: 100%;
+	}
 }
 
 .cardTitle {
