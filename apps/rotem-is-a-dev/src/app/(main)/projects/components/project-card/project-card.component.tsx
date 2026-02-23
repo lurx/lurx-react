@@ -9,7 +9,7 @@ const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
 	CSS: { iconName: 'css', iconGroup: 'fab' },
 };
 
-export const ProjectCard = ({ project }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 
@@ -42,13 +42,16 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
 				<div className={styles.textContent}>
 					<p className={styles.description}>{project.description}</p>
-					<a
-						href={project.liveUrl ?? '#'}
-						className={styles.viewButton}
-						aria-label={`View project ${project.slug}`}
-					>
-						view-project
-					</a>
+					{onViewProject && (
+						<button
+							type="button"
+							className={styles.viewButton}
+							onClick={() => onViewProject(project)}
+							aria-label={`View project ${project.slug}`}
+						>
+							view-project
+						</button>
+					)}
 				</div>
 			</div>
 		</article>

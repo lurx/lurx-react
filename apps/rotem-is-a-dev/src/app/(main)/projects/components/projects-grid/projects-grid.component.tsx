@@ -7,12 +7,14 @@ interface ProjectsGridProps {
 	projects: Project[];
 	activeFilters: Technology[];
 	onRemoveFilter: (tech: Technology) => void;
+	onViewProject?: (project: Project) => void;
 }
 
 export const ProjectsGrid = ({
 	projects,
 	activeFilters,
 	onRemoveFilter,
+	onViewProject,
 }: ProjectsGridProps) => {
 	return (
 		<div className={styles.container}>
@@ -52,6 +54,7 @@ export const ProjectsGrid = ({
 						<ProjectCard
 							key={project.id}
 							project={project}
+							onViewProject={onViewProject}
 						/>
 					))}
 				</div>
