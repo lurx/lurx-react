@@ -3,7 +3,7 @@ import './styles/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { DownloadPdfButton } from './components/download-pdf-button';
-import type { PropsWithChildren } from 'react';
+import { Suspense, type PropsWithChildren } from 'react';
 config.autoAddCss = false;
 
 export const metadata = {
@@ -15,7 +15,9 @@ export default function CvLayout({
 }: PropsWithChildren) {
 	return (
 		<>
-			<DownloadPdfButton />
+			<Suspense>
+				<DownloadPdfButton />
+			</Suspense>
 			{children}
 		</>
 	);
