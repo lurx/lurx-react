@@ -17,9 +17,9 @@ describe('Navbar', () => {
 		expect(screen.getByText('_about-me')).toBeInTheDocument();
 	});
 
-	it('does not render disabled nav items', () => {
+	it('renders the projects nav item', () => {
 		render(<Navbar />);
-		expect(screen.queryByText('_projects')).not.toBeInTheDocument();
+		expect(screen.getByText('_projects')).toBeInTheDocument();
 	});
 
 	it('renders the contact link', () => {
