@@ -1,0 +1,38 @@
+@use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
+@use 'mixins/normalize-to-grid' as *;
+
+.container {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: spacing(18.25);
+	padding: spacing(8);
+
+	@include media-below('tablet') {
+		flex-direction: column;
+		gap: spacing(4);
+		padding: spacing(4) spacing(2);
+	}
+}
+
+.asciiArt {
+	color: var(--muted-dim);
+	line-height: 1;
+	text-align: center;
+	font-size: 0.75rem;
+	flex-shrink: 0;
+  font-family: monospace;
+}
+
+.content {
+	min-width: 0;
+  width: normalize-to-grid(861px);
+  overflow-x: visible;
+
+
+  @include media-below('tablet') {
+    width: 100%;
+  }
+}

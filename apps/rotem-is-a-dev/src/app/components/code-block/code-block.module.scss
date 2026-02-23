@@ -1,9 +1,38 @@
+@use 'mixins/media' as *;
+
+.wrapper {
+	overflow: hidden;
+}
+
+.withLineNumbers {
+	display: flex;
+}
+
+.lineNumbers {
+	flex-shrink: 0;
+	width: 3ch;
+	margin: 0;
+	margin-inline-end: 2ch;
+	text-align: end;
+	color: var(--muted-dim);
+	user-select: none;
+	font-family: inherit;
+	font-size: 0.9rem;
+	line-height: var(--a11y-line-height, 1.5);
+}
+
 .code {
 	font-family: inherit;
-	font-size: 0.929rem;
+	font-size: 0.9rem;
 	line-height: var(--a11y-line-height, 1.5);
 	white-space: pre;
 	tab-size: 2;
 	overflow: hidden;
 	margin: 0;
+	min-width: 0;
+
+	@include media-below('tablet') {
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
 }
