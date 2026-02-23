@@ -24,6 +24,7 @@ export const FileTreeSection = ({
 		<div
 			key={id}
 			className={styles.section}
+			data-section={id}
 		>
 			<button
 				type="button"
@@ -31,6 +32,12 @@ export const FileTreeSection = ({
 				aria-expanded={!isCollapsed}
 				onClick={() => toggleSection(id)}
 			>
+				<span className={`${styles.folderChevron} ${isCollapsed ? styles.collapsed : ''}`}>
+					<FaIcon
+						iconName="chevron-down"
+						iconGroup="fas"
+					/>
+				</span>
 				<span className={styles.folderIcon}>
 					<FaIcon
 						iconName={isCollapsed ? 'folder-plus' : 'folder-minus'}
