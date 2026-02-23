@@ -1,11 +1,10 @@
-'use client';
-
 import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useEventListener } from 'usehooks-ts';
 import styles from './resizable-drawer.module.scss';
 import type { ResizableDrawerComponentProps } from './resizable-drawer.types';
+import { isUndefined } from 'es-toolkit';
 
 const DEFAULT_MIN_WIDTH = 320;
 const DEFAULT_MAX_WIDTH_FRACTION = 0.9;
@@ -87,10 +86,8 @@ export const ResizableDrawer = ({
 
 	if (!isOpen) return null;
 
-	const portalTarget =
-		typeof document !== 'undefined'
-			? document.getElementById('portal-root') ?? document.body
-			: null;
+	const portalTarget = isUndefined(document)    ? null
+    : document.getElementById('portal-root') ?? document.body;
 
 	if (!portalTarget) return null;
 
