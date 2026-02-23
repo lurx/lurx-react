@@ -68,7 +68,6 @@ const handleCaseConversion = (
 	const converter = stringConverter[convertCase];
 
 	if (!converter) {
-		console.warn(`Unsupported convertCase option: ${convertCase}. Returning original string.`);
 		return str;
 	}
 	return converter(normalizedString);
