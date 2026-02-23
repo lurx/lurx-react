@@ -34,6 +34,16 @@ export const AboutPage = () => {
 		[openTabs, activeFileId],
 	);
 
+	const handleCloseOthers = useCallback((fileId: AboutFileId) => {
+		setOpenTabs([fileId]);
+		setActiveFileId(fileId);
+	}, []);
+
+	const handleCloseAll = useCallback(() => {
+		setOpenTabs([]);
+		setActiveFileId(null);
+	}, []);
+
 	const activeFile = activeFileId ? ABOUT_FILES[activeFileId] : null;
 
 	return (
@@ -51,6 +61,8 @@ export const AboutPage = () => {
 					activeFileId={activeFileId}
 					onTabSelect={handleTabSelect}
 					onTabClose={handleTabClose}
+					onCloseOthers={handleCloseOthers}
+					onCloseAll={handleCloseAll}
 				/>
 
 				<div className={styles.panels}>
