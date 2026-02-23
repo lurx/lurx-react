@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { ALL_TECHNOLOGIES, PROJECTS } from '../../data/projects.data';
 import type { Technology } from '../../data/projects.data';
-import { TechnologyFilter } from '../technology-filter/technology-filter.component';
+import { ALL_TECHNOLOGIES, PROJECTS } from '../../data/projects.data';
 import { ProjectsGrid } from '../projects-grid/projects-grid.component';
+import { TechnologyFilter } from '../technology-filter/technology-filter.component';
 import styles from './projects-page.module.scss';
 
 export const ProjectsPage = () => {
@@ -29,11 +29,7 @@ export const ProjectsPage = () => {
 
 	return (
 		<div className={styles.page}>
-			<div
-				className={styles.filterPanel}
-				role="navigation"
-				aria-label="Filter projects by technology"
-			>
+			<div className={styles.filterPanel}>
 				<TechnologyFilter
 					technologies={ALL_TECHNOLOGIES}
 					selected={selectedTechnologies}
