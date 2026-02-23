@@ -1,7 +1,9 @@
+@use 'mixins/media' as *;
+
 .wrapper {
 	display: none;
 	margin-left: auto;
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		display: flex;
 		align-items: stretch;
 	}

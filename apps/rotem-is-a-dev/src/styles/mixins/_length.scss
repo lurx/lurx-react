@@ -1,0 +1,7 @@
+@use 'variables' as *;
+
+// for use in scss values that represent lengths, such as widths, heights, etc.
+
+@function length($size: 1, $unit: 'px') {
+  @return calc(#{$size} * var(--ui-grid-unit))#{$unit};
+}

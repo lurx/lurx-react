@@ -1,3 +1,5 @@
+@use 'mixins/media' as *;
+
 .button {
 	position: fixed;
 	bottom: 24px;
@@ -27,7 +29,7 @@
 		opacity: 0.7;
 	}
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		display: none;
 	}
 }

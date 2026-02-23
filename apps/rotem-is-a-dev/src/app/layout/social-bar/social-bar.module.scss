@@ -1,3 +1,5 @@
+@use 'mixins/media' as *;
+
 .socialBar {
 	display: flex;
 	align-items: stretch;
@@ -16,7 +18,7 @@
 	flex: 1 0 auto;
 	container-type: size;
 	overflow-y: hidden;
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		padding-right: 0;
 	}
 }
@@ -32,7 +34,7 @@
 	font-size: 0.929rem;
 	color: var(--muted);
 	&.hideLabelInMobile {
-		@media (max-width: 767px) {
+		@include media-below('tablet') {
 			display: none;
 		}
 	}
@@ -81,7 +83,7 @@
 	gap: 8px;
 	padding: 0 24px;
 	border-left: 1px solid var(--border);
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		padding: 0;
 	}
 }

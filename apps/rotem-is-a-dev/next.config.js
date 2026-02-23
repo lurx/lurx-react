@@ -12,7 +12,7 @@ const nextConfig = {
 		svgr: false,
 	},
 	sassOptions: {
-		includePaths: ['./src/app/cv/styles'],
+		includePaths: ['./src/styles'],
 	},
 	webpack: (config) => {
 		// enforce: 'pre' makes this loader run before SWC, so it receives

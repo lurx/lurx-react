@@ -1,3 +1,5 @@
+@use 'mixins/media' as *;
+
 :root {
 	--bg: #020618;
 	--surface: #0f172b;
@@ -13,6 +15,9 @@
 
 	--surface-alt: #1d293d;
 	--muted-dim: #62748e;
+
+  --ui-grid-unit: 8px;
+	--spacing-unit: var(--ui-grid-unit);
 
 	--space-1: 8px;
 	--space-2: 12px;
@@ -38,7 +43,7 @@
 	--navbar-height: 56px;
 	--social-bar-height: 48px;
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		--root-font-size: 16px;
 	}
 }

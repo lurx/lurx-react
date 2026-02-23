@@ -1,3 +1,5 @@
+@use 'mixins/media' as *;
+
 .card {
 	display: flex;
 	flex-direction: column;
@@ -5,7 +7,7 @@
 	width: 460px;
 	flex-shrink: 0;
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		width: 100%;
 	}
 }
