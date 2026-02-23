@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export const generateCvPdf = async (): Promise<void> => {
-	const element = document.querySelector<HTMLElement>('.container');
+export const generateCvPdf = async (targetElement?: HTMLElement): Promise<void> => {
+	const element = targetElement ?? document.querySelector<HTMLElement>('.container');
 	if (!element) return;
 
 	const canvas = await html2canvas(element, {

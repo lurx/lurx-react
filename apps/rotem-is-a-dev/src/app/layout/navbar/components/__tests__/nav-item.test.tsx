@@ -83,4 +83,25 @@ describe('NavItem', () => {
 		const link = screen.getByText('_test').closest('a');
 		expect(link?.className).toContain('extra-class');
 	});
+
+	it('renders a button when onClick is provided', () => {
+		const onClick = jest.fn();
+		render(<NavItem label="action" onClick={onClick} active={false} />);
+		const button = screen.getByRole('button');
+		expect(button).toBeInTheDocument();
+		expect(screen.queryByRole('link')).not.toBeInTheDocument();
+	});
+
+	it('calls onClick handler when button is clicked', () => {
+		const onClick = jest.fn();
+		render(<NavItem label="action" onClick={onClick} active={false} />);
+		screen.getByRole('button').click();
+		expect(onClick).toHaveBeenCalledTimes(1);
+	});
+
+	it('renders a link when href is provided without onClick', () => {
+		render(<NavItem label="link" href="/page" active={false} />);
+		expect(screen.getByRole('link')).toHaveAttribute('href', '/page');
+		expect(screen.queryByRole('button')).not.toBeInTheDocument();
+	});
 });
