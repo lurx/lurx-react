@@ -15,7 +15,7 @@
 
 .filterPanel {
 	width: #{normalize-to-grid(311px)};
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 	flex-shrink: 0;
 	overflow-y: auto;
 	display: flex;
@@ -23,8 +23,8 @@
 
 	@include media-below('tablet') {
 		width: 100%;
-		border-right: none;
-		border-bottom: 1px solid var(--border);
+		border-inline-end: none;
+		border-block-end: 1px solid var(--border);
 	}
 }
 

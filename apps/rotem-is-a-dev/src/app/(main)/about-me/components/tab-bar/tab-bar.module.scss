@@ -3,7 +3,7 @@
 .tabBar {
 	display: flex;
 	align-items: stretch;
-	border-bottom: 1px solid var(--border);
+	border-block-end: 1px solid var(--border);
 	flex-shrink: 0;
 
 	@include media-below('tablet') {
@@ -17,7 +17,7 @@
 	gap: 8px;
 	padding: 8px 24px;
 	color: var(--muted);
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 	white-space: nowrap;
 	cursor: pointer;
 	transition: color 0.2s;

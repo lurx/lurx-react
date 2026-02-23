@@ -8,17 +8,17 @@
 	line-height: var(--a11y-line-height, 1.5);
 	color: var(--muted);
 	overflow-y: auto;
-	border-right: 1px solid var(--border);
+	border-inline-end: 1px solid var(--border);
 
 	@include media-below('tablet') {
 		gap: 16px;
 		padding: 12px 16px;
-		border-right: none;
+		border-inline-end: none;
 	}
 }
 
 .lineNumbers {
-	text-align: right;
+	text-align: end;
 	color: var(--muted);
 	user-select: none;
 	flex-shrink: 0;

@@ -65,8 +65,8 @@
 
 .techBadge {
 	position: absolute;
-	top: 12px;
-	right: 12px;
+	inset-block-start: 12px;
+	inset-inline-end: 12px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -87,7 +87,7 @@
 	gap: 20px;
 	padding: 32px;
 	background-color: var(--bg);
-	border-top: none;
+	border-block-start: none;
 }
 
 .description {

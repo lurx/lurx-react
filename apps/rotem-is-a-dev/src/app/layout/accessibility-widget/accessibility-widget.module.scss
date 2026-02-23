@@ -25,8 +25,8 @@
 
 .panel {
 	position: absolute;
-	bottom: 100%;
-	right: 0;
+	inset-block-end: 100%;
+	inset-inline-end: 0;
 	z-index: var(--z-overlay);
 	min-width: 220px;
 	background-color: var(--surface);
@@ -103,8 +103,8 @@
 }
 
 .divider {
-	border-top: 1px solid var(--border);
-	padding-top: 4px;
+	border-block-start: 1px solid var(--border);
+	padding-block-start: 4px;
 }
 
 .resetButton {
