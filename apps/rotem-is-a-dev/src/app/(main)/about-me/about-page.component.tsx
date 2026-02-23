@@ -2,9 +2,16 @@
 
 import { useCallback, useState } from 'react';
 import styles from './about-page.module.scss';
-import { AboutEditor, FileTree, GistPanel, SideBar, TabBar } from './components';
+import {
+	AboutEditor,
+	FileTree,
+	GistPanel,
+	SideBar,
+	TabBar,
+} from './components';
 import type { AboutFileId } from './data/about-files.data';
 import { ABOUT_FILES, DEFAULT_FILE_ID } from './data/about-files.data';
+import { toCodeLike } from '@/app/utils/to-code-like.util';
 
 export const AboutPage = () => {
 	const [activeFileId, setActiveFileId] =
@@ -28,7 +35,9 @@ export const AboutPage = () => {
 			setOpenTabs(updatedTabs);
 
 			if (activeFileId === fileId) {
-				setActiveFileId(updatedTabs.length > 0 ? updatedTabs[updatedTabs.length - 1] : null);
+				setActiveFileId(
+					updatedTabs.length > 0 ? updatedTabs[updatedTabs.length - 1] : null,
+				);
 			}
 		},
 		[openTabs, activeFileId],
@@ -48,7 +57,10 @@ export const AboutPage = () => {
 
 	return (
 		<div className={styles.page}>
-			<SideBar activeFileId={activeFileId} onFileSelect={handleFileSelect} />
+			<SideBar
+				activeFileId={activeFileId}
+				onFileSelect={handleFileSelect}
+			/>
 
 			<FileTree
 				activeFileId={activeFileId}
@@ -69,7 +81,9 @@ export const AboutPage = () => {
 					{activeFile ? (
 						<AboutEditor content={activeFile} />
 					) : (
-						<p className={styles.emptyState}>choose a file</p>
+						<p className={styles.emptyState}>
+							{toCodeLike('no file selected. choose a file to learn more about me', { convertCase: 'comment' })}
+						</p>
 					)}
 					<GistPanel />
 				</div>
