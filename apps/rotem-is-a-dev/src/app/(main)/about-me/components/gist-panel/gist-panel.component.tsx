@@ -1,5 +1,6 @@
 'use client';
 
+import { useResponsive } from '@/hooks';
 import chunkRaw from '@/snippets/chunk.snippet.ts?raw';
 import debounceRaw from '@/snippets/debounce.snippet.ts?raw';
 import { Gist } from './components/gist';
@@ -25,6 +26,10 @@ const GISTS = [
 ];
 
 export const GistPanel = () => {
+	const { isMobile } = useResponsive();
+
+	if (isMobile) return null;
+
 	return (
 		<div className={styles.panel}>
 			<p className={styles.panelTitle}>{'// Code snippet showcase:'}</p>
