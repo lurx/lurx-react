@@ -5,13 +5,13 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useEffect, useState } from 'react';
 import styles from './hero-snippets.module.scss';
 import { useHeroContext } from './hero.context';
-import chunkRaw from './snippets/chunk.snippet.ts?raw';
-import debounceRaw from './snippets/debounce.snippet.ts?raw';
-import deepCloneRaw from './snippets/deep-clone.snippet.ts?raw';
-import flattenRaw from './snippets/flatten.snippet.ts?raw';
-import groupByRaw from './snippets/group-by.snippet.ts?raw';
-import memoizeRaw from './snippets/memoize.snippet.ts?raw';
-import throttleRaw from './snippets/throttle.snippet.ts?raw';
+import chunkRaw from '@/snippets/chunk.snippet.ts?raw';
+import debounceRaw from '@/snippets/debounce.snippet.ts?raw';
+import deepCloneRaw from '@/snippets/deep-clone.snippet.ts?raw';
+import flattenRaw from '@/snippets/flatten.snippet.ts?raw';
+import groupByRaw from '@/snippets/group-by.snippet.ts?raw';
+import memoizeRaw from '@/snippets/memoize.snippet.ts?raw';
+import throttleRaw from '@/snippets/throttle.snippet.ts?raw';
 
 const SNIPPETS = [
 	{ title: 'debounce', code: debounceRaw },
