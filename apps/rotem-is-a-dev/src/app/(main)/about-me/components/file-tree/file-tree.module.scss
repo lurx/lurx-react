@@ -64,6 +64,11 @@
 	flex-shrink: 0;
 	font-size: 0.857rem;
 	color: var(--muted);
+	transition: transform 0.15s;
+
+	&.collapsed {
+		transform: rotate(-90deg);
+	}
 }
 
 .folderIcon {

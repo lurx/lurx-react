@@ -7,7 +7,7 @@ import type {
 	JsonFileContent,
 } from '../../data/about-files.data';
 import styles from './about-editor.module.scss';
-import { useShikiTokens } from './use-shiki-tokens.hook';
+import { useShikiTokens } from '@/lib/shiki';
 
 const COMMENT_WRAP_WIDTH = 38;
 

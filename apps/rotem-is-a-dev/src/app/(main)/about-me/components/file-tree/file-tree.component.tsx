@@ -1,34 +1,10 @@
 'use client';
 
-import { FaIcon } from '@/app/components';
 import { useCallback, useState } from 'react';
 import type { AboutFileId } from '../../data/about-files.data';
-import { ABOUT_FILES, SECTIONS, SECTION_FILES } from '../../data/about-files.data';
+import { SECTIONS, SECTION_FILES } from '../../data/about-files.data';
+import { FileTreeSection } from './components/filte-tree-section.component';
 import styles from './file-tree.module.scss';
-
-const FileItem = ({
-	label,
-	active,
-	onClick,
-}: {
-	label: string;
-	active?: boolean;
-	onClick?: () => void;
-}) => (
-	<button
-		type="button"
-		className={`${styles.fileRow} ${active ? styles.activeFile : ''}`}
-		onClick={onClick}
-	>
-		<span className={styles.fileIcon}>
-			<FaIcon
-				iconName="file-lines"
-				iconGroup="fal"
-			/>
-		</span>
-		<span className={styles.fileLabel}>{label}</span>
-	</button>
-);
 
 export interface FileTreeProps {
 	activeFileId: Nullable<AboutFileId>;
@@ -64,62 +40,29 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 				const isCollapsed = collapsedSections.has(id);
 
 				return (
-					<div
-						key={id}
-						className={styles.section}
-					>
-						<button
-							type="button"
-							className={styles.folderRow}
-							aria-expanded={!isCollapsed}
-							onClick={() => toggleSection(id)}
-						>
-							<span className={styles.folderChevron}>
-								<FaIcon
-									iconName={isCollapsed ? 'chevron-right' : 'chevron-down'}
-									iconGroup="fas"
-								/>
-							</span>
-							<span className={styles.folderIcon}>
-								<FaIcon
-									iconName={isCollapsed ? 'folder-plus' : 'folder-minus'}
-									iconGroup="fal"
-								/>
-							</span>
-							<span className={styles.folderLabel}>{id}</span>
-						</button>
-
-						{!isCollapsed && (
-							<div className={styles.nestedItems}>
-								{files.map(fileId => (
-									<FileItem
-										key={fileId}
-										label={ABOUT_FILES[fileId].title}
-										active={activeFileId === fileId}
-										onClick={() => onFileSelect(fileId)}
-									/>
-								))}
-							</div>
-						)}
-					</div>
+					<FileTreeSection
+            key={id}
+            id={id}
+            files={files}
+            activeFileId={activeFileId}
+            toggleSection={toggleSection}
+            isCollapsed={isCollapsed}
+            onFileSelect={onFileSelect}
+          />
 				);
 			})}
 
 			{/* contacts section */}
-			<div className={styles.section}>
+			{/* <div className={styles.section}>
 				<button
 					type="button"
 					className={styles.folderRow}
 					aria-expanded={!collapsedSections.has('contacts')}
 					onClick={() => toggleSection('contacts')}
 				>
-					<span className={styles.folderChevron}>
+					<span className={`${styles.folderChevron} ${collapsedSections.has('contacts') ? styles.collapsed : ''}`}>
 						<FaIcon
-							iconName={
-								collapsedSections.has('contacts')
-									? 'chevron-right'
-									: 'chevron-down'
-							}
+							iconName="chevron-down"
 							iconGroup="fas"
 						/>
 					</span>
@@ -162,7 +105,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 						</div>
 					</div>
 				)}
-			</div>
+			</div> */}
 		</nav>
 	);
 };
