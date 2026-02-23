@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AboutPage } from '../about-page.component';
 
-jest.mock('../components/about-editor/use-shiki-tokens.hook', () => ({
+jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
 		code.split('\n').map((line: string) => ({
 			tokens: [{ content: line, color: '#90a1b9' }],

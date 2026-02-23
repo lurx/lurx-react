@@ -1,5 +1,12 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
+jest.mock('@/lib/shiki', () => ({
+	useShikiTokens: ({ code }: { code: string }) =>
+		code.split('\n').map((line: string) => ({
+			tokens: [{ content: line, color: '#d6deeb' }],
+		})),
+}));
+
 let mockGameCompleted = true;
 
 let mockOnSelectHandler: Nullable<() => void> = null;
