@@ -52,8 +52,6 @@ export const ProjectsPage = () => {
 			<div className={styles.content}>
 				<ProjectsGrid
 					projects={filteredProjects}
-					activeFilters={selectedTechnologies}
-					onRemoveFilter={toggleTechnology}
 					onViewProject={handleViewProject}
 				/>
 			</div>

@@ -58,6 +58,28 @@ describe('ProjectCard', () => {
 		expect(screen.queryByLabelText('React')).not.toBeInTheDocument();
 	});
 
+	describe('demo preview', () => {
+		it('renders the demo component when project has a demo', () => {
+			const MockDemo = () => <div data-testid="mock-demo">Demo Content</div>;
+			const project: Project = { ...mockProject, demo: MockDemo };
+			render(<ProjectCard project={project} />);
+			expect(screen.getByTestId('mock-demo')).toBeInTheDocument();
+		});
+
+		it('hides the demo preview from assistive technology', () => {
+			const MockDemo = () => <div>Demo</div>;
+			const project: Project = { ...mockProject, demo: MockDemo };
+			const { container } = render(<ProjectCard project={project} />);
+			const preview = container.querySelector('[aria-hidden="true"]');
+			expect(preview).toBeInTheDocument();
+		});
+
+		it('renders the placeholder when project has no demo', () => {
+			const { container } = render(<ProjectCard project={mockProject} />);
+			expect(container.querySelector('[data-testid="mock-demo"]')).not.toBeInTheDocument();
+		});
+	});
+
 	describe('with onViewProject', () => {
 		it('renders a button instead of a link', () => {
 			const onViewProject = jest.fn();

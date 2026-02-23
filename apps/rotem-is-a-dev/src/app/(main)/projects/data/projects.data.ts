@@ -1,4 +1,4 @@
-import { WolverineDemo } from '@/demos';
+import { SheepDemo, WolverineDemo } from '@/demos';
 import type { ComponentType } from 'react';
 
 export type Technology =
@@ -38,13 +38,27 @@ export const PROJECTS = [
 		number: 1,
 		slug: '_wolverine-css',
 		description:
-			'Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
-		technologies: ['CSS', 'SCSS', 'React', 'TypeScript'],
+			'A React adaptation of a Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
+		technologies: ['CSS', 'SCSS', 'React'],
 		externalUrl: {
       origin: 'codepen.io',
       url: 'https://codepen.io/lurx/pen/rREBKM',
       iconName: 'codepen',
     },
 		demo: WolverineDemo,
+	},
+	{
+		id: 2,
+		number: 2,
+		slug: '_sheep-css',
+		description:
+			'A playful CSS art sheep inspired by Gregory Hartman\'s BAAAHHHHH Dribbble shot, built with pure SCSS animations.',
+		technologies: ['CSS', 'SCSS', 'React'],
+		externalUrl: {
+			origin: 'codepen.io',
+			url: 'https://codepen.io/lurx/pen/XGymgd',
+			iconName: 'codepen',
+		},
+		demo: SheepDemo,
 	},
 ] satisfies Project[];
