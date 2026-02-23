@@ -26,7 +26,8 @@ export const ProjectsGrid = ({
 							key={tech}
 							className={styles.tab}
 							role="tab"
-							aria-selected={true}
+							aria-selected
+							tabIndex={0}
 						>
 							<span>{tech}</span>
 							<button
