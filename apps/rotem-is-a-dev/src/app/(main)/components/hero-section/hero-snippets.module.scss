@@ -15,7 +15,7 @@
 
 // Individual slides
 .slide {
-  flex: 0 0 182px;
+  flex: 0 0 auto;
   min-height: 0;
   margin-bottom: 13px; // gap between slides
   background-color: var(--surface-alt);

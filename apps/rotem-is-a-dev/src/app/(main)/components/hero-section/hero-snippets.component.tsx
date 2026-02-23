@@ -64,7 +64,7 @@ const SnippetSlide = ({
 											{token.content}
 										</span>
 									))}
-									{'\n'}
+									{line.tokens.some(token => token.content !== ' ') && '\n'}
 								</span>
 							))
 						: code}

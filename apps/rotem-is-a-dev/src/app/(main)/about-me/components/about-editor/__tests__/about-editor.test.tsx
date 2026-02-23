@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { AboutEditor } from '../about-editor.component';
 import type { AboutFileContent } from '../../../data/about-files.data';
 
-jest.mock('../use-shiki-tokens.hook', () => ({
+jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
 		code.split('\n').map((line: string) => ({
 			tokens: [{ content: line, color: '#90a1b9' }],

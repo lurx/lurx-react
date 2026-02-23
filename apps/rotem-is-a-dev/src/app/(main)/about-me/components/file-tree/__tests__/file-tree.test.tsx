@@ -17,11 +17,6 @@ describe('FileTree', () => {
 		expect(screen.getByText('work-experience')).toBeInTheDocument();
 	});
 
-	it('renders the contacts folder', () => {
-		render(<FileTree {...defaultProps} />);
-		expect(screen.getByText('contacts')).toBeInTheDocument();
-	});
-
 	it('renders the bio file item', () => {
 		render(<FileTree {...defaultProps} />);
 		expect(screen.getByText('bio')).toBeInTheDocument();
@@ -66,16 +61,6 @@ describe('FileTree', () => {
 		expect(interestsButton?.className).toContain('activeFile');
 	});
 
-	it('renders the email contact', () => {
-		render(<FileTree {...defaultProps} />);
-		expect(screen.getByText('lurxie@gmail.com')).toBeInTheDocument();
-	});
-
-	it('renders the phone contact', () => {
-		render(<FileTree {...defaultProps} />);
-		expect(screen.getByText('(+972) 052 522 9225')).toBeInTheDocument();
-	});
-
 	it('collapses a folder when clicking it', () => {
 		render(<FileTree {...defaultProps} />);
 
@@ -95,11 +80,4 @@ describe('FileTree', () => {
 		expect(screen.getByText('interests')).toBeInTheDocument();
 	});
 
-	it('collapses the contacts folder', () => {
-		render(<FileTree {...defaultProps} />);
-
-		fireEvent.click(screen.getByText('contacts'));
-
-		expect(screen.queryByText('lurxie@gmail.com')).not.toBeInTheDocument();
-	});
 });

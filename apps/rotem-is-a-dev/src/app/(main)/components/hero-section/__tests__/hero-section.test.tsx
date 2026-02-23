@@ -1,6 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
+jest.mock('@/lib/shiki', () => ({
+	useShikiTokens: ({ code }: { code: string }) =>
+		code.split('\n').map((line: string) => ({
+			tokens: [{ content: line, color: '#d6deeb' }],
+		})),
+}));
+
 // Stub entry animation context so component renders without provider
 jest.mock('../../entry-animation/entry-animation.context', () => ({
 	useEntryAnimation: () => ({
