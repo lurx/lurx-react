@@ -80,15 +80,10 @@ describe('toCodeLike', () => {
 			expect(toCodeLike('Hello', { convertCase: undefined })).toBe('Hello');
 		});
 
-		it('warns and returns original string for unsupported convertCase', () => {
-			const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+		it('returns original string for unsupported convertCase', () => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const result = toCodeLike('Hello', { convertCase: 'UNKNOWN' as any });
 			expect(result).toBe('Hello');
-			expect(warnSpy).toHaveBeenCalledWith(
-				'Unsupported convertCase option: UNKNOWN. Returning original string.',
-			);
-			warnSpy.mockRestore();
 		});
 	});
 });

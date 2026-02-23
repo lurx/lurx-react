@@ -1,9 +1,6 @@
 import { render } from '@testing-library/react';
 import { FaIcon } from '../fa-icon.component';
 
-// Mock the FontAwesome kit to control icon lookup
-const mockIconDefinition = { prefix: 'fas', iconName: 'check', icon: [512, 512, [], '', 'M'] };
-
 jest.mock('@awesome.me/kit-1d40de302b/icons', () => ({
 	byPrefixAndName: {
 		fas: {

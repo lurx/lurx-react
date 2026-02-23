@@ -43,10 +43,9 @@ describe('SocialLink', () => {
 	});
 
 	it('reverses order when iconPosition is end', () => {
-		const { container } = render(
+		render(
 			<SocialLink link={baseLinkData} iconPosition="end" />,
 		);
-		// Just verify it renders without error
 		expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
 	});
 });
