@@ -1,6 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import { GistPanel } from '../gist-panel.component';
 
+jest.mock('@/lib/shiki', () => ({
+	useShikiTokens: ({ code }: { code: string }) =>
+		code.split('\n').map((line: string) => ({
+			tokens: [{ content: line, color: '#d6deeb' }],
+		})),
+}));
+
+jest.mock('@/app/components', () => ({
+	...jest.requireActual('@/app/components'),
+	FaIcon: ({ iconName }: { iconName: string }) => (
+		<span data-testid="icon">{iconName}</span>
+	),
+}));
+
 describe('GistPanel', () => {
 	it('renders the panel title', () => {
 		render(<GistPanel />);
@@ -27,11 +41,13 @@ describe('GistPanel', () => {
 		expect(starsLabels).toHaveLength(2);
 	});
 
-	it('renders two code blocks', () => {
+	it('renders the debounce code block', () => {
 		render(<GistPanel />);
-		const codeBlocks = screen.getAllByRole('generic').filter((el) =>
-			el.className.includes('codeBlock'),
-		);
-		expect(codeBlocks).toHaveLength(2);
+		expect(screen.getByLabelText('debounce content')).toBeInTheDocument();
+	});
+
+	it('renders the chunk code block', () => {
+		render(<GistPanel />);
+		expect(screen.getByLabelText('chunk content')).toBeInTheDocument();
 	});
 });
