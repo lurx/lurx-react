@@ -1,3 +1,6 @@
+import { WolverineDemo } from '@/demos';
+import type { ComponentType } from 'react';
+
 export type Technology =
 	| 'React'
 	| 'TypeScript'
@@ -5,13 +8,20 @@ export type Technology =
 	| 'CSS'
 	| 'SCSS';
 
+  interface ProjectExternalUrl {
+    origin: string;
+    url: string;
+    iconName?: string; // Optional, can be used to determine which icon to show
+  }
+
 export interface Project {
 	id: number;
 	number: number;
 	slug: string;
 	description: string;
 	technologies: Technology[];
-	liveUrl?: string;
+  externalUrl?: ProjectExternalUrl;
+	demo?: ComponentType;
 }
 
 export const ALL_TECHNOLOGIES: Technology[] = [
@@ -22,7 +32,7 @@ export const ALL_TECHNOLOGIES: Technology[] = [
 	'SCSS',
 ];
 
-export const PROJECTS: Project[] = [
+export const PROJECTS = [
 	{
 		id: 1,
 		number: 1,
@@ -30,6 +40,11 @@ export const PROJECTS: Project[] = [
 		description:
 			'Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
 		technologies: ['CSS', 'SCSS', 'React', 'TypeScript'],
-		liveUrl: '/demo/wolverine-css',
+		externalUrl: {
+      origin: 'codepen.io',
+      url: 'https://codepen.io/lurx/pen/rREBKM',
+      iconName: 'codepen',
+    },
+		demo: WolverineDemo,
 	},
-];
+] satisfies Project[];

@@ -1,0 +1,135 @@
+@use 'mixins/media' as *;
+
+// ─── Wrapper ────────────────────────────────────────────────────────────────────
+
+.wrapper {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-overlay);
+	display: flex;
+	justify-content: flex-end;
+}
+
+// ─── Overlay ────────────────────────────────────────────────────────────────────
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+// ─── Drawer Panel ───────────────────────────────────────────────────────────────
+
+.drawer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: var(--surface);
+	border-inline-start: 1px solid var(--border);
+	z-index: 1;
+	animation: slideIn 0.3s ease-out forwards;
+
+	@include media-below('tablet') {
+		width: 100% !important;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+// ─── Drag Handle ────────────────────────────────────────────────────────────────
+
+.dragHandle {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-start: -3px;
+	width: 6px;
+	height: 100%;
+	cursor: col-resize;
+	z-index: 2;
+	transition: background-color 0.15s;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset-block-start: 50%;
+		inset-inline-start: 1px;
+		transform: translateY(-50%);
+		width: 4px;
+		height: 32px;
+		border-radius: 2px;
+		background-color: var(--muted);
+		opacity: 0;
+		transition: opacity 0.15s;
+	}
+
+	&:hover::after {
+		opacity: 1;
+	}
+
+	&:hover {
+		background-color: rgba(97, 95, 255, 0.15);
+	}
+
+	@include media-below('tablet') {
+		display: none;
+	}
+}
+
+// ─── Header ─────────────────────────────────────────────────────────────────────
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	padding: 8px 12px;
+	border-block-end: 1px solid var(--border);
+	flex-shrink: 0;
+}
+
+.title {
+	flex: 1;
+	min-width: 0;
+}
+
+.closeButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px 8px;
+	color: var(--muted);
+	border-radius: var(--radius-sm);
+	transition: color 0.2s, background-color 0.2s;
+
+	&:hover {
+		color: var(--text);
+		background-color: var(--surface-alt);
+	}
+}
+
+// ─── Content ────────────────────────────────────────────────────────────────────
+
+.content {
+	flex: 1;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}

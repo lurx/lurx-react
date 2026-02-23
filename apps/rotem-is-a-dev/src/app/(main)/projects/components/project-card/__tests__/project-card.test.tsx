@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ProjectCard } from '../project-card.component';
 import type { Project } from '../../../data/projects.data';
 
@@ -8,7 +8,6 @@ const mockProject: Project = {
 	slug: '_ui-animations',
 	description: 'A test project description.',
 	technologies: ['React', 'TypeScript'],
-	liveUrl: 'https://example.com',
 };
 
 describe('ProjectCard', () => {
@@ -29,15 +28,9 @@ describe('ProjectCard', () => {
 		).toBeInTheDocument();
 	});
 
-	it('renders the view-project button', () => {
+	it('does not render view-project button without onViewProject', () => {
 		render(<ProjectCard project={mockProject} />);
-		expect(screen.getByText('view-project')).toBeInTheDocument();
-	});
-
-	it('links the view button to the live url', () => {
-		render(<ProjectCard project={mockProject} />);
-		const link = screen.getByRole('link', { name: /view project/i });
-		expect(link).toHaveAttribute('href', 'https://example.com');
+		expect(screen.queryByText('view-project')).not.toBeInTheDocument();
 	});
 
 	it('renders with article role', () => {
@@ -53,18 +46,7 @@ describe('ProjectCard', () => {
 			technologies: ['SCSS'],
 		};
 		render(<ProjectCard project={project} />);
-		// Should still render the card
-		expect(screen.getByText('view-project')).toBeInTheDocument();
-	});
-
-	it('falls back to # when liveUrl is undefined', () => {
-		const project: Project = {
-			...mockProject,
-			liveUrl: undefined,
-		};
-		render(<ProjectCard project={project} />);
-		const link = screen.getByRole('link', { name: /view project/i });
-		expect(link).toHaveAttribute('href', '#');
+		expect(screen.queryByLabelText('SCSS')).not.toBeInTheDocument();
 	});
 
 	it('renders without tech badge when technologies array is empty', () => {
@@ -74,5 +56,28 @@ describe('ProjectCard', () => {
 		};
 		render(<ProjectCard project={project} />);
 		expect(screen.queryByLabelText('React')).not.toBeInTheDocument();
+	});
+
+	describe('with onViewProject', () => {
+		it('renders a button instead of a link', () => {
+			const onViewProject = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
+			expect(screen.getByRole('button', { name: /view project/i })).toBeInTheDocument();
+			expect(screen.queryByRole('link', { name: /view project/i })).not.toBeInTheDocument();
+		});
+
+		it('calls onViewProject with the project when the button is clicked', () => {
+			const onViewProject = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
+			fireEvent.click(screen.getByRole('button', { name: /view project/i }));
+			expect(onViewProject).toHaveBeenCalledWith(mockProject);
+		});
+
+		it('calls onViewProject exactly once per click', () => {
+			const onViewProject = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
+			fireEvent.click(screen.getByRole('button', { name: /view project/i }));
+			expect(onViewProject).toHaveBeenCalledTimes(1);
+		});
 	});
 });
