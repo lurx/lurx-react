@@ -1,9 +1,11 @@
+@use 'mixins/media' as *;
+
 .page {
 	display: flex;
 	flex: 1;
 	overflow: hidden;
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		flex-direction: column;
 	}
 }
@@ -20,7 +22,7 @@
 	display: flex;
 	overflow: hidden;
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		flex-direction: column;
 	}
 }
@@ -34,7 +36,7 @@
 	font-size: 1rem;
 	border-right: 1px solid var(--border);
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		border-right: none;
 	}
 }

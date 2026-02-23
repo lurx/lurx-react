@@ -1,10 +1,12 @@
+@use 'mixins/media' as *;
+
 .tabBar {
 	display: flex;
 	align-items: stretch;
 	border-bottom: 1px solid var(--border);
 	flex-shrink: 0;
 
-	@media (max-width: 767px) {
+	@include media-below('tablet') {
 		display: none;
 	}
 }
