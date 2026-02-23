@@ -1,0 +1,14 @@
+tags:
+  - wcag21a
+  - wcag21aa
+  - best-practice
+
+exclude:
+  - node_modules/**/*
+  - dist/**/*
+  - coverage/**/*
+  - "**/__tests__/**/*"
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "**/__mocks__/**/*"
+  - apps/rotem-is-a-dev-e2e/**/*
