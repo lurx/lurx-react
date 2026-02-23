@@ -1,0 +1,43 @@
+@use 'sass:math';
+@use 'variables' as *;
+
+// ─── normalize-to-grid ──────────────────────────────────────────────────────
+//
+// Snaps a pixel value to the nearest point on a 4px sub-grid
+// (half of the 8px base grid unit). Use this when a design value
+// doesn't sit cleanly on the grid and you want to nudge it into
+// alignment without changing it by hand.
+//
+// $value  — the length to snap (must be in px, e.g. 69px)
+// $round  — rounding strategy:
+//             'nearest' (default) — round to closest 4px multiple
+//             'up'                — always round up  (ceil)
+//             'down'              — always round down (floor)
+//
+// Examples:
+//   normalize-to-grid(69px)          → 68px
+//   normalize-to-grid(70px)          → 72px   (17.5 rounds up)
+//   normalize-to-grid(69px, 'up')    → 72px
+//   normalize-to-grid(69px, 'down')  → 68px
+//   normalize-to-grid(14px)          → 16px
+//   normalize-to-grid(14px, 'down')  → 12px
+
+@function normalize-to-grid($value, $round: 'nearest') {
+	// Half the grid unit — the smallest step we snap to.
+	// With an 8px grid this gives 4px increments (i.e. 0.5 grid units).
+	$step: math.div($spacing-unit, 2);
+
+	// Strip the unit so we can do pure arithmetic, then snap.
+	$raw: math.div($value, 1px);
+	$step-raw: math.div($step, 1px);
+
+	@if $round == 'up' {
+		@return math.ceil(math.div($raw, $step-raw)) * $step;
+	} @else if $round == 'down' {
+		@return math.floor(math.div($raw, $step-raw)) * $step;
+	} @else {
+		@return math.round(math.div($raw, $step-raw)) * $step;
+	}
+}
+
+// normalize-to-grid(146px)

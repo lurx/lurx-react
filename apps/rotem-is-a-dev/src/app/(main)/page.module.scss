@@ -1,7 +1,8 @@
 @use 'mixins/media' as *;
+@use 'mixins/normalize-to-grid' as *;
 
 .backdrop {
-  --backdrop-padding: 70px;
+  --backdrop-padding: #{normalize-to-grid(70px)};
   display: flex;
   align-items: center;
   justify-content: center;

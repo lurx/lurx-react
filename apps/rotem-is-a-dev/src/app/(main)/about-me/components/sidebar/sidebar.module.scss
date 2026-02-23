@@ -1,7 +1,8 @@
 @use 'mixins/media' as *;
+@use 'mixins/normalize-to-grid' as *;
 
 .sidebar {
-	width: 69px;
+	width: #{normalize-to-grid(69px)};
 	border-right: 1px solid var(--border);
 	display: flex;
 	flex-direction: column;
