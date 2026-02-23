@@ -13,12 +13,26 @@
 	cursor: default;
 	color: var(--text);
 	user-select: none;
+	width: 100%;
+	text-align: left;
+	background: none;
+	border: none;
+	font: inherit;
+
+	@media (max-width: 767px) {
+		cursor: pointer;
+	}
 }
 
 .chevron {
 	flex-shrink: 0;
 	font-size: 0.857rem;
 	color: var(--muted);
+	transition: transform 0.15s;
+
+	&.collapsed {
+		transform: rotate(-90deg);
+	}
 }
 
 .sectionLabel {
@@ -47,6 +61,18 @@
 	&:hover {
 		background-color: rgba(248, 250, 252, 0.04);
 	}
+}
+
+.hiddenCheckbox {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 // ─── Checkbox ─────────────────────────────────────────────────────────────────

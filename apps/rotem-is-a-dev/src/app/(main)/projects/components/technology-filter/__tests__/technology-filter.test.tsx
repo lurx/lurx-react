@@ -2,6 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { TechnologyFilter } from '../technology-filter.component';
 import type { Technology } from '../../../data/projects.data';
 
+jest.mock('@/hooks', () => ({
+	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
+}));
+
 const TECHNOLOGIES: Technology[] = ['React', 'HTML', 'CSS', 'SCSS'];
 
 describe('TechnologyFilter', () => {
@@ -30,7 +34,7 @@ describe('TechnologyFilter', () => {
 		expect(screen.getByText('SCSS')).toBeInTheDocument();
 	});
 
-	it('calls onToggle with the technology when a row is clicked', () => {
+	it('calls onToggle with the technology when a checkbox is clicked', () => {
 		const onToggle = jest.fn();
 		render(
 			<TechnologyFilter
@@ -39,7 +43,7 @@ describe('TechnologyFilter', () => {
 				onToggle={onToggle}
 			/>,
 		);
-		fireEvent.click(screen.getByRole('checkbox', { name: 'React' }));
+		fireEvent.click(screen.getByRole('checkbox', { name: /React/ }));
 		expect(onToggle).toHaveBeenCalledWith('React');
 	});
 
@@ -51,8 +55,8 @@ describe('TechnologyFilter', () => {
 				onToggle={() => undefined}
 			/>,
 		);
-		const reactCheckbox = screen.getByRole('checkbox', { name: 'React' });
-		expect(reactCheckbox).toHaveAttribute('aria-checked', 'true');
+		const reactCheckbox = screen.getByRole('checkbox', { name: /React/ });
+		expect(reactCheckbox).toBeChecked();
 	});
 
 	it('shows unchecked state for unselected technologies', () => {
@@ -63,46 +67,7 @@ describe('TechnologyFilter', () => {
 				onToggle={() => undefined}
 			/>,
 		);
-		const htmlCheckbox = screen.getByRole('checkbox', { name: 'HTML' });
-		expect(htmlCheckbox).toHaveAttribute('aria-checked', 'false');
-	});
-
-	it('calls onToggle when Space key is pressed on a checkbox', () => {
-		const onToggle = jest.fn();
-		render(
-			<TechnologyFilter
-				technologies={TECHNOLOGIES}
-				selected={[]}
-				onToggle={onToggle}
-			/>,
-		);
-		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'HTML' }), { key: ' ' });
-		expect(onToggle).toHaveBeenCalledWith('HTML');
-	});
-
-	it('calls onToggle when Enter key is pressed on a checkbox', () => {
-		const onToggle = jest.fn();
-		render(
-			<TechnologyFilter
-				technologies={TECHNOLOGIES}
-				selected={[]}
-				onToggle={onToggle}
-			/>,
-		);
-		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'CSS' }), { key: 'Enter' });
-		expect(onToggle).toHaveBeenCalledWith('CSS');
-	});
-
-	it('does not call onToggle for unrelated key presses', () => {
-		const onToggle = jest.fn();
-		render(
-			<TechnologyFilter
-				technologies={TECHNOLOGIES}
-				selected={[]}
-				onToggle={onToggle}
-			/>,
-		);
-		fireEvent.keyDown(screen.getByRole('checkbox', { name: 'React' }), { key: 'Tab' });
-		expect(onToggle).not.toHaveBeenCalled();
+		const htmlCheckbox = screen.getByRole('checkbox', { name: /HTML/ });
+		expect(htmlCheckbox).not.toBeChecked();
 	});
 });
