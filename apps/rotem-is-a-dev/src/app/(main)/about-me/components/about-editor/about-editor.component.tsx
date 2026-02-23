@@ -31,8 +31,8 @@ const wrapWords = (text: string, maxWidth: number): string[] => {
 	return lines;
 };
 
-const toJsdocLines = ({ title, paragraphs }: JsdocFileContent): string[] => {
-	const lines = ['/**', ` * ${title}`];
+const toJsdocLines = ({ paragraphs }: JsdocFileContent): string[] => {
+	const lines = ['/**'];
 
 	paragraphs.forEach((paragraph, index) => {
 		wrapWords(paragraph, COMMENT_WRAP_WIDTH).forEach(line =>

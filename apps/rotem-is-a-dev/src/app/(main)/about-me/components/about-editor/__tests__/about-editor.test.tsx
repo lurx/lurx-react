@@ -39,11 +39,6 @@ describe('AboutEditor', () => {
 		expect(screen.getByText('/**')).toBeInTheDocument();
 	});
 
-	it('renders the title in the content', () => {
-		render(<AboutEditor content={mockContent} />);
-		expect(screen.getByText(/Test Title/)).toBeInTheDocument();
-	});
-
 	it('renders the JSDoc closing comment', () => {
 		render(<AboutEditor content={mockContent} />);
 		expect(screen.getByText(/\*\//)).toBeInTheDocument();
@@ -57,7 +52,7 @@ describe('AboutEditor', () => {
 		};
 		render(<AboutEditor content={otherContent} />);
 		expect(screen.getByLabelText('Other File content')).toBeInTheDocument();
-		expect(screen.getByText(/Other File/)).toBeInTheDocument();
+		expect(screen.getByText(/Different content here/)).toBeInTheDocument();
 	});
 
 	it('renders blank separator lines between multiple paragraphs', () => {
