@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { useResponsive } from '@/hooks';
+import { MobilePageTitle } from '@/app/(main)/components/mobile-page-title';
 import type { AboutFileId } from '../../data/about-files.data';
 import { SECTIONS, SECTION_FILES } from '../../data/about-files.data';
 import { FileTreeSection } from './components/filte-tree-section.component';
@@ -35,7 +36,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 			className={styles.fileTree}
 			aria-label="File tree"
 		>
-			{isMobile && <h2 className={styles.mobileTitle}>_about-me</h2>}
+			<MobilePageTitle title="_about-me" />
 
 			{SECTIONS.map(({ id }) => {
 				const files = SECTION_FILES[id];
