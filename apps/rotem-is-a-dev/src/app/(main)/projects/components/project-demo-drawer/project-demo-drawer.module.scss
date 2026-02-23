@@ -1,3 +1,5 @@
+@use 'mixins/spacing' as *;
+
 .titleBar {
 	display: flex;
 	align-items: center;
@@ -9,12 +11,28 @@
 	color: var(--text);
 }
 
+.description {
+	padding: spacing(1.5) spacing(2);
+	color: var(--muted);
+	font-size: 0.857rem;
+}
+
 .content {
 	flex: 1;
 	overflow: auto;
 }
 
 .externalLink {
+  margin-block-start: spacing(2);
+  display: flex;
+  justify-content: center;
+
+  gap: spacing(1.5);
   color: var(--primary);
-  
+  a {
+    display: flex;
+    align-items: center;
+    gap: spacing(1);
+  }
+
 }

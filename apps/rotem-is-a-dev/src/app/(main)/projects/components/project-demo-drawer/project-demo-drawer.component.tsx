@@ -14,7 +14,6 @@ export const ProjectDemoDrawer = ({
 	const titleContent = project ? (
 		<div className={styles.titleBar}>
 			<span className={styles.slug}>{project.slug}</span>
-
 		</div>
 	) : undefined;
 
@@ -25,23 +24,28 @@ export const ProjectDemoDrawer = ({
 			title={titleContent}
 			ariaLabel={project ? `Demo: ${project.slug}` : undefined}
 		>
-			{project && <div className={styles.content}>{children}</div>}
-			{hasExternalUrl && (
-				<div className={styles.externalLink}>
-					<a
-						href={externalUrl?.url}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						View on {externalUrl?.origin}
-						{externalUrl?.iconName && (
-							<FaIcon
-								iconName={externalUrl.iconName}
-								iconGroup="fab"
-								size="lg"
-							/>
-						)}
-					</a>
+			{project && (
+				<div className={styles.content}>
+					<p className={styles.description}>{project.description}</p>
+					{children}
+					{hasExternalUrl && (
+						<div className={styles.externalLink}>
+							<a
+								href={externalUrl?.url}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								View original on {externalUrl?.origin}
+								{externalUrl?.iconName && (
+									<FaIcon
+										iconName={externalUrl.iconName}
+										iconGroup="fab"
+										size="lg"
+									/>
+								)}
+							</a>
+						</div>
+					)}
 				</div>
 			)}
 		</ResizableDrawer>
