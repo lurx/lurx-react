@@ -7,6 +7,7 @@ import type { NavItemProps } from '../navbar.types';
 export const NavItem = ({
 	label,
 	href,
+	onClick,
 	active,
 	icon,
 	iconOnly = false,
@@ -26,18 +27,40 @@ export const NavItem = ({
 	if (!enabled) {
 		return null;
 	}
-	return (
-		<a
-			key={label?.toString()}
-			href={href}
-			className={classNames(styles.navItem, { [styles.active]: active }, className)}
-			aria-current={ariaCurrentValue}
-			aria-label={ariaLabel}
-		>
+
+	const itemClassName = classNames(styles.navItem, { [styles.active]: active }, className);
+	const children = (
+		<>
 			{icon}
 			{!hideLabel && (
 				<span {...dataAttributes}>{formattedLabel}</span>
 			)}
+		</>
+	);
+
+	if (onClick) {
+		return (
+			<button
+				type="button"
+				onClick={onClick}
+				className={itemClassName}
+				aria-current={ariaCurrentValue}
+				aria-label={ariaLabel}
+			>
+				{children}
+			</button>
+		);
+	}
+
+	return (
+		<a
+			key={label?.toString()}
+			href={href}
+			className={itemClassName}
+			aria-current={ariaCurrentValue}
+			aria-label={ariaLabel}
+		>
+			{children}
 		</a>
 	);
 };

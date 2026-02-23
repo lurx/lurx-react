@@ -46,6 +46,13 @@
 	position: relative;
 	transition: color 0.2s;
 
+	&:where(button) {
+		background: none;
+		border: none;
+		font: inherit;
+		cursor: pointer;
+	}
+
 	&:hover {
 		color: var(--text);
 	}
