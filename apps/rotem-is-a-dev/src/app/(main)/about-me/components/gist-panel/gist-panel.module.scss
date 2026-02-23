@@ -117,34 +117,3 @@
 		max-height: 160px;
 	}
 }
-
-.code {
-	line-height: 1.4;
-	color: var(--muted-dim);
-	white-space: pre;
-	overflow: hidden;
-}
-
-.kw {
-	color: var(--pink);
-}
-
-.fn {
-	color: var(--purple);
-}
-
-.type {
-	color: var(--orange);
-}
-
-.op {
-	color: var(--keyword);
-}
-
-.prop {
-	color: var(--keyword);
-}
-
-.generic {
-	color: var(--cyan);
-}
