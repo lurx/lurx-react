@@ -7,4 +7,8 @@
 	padding: 12px 0;
 	gap: 32px;
 	flex-shrink: 0;
+
+	@media (max-width: 767px) {
+		display: none;
+	}
 }

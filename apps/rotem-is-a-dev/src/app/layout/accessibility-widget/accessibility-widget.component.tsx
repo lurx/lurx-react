@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useOnClickOutside } from '@/hooks';
 import { FaIcon } from '@/app/components';
+import { useOnClickOutside } from '@/hooks';
 import classNames from 'classnames';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './accessibility-widget.module.scss';
 import {
 	BASE_FONT_SIZE_PX,
@@ -59,23 +59,35 @@ function applyTextScale(scale: TextScale): void {
 		return;
 	}
 	const fontSize = (getBaseFontSize() * scale) / 100;
-	document.documentElement.style.setProperty('--root-font-size', `${fontSize}px`);
+	document.documentElement.style.setProperty(
+		'--root-font-size',
+		`${fontSize}px`,
+	);
 }
 
-function applySpacing(lineHeightLevel: SpacingLevel, letterSpacingLevel: SpacingLevel): void {
+function applySpacing(
+	lineHeightLevel: SpacingLevel,
+	letterSpacingLevel: SpacingLevel,
+): void {
 	const lineHeightValue = LINE_HEIGHT_VALUES[lineHeightLevel];
 	const letterSpacingValue = LETTER_SPACING_VALUES[letterSpacingLevel];
 
 	if (lineHeightLevel === 0) {
 		document.documentElement.style.removeProperty('--a11y-line-height');
 	} else {
-		document.documentElement.style.setProperty('--a11y-line-height', String(lineHeightValue));
+		document.documentElement.style.setProperty(
+			'--a11y-line-height',
+			String(lineHeightValue),
+		);
 	}
 
 	if (letterSpacingLevel === 0) {
 		document.documentElement.style.removeProperty('--a11y-letter-spacing');
 	} else {
-		document.documentElement.style.setProperty('--a11y-letter-spacing', `${letterSpacingValue}em`);
+		document.documentElement.style.setProperty(
+			'--a11y-letter-spacing',
+			`${letterSpacingValue}em`,
+		);
 	}
 }
 
@@ -110,7 +122,10 @@ export const AccessibilityWidget = () => {
 	useEffect(() => {
 		applySpacing(lineHeight, letterSpacing);
 		localStorage.setItem(LINE_HEIGHT_STORAGE_KEY, JSON.stringify(lineHeight));
-		localStorage.setItem(LETTER_SPACING_STORAGE_KEY, JSON.stringify(letterSpacing));
+		localStorage.setItem(
+			LETTER_SPACING_STORAGE_KEY,
+			JSON.stringify(letterSpacing),
+		);
 	}, [lineHeight, letterSpacing]);
 
 	useEffect(() => {
@@ -134,12 +149,14 @@ export const AccessibilityWidget = () => {
 	const canDecreaseLineHeight = lineHeight > 0;
 	const canIncreaseLineHeight = lineHeight < LINE_HEIGHT_VALUES.length - 1;
 	const canDecreaseLetterSpacing = letterSpacing > 0;
-	const canIncreaseLetterSpacing = letterSpacing < LETTER_SPACING_VALUES.length - 1;
+	const canIncreaseLetterSpacing =
+		letterSpacing < LETTER_SPACING_VALUES.length - 1;
 
 	const isTextScaleDefault = textScale === DEFAULT_TEXT_SCALE;
 	const isLineHeightDefault = lineHeight === DEFAULT_SPACING_LEVEL;
 	const isLetterSpacingDefault = letterSpacing === DEFAULT_SPACING_LEVEL;
-	const isDefault = isTextScaleDefault && isLineHeightDefault && isLetterSpacingDefault;
+	const isDefault =
+		isTextScaleDefault && isLineHeightDefault && isLetterSpacingDefault;
 
 	const decrease = useCallback(() => {
 		setTextScaleState(TEXT_SCALES[currentIndex - 1]);

@@ -1,5 +1,5 @@
 .panel {
-  max-width: 50%;
+	max-width: 50%;
 	width: 714px;
 	flex-shrink: 0;
 	display: flex;
@@ -7,6 +7,13 @@
 	gap: 64px;
 	padding: 12px 40px;
 	overflow-y: auto;
+
+	@media (max-width: 767px) {
+		max-width: 100%;
+		width: 100%;
+		gap: 24px;
+		padding: 12px 16px;
+	}
 }
 
 .panelTitle {
@@ -17,6 +24,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: 32px;
+
+	@media (max-width: 767px) {
+		gap: 16px;
+	}
 }
 
 // ─── Gist Snippet Card ─────────────────────────────────────────────────────────
@@ -25,6 +36,12 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+
+	&:nth-child(n + 2) {
+		@media (max-width: 767px) {
+			display: none;
+		}
+	}
 }
 
 .snippetHeader {
@@ -94,6 +111,11 @@
 	padding: 16px;
 	overflow: hidden;
 	height: 177px;
+
+	@media (max-width: 767px) {
+		height: auto;
+		max-height: 160px;
+	}
 }
 
 .code {

@@ -61,6 +61,26 @@ describe('FileTree', () => {
 		expect(interestsButton?.className).toContain('activeFile');
 	});
 
+	it('renders the mobile title', () => {
+		render(<FileTree {...defaultProps} />);
+		expect(screen.getByText('_about-me')).toBeInTheDocument();
+	});
+
+	it('renders data-section attributes on section wrappers', () => {
+		render(<FileTree {...defaultProps} />);
+		const personalInfo = screen.getByText('personal-info').closest('[data-section]');
+		expect(personalInfo).toHaveAttribute('data-section', 'personal-info');
+
+		const workExperience = screen.getByText('work-experience').closest('[data-section]');
+		expect(workExperience).toHaveAttribute('data-section', 'work-experience');
+	});
+
+	it('renders chevron icons on folder rows', () => {
+		render(<FileTree {...defaultProps} />);
+		const folderButtons = screen.getAllByRole('button', { expanded: true });
+		expect(folderButtons.length).toBeGreaterThanOrEqual(2);
+	});
+
 	it('collapses a folder when clicking it', () => {
 		render(<FileTree {...defaultProps} />);
 

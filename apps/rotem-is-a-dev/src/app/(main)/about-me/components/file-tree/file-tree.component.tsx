@@ -33,6 +33,8 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 			className={styles.fileTree}
 			aria-label="File tree"
 		>
+			<h2 className={styles.mobileTitle}>_about-me</h2>
+
 			{SECTIONS.map(({ id }) => {
 				const files = SECTION_FILES[id];
 				if (files.length === 0) return null;
@@ -41,14 +43,14 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 
 				return (
 					<FileTreeSection
-            key={id}
-            id={id}
-            files={files}
-            activeFileId={activeFileId}
-            toggleSection={toggleSection}
-            isCollapsed={isCollapsed}
-            onFileSelect={onFileSelect}
-          />
+						key={id}
+						id={id}
+						files={files}
+						activeFileId={activeFileId}
+						toggleSection={toggleSection}
+						isCollapsed={isCollapsed}
+						onFileSelect={onFileSelect}
+					/>
 				);
 			})}
 

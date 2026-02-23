@@ -3,6 +3,10 @@
 	align-items: stretch;
 	border-bottom: 1px solid var(--border);
 	flex-shrink: 0;
+
+	@media (max-width: 767px) {
+		display: none;
+	}
 }
 
 .tab {
