@@ -3,4 +3,5 @@ export * from './fa-icon';
 export * from './flex';
 export * from './link';
 export * from './resizable-drawer';
+export * from './status-page';
 

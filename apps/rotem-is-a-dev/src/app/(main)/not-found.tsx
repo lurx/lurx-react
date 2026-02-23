@@ -1,0 +1,51 @@
+'use client';
+
+import { CodeBlock } from '@/app/components/code-block/code-block.component';
+import { StatusPage } from '@/app/components/status-page';
+import { useResponsive } from '@/hooks/use-responsive';
+
+const ASCII_404 = `\
+ ██╗  ██╗ ██████╗ ██╗  ██╗
+ ██║  ██║██╔═████╗██║  ██║
+ ███████║██║██╔██║███████║
+ ╚════██║████╔╝██║╚════██║
+      ██║╚██████╔╝     ██║
+      ╚═╝ ╚═════╝      ╚═╝`;
+
+const SNIPPET = `\
+const page = findPage('you-were-looking-for');
+
+if (!page) {
+  console.log("Oops! Looks like you took a wrong turn in the codebase.");
+  console.log("But hey, since you're here ...");
+  console.log("🔍 Go back to the homepage and explore more cool stuff!");
+  throw new Error("404: PageNotFoundError 😢");
+}
+
+/* Suggestions:
+ * - Check the URL for typos
+ * - Use the site navigation
+ * - Or hit CMD+Z in real life 😅
+ */
+
+redirect('home');`;
+
+const DESKTOP_LINES = 16;
+const MOBILE_LINES = 22;
+
+export default function NotFound() {
+	const { isMobile } = useResponsive();
+
+	return (
+		<StatusPage
+			asciiArt={ASCII_404}
+			asciiArtLabel="404"
+		>
+			<CodeBlock
+				code={SNIPPET}
+				language="typescript"
+				numberOfLines={isMobile ? MOBILE_LINES : DESKTOP_LINES}
+			/>
+		</StatusPage>
+	);
+}
