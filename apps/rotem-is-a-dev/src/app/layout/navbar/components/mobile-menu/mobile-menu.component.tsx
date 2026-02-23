@@ -2,7 +2,7 @@
 
 import { FaIcon } from '@/app/components';
 import { toCodeLike } from '@/app/utils/to-code-like.util';
-import { useOnClickOutside, useResponsive } from '@/hooks';
+import { useOnClickOutside } from '@/hooks';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -11,7 +11,6 @@ import { NAV_ITEMS } from '../../nav-items.constants';
 import styles from './mobile-menu.module.scss';
 
 export const MobileMenu = () => {
-	const { isMobile } = useResponsive();
 	const [isOpen, setIsOpen] = useState(false);
 	const pathname = usePathname();
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -36,8 +35,6 @@ export const MobileMenu = () => {
 	useEffect(() => {
 		close();
 	}, [pathname, close]);
-
-	if (!isMobile) return null;
 
 	return (
 		<div ref={wrapperRef} className={styles.wrapper}>
