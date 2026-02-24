@@ -66,16 +66,14 @@ function placeFood(snake: Position[], count: number): Position[] {
 }
 
 export function useSnakeGame(): UseSnakeGameReturn {
-	const initialSnake = buildInitialSnake();
-
-	const [snake, setSnake] = useState<Position[]>(initialSnake);
+	const [snake, setSnake] = useState<Position[]>(buildInitialSnake);
 	const [food, setFood] = useState<Position[]>([]);
 	const [direction, setDirection] = useState<Direction>('UP');
 	const [gameState, setGameState] = useState<GameState>('idle');
 	const [activeKey, setActiveKey] = useState<Nullable<string>>(null);
 
 	const directionRef = useRef<Direction>('UP');
-	const snakeRef = useRef<Position[]>(initialSnake);
+	const snakeRef = useRef<Position[]>(snake);
 	const foodRef = useRef<Position[]>([]);
 	const gameStateRef = useRef<GameState>('idle');
 	const intervalRef = useRef<Nullable<ReturnType<typeof setInterval>>>(null);
@@ -117,9 +115,8 @@ export function useSnakeGame(): UseSnakeGameReturn {
 			newHead.y < 0 ||
 			newHead.y >= GRID_ROWS;
 
-		const hitSelf = currentSnake.some(
-			(segment) => segment.x === newHead.x && segment.y === newHead.y,
-		);
+		const occupiedCells = new Set(currentSnake.map(positionKey));
+		const hitSelf = occupiedCells.has(positionKey(newHead));
 
 		if (hitWall || hitSelf) {
 			stopLoop();
