@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useLayoutEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
 export const SESSION_KEY = 'entry-animation-played';
@@ -42,10 +42,13 @@ export const EntryAnimationProvider = ({
 		setAnimationKey(prev => prev + 1);
 	}, []);
 
+	const value = useMemo(
+		() => ({ isShellLoaded, setIsShellLoaded, animationKey, triggerReplay }),
+		[isShellLoaded, setIsShellLoaded, animationKey, triggerReplay],
+	);
+
 	return (
-		<entryAnimationContext.Provider
-			value={{ isShellLoaded, setIsShellLoaded, animationKey, triggerReplay }}
-		>
+		<entryAnimationContext.Provider value={value}>
 			{children}
 		</entryAnimationContext.Provider>
 	);
