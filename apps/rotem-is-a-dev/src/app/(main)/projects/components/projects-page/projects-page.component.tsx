@@ -14,11 +14,11 @@ export const ProjectsPage = () => {
 	>([]);
 	const [selectedProject, setSelectedProject] = useState<Nullable<Project>>(null);
 
-	const toggleTechnology = (tech: Technology) => {
+	const toggleTechnology = useCallback((tech: Technology) => {
 		setSelectedTechnologies(prev =>
 			prev.includes(tech) ? prev.filter(item => item !== tech) : [...prev, tech],
 		);
-	};
+	}, []);
 
 	const handleViewProject = useCallback((project: Project) => {
 		setSelectedProject(project);
