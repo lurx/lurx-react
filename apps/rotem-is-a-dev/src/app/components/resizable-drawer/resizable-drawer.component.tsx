@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { useEventListener } from 'usehooks-ts';
 import styles from './resizable-drawer.module.scss';
 import type { ResizableDrawerComponentProps } from './resizable-drawer.types';
-import { isUndefined } from 'es-toolkit';
+
 
 const DEFAULT_MIN_WIDTH = 320;
 const DEFAULT_MAX_WIDTH_FRACTION = 0.9;
@@ -86,8 +86,9 @@ export const ResizableDrawer = ({
 
 	if (!isOpen) return null;
 
-	const portalTarget = isUndefined(document)    ? null
-    : document.getElementById('portal-root') ?? document.body;
+	const portalTarget = typeof document === 'undefined'
+		? null
+		: document.getElementById('portal-root') ?? document.body;
 
 	if (!portalTarget) return null;
 
