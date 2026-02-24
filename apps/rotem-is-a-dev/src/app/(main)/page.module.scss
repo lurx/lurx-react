@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100vh; // legacy fallback
+  height: 100dvh;
   background-color: var(--bg);
   padding: var(--backdrop-padding);
   	@include media-below('tablet') {
