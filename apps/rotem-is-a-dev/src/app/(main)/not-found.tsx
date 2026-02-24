@@ -1,8 +1,5 @@
-'use client';
-
-import { CodeBlock } from '@/app/components/code-block/code-block.component';
+import { ServerCodeBlock } from '@/app/components/code-block/server-code-block.component';
 import { StatusPage } from '@/app/components/status-page';
-import { useResponsive } from '@/hooks/use-responsive';
 
 const ASCII_404 = `\
  ██╗  ██╗ ██████╗ ██╗  ██╗
@@ -30,21 +27,18 @@ if (!page) {
 
 redirect('home');`;
 
-const DESKTOP_LINES = 16;
-const MOBILE_LINES = 22;
+const NUMBER_OF_LINES = 22;
 
 export default function NotFound() {
-	const { isMobile } = useResponsive();
-
 	return (
 		<StatusPage
 			asciiArt={ASCII_404}
 			asciiArtLabel="404"
 		>
-			<CodeBlock
+			<ServerCodeBlock
 				code={SNIPPET}
 				language="typescript"
-				numberOfLines={isMobile ? MOBILE_LINES : DESKTOP_LINES}
+				numberOfLines={NUMBER_OF_LINES}
 			/>
 		</StatusPage>
 	);
