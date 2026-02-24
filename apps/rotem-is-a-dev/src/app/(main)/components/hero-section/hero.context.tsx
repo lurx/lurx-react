@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
 interface HeroContextValue {
@@ -14,8 +14,13 @@ export const HeroProvider = ({ children }: { children: ReactNode }) => {
 	const [gameCompleted, setGameCompleted] = useState(false);
 	const handleComplete = useCallback(() => setGameCompleted(true), []);
 
+	const value = useMemo(
+		() => ({ gameCompleted, handleComplete }),
+		[gameCompleted, handleComplete],
+	);
+
 	return (
-		<heroContext.Provider value={{ gameCompleted, handleComplete }}>
+		<heroContext.Provider value={value}>
 			{children}
 		</heroContext.Provider>
 	);
