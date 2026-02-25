@@ -1,0 +1,42 @@
+@use 'mixins/normalize-to-grid' as *;
+
+// Embla viewport — must have overflow: hidden and a fixed height
+.viewport {
+  overflow: hidden;
+  width: 480px;
+  height: 540px;
+  flex-shrink: 0;
+}
+
+// Embla container — flex column for axis: 'y'
+.emblaContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// Individual slides
+.slide {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin-block-end: #{normalize-to-grid(13px)}; // gap between slides
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: opacity 0.5s ease;
+}
+
+.slideLabel {
+  font-size: 0.857rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.code {
+  flex: 1;
+}
