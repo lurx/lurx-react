@@ -39,7 +39,7 @@ jest.mock('../hero.context', () => ({
 	}),
 }));
 
-import { HeroSnippets } from '../hero-snippets.component';
+import { HeroSnippets } from '../components/hero-snippets/hero-snippets.component';
 
 beforeEach(() => {
 	jest.useFakeTimers();
