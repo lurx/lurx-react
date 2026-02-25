@@ -18,12 +18,31 @@
 	color: var(--text);
 	white-space: nowrap;
 
+  &:hover {
+    background-color: var(--surface-alt);
+  }
+
+
 	@include media-below('tablet') {
 		border-inline-end-width: 0;
 	}
 }
 
+.logoLink {
+	display: flex;
+  flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+  height: var(--navbar-height);
+	gap: 0.5rem;
+  [class="logo-svg"] {
+    height: 24px;
+    width: auto;
+  }
+}
+
 .betaIcon {
+	margin-inline-start: 0.5rem;
 	color: var(--orange);
 }
 

@@ -1,3 +1,4 @@
+'use client';
 import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
