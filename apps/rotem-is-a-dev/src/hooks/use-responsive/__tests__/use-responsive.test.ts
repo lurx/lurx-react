@@ -66,11 +66,13 @@ describe('useResponsive', () => {
 		mockUseMediaQuery.mockReturnValue(false);
 		renderHook(() => useResponsive());
 
-		expect(mockUseMediaQuery).toHaveBeenCalledWith('(min-width: 1024px)');
+		const ssrSafe = { initializeWithValue: false };
+		expect(mockUseMediaQuery).toHaveBeenCalledWith('(min-width: 1024px)', ssrSafe);
 		expect(mockUseMediaQuery).toHaveBeenCalledWith(
 			'(min-width: 768px) and (max-width: 1023px)',
+			ssrSafe,
 		);
-		expect(mockUseMediaQuery).toHaveBeenCalledWith('(max-width: 767px)');
+		expect(mockUseMediaQuery).toHaveBeenCalledWith('(max-width: 767px)', ssrSafe);
 	});
 
 	it('returns a stable reference when values do not change', () => {
