@@ -1,0 +1,128 @@
+.logo-svg {
+	--logo-size: 400px;
+	--logo-accent: var(--orange);
+	--logo-bg: var(--surface);
+	--stroke-color: var(--logo-bg);
+	--fill-color: var(--logo-accent);
+
+	--logo-animation: DrawLine 4s infinite 0s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: var(--logo-size);
+	&.animated {
+		#logo {
+			&-developer {
+				--stroke-color: var(--logo-accent);
+				--fill-color: var(--logo-bg);
+				stroke-dasharray: 1100;
+				stroke-dashoffset: 1100;
+				&-hat {
+					animation: var(--logo-animation);
+				}
+				&-stache {
+					&-left {
+						animation: var(--logo-animation);
+					}
+					&-right {
+						animation: var(--logo-animation);
+					}
+				}
+
+				&-wrench1 {
+					animation: var(--logo-animation);
+				}
+				&-wrench2,
+				&-wrench2-rotator {
+					fill: var(--logo-bg);
+					animation: var(--logo-animation);
+				}
+			}
+			&-brace {
+				&-left,
+				&-right {
+					--stroke-color: var(--logo-accent);
+					--fill-color: var(--logo-bg);
+					stroke-dasharray: 1100;
+					stroke-dashoffset: 1100;
+				}
+				&-left {
+					animation: var(--logo-animation);
+				}
+				&-right {
+					animation: var(--logo-animation);
+				}
+			}
+		}
+	}
+}
+
+#logo {
+	&-developer {
+		fill: var(--fill-color);
+		stroke: var(--stroke-color);
+		stroke-width: 2;
+		stroke-miterlimit: 5;
+		&-wrench2,
+		&-wrench2-rotator {
+			fill: var(--fill-color);
+			stroke: var(--stroke-color);
+		}
+		&-wrench2-rotator {
+			stroke-width: 6;
+		}
+	}
+	&-brace {
+		&-left,
+		&-right {
+			fill: var(--fill-color);
+			stroke: var(--stroke-color);
+			stroke-width: 2;
+		}
+	}
+}
+
+$logo-anim-distance: 25%;
+$logo-anim-scale: 1.1;
+
+@keyframes left-bracket-anim {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translateX($logo-anim-distance);
+	}
+	50%,
+	75% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes right-bracket-anim {
+	0%,
+	100% {
+		opacity: 0;
+		transform: translateX(-$logo-anim-distance);
+	}
+	50%,
+	75% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes pop {
+	0%,
+	100% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+@keyframes DrawLine {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
