@@ -1,8 +1,16 @@
 import classNames from 'classnames';
+import { DEFAULT_LOGO_SIZE, LOGO_SIZES } from './logo.constants';
 import './logo.scss';
 import { ReactComponent as LogoSvg } from './logo.svg';
 import type { LogoProps } from './logo.types';
 
-export const Logo = ({ animated }: LogoProps) => {
-	return <LogoSvg className={classNames('logo-svg', { animated })} />;
+export const Logo = ({ size, animated }: LogoProps) => {
+	const logoSize = LOGO_SIZES[size ?? DEFAULT_LOGO_SIZE];
+
+	return (
+		<LogoSvg
+			className={classNames('logo-svg', { animated })}
+			{...logoSize}
+		/>
+	);
 };
