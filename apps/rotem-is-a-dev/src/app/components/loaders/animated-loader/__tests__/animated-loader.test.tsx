@@ -1,5 +1,5 @@
+import { LOGO_SIZES } from '@/app/components/logo/logo.constants';
 import { render } from '@testing-library/react';
-import { LOGO_SIZES } from '../../logo/logo.constants';
 import { AnimatedLoader } from '../animated-loader.component';
 
 jest.mock('../../logo/logo.component', () => ({
