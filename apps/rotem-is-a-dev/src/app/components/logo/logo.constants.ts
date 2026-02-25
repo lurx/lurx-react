@@ -4,6 +4,7 @@ const MEDIUM_LOGO_SIZE = 200;
 const LARGE_LOGO_SIZE = 250;
 const XLARGE_LOGO_SIZE = 300;
 const LOADER_LOGO_SIZE = 500;
+const ICON_LOGO_SIZE = 32;
 
 export const LOGO_SIZES = {
   XSMALL: 'XSMALL',
@@ -12,6 +13,7 @@ export const LOGO_SIZES = {
   LARGE: 'LARGE',
   XLARGE: 'XLARGE',
   LOADER: 'LOADER',
+  ICON: 'ICON',
 } as const;
 
 export const LOGO_SIZE_OBJECTS = {
@@ -38,6 +40,10 @@ export const LOGO_SIZE_OBJECTS = {
 	LOADER: {
 		width: LOADER_LOGO_SIZE,
 		height: LOADER_LOGO_SIZE,
+	},
+	ICON: {
+		width: ICON_LOGO_SIZE,
+		height: ICON_LOGO_SIZE,
 	},
 } as const;
 
