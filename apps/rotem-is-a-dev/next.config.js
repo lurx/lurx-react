@@ -2,6 +2,19 @@
 
 const { composePlugins, withNx } = require('@nx/next');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
+const scriptSrc = [
+  "'self'",
+  isDev && "'unsafe-inline'",
+  isDev && "'unsafe-eval'",
+].filter(Boolean).join(' ');
+
+const connextSrc = [
+  "'self'",
+  isDev && "ws:",
+].filter(Boolean).join(' ');
+
 async function headers() {
 	return [
 		{
@@ -11,11 +24,11 @@ async function headers() {
 					key: 'Content-Security-Policy',
 					value: [
 						"default-src 'self'",
-						"script-src 'self' 'unsafe-inline'",
+						`script-src ${scriptSrc}`,
 						"style-src 'self' 'unsafe-inline'",
 						"img-src 'self' data:",
 						"font-src 'self'",
-						"connect-src 'self'",
+						`connect-src ${connextSrc}`,
 						"frame-ancestors 'none'",
 					].join('; '),
 				},
@@ -34,7 +47,7 @@ const nextConfig = {
 	nx: {
 		// Set this to true if you would like to use SVGR
 		// See: https://github.com/gregberge/svgr
-		svgr: false,
+		svgr: true,
 	},
 	headers,
 	sassOptions: {
