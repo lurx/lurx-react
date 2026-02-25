@@ -11,7 +11,7 @@ describe('SocialBar', () => {
 		render(<SocialBar />);
 		const twitterLink = screen.getByRole('link', { name: 'X (Twitter)' });
 		expect(twitterLink).toBeInTheDocument();
-		expect(twitterLink).toHaveAttribute('href', 'https://x.com/lurxie');
+		expect(twitterLink).toHaveAttribute('href', 'https://x.com/lurx');
 		expect(twitterLink).toHaveAttribute('target', '_blank');
 	});
 

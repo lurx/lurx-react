@@ -101,7 +101,7 @@ describe('AboutPage', () => {
 		fireEvent.click(screen.getByLabelText('Close bio tab'));
 
 		expect(screen.queryAllByRole('tab')).toHaveLength(0);
-		expect(screen.getByText('choose a file')).toBeInTheDocument();
+		expect(screen.getByText(/choose a file/)).toBeInTheDocument();
 	});
 
 	it('opens a file from the empty state', () => {
@@ -111,7 +111,7 @@ describe('AboutPage', () => {
 		fireEvent.click(screen.getByRole('button', { name: /bio/ }));
 
 		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
-		expect(screen.queryByText('choose a file')).not.toBeInTheDocument();
+		expect(screen.queryByText(/choose a file/)).not.toBeInTheDocument();
 	});
 
 	it('switches active tab when clicking a tab directly', () => {
