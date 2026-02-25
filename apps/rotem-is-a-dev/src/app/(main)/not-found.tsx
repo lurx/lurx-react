@@ -1,13 +1,6 @@
 import { ServerCodeBlock } from '@/app/components/code-block/server-code-block.component';
 import { StatusPage } from '@/app/components/status-page';
-
-const ASCII_404 = `\
- ██╗  ██╗ ██████╗ ██╗  ██╗
- ██║  ██║██╔═████╗██║  ██║
- ███████║██║██╔██║███████║
- ╚════██║████╔╝██║╚════██║
-      ██║╚██████╔╝     ██║
-      ╚═╝ ╚═════╝      ╚═╝`;
+import { ASCII_404 } from '@/ascii-art';
 
 const SNIPPET = `\
 const page = findPage('you-were-looking-for');
