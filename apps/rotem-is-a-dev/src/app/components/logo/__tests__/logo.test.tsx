@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Logo } from '../logo.component';
-import { DEFAULT_LOGO_SIZE, LOGO_SIZES } from '../logo.constants';
+import { DEFAULT_LOGO_SIZE, LOGO_SIZE_OBJECTS } from '../logo.constants';
 
 jest.mock('../logo.svg', () => ({
 	ReactComponent: (props: Record<string, unknown>) => (
@@ -22,15 +22,15 @@ describe('Logo', () => {
 	it('applies the default size when no size prop is provided', () => {
 		const { getByTestId } = render(<Logo />);
 		const svg = getByTestId('logo-svg');
-		const defaultSize = LOGO_SIZES[DEFAULT_LOGO_SIZE];
+		const defaultSize = LOGO_SIZE_OBJECTS[DEFAULT_LOGO_SIZE];
 		expect(svg).toHaveAttribute('width', String(defaultSize.width));
 		expect(svg).toHaveAttribute('height', String(defaultSize.height));
 	});
 
 	it('applies the correct size for each size variant', () => {
-		for (const [key, dimensions] of Object.entries(LOGO_SIZES)) {
+		for (const [key, dimensions] of Object.entries(LOGO_SIZE_OBJECTS)) {
 			const { getByTestId, unmount } = render(
-				<Logo size={key as keyof typeof LOGO_SIZES} />,
+				<Logo size={key as keyof typeof LOGO_SIZE_OBJECTS} />,
 			);
 			const svg = getByTestId('logo-svg');
 			expect(svg).toHaveAttribute('width', String(dimensions.width));

@@ -12,6 +12,18 @@ jest.mock('@/hooks', () => ({
 	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
 }));
 
+let portalRoot: HTMLDivElement;
+
+beforeEach(() => {
+	portalRoot = document.createElement('div');
+	portalRoot.id = 'portal-root';
+	document.body.appendChild(portalRoot);
+});
+
+afterEach(() => {
+	portalRoot.remove();
+});
+
 describe('AboutPage', () => {
 	it('renders the about sections sidebar', () => {
 		render(<AboutPage />);
@@ -215,5 +227,43 @@ describe('AboutPage', () => {
 		const workExpButton = screen.getByRole('button', { name: 'Work experience' });
 		expect(personalInfoButton).toHaveAttribute('aria-pressed', 'false');
 		expect(workExpButton).toHaveAttribute('aria-pressed', 'false');
+	});
+
+	it('closes other tabs via context menu "Close Others"', () => {
+		render(<AboutPage />);
+
+		// Open a second tab
+		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
+		expect(screen.getAllByRole('tab')).toHaveLength(2);
+
+		// Right-click bio tab to open context menu
+		const bioTab = screen.getByRole('tab', { name: /bio/ });
+		fireEvent.contextMenu(bioTab);
+
+		// Click "Close Others" — should keep only bio
+		fireEvent.click(screen.getByText('Close Others'));
+
+		const tabs = screen.getAllByRole('tab');
+		expect(tabs).toHaveLength(1);
+		expect(tabs[0]).toHaveTextContent('bio');
+		expect(screen.getByRole('tab', { selected: true })).toHaveTextContent('bio');
+	});
+
+	it('closes all tabs via context menu "Close All"', () => {
+		render(<AboutPage />);
+
+		// Open a second tab
+		fireEvent.click(screen.getByRole('button', { name: /interests/ }));
+		expect(screen.getAllByRole('tab')).toHaveLength(2);
+
+		// Right-click any tab to open context menu
+		const bioTab = screen.getByRole('tab', { name: /bio/ });
+		fireEvent.contextMenu(bioTab);
+
+		// Click "Close All"
+		fireEvent.click(screen.getByText('Close All'));
+
+		expect(screen.queryAllByRole('tab')).toHaveLength(0);
+		expect(screen.getByText(/choose a file/)).toBeInTheDocument();
 	});
 });

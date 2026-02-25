@@ -6,6 +6,15 @@ const XLARGE_LOGO_SIZE = 300;
 const LOADER_LOGO_SIZE = 500;
 
 export const LOGO_SIZES = {
+  XSMALL: 'XSMALL',
+  SMALL: 'SMALL',
+  MEDIUM: 'MEDIUM',
+  LARGE: 'LARGE',
+  XLARGE: 'XLARGE',
+  LOADER: 'LOADER',
+} as const;
+
+export const LOGO_SIZE_OBJECTS = {
 	XSMALL: {
 		width: XSMALL_LOGO_SIZE,
 		height: XSMALL_LOGO_SIZE,
@@ -33,3 +42,5 @@ export const LOGO_SIZES = {
 } as const;
 
 export const DEFAULT_LOGO_SIZE = 'MEDIUM';
+
+

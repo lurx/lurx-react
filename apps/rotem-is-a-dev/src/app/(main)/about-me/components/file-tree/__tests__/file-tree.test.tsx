@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useResponsive } from '@/hooks';
 import { FileTree } from '../file-tree.component';
+import { FileTreeSection } from '../components/filte-tree-section.component';
+import type { AboutFileId, SectionId } from '../../../data/about-files.data';
 
 jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),
@@ -138,4 +140,49 @@ describe('FileTree', () => {
 		expect(screen.getByText('interests')).toBeInTheDocument();
 	});
 
+});
+
+describe('FileTreeSection', () => {
+	const sectionProps = {
+		id: 'personal-info' as SectionId,
+		files: ['unknown-file-id'],
+		activeFileId: null as Nullable<AboutFileId>,
+		toggleSection: jest.fn(),
+		isCollapsed: false,
+		onFileSelect: jest.fn(),
+		isMobile: false,
+	};
+
+	it('falls back to fileId when file title is not found in ABOUT_FILES', () => {
+		render(<FileTreeSection {...sectionProps} />);
+		expect(screen.getByText('unknown-file-id')).toBeInTheDocument();
+	});
+
+	it('renders chevron icon when isMobile is true', () => {
+		render(<FileTreeSection {...sectionProps} isMobile={true} />);
+		const icons = screen.getAllByTestId('icon');
+		const chevronIcon = icons.find(icon => icon.textContent === 'chevron-down');
+		expect(chevronIcon).toBeDefined();
+	});
+
+	it('applies collapsed class to chevron when isMobile is true and section is collapsed', () => {
+		render(<FileTreeSection {...sectionProps} isMobile={true} isCollapsed={true} />);
+		const folderButton = screen.getByRole('button', { name: /personal-info/ });
+		const chevronSpan = folderButton.querySelector('[class*="folderChevron"]');
+		expect(chevronSpan?.className).toContain('collapsed');
+	});
+
+	it('does not apply collapsed class to chevron when isMobile is true and section is expanded', () => {
+		render(<FileTreeSection {...sectionProps} isMobile={true} isCollapsed={false} />);
+		const folderButton = screen.getByRole('button', { name: /personal-info/ });
+		const chevronSpan = folderButton.querySelector('[class*="folderChevron"]');
+		expect(chevronSpan?.className).not.toContain('collapsed');
+	});
+
+	it('renders folder icon when isMobile is false', () => {
+		render(<FileTreeSection {...sectionProps} isMobile={false} />);
+		const icons = screen.getAllByTestId('icon');
+		const folderIcon = icons.find(icon => icon.textContent === 'folder-minus');
+		expect(folderIcon).toBeDefined();
+	});
 });

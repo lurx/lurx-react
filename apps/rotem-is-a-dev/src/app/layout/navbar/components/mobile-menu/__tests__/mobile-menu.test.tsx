@@ -138,4 +138,30 @@ describe('MobileMenu', () => {
 		const button = screen.getByRole('button', { name: 'Open menu' });
 		expect(button).toHaveAttribute('aria-controls', 'mobile-menu-dropdown');
 	});
+
+	it('does not close the dropdown on non-Escape key press', () => {
+		render(<MobileMenu />);
+		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+
+		fireEvent.keyDown(document, { key: 'Enter' });
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+
+		fireEvent.keyDown(document, { key: 'Tab' });
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+	});
+
+	it('closes the dropdown on outside click', () => {
+		render(
+			<div>
+				<div data-testid="outside">outside</div>
+				<MobileMenu />
+			</div>,
+		);
+		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+
+		fireEvent.mouseDown(screen.getByTestId('outside'));
+		expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+	});
 });

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useResponsive } from '@/hooks';
 
 const mockCleanup = jest.fn();
 const mockRenderCvOffscreen = jest.fn(() => ({
@@ -7,6 +8,10 @@ const mockRenderCvOffscreen = jest.fn(() => ({
 }));
 
 const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+
+jest.mock('@/hooks', () => ({
+	useResponsive: jest.fn(),
+}));
 
 jest.mock('@/app/cv/utils/render-cv-offscreen', () => ({
 	renderCvOffscreen: (...args: unknown[]) => mockRenderCvOffscreen(...args),
@@ -22,15 +27,53 @@ jest.mock('@/app/components', () => ({
 	),
 }));
 
+const mockUseResponsive = jest.mocked(useResponsive);
+
 import { DownloadCVButton } from '../download-cv-button.component';
 
 beforeEach(() => {
 	mockCleanup.mockClear();
 	mockRenderCvOffscreen.mockClear();
 	mockGenerateCvPdf.mockClear();
+	mockUseResponsive.mockReturnValue({
+		isMobile: false,
+		isTablet: false,
+		isDesktop: true,
+	});
 });
 
 describe('DownloadCVButton', () => {
+	it('returns null on mobile', () => {
+		mockUseResponsive.mockReturnValue({
+			isMobile: true,
+			isTablet: false,
+			isDesktop: false,
+		});
+		const { container } = render(<DownloadCVButton />);
+		expect(container.innerHTML).toBe('');
+	});
+
+	it('ignores clicks while already generating', async () => {
+		let resolveGenerate!: () => void;
+		mockGenerateCvPdf.mockReturnValueOnce(
+			new Promise<void>(resolve => {
+				resolveGenerate = resolve;
+			}),
+		);
+
+		render(<DownloadCVButton />);
+		const button = screen.getByRole('button');
+
+		fireEvent.click(button);
+		fireEvent.click(button);
+
+		resolveGenerate();
+
+		await waitFor(() => {
+			expect(mockRenderCvOffscreen).toHaveBeenCalledTimes(1);
+		});
+	});
+
 	it('renders a button with the download label', () => {
 		render(<DownloadCVButton />);
 		expect(screen.getByRole('button')).toBeInTheDocument();
