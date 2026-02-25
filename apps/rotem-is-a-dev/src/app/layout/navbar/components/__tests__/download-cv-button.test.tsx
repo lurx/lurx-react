@@ -25,6 +25,7 @@ jest.mock('@/app/components', () => ({
 	FaIcon: ({ iconName }: { iconName: string }) => (
 		<span data-testid="icon">{iconName}</span>
 	),
+	SimpleLoader: () => <div data-testid="simple-loader" />,
 }));
 
 const mockUseResponsive = jest.mocked(useResponsive);
@@ -125,7 +126,7 @@ describe('DownloadCVButton', () => {
 		});
 	});
 
-	it('shows spinner icon while generating', async () => {
+	it('shows SimpleLoader while generating', async () => {
 		let resolveGenerate!: () => void;
 		mockGenerateCvPdf.mockReturnValueOnce(
 			new Promise<void>(resolve => {
@@ -137,7 +138,7 @@ describe('DownloadCVButton', () => {
 		fireEvent.click(screen.getByRole('button'));
 
 		await waitFor(() => {
-			expect(screen.getByText('spinner')).toBeInTheDocument();
+			expect(screen.getByTestId('simple-loader')).toBeInTheDocument();
 		});
 
 		resolveGenerate();

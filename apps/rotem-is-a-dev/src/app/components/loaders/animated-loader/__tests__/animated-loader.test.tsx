@@ -2,7 +2,7 @@ import { LOGO_SIZES } from '@/app/components/logo/logo.constants';
 import { render } from '@testing-library/react';
 import { AnimatedLoader } from '../animated-loader.component';
 
-jest.mock('../../logo/logo.component', () => ({
+jest.mock('@/app/components/logo/logo.component', () => ({
 	Logo: (props: Record<string, unknown>) => (
 		<div data-testid="logo" data-animated={String(props.animated)} data-size={String(props.size)} />
 	),

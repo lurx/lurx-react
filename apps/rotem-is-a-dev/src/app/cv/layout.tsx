@@ -15,7 +15,7 @@ export default function CvLayout({
 }: PropsWithChildren) {
 	return (
 		<>
-			<Suspense>
+			<Suspense fallback={<>Loading...</>}>
 				<DownloadPdfButton />
 			</Suspense>
 			{children}

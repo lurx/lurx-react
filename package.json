@@ -9,7 +9,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"@awesome.me/kit-1d40de302b": "latest",
+		"@awesome.me/kit-1d40de302b": "^1.0.30",
 		"@aws-sdk/client-s3": "^3.971.0",
 		"@aws-sdk/s3-request-presigner": "^3.971.0",
 		"@ffmpeg/ffmpeg": "^0.12.15",
