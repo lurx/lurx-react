@@ -25,10 +25,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@awesome.me/kit-1d40de302b@latest":
-  version "1.0.28"
-  resolved "https://npm.fontawesome.com/@awesome.me/kit-1d40de302b/-/kit-1d40de302b-1.0.28.tgz#e5d6ba5c545701a037a110b88636f2edeb2ba29c"
-  integrity sha512-RCuygZXLi6joy3ZSjcHOse1G5gr//wubAVAVBG8bi8eHi+ZWZe7or0BTS49NlB/beQk/Oqtr6c9cWubZKuLdzg==
+"@awesome.me/kit-1d40de302b@^1.0.30":
+  version "1.0.30"
+  resolved "https://npm.fontawesome.com/@awesome.me/kit-1d40de302b/-/kit-1d40de302b-1.0.30.tgz#4be2cba70b2477f253463e7353d82773cd27e0bd"
+  integrity sha512-01Za/4ZdlriBymEMfe70I/o4XPR9fLcbFoeo9ayqhFgMH6qvxbE96TATAh6GWotIgPKf7xst/A1blw74WDDpAA==
   dependencies:
     "@fortawesome/fontawesome-common-types" "^7.2.0"
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { FaIcon } from '@/app/components';
+import { FaIcon, SimpleLoader } from '@/app/components';
 import { useResponsive } from '@/hooks';
 import { useState } from 'react';
 import styles from '../navbar.module.scss';
@@ -37,12 +37,16 @@ export const DownloadCVButton = () => {
 		<NavItem
 			label="Download CV"
 			icon={
-				<FaIcon
-					iconName={isGenerating ? 'spinner' : 'file-pdf'}
-					iconGroup="fal"
-					className={styles.downloadIcon}
-					data-animate-icon
-				/>
+				isGenerating ? (
+					<SimpleLoader />
+				) : (
+					<FaIcon
+						iconName="file-pdf"
+						iconGroup="fal"
+						className={styles.downloadIcon}
+						data-animate-icon
+					/>
+				)
 			}
 			onClick={handleClick}
 			className={styles.downloadCv}

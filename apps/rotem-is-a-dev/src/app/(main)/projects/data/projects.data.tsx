@@ -2,8 +2,19 @@ import { AnimatedLoader } from '@/app/components';
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
 
-const WolverineDemo = dynamic(() => import('@/demos/wolverine/wolverine.demo').then(mod => mod.WolverineDemo));
-const SheepDemo = dynamic(() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo));
+const WolverineDemo = dynamic(
+	() =>
+		import('@/demos/wolverine/wolverine.demo').then(mod => mod.WolverineDemo),
+	{
+		loading: () => <AnimatedLoader />,
+	},
+);
+const SheepDemo = dynamic(
+	() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo),
+	{
+		loading: () => <AnimatedLoader />,
+	},
+);
 
 export type Technology =
 	| 'React'
@@ -13,11 +24,11 @@ export type Technology =
 	| 'SCSS'
 	| 'SVG';
 
-  interface ProjectExternalUrl {
-    origin: string;
-    url: string;
-    iconName?: string; // Optional, can be used to determine which icon to show
-  }
+interface ProjectExternalUrl {
+	origin: string;
+	url: string;
+	iconName?: string; // Optional, can be used to determine which icon to show
+}
 
 export interface Project {
 	id: number;
@@ -25,7 +36,7 @@ export interface Project {
 	slug: string;
 	description: string;
 	technologies: Technology[];
-  externalUrl?: ProjectExternalUrl;
+	externalUrl?: ProjectExternalUrl;
 	demo?: ComponentType;
 }
 
@@ -35,6 +46,7 @@ export const ALL_TECHNOLOGIES: Technology[] = [
 	'HTML',
 	'CSS',
 	'SCSS',
+	'SVG',
 ];
 
 export const PROJECTS = [
@@ -46,10 +58,10 @@ export const PROJECTS = [
 			'A React adaptation of a Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
 		technologies: ['CSS', 'SCSS', 'React'],
 		externalUrl: {
-      origin: 'codepen.io',
-      url: 'https://codepen.io/lurx/pen/rREBKM',
-      iconName: 'codepen',
-    },
+			origin: 'codepen.io',
+			url: 'https://codepen.io/lurx/pen/rREBKM',
+			iconName: 'codepen',
+		},
 		demo: WolverineDemo,
 	},
 	{
@@ -57,7 +69,7 @@ export const PROJECTS = [
 		number: 2,
 		slug: '_sheep-css',
 		description:
-			'A playful CSS art sheep inspired by Gregory Hartman\'s BAAAHHHHH Dribbble shot, built with pure SCSS animations.',
+			"A playful CSS art sheep inspired by Gregory Hartman's BAAAHHHHH Dribbble shot, built with pure SCSS animations.",
 		technologies: ['CSS', 'SCSS', 'React'],
 		externalUrl: {
 			origin: 'codepen.io',
@@ -66,7 +78,7 @@ export const PROJECTS = [
 		},
 		demo: SheepDemo,
 	},
-  {
+	{
 		id: 3,
 		number: 3,
 		slug: '_animated-logo-loader',

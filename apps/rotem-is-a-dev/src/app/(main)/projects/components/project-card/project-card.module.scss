@@ -45,9 +45,10 @@
 // ─── Image Area ────────────────────────────────────────────────────────────────
 
 .imageWrapper {
+  --project-preview-bg: #0d1b2e;
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: #0d1b2e;
+	background-color: var(--project-preview-bg);
 	overflow: hidden;
 	flex-shrink: 0;
 }
@@ -60,7 +61,7 @@
 			rgba(97, 95, 255, 0.18) 0%,
 			transparent 65%
 		),
-		linear-gradient(135deg, #0d1b2e 0%, var(--surface) 100%);
+		linear-gradient(135deg, var(--project-preview-bg) 0%, var(--surface) 100%);
 }
 
 .demoPreview {

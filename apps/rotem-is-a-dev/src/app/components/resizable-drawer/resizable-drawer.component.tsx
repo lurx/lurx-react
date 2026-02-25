@@ -5,10 +5,10 @@ import { useEventListener } from 'usehooks-ts';
 import styles from './resizable-drawer.module.scss';
 import type { ResizableDrawerComponentProps } from './resizable-drawer.types';
 
-
 const DEFAULT_MIN_WIDTH = 320;
 const DEFAULT_MAX_WIDTH_FRACTION = 0.9;
 const DEFAULT_WIDTH_FRACTION = 0.5;
+const INITIAL_WIDTH_FALLBACK = 600;
 
 export const ResizableDrawer = ({
 	isOpen,
@@ -21,15 +21,23 @@ export const ResizableDrawer = ({
 	children,
 }: ResizableDrawerComponentProps) => {
 	const drawerRef = useRef<HTMLDivElement>(null);
-	const [width, setWidth] = useState<number>(() =>
-		initialWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_WIDTH_FRACTION : /* istanbul ignore next */ 600),
+	const [width, setWidth] = useState<number>(
+		() =>
+			initialWidth ??
+			(typeof globalThis.window !== 'undefined'
+				? globalThis.window.innerWidth * DEFAULT_WIDTH_FRACTION
+				: /* istanbul ignore next */ INITIAL_WIDTH_FALLBACK),
 	);
 	const isDraggingRef = useRef(false);
 	const startXRef = useRef(0);
 	const startWidthRef = useRef(0);
 
 	const resolveMaxWidth = useCallback(
-		() => maxWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION : /* istanbul ignore next */ 1200),
+		() =>
+			maxWidth ??
+			(typeof window !== 'undefined'
+				? window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION
+				: /* istanbul ignore next */ 1200),
 		[maxWidth],
 	);
 
@@ -74,7 +82,10 @@ export const ResizableDrawer = ({
 			if (!isDraggingRef.current) return;
 			const delta = startXRef.current - event.clientX;
 			const resolved = resolveMaxWidth();
-			const newWidth = Math.min(resolved, Math.max(minWidth, startWidthRef.current + delta));
+			const newWidth = Math.min(
+				resolved,
+				Math.max(minWidth, startWidthRef.current + delta),
+			);
 			setWidth(newWidth);
 		},
 		[minWidth, resolveMaxWidth],
@@ -87,15 +98,19 @@ export const ResizableDrawer = ({
 	if (!isOpen) return null;
 
 	/* istanbul ignore next -- SSR guard: document is always defined in jsdom */
-	const portalTarget = typeof document === 'undefined'
-		? null
-		: document.getElementById('portal-root') ?? document.body;
+	const portalTarget =
+		typeof document === 'undefined'
+			? null
+			: document.getElementById('portal-root') ?? document.body;
 
 	/* istanbul ignore next -- only reachable during SSR */
 	if (!portalTarget) return null;
 
 	return createPortal(
-		<div className={styles.wrapper} data-testid="resizable-drawer-wrapper">
+		<div
+			className={styles.wrapper}
+			data-testid="resizable-drawer-wrapper"
+		>
 			<div
 				className={styles.overlay}
 				onClick={onClose}
@@ -130,13 +145,14 @@ export const ResizableDrawer = ({
 						aria-label="Close drawer"
 						data-testid="resizable-drawer-close"
 					>
-						<FaIcon iconName="xmark" iconGroup="fas" />
+						<FaIcon
+							iconName="xmark"
+							iconGroup="fas"
+						/>
 					</button>
 				</div>
 
-				<div className={styles.content}>
-					{children}
-				</div>
+				<div className={styles.content}>{children}</div>
 			</div>
 		</div>,
 		portalTarget,

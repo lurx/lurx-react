@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { MobilePageTitle } from '@/app/(main)/components/mobile-page-title';
 import { FaIcon } from '@/app/components';
 import { useResponsive } from '@/hooks';
-import { MobilePageTitle } from '@/app/(main)/components/mobile-page-title';
+import { useState } from 'react';
 import type { Technology } from '../../data/projects.data';
-import type { TechnologyFilterProps } from './technology-filter.types';
 import styles from './technology-filter.module.scss';
+import type { TechnologyFilterProps } from './technology-filter.types';
 
 const TECH_ICON_MAP: Record<
 	Technology,
@@ -17,6 +17,7 @@ const TECH_ICON_MAP: Record<
 	HTML: { iconName: 'html5', iconGroup: 'fab' },
 	CSS: { iconName: 'css', iconGroup: 'fab' },
 	SCSS: { iconName: 'sass', iconGroup: 'fab' },
+  SVG: { iconName: 'file-svg', iconGroup: 'fas' },
 };
 
 export const TechnologyFilter = ({
