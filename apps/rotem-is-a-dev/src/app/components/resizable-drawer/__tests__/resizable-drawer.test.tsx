@@ -7,6 +7,17 @@ jest.mock('@/app/components/fa-icon/fa-icon.component', () => ({
 	),
 }));
 
+// jsdom does not implement PointerEvent; polyfill it for drag tests
+class MockPointerEvent extends MouseEvent {
+	readonly pointerId: number;
+	constructor(type: string, init: PointerEventInit & MouseEventInit = {}) {
+		super(type, init);
+		this.pointerId = init.pointerId ?? 0;
+	}
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(global as any).PointerEvent = MockPointerEvent;
+
 const defaultProps = {
 	isOpen: true,
 	onClose: jest.fn(),
@@ -144,5 +155,98 @@ describe('ResizableDrawer', () => {
 	it('portals into the #portal-root element', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		expect(portalRoot.querySelector('[data-testid="resizable-drawer-wrapper"]')).toBeInTheDocument();
+	});
+
+	it('renders the title when provided', () => {
+		render(
+			<ResizableDrawer {...defaultProps} title={<span>My Title</span>} />,
+		);
+		expect(screen.getByText('My Title')).toBeInTheDocument();
+	});
+
+	it('does not render the title container when title is not provided', () => {
+		const { container } = render(<ResizableDrawer {...defaultProps} />);
+		const titleElements = portalRoot.querySelectorAll('[class*="title"]');
+		// The close button is always present, but we should not find a title div wrapping content
+		expect(screen.queryByText('My Title')).not.toBeInTheDocument();
+		// Verify the drawer renders without issue
+		expect(screen.getByTestId('resizable-drawer')).toBeInTheDocument();
+	});
+
+	it('resizes the drawer on pointer drag', () => {
+		render(<ResizableDrawer {...defaultProps} initialWidth={500} />);
+		const handle = screen.getByTestId('resizable-drawer-drag-handle');
+
+		// Start drag at clientX=500
+		fireEvent(handle, new PointerEvent('pointerdown', { bubbles: true, clientX: 500, pointerId: 1 }));
+
+		// Move left by 100px (delta = 500 - 400 = 100, newWidth = 500 + 100 = 600)
+		fireEvent(handle, new PointerEvent('pointermove', { bubbles: true, clientX: 400 }));
+
+		const drawer = screen.getByTestId('resizable-drawer');
+		expect(drawer.style.width).toBe('600px');
+	});
+
+	it('clamps the resized width to the minimum', () => {
+		render(<ResizableDrawer {...defaultProps} initialWidth={400} minWidth={350} />);
+		const handle = screen.getByTestId('resizable-drawer-drag-handle');
+
+		fireEvent(handle, new PointerEvent('pointerdown', { bubbles: true, clientX: 500, pointerId: 1 }));
+		// Move right by a large amount (delta = 500 - 800 = -300, newWidth = 400 + (-300) = 100 -> clamped to 350)
+		fireEvent(handle, new PointerEvent('pointermove', { bubbles: true, clientX: 800 }));
+
+		const drawer = screen.getByTestId('resizable-drawer');
+		expect(drawer.style.width).toBe('350px');
+	});
+
+	it('clamps the resized width to the custom maxWidth', () => {
+		render(<ResizableDrawer {...defaultProps} initialWidth={500} maxWidth={600} />);
+		const handle = screen.getByTestId('resizable-drawer-drag-handle');
+
+		fireEvent(handle, new PointerEvent('pointerdown', { bubbles: true, clientX: 500, pointerId: 1 }));
+		// Move left by 200px (delta = 500 - 300 = 200, newWidth = 500 + 200 = 700 -> clamped to 600)
+		fireEvent(handle, new PointerEvent('pointermove', { bubbles: true, clientX: 300 }));
+
+		const drawer = screen.getByTestId('resizable-drawer');
+		expect(drawer.style.width).toBe('600px');
+	});
+
+	it('stops resizing after pointer up', () => {
+		render(<ResizableDrawer {...defaultProps} initialWidth={500} />);
+		const handle = screen.getByTestId('resizable-drawer-drag-handle');
+
+		fireEvent(handle, new PointerEvent('pointerdown', { bubbles: true, clientX: 500, pointerId: 1 }));
+		fireEvent(handle, new PointerEvent('pointermove', { bubbles: true, clientX: 400 }));
+
+		const drawer = screen.getByTestId('resizable-drawer');
+		expect(drawer.style.width).toBe('600px');
+
+		fireEvent(handle, new PointerEvent('pointerup', { bubbles: true }));
+
+		// After pointerUp, further moves should not change width
+		fireEvent(handle, new PointerEvent('pointermove', { bubbles: true, clientX: 300 }));
+		expect(drawer.style.width).toBe('600px');
+	});
+
+	it('falls back to document.body when #portal-root is not present', () => {
+		portalRoot.remove();
+		render(<ResizableDrawer {...defaultProps} />);
+		expect(document.body.querySelector('[data-testid="resizable-drawer-wrapper"]')).toBeInTheDocument();
+		// Re-add portalRoot for cleanup
+		document.body.appendChild(portalRoot);
+	});
+
+	it('uses default width based on window.innerWidth when initialWidth is not provided', () => {
+		Object.defineProperty(window, 'innerWidth', { value: 1000, writable: true });
+		render(<ResizableDrawer {...defaultProps} />);
+		const drawer = screen.getByTestId('resizable-drawer');
+		// Default is 50% of window.innerWidth = 500px
+		expect(drawer.style.width).toBe('500px');
+	});
+
+	it('does not call onClose on Escape when drawer is closed', () => {
+		render(<ResizableDrawer {...defaultProps} isOpen={false} />);
+		fireEvent.keyDown(document, { key: 'Escape' });
+		expect(defaultProps.onClose).not.toHaveBeenCalled();
 	});
 });

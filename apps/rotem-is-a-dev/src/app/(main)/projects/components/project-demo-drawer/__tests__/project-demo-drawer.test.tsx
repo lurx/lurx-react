@@ -28,6 +28,11 @@ jest.mock('@/app/components', () => ({
 				{children}
 			</div>
 		) : null,
+	FaIcon: ({ iconName, iconGroup }: { iconName: string; iconGroup: string }) => (
+		<span data-testid="fa-icon" data-icon-name={iconName} data-icon-group={iconGroup}>
+			{iconName}
+		</span>
+	),
 }));
 
 const mockProject: Project = {
@@ -102,5 +107,68 @@ describe('ProjectDemoDrawer', () => {
 		);
 		screen.getByTestId('close-btn').click();
 		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not render the external link section when project has no externalUrl', () => {
+		render(
+			<ProjectDemoDrawer {...defaultProps}>
+				<p>Demo content</p>
+			</ProjectDemoDrawer>,
+		);
+		expect(screen.queryByText(/View original on/)).not.toBeInTheDocument();
+	});
+
+	it('renders the external link with url and origin when externalUrl is provided', () => {
+		const projectWithExternalUrl: Project = {
+			...mockProject,
+			externalUrl: {
+				origin: 'codepen.io',
+				url: 'https://codepen.io/lurx/pen/rREBKM',
+			},
+		};
+		render(
+			<ProjectDemoDrawer project={projectWithExternalUrl} onClose={defaultProps.onClose}>
+				<p>Demo content</p>
+			</ProjectDemoDrawer>,
+		);
+		expect(screen.getByText(/View original on codepen\.io/)).toBeInTheDocument();
+		const link = screen.getByText(/View original on/).closest('a');
+		expect(link).toHaveAttribute('href', 'https://codepen.io/lurx/pen/rREBKM');
+		expect(link).toHaveAttribute('target', '_blank');
+		expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+	});
+
+	it('renders the FaIcon when externalUrl has an iconName', () => {
+		const projectWithIcon: Project = {
+			...mockProject,
+			externalUrl: {
+				origin: 'codepen.io',
+				url: 'https://codepen.io/lurx/pen/rREBKM',
+				iconName: 'codepen',
+			},
+		};
+		render(
+			<ProjectDemoDrawer project={projectWithIcon} onClose={defaultProps.onClose}>
+				<p>Demo content</p>
+			</ProjectDemoDrawer>,
+		);
+		expect(screen.getByText('codepen')).toBeInTheDocument();
+	});
+
+	it('does not render the FaIcon when externalUrl has no iconName', () => {
+		const projectWithoutIcon: Project = {
+			...mockProject,
+			externalUrl: {
+				origin: 'codepen.io',
+				url: 'https://codepen.io/lurx/pen/rREBKM',
+			},
+		};
+		render(
+			<ProjectDemoDrawer project={projectWithoutIcon} onClose={defaultProps.onClose}>
+				<p>Demo content</p>
+			</ProjectDemoDrawer>,
+		);
+		expect(screen.getByText(/View original on codepen\.io/)).toBeInTheDocument();
+		expect(screen.queryByTestId('fa-icon')).not.toBeInTheDocument();
 	});
 });

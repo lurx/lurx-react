@@ -1,9 +1,16 @@
 import { render, screen } from '@testing-library/react';
+import { useResponsive } from '@/hooks';
 import { GistPanel } from '../gist-panel.component';
 
 jest.mock('@/hooks', () => ({
-	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
+	useResponsive: jest.fn(),
 }));
+
+const mockUseResponsive = useResponsive as jest.Mock;
+
+beforeEach(() => {
+	mockUseResponsive.mockReturnValue({ isMobile: false, isTablet: false, isDesktop: true });
+});
 
 jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
@@ -53,5 +60,11 @@ describe('GistPanel', () => {
 	it('renders the chunk code block', () => {
 		render(<GistPanel />);
 		expect(screen.getByLabelText('chunk content')).toBeInTheDocument();
+	});
+
+	it('renders nothing on mobile', () => {
+		mockUseResponsive.mockReturnValue({ isMobile: true, isTablet: false, isDesktop: false });
+		const { container } = render(<GistPanel />);
+		expect(container.innerHTML).toBe('');
 	});
 });

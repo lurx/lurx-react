@@ -1,12 +1,19 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { useResponsive } from '@/hooks';
 import type { AboutFileId } from '../../../data/about-files.data';
 import { TabBar } from '../tab-bar.component';
+
+jest.mock('@/hooks', () => ({
+	useResponsive: jest.fn(),
+}));
 
 jest.mock('@/app/components', () => ({
 	FaIcon: ({ iconName }: { iconName: string }) => (
 		<span data-testid="icon">{iconName}</span>
 	),
 }));
+
+const mockUseResponsive = useResponsive as jest.Mock;
 
 const defaultProps = {
 	openTabs: ['bio', 'interests'] as AboutFileId[],
@@ -21,6 +28,7 @@ let portalRoot: HTMLDivElement;
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	mockUseResponsive.mockReturnValue({ isMobile: false, isTablet: false, isDesktop: true });
 	portalRoot = document.createElement('div');
 	portalRoot.id = 'portal-root';
 	document.body.appendChild(portalRoot);
@@ -100,5 +108,32 @@ describe('TabBar', () => {
 		expect(screen.getByTestId('tab-context-menu')).toBeInTheDocument();
 		fireEvent.keyDown(document, { key: 'Escape' });
 		expect(screen.queryByTestId('tab-context-menu')).not.toBeInTheDocument();
+	});
+
+	it('renders nothing on mobile', () => {
+		mockUseResponsive.mockReturnValue({ isMobile: true, isTablet: false, isDesktop: false });
+		const { container } = render(<TabBar {...defaultProps} />);
+		expect(container.innerHTML).toBe('');
+	});
+
+	it('selects a tab when Enter key is pressed', () => {
+		render(<TabBar {...defaultProps} />);
+		const interestsTab = screen.getByRole('tab', { name: /interests/i });
+		fireEvent.keyDown(interestsTab, { key: 'Enter' });
+		expect(defaultProps.onTabSelect).toHaveBeenCalledWith('interests');
+	});
+
+	it('selects a tab when Space key is pressed', () => {
+		render(<TabBar {...defaultProps} />);
+		const interestsTab = screen.getByRole('tab', { name: /interests/i });
+		fireEvent.keyDown(interestsTab, { key: ' ' });
+		expect(defaultProps.onTabSelect).toHaveBeenCalledWith('interests');
+	});
+
+	it('does not select a tab for other key presses', () => {
+		render(<TabBar {...defaultProps} />);
+		const interestsTab = screen.getByRole('tab', { name: /interests/i });
+		fireEvent.keyDown(interestsTab, { key: 'Tab' });
+		expect(defaultProps.onTabSelect).not.toHaveBeenCalled();
 	});
 });

@@ -2,11 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { AboutEditor } from '../about-editor.component';
 import type { AboutFileContent } from '../../../data/about-files.data';
 
+const mockUseShikiTokens = jest.fn(({ code }: { code: string }) =>
+	code.split('\n').map((line: string) => ({
+		tokens: [{ content: line, color: '#90a1b9' }],
+	})),
+);
+
 jest.mock('@/lib/shiki', () => ({
-	useShikiTokens: ({ code }: { code: string }) =>
-		code.split('\n').map((line: string) => ({
-			tokens: [{ content: line, color: '#90a1b9' }],
-		})),
+	useShikiTokens: (...args: unknown[]) => mockUseShikiTokens(...args as [{ code: string }]),
 }));
 
 const mockContent: AboutFileContent = {
@@ -109,6 +112,32 @@ describe('AboutEditor', () => {
 			json: { name: 'test' },
 		};
 		render(<AboutEditor content={jsonContent} />);
+		const lineNumbers = screen
+			.getAllByRole('generic')
+			.filter((el) => el.className.split(' ').includes('lineNumber'));
+		expect(lineNumbers.length).toBeGreaterThan(0);
+	});
+
+	it('renders plain text fallback when shiki tokens are not available', () => {
+		mockUseShikiTokens.mockReturnValueOnce(null);
+		const content: AboutFileContent = {
+			title: 'fallback',
+			format: 'jsdoc',
+			paragraphs: ['Plain text fallback content.'],
+		};
+		render(<AboutEditor content={content} />);
+		expect(screen.getByLabelText('fallback content')).toBeInTheDocument();
+		expect(screen.getByText(/Plain text fallback content/)).toBeInTheDocument();
+	});
+
+	it('renders correct line count from plain lines when shiki returns null', () => {
+		mockUseShikiTokens.mockReturnValueOnce(null);
+		const content: AboutFileContent = {
+			title: 'line-count',
+			format: 'jsdoc',
+			paragraphs: ['First paragraph.', 'Second paragraph.'],
+		};
+		render(<AboutEditor content={content} />);
 		const lineNumbers = screen
 			.getAllByRole('generic')
 			.filter((el) => el.className.split(' ').includes('lineNumber'));

@@ -22,14 +22,14 @@ export const ResizableDrawer = ({
 }: ResizableDrawerComponentProps) => {
 	const drawerRef = useRef<HTMLDivElement>(null);
 	const [width, setWidth] = useState<number>(() =>
-		initialWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_WIDTH_FRACTION : 600),
+		initialWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_WIDTH_FRACTION : /* istanbul ignore next */ 600),
 	);
 	const isDraggingRef = useRef(false);
 	const startXRef = useRef(0);
 	const startWidthRef = useRef(0);
 
 	const resolveMaxWidth = useCallback(
-		() => maxWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION : 1200),
+		() => maxWidth ?? (typeof window !== 'undefined' ? window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION : /* istanbul ignore next */ 1200),
 		[maxWidth],
 	);
 
@@ -86,10 +86,12 @@ export const ResizableDrawer = ({
 
 	if (!isOpen) return null;
 
+	/* istanbul ignore next -- SSR guard: document is always defined in jsdom */
 	const portalTarget = typeof document === 'undefined'
 		? null
 		: document.getElementById('portal-root') ?? document.body;
 
+	/* istanbul ignore next -- only reachable during SSR */
 	if (!portalTarget) return null;
 
 	return createPortal(

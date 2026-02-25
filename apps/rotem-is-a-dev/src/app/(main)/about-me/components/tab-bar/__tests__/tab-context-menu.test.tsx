@@ -76,4 +76,18 @@ describe('TabContextMenu', () => {
 		fireEvent.mouseDown(screen.getByTestId('tab-context-menu'));
 		expect(defaultProps.onDismiss).not.toHaveBeenCalled();
 	});
+
+	it('renders into document.body when portal-root element does not exist', () => {
+		portalRoot.remove();
+		render(<TabContextMenu {...defaultProps} />);
+		const menu = screen.getByTestId('tab-context-menu');
+		expect(menu).toBeInTheDocument();
+		expect(document.body.contains(menu)).toBe(true);
+	});
+
+	it('does not dismiss when a non-Escape key is pressed', () => {
+		render(<TabContextMenu {...defaultProps} />);
+		fireEvent.keyDown(document, { key: 'Enter' });
+		expect(defaultProps.onDismiss).not.toHaveBeenCalled();
+	});
 });
