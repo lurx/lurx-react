@@ -12,7 +12,7 @@ interface TabBarProps {
 	openTabs: AboutFileId[];
 	activeFileId: Nullable<AboutFileId>;
 	onTabSelect: (fileId: AboutFileId) => void;
-	onTabClose: (fileId: AboutFileId, event: React.MouseEvent) => void;
+	onTabClose: (fileId: AboutFileId) => void;
 	onCloseOthers: (fileId: AboutFileId) => void;
 	onCloseAll: () => void;
 }
@@ -69,7 +69,10 @@ export const TabBar = ({
 						type="button"
 						className={styles.tabClose}
 						aria-label={`Close ${tabId} tab`}
-						onClick={event => onTabClose(tabId, event)}
+						onClick={event => {
+							event.stopPropagation();
+							onTabClose(tabId);
+						}}
 					>
 						<FaIcon
 							iconName="xmark"
@@ -83,7 +86,7 @@ export const TabBar = ({
 			{contextMenu && (
 				<TabContextMenu
 					position={{ x: contextMenu.x, y: contextMenu.y }}
-					onClose={() => onTabClose(contextMenu.tabId, { stopPropagation: () => { /* noop — synthetic event for context menu close */ } } as React.MouseEvent)}
+					onClose={() => onTabClose(contextMenu.tabId)}
 					onCloseOthers={() => onCloseOthers(contextMenu.tabId)}
 					onCloseAll={onCloseAll}
 					onDismiss={dismissMenu}

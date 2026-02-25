@@ -28,19 +28,16 @@ export const AboutPage = () => {
 	}, []);
 
 	const handleTabClose = useCallback(
-		(fileId: AboutFileId, event: React.MouseEvent) => {
-			event.stopPropagation();
-
+		(fileId: AboutFileId) => {
 			const updatedTabs = openTabs.filter(id => id !== fileId);
 			setOpenTabs(updatedTabs);
-
-			if (activeFileId === fileId) {
-				setActiveFileId(
-					updatedTabs.length > 0 ? updatedTabs[updatedTabs.length - 1] : null,
-				);
-			}
+			setActiveFileId(prev =>
+				prev === fileId
+					? updatedTabs[updatedTabs.length - 1] ?? null
+					: prev,
+			);
 		},
-		[openTabs, activeFileId],
+		[openTabs],
 	);
 
 	const handleCloseOthers = useCallback((fileId: AboutFileId) => {
