@@ -1,5 +1,8 @@
-import { SheepDemo, WolverineDemo } from '@/demos';
 import type { ComponentType } from 'react';
+import dynamic from 'next/dynamic';
+
+const WolverineDemo = dynamic(() => import('@/demos/wolverine/wolverine.demo').then(mod => mod.WolverineDemo));
+const SheepDemo = dynamic(() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo));
 
 export type Technology =
 	| 'React'
