@@ -2,18 +2,16 @@ import { AnimatedLoader } from '@/app/components';
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
 
+const loading = () => <AnimatedLoader />;
+
 const WolverineDemo = dynamic(
 	() =>
 		import('@/demos/wolverine/wolverine.demo').then(mod => mod.WolverineDemo),
-	{
-		loading: () => <AnimatedLoader />,
-	},
+	{ loading },
 );
 const SheepDemo = dynamic(
 	() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo),
-	{
-		loading: () => <AnimatedLoader />,
-	},
+	{ loading },
 );
 
 export type Technology =
