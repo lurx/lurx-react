@@ -20,16 +20,30 @@ export const ServerCodeBlock = async ({
 	const shikiLines = await highlightCode({ code, language });
 
 	return (
-		<div className={classNames(styles.wrapper, numberOfLines && styles.withLineNumbers, className)}>
+		<div
+			className={classNames(
+				styles.wrapper,
+				numberOfLines && styles.withLineNumbers,
+				className,
+			)}
+		>
 			{numberOfLines && (
-				<pre className={styles.lineNumbers} aria-hidden="true">
-					{Array.from({ length: numberOfLines }, (_, index) => index + 1).join('\n')}
+				<pre
+					className={styles.lineNumbers}
+					aria-hidden="true"
+				>
+					{Array.from({ length: numberOfLines }, (_, index) => index + 1).join(
+						'\n',
+					)}
 				</pre>
 			)}
-			<pre className={styles.code} aria-label={ariaLabel}>
+			<pre
+				className={styles.code}
+				aria-label={ariaLabel}
+			>
 				<code>
 					{shikiLines.map((line, index) => (
-						<span key={line.toString() + index}>
+						<span key={JSON.stringify(line) + index}>
 							{line.tokens.map((token, tokenIndex) => (
 								<span
 									key={token.content + tokenIndex}

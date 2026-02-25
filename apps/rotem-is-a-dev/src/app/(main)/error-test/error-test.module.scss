@@ -1,0 +1,18 @@
+@use 'mixins/spacing' as *;
+
+.container {
+	padding: spacing(8);
+	font-family: monospace;
+}
+
+.title {
+	margin-bottom: spacing(2);
+}
+
+.description {
+	margin-bottom: spacing(4);
+}
+
+.link {
+	color: var(--accent);
+}
