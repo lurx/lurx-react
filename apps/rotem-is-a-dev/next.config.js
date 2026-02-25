@@ -6,7 +6,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 const scriptSrc = [
   "'self'",
-  isDev && "'unsafe-inline'",
+  "'unsafe-inline'",
   isDev && "'unsafe-eval'",
 ].filter(Boolean).join(' ');
 
