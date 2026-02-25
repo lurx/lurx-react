@@ -3,7 +3,7 @@
 import { FaIcon } from '@/app/components';
 import { useOnClickOutside } from '@/hooks';
 import classNames from 'classnames';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './accessibility-widget.module.scss';
 import {
 	BASE_FONT_SIZE_PX,
@@ -114,12 +114,12 @@ export const AccessibilityWidget = () => {
 
 	useOnClickOutside(wrapperRef, () => setIsOpen(false));
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		applyTextScale(textScale);
 		localStorage.setItem(TEXT_SCALE_STORAGE_KEY, JSON.stringify(textScale));
 	}, [textScale]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		applySpacing(lineHeight, letterSpacing);
 		localStorage.setItem(LINE_HEIGHT_STORAGE_KEY, JSON.stringify(lineHeight));
 		localStorage.setItem(
