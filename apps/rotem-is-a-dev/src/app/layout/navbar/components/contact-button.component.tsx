@@ -4,10 +4,10 @@ import { useResponsive } from '@/hooks';
 import styles from '../navbar.module.scss';
 import { NavItem } from './nav-item.component';
 
-export const ContactButton = () => {
+export const ContactButton = ({hidden}: {hidden?: boolean}) => {
 	const { isMobile } = useResponsive();
 
-	if (isMobile) return null;
+	if (isMobile || hidden) return null;
 
 	return (
 		<NavItem
