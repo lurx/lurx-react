@@ -6,9 +6,7 @@ const { composePlugins, withNx } = require('@nx/next');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-	nx: {
-		svgr: false,
-	},
+	nx: {},
 	webpack(config, options) {
 		if (!options.isServer) {
 			// Give the remote its own chunk-loading global so it gets a separate webpack runtime
@@ -32,8 +30,6 @@ const nextConfig = {
 	},
 };
 
-const plugins = [
-	withNx,
-];
+const plugins = [withNx];
 
 module.exports = composePlugins(...plugins)(nextConfig);
