@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { DEFAULT_LOGO_SIZE, LOGO_SIZE_OBJECTS } from './logo.constants';
 import './logo.scss';
-import { ReactComponent as LogoSvg } from './logo.svg';
+import LogoSvg from './logo.svg';
 import type { LogoProps } from './logo.types';
 
 export const Logo = ({ size, animated, ...dataAttributes }: WithDataAttributes<LogoProps>) => {
