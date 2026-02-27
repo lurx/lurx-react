@@ -28,4 +28,4 @@ const config = {
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };
 
-export default config;
+module.exports = config;
