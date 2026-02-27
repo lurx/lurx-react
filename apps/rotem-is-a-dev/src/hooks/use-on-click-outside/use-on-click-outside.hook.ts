@@ -12,7 +12,7 @@ type EventType =
   type AllowedElements = HTMLElement | Document;
 
 export function useOnClickOutside<T extends AllowedElements = AllowedElements>(
-	ref: RefObject<Nullable<T>> | RefObject<Nullable<T>>[],
+	ref: RefObject<Nullable<T> | null> | RefObject<Nullable<T> | null>[],
 	handler: (event: MouseEvent | TouchEvent | FocusEvent) => void,
 	eventType: EventType | EventType[] = 'mousedown',
 	eventListenerOptions: AddEventListenerOptions = {},
