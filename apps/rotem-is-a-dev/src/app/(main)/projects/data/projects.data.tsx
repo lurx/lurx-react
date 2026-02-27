@@ -14,14 +14,6 @@ const SheepDemo = dynamic(
 	{ loading },
 );
 
-export type Technology =
-	| 'React'
-	| 'TypeScript'
-	| 'HTML'
-	| 'CSS'
-	| 'SCSS'
-	| 'SVG';
-
 interface ProjectExternalUrl {
 	origin: string;
 	url: string;
@@ -39,12 +31,12 @@ export interface Project {
 }
 
 export const ALL_TECHNOLOGIES: Technology[] = [
-	'React',
-	'TypeScript',
-	'HTML',
-	'CSS',
-	'SCSS',
-	'SVG',
+	'react',
+	'typescript',
+	'html',
+	'css',
+	'scss',
+	'svg',
 ];
 
 export const PROJECTS = [
@@ -54,7 +46,7 @@ export const PROJECTS = [
 		slug: '_wolverine-css',
 		description:
 			'A React adaptation of a Pure CSS art recreation of Wolverine character with advanced SCSS techniques and animations.',
-		technologies: ['CSS', 'SCSS', 'React'],
+		technologies: ['css', 'scss', 'react'],
 		externalUrl: {
 			origin: 'codepen.io',
 			url: 'https://codepen.io/lurx/pen/rREBKM',
@@ -68,7 +60,7 @@ export const PROJECTS = [
 		slug: '_sheep-css',
 		description:
 			"A playful CSS art sheep inspired by Gregory Hartman's BAAAHHHHH Dribbble shot, built with pure SCSS animations.",
-		technologies: ['CSS', 'SCSS', 'React'],
+		technologies: ['css', 'scss', 'react'],
 		externalUrl: {
 			origin: 'codepen.io',
 			url: 'https://codepen.io/lurx/pen/XGymgd',
@@ -82,7 +74,7 @@ export const PROJECTS = [
 		slug: '_animated-logo-loader',
 		description:
 			'The animated loader for this site, featuring a tracing css-driven animated version of the logo.',
-		technologies: ['CSS', 'SCSS', 'React', 'SVG'],
+		technologies: ['css', 'scss', 'react', 'svg'],
 		demo: AnimatedLoader,
 	},
 ] satisfies Project[];
