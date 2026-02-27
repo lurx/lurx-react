@@ -1,3 +1,12 @@
+---
+title: "React Component Structure: The Calm, Predictable Way"
+slug: react-component-structure
+date: 2025-02-27
+description: "A clean, consistent, scalable structure for React function components."
+tags: [react, components, architecture]
+draft: false
+---
+
 # React Component Structure: The Calm, Predictable Way to Write Function Components
 
 There’s no official law that says how a React function component must be structured.

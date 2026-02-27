@@ -17,6 +17,7 @@
 		"incremental": true,
 		"paths": {
 			"@/*": ["./src/*", "./*"],
+			"#velite": ["./.velite"]
 		},
 		"baseUrl": ".",
 		"plugins": [
