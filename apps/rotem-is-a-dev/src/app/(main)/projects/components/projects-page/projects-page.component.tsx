@@ -1,22 +1,35 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import type { Project, Technology } from '../../data/projects.data';
+import { type ChangeEvent, useCallback, useState, type ComponentType } from 'react';
+import type { Project } from '../../data/projects.data';
 import { ALL_TECHNOLOGIES, PROJECTS } from '../../data/projects.data';
 import { ProjectDemoDrawer } from '../project-demo-drawer/project-demo-drawer.component';
 import { ProjectsGrid } from '../projects-grid/projects-grid.component';
-import { TechnologyFilter } from '../technology-filter/technology-filter.component';
 import styles from './projects-page.module.scss';
+import { FilterPanel, TextInput, TechnologyFilter } from '@/app/components';
+import { DemoRenderer } from '../demo-renderer/demo-renderer.component';
 
 export const ProjectsPage = () => {
+	const [search, setSearch] = useState('');
 	const [selectedTechnologies, setSelectedTechnologies] = useState<
 		Technology[]
 	>([]);
-	const [selectedProject, setSelectedProject] = useState<Nullable<Project>>(null);
+	const [selectedProject, setSelectedProject] =
+		useState<Nullable<Project>>(null);
 
-	const toggleTechnology = useCallback((tech: Technology) => {
+	const handleSearchChange = useCallback(
+		(event: ChangeEvent<HTMLInputElement>) => {
+			setSearch(event.target.value);
+		},
+		[],
+	);
+
+	const toggleTechnology = useCallback((tech: string) => {
+		const value = tech as Technology;
 		setSelectedTechnologies(prev =>
-			prev.includes(tech) ? prev.filter(item => item !== tech) : [...prev, tech],
+			prev.includes(value)
+				? prev.filter(item => item !== value)
+				: [...prev, value],
 		);
 	}, []);
 
@@ -28,26 +41,38 @@ export const ProjectsPage = () => {
 		setSelectedProject(null);
 	}, []);
 
-	const filteredProjects =
-		selectedTechnologies.length === 0
-			? PROJECTS
-			: PROJECTS.filter(project =>
-					project.technologies.some(tech =>
-						selectedTechnologies.includes(tech),
-					),
-			  );
+	const searchLower = search.toLowerCase();
 
-	const DemoComponent = selectedProject?.demo;
+	const filteredProjects = PROJECTS.filter(project => {
+		const matchesTech =
+			selectedTechnologies.length === 0 ||
+			project.technologies.some(tech =>
+				selectedTechnologies.includes(tech),
+			);
+		const matchesSearch =
+			!search ||
+			project.slug.toLowerCase().includes(searchLower) ||
+			project.description.toLowerCase().includes(searchLower);
+		return matchesTech && matchesSearch;
+	});
+
+	const DemoComponent: Nullable<ComponentType> = selectedProject?.demo ?? null;
 
 	return (
 		<div className={styles.page}>
-			<div className={styles.filterPanel}>
+			<FilterPanel>
+				<TextInput
+					label="_search:"
+					value={search}
+					onChange={handleSearchChange}
+					placeholder="Search projects..."
+				/>
 				<TechnologyFilter
 					technologies={ALL_TECHNOLOGIES}
 					selected={selectedTechnologies}
 					onToggle={toggleTechnology}
 				/>
-			</div>
+			</FilterPanel>
 
 			<div className={styles.content}>
 				<ProjectsGrid
@@ -60,7 +85,7 @@ export const ProjectsPage = () => {
 				project={selectedProject}
 				onClose={handleCloseDrawer}
 			>
-				{DemoComponent && <DemoComponent />}
+				<DemoRenderer demo={DemoComponent} />
 			</ProjectDemoDrawer>
 		</div>
 	);
