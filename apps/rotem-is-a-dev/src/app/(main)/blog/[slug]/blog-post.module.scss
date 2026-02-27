@@ -6,25 +6,51 @@
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
-	padding: spacing(5) spacing(6);
+	padding: 0 spacing(6) spacing(5);
 
 	@include media-below('tablet') {
-		padding: spacing(3) spacing(2);
+		padding: 0 spacing(2) spacing(3);
 	}
 }
 
 .backLink {
+	position: sticky;
+	top: 0;
+	background-color: var(--surface);
+	padding-block-start: spacing(2.5);
+	padding-block-end: spacing(3);
+	z-index: 1;
+}
+
+.backLinkText {
 	display: inline-flex;
 	align-items: center;
 	gap: spacing(0.5);
 	color: var(--muted);
 	font-size: 0.8125rem;
 	text-decoration: none;
-	margin-block-end: spacing(3);
 	transition: color 0.2s;
 
 	&:hover {
 		color: var(--text);
+	}
+}
+
+// ─── Reading Progress Bar ─────────────────────────────────────────────────────
+
+.progressBar {
+	height: 2px;
+	margin-block-start: spacing(1);
+	background: var(--teal);
+	transform-origin: left;
+	transform: scaleX(0);
+	animation: progress-fill linear both;
+	animation-timeline: scroll(nearest);
+}
+
+@keyframes progress-fill {
+	to {
+		transform: scaleX(1);
 	}
 }
 
@@ -54,6 +80,9 @@
 	font-size: 0.8125rem;
 	color: var(--muted-dim);
 	margin-block-end: spacing(1.5);
+  .readingTime {
+    color: var(--cyan);
+  }
 }
 
 .tags {
@@ -72,9 +101,16 @@
 
 // Markdown content styles
 .content {
+  --blog-content-max-width: 82ch;
+  --blog-content-line-height: 1.75;
 	line-height: 1.75;
 	color: var(--text);
-	max-width: 72ch;
+	max-width: var(--blog-content-max-width);
+
+  @include media-below('tablet') {
+    --blog-content-line-height: 1.5;
+    --blog-content-max-width: 100%;
+  }
 
 	h1,
 	h2,
@@ -172,6 +208,7 @@
 		overflow-x: auto;
 		font-size: 0.8125rem;
 		line-height: 1.6;
+		tab-size: var(--code-tab-size);
 
 		code {
 			background: none;
