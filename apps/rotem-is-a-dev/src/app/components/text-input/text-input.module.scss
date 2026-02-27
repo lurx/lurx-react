@@ -1,0 +1,38 @@
+@use 'mixins/spacing' as *;
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+	padding: spacing(2) spacing(3);
+}
+
+.label {
+	font-weight: 450;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--muted);
+}
+
+.input {
+	width: 100%;
+	padding: spacing(1.5);
+	font: inherit;
+	font-weight: 450;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--muted);
+	background-color: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	outline: none;
+	transition: border-color 0.15s;
+
+	&::placeholder {
+		color: var(--muted-dim);
+	}
+
+	&:focus {
+		border-color: var(--muted);
+	}
+}
