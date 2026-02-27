@@ -3,7 +3,8 @@ import { Logo } from '../logo.component';
 import { DEFAULT_LOGO_SIZE, LOGO_SIZE_OBJECTS } from '../logo.constants';
 
 jest.mock('../logo.svg', () => ({
-	ReactComponent: (props: Record<string, unknown>) => (
+	__esModule: true,
+	default: (props: Record<string, unknown>) => (
 		<svg data-testid="logo-svg" {...props} />
 	),
 }));

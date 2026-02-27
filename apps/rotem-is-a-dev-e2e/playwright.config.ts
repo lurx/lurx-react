@@ -25,7 +25,7 @@ export default defineConfig({
 	},
 	/* Run your local dev server before starting the tests */
 	webServer: {
-		command: 'yarn nx run rotem-is-a-dev:serve-static',
+		command: 'pnpm nx run rotem-is-a-dev:serve-static',
 		url: 'http://localhost:3000',
 		reuseExistingServer: !process.env.CI,
 		cwd: workspaceRoot,

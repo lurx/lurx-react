@@ -10,6 +10,9 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
+	{
+		ignores: ['.next/**/*'],
+	},
 	...fixupConfigRules(compat.extends('next')),
 
 	...fixupConfigRules(compat.extends('next/core-web-vitals')),
@@ -17,6 +20,9 @@ module.exports = [
 	...baseConfig,
 	...nx.configs['flat/react-typescript'],
 	{
-		ignores: ['.next/**/*'],
+		files: ['**/next-env.d.ts'],
+		rules: {
+			'@typescript-eslint/triple-slash-reference': 'off',
+		},
 	},
 ];
