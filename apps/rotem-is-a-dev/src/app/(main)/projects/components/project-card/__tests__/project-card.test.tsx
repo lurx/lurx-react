@@ -40,6 +40,11 @@ describe('ProjectCard', () => {
 		).toBeInTheDocument();
 	});
 
+	it('renders the tech badge when primary technology has an icon mapping', () => {
+		render(<ProjectCard project={mockProject} />);
+		expect(screen.getByLabelText('react')).toBeInTheDocument();
+	});
+
 	it('renders without a tech badge when technology has no icon mapping', () => {
 		const project: Project = {
 			...mockProject,
