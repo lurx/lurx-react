@@ -1,0 +1,3 @@
+{
+	"buildCommand": "echo '#!/bin/sh\necho vercel' > /tmp/hostname && chmod +x /tmp/hostname && PATH=\"/tmp:$PATH\" npx nx build rotem-is-a-dev"
+}
