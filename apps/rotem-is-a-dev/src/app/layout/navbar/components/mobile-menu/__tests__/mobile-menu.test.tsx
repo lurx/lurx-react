@@ -103,24 +103,11 @@ describe('MobileMenu', () => {
 		expect(screen.getByText('_download-cv')).toBeInTheDocument();
 	});
 
-	it('renders the contact me action', () => {
-		render(<MobileMenu />);
-		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-		expect(screen.getByText('_contact-me')).toBeInTheDocument();
-	});
-
 	it('has correct href for download CV', () => {
 		render(<MobileMenu />);
 		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
 		const downloadLink = screen.getByText('_download-cv').closest('a');
 		expect(downloadLink).toHaveAttribute('href', '#downloadPdf');
-	});
-
-	it('has correct href for contact me', () => {
-		render(<MobileMenu />);
-		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-		const contactLink = screen.getByText('_contact-me').closest('a');
-		expect(contactLink).toHaveAttribute('href', '#contact-me');
 	});
 
 	it('closes the dropdown on route change', () => {

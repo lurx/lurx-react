@@ -22,11 +22,6 @@ describe('Navbar', () => {
 		expect(screen.getByText('_projects')).toBeInTheDocument();
 	});
 
-	it('renders the contact link', () => {
-		render(<Navbar />);
-		expect(screen.getByText('_contact-me')).toBeInTheDocument();
-	});
-
 	it('marks _hello as the active nav item when on the home page', () => {
 		render(<Navbar />);
 		const helloLink = screen.getByText('_hello').closest('a');
@@ -42,10 +37,6 @@ describe('Navbar', () => {
 		render(<Navbar />);
 		expect(screen.getByText('_hello').closest('a')).toHaveAttribute('href', '/');
 		expect(screen.getByText('_about-me').closest('a')).toHaveAttribute('href', '/about-me');
-		expect(screen.getByText('_contact-me').closest('a')).toHaveAttribute(
-			'href',
-			'#contact-me',
-		);
 	});
 
 	it('has a navigation landmark', () => {

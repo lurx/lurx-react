@@ -88,13 +88,13 @@ export const MobileMenu = () => {
 							/>
 							<span>_download-cv</span>
 						</a>
-						<a
+						{/* <a
 							href="#contact-me"
 							className={styles.navLink}
 							role="menuitem"
 						>
 							<span>_contact-me</span>
-						</a>
+						</a> */}
 					</div>
 				</div>
 			)}
