@@ -9,7 +9,10 @@ const config = {
 	],
 	transform: {
 		'^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
-		'^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/next/babel'] }],
+		'^.+\\.[tj]sx?$': [
+			'babel-jest',
+			{ presets: [['@nx/next/babel', { 'preset-react': { runtime: 'automatic' } }]] },
+		],
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	moduleNameMapper: {
@@ -28,4 +31,4 @@ const config = {
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };
 
-module.exports = config;
+export default config;

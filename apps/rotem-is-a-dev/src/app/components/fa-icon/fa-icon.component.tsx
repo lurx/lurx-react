@@ -5,9 +5,7 @@ import {
 import type { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil } from 'es-toolkit';
-export interface FaIconProps {
-	iconName: string;
-	iconGroup?: IconGroupName;
+export interface FaIconProps extends IconData {
 	size?: SizeProp;
 	className?: string;
 }

@@ -7,7 +7,7 @@ const mockProject: Project = {
 	number: 1,
 	slug: '_ui-animations',
 	description: 'A test project description.',
-	technologies: ['React', 'TypeScript'],
+	technologies: ['react', 'typescript'],
 };
 
 describe('ProjectCard', () => {
@@ -40,13 +40,18 @@ describe('ProjectCard', () => {
 		).toBeInTheDocument();
 	});
 
+	it('renders the tech badge when primary technology has an icon mapping', () => {
+		render(<ProjectCard project={mockProject} />);
+		expect(screen.getByLabelText('react')).toBeInTheDocument();
+	});
+
 	it('renders without a tech badge when technology has no icon mapping', () => {
 		const project: Project = {
 			...mockProject,
-			technologies: ['SCSS'],
+			technologies: ['scss'],
 		};
 		render(<ProjectCard project={project} />);
-		expect(screen.queryByLabelText('SCSS')).not.toBeInTheDocument();
+		expect(screen.queryByLabelText('scss')).not.toBeInTheDocument();
 	});
 
 	it('renders without tech badge when technologies array is empty', () => {
@@ -55,7 +60,7 @@ describe('ProjectCard', () => {
 			technologies: [],
 		};
 		render(<ProjectCard project={project} />);
-		expect(screen.queryByLabelText('React')).not.toBeInTheDocument();
+		expect(screen.queryByLabelText('react')).not.toBeInTheDocument();
 	});
 
 	describe('demo preview', () => {

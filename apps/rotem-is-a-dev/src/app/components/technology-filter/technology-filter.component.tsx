@@ -4,26 +4,28 @@ import { MobilePageTitle } from '@/app/(main)/components/mobile-page-title';
 import { FaIcon } from '@/app/components';
 import { useResponsive } from '@/hooks';
 import { useState } from 'react';
-import type { Technology } from '../../data/projects.data';
 import styles from './technology-filter.module.scss';
 import type { TechnologyFilterProps } from './technology-filter.types';
 
-const TECH_ICON_MAP: Record<
-	Technology,
-	{ iconName: string; iconGroup: string }
-> = {
-	React: { iconName: 'react', iconGroup: 'fab' },
-	TypeScript: { iconName: 'js', iconGroup: 'fab' },
-	HTML: { iconName: 'html5', iconGroup: 'fab' },
-	CSS: { iconName: 'css', iconGroup: 'fab' },
-	SCSS: { iconName: 'sass', iconGroup: 'fab' },
-  SVG: { iconName: 'file-svg', iconGroup: 'fas' },
+const reactIconData: IconData = { iconName: 'react', iconGroup: 'fab' };
+
+const TECH_ICON_MAP: Partial<Record<string, IconData>> = {
+	react: reactIconData,
+	typescript: { iconName: 'js', iconGroup: 'fab' },
+	html: { iconName: 'html5', iconGroup: 'fab' },
+	css: { iconName: 'css', iconGroup: 'fab' },
+	scss: { iconName: 'sass', iconGroup: 'fab' },
+	svg: { iconName: 'file-svg', iconGroup: 'fas' },
+	architecture: { iconName: 'chart-diagram', iconGroup: 'fal' },
+	'best-practices': { iconName: 'code', iconGroup: 'fal' },
+	components: reactIconData,
 };
 
 export const TechnologyFilter = ({
 	technologies,
 	selected,
 	onToggle,
+	sectionLabel = 'projects',
 }: TechnologyFilterProps) => {
 	const { isMobile } = useResponsive();
 	const [isCollapsed, setIsCollapsed] = useState(false);
@@ -34,7 +36,7 @@ export const TechnologyFilter = ({
 		<div
 			className={styles.filter}
 			role="group"
-			aria-label="Filter projects by technology"
+			aria-label={`Filter by ${sectionLabel}`}
 		>
 			<MobilePageTitle title="_projects" />
 
@@ -50,7 +52,7 @@ export const TechnologyFilter = ({
 						iconGroup="fas"
 					/>
 				</span>
-				<span className={styles.sectionLabel}>projects</span>
+				<span className={styles.sectionLabel}>{sectionLabel}</span>
 			</button>
 
 			{showTechList && (
@@ -87,7 +89,7 @@ export const TechnologyFilter = ({
 										<span className={styles.techIcon}>
 											<FaIcon
 												iconName={iconInfo.iconName}
-												iconGroup={iconInfo.iconGroup as 'fab' | 'fas'}
+												iconGroup={iconInfo.iconGroup}
 											/>
 										</span>
 									)}

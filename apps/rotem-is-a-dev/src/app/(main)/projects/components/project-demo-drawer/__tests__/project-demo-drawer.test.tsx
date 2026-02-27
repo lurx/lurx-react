@@ -40,7 +40,7 @@ const mockProject: Project = {
 	number: 1,
 	slug: '_wolverine-css',
 	description: 'A CSS art project.',
-	technologies: ['CSS', 'HTML'],
+	technologies: ['css', 'html'],
 };
 
 const defaultProps = {

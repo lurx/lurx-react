@@ -3,10 +3,10 @@ import styles from './project-card.module.scss';
 import type { ProjectCardProps } from './project-card.types';
 
 const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
-	React: { iconName: 'react', iconGroup: 'fab' },
-	TypeScript: { iconName: 'js', iconGroup: 'fab' },
-	HTML: { iconName: 'html5', iconGroup: 'fab' },
-	CSS: { iconName: 'css', iconGroup: 'fab' },
+	react: { iconName: 'react', iconGroup: 'fab' },
+	typescript: { iconName: 'js', iconGroup: 'fab' },
+	html: { iconName: 'html5', iconGroup: 'fab' },
+	css: { iconName: 'css', iconGroup: 'fab' },
 };
 
 export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
