@@ -113,4 +113,30 @@ const withSvgr = config => {
 	return config;
 };
 
-module.exports = composePlugins(...plugins, withSvgr)(nextConfig);
+class VeliteWebpackPlugin {
+	static started = false;
+	apply(/** @type {any} */ compiler) {
+		compiler.hooks.beforeCompile.tapPromise('VeliteWebpackPlugin', async () => {
+			if (VeliteWebpackPlugin.started) return;
+			VeliteWebpackPlugin.started = true;
+			const dev = compiler.options.mode === 'development';
+			const { build } = await import('velite');
+			await build({ watch: dev, clean: !dev });
+		});
+	}
+}
+
+// @ts-expect-error - Velite webpack plugin types not available
+const withVelite = config => {
+	const originalWebpack = config.webpack;
+	// @ts-expect-error - Velite webpack plugin types not available
+	config.webpack = (webpackConfig, ctx) => {
+		webpackConfig.plugins.push(new VeliteWebpackPlugin());
+		return originalWebpack
+			? originalWebpack(webpackConfig, ctx)
+			: webpackConfig;
+	};
+	return config;
+};
+
+module.exports = composePlugins(...plugins, withSvgr, withVelite)(nextConfig);

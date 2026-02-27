@@ -35,7 +35,7 @@ export const Skills = () => {
 };
 
 const SkillTag = ({ skill }: { skill: SkillObject }) => {
-	const { iconGroup, icon, name, level } = skill;
+	const { iconGroup, iconName: icon, name, level } = skill;
 	const fillPercent = (level / 10) * 100;
 	const brandColor = skillBrandColors[name] ?? '#646cff';
 
