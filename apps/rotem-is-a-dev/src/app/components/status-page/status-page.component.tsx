@@ -1,3 +1,4 @@
+import { AsciiArtRenderer } from '../ascii-art-renderer';
 import styles from './status-page.module.scss';
 import type { StatusPageComponentProps } from './status-page.types';
 
@@ -8,13 +9,7 @@ export const StatusPage = ({
 }: StatusPageComponentProps) => {
 	return (
 		<div className={styles.container}>
-			<pre
-				className={styles.asciiArt}
-				aria-label={asciiArtLabel}
-				aria-hidden={!asciiArtLabel}
-			>
-				{asciiArt}
-			</pre>
+			<AsciiArtRenderer asciiArt={asciiArt} asciiArtLabel={asciiArtLabel} />
 			<div className={styles.content}>{children}</div>
 		</div>
 	);

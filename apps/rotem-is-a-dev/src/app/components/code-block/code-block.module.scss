@@ -26,7 +26,7 @@
 	font-size: 0.9rem;
 	line-height: var(--a11y-line-height, 1.5);
 	white-space: pre;
-	tab-size: 2;
+	tab-size: var(--code-tab-size);
 	overflow: hidden;
 	margin: 0;
 	min-width: 0;

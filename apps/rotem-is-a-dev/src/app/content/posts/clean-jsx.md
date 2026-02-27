@@ -1,3 +1,12 @@
+---
+title: "The Do’s and Don’ts of Clean, Reusable React JSX"
+slug: clean-jsx
+date: 2025-02-27
+description: "Golden rules for writing JSX that’s clean, maintainable, and pleasing to your fellow developers."
+tags: [react, jsx, best-practices]
+draft: false
+---
+
 # 🧼 The Do’s and Don’ts of Clean, Reusable React JSX
 
 JSX is React’s bread and butter—a sweet syntax layer that makes our UI code feel intuitive and expressive. But just like butter, if you overdo it or spread it wrong, things get messy.

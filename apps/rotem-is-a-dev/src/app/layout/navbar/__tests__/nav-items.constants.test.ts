@@ -6,6 +6,7 @@ describe('NAV_ITEMS', () => {
 			{ label: 'hello', href: '/', enabled: true },
 			{ label: 'about-me', href: '/about-me', enabled: true },
 			{ label: 'projects', href: '/projects', enabled: true },
+			{ label: 'blog', href: '/blog', enabled: true },
 		]);
 	});
 

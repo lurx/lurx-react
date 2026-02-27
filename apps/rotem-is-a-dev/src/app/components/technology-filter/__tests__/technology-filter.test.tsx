@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { TechnologyFilter } from '../technology-filter.component';
-import type { Technology } from '../../../data/projects.data';
 
 const mockUseResponsive = jest.fn();
 
@@ -8,7 +7,7 @@ jest.mock('@/hooks', () => ({
 	useResponsive: () => mockUseResponsive(),
 }));
 
-const TECHNOLOGIES: Technology[] = ['React', 'HTML', 'CSS', 'SCSS'];
+const TECHNOLOGIES = ['react', 'html', 'css', 'scss'];
 
 beforeEach(() => {
 	mockUseResponsive.mockReturnValue({ isMobile: false, isTablet: false, isDesktop: true });
@@ -34,10 +33,10 @@ describe('TechnologyFilter', () => {
 				onToggle={() => undefined}
 			/>,
 		);
-		expect(screen.getByText('React')).toBeInTheDocument();
-		expect(screen.getByText('HTML')).toBeInTheDocument();
-		expect(screen.getByText('CSS')).toBeInTheDocument();
-		expect(screen.getByText('SCSS')).toBeInTheDocument();
+		expect(screen.getByText('react')).toBeInTheDocument();
+		expect(screen.getByText('html')).toBeInTheDocument();
+		expect(screen.getByText('css')).toBeInTheDocument();
+		expect(screen.getByText('scss')).toBeInTheDocument();
 	});
 
 	it('calls onToggle with the technology when a checkbox is clicked', () => {
@@ -49,19 +48,19 @@ describe('TechnologyFilter', () => {
 				onToggle={onToggle}
 			/>,
 		);
-		fireEvent.click(screen.getByRole('checkbox', { name: /React/ }));
-		expect(onToggle).toHaveBeenCalledWith('React');
+		fireEvent.click(screen.getByRole('checkbox', { name: /react/ }));
+		expect(onToggle).toHaveBeenCalledWith('react');
 	});
 
 	it('shows checked state for selected technologies', () => {
 		render(
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
-				selected={['React']}
+				selected={['react']}
 				onToggle={() => undefined}
 			/>,
 		);
-		const reactCheckbox = screen.getByRole('checkbox', { name: /React/ });
+		const reactCheckbox = screen.getByRole('checkbox', { name: /react/ });
 		expect(reactCheckbox).toBeChecked();
 	});
 
@@ -69,11 +68,11 @@ describe('TechnologyFilter', () => {
 		render(
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
-				selected={['React']}
+				selected={['react']}
 				onToggle={() => undefined}
 			/>,
 		);
-		const htmlCheckbox = screen.getByRole('checkbox', { name: /HTML/ });
+		const htmlCheckbox = screen.getByRole('checkbox', { name: /html/ });
 		expect(htmlCheckbox).not.toBeChecked();
 	});
 
@@ -90,7 +89,7 @@ describe('TechnologyFilter', () => {
 					onToggle={() => undefined}
 				/>,
 			);
-			expect(screen.getByText('React')).toBeInTheDocument();
+			expect(screen.getByText('react')).toBeInTheDocument();
 		});
 
 		it('hides the tech list when section header is clicked on mobile', () => {
@@ -104,7 +103,7 @@ describe('TechnologyFilter', () => {
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
 			fireEvent.click(sectionHeader);
 
-			expect(screen.queryByText('React')).not.toBeInTheDocument();
+			expect(screen.queryByText('react')).not.toBeInTheDocument();
 		});
 
 		it('shows the tech list again when section header is clicked twice on mobile', () => {
@@ -117,10 +116,10 @@ describe('TechnologyFilter', () => {
 			);
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
 			fireEvent.click(sectionHeader);
-			expect(screen.queryByText('React')).not.toBeInTheDocument();
+			expect(screen.queryByText('react')).not.toBeInTheDocument();
 
 			fireEvent.click(sectionHeader);
-			expect(screen.getByText('React')).toBeInTheDocument();
+			expect(screen.getByText('react')).toBeInTheDocument();
 		});
 
 		it('sets aria-expanded to false when collapsed on mobile', () => {
@@ -151,7 +150,7 @@ describe('TechnologyFilter', () => {
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
 			fireEvent.click(sectionHeader);
 
-			expect(screen.getByText('React')).toBeInTheDocument();
+			expect(screen.getByText('react')).toBeInTheDocument();
 			expect(sectionHeader).toHaveAttribute('aria-expanded', 'true');
 		});
 	});
