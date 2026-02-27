@@ -3,10 +3,7 @@ export type SocialLink = {
 	label: string;
 	displayText?: string;
 	hideLabel?: boolean;
-	icon: {
-		iconName: string;
-		iconGroup: IconGroupName;
-	};
+	icon: IconData;
 };
 
 export type SocialLinks = Record<string, SocialLink>;

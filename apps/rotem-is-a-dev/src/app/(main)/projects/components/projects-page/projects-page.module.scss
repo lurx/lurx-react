@@ -1,5 +1,4 @@
 @use 'mixins/media' as *;
-@use 'mixins/normalize-to-grid' as *;
 
 .page {
 	display: flex;
@@ -8,23 +7,6 @@
 
 	@include media-below('tablet') {
 		flex-direction: column;
-	}
-}
-
-// ─── Filter Panel ──────────────────────────────────────────────────────────────
-
-.filterPanel {
-	width: #{normalize-to-grid(311px)};
-	border-inline-end: 1px solid var(--border);
-	flex-shrink: 0;
-	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-
-	@include media-below('tablet') {
-		width: 100%;
-		border-inline-end: none;
-		border-block-end: 1px solid var(--border);
 	}
 }
 

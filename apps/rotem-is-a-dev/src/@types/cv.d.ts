@@ -26,16 +26,7 @@ interface CvContextValue {
 	languages: string[];
 }
 
-interface SkillObject {
+interface SkillObject extends IconData {
 	name: string;
-	icon?: string;
-	iconGroup?: IconGroupName;
 	level: number;
 }
-
-type IconGroupName =
-	| 'fab' // brands
-	| 'fal' // light
-	| 'far' // regular
-	| 'fas' // solid
-	| 'fass'; // sharp solid

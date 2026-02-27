@@ -1,0 +1,118 @@
+@use 'mixins/media' as *;
+
+.filter {
+	display: flex;
+	flex-direction: column;
+}
+
+// ─── Accordion Section ─────────────────────────────────────────────────────────
+
+.sectionHeader {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 24px;
+	cursor: default;
+	color: var(--text);
+	user-select: none;
+	width: 100%;
+	text-align: start;
+	background: none;
+	border: none;
+	font: inherit;
+
+	@include media-below('tablet') {
+		cursor: pointer;
+	}
+}
+
+.chevron {
+	flex-shrink: 0;
+	font-size: 0.857rem;
+	color: var(--muted);
+	transition: transform 0.15s;
+
+	&.collapsed {
+		transform: rotate(-90deg);
+	}
+}
+
+.sectionLabel {
+	flex: 1;
+}
+
+// ─── Technology Rows ───────────────────────────────────────────────────────────
+
+.techList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 12px;
+}
+
+.techRow {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	padding: 2px 12px;
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.15s;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.04);
+	}
+}
+
+.hiddenCheckbox {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+// ─── Checkbox ─────────────────────────────────────────────────────────────────
+
+.checkbox {
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--muted-dim);
+	border-radius: 2px;
+	background-color: var(--surface);
+	color: var(--text);
+	font-size: 0.857rem;
+	transition: background-color 0.15s;
+
+	&.checked {
+		background-color: var(--muted-dim);
+	}
+}
+
+// ─── Tech Label ────────────────────────────────────────────────────────────────
+
+.techLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--text);
+}
+
+.techIcon {
+	flex-shrink: 0;
+	font-size: 1.286rem;
+	color: var(--text);
+}
+
+.techName {
+	flex-shrink: 0;
+}
