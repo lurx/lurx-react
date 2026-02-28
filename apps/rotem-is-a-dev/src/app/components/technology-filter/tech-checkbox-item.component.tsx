@@ -1,7 +1,7 @@
 import { FaIcon } from '@/app/components';
 import styles from './technology-filter.module.scss';
 
-interface TechCheckboxItemProps {
+type TechCheckboxItemProps = {
 	tech: string;
 	isChecked: boolean;
 	onToggle: (tech: string) => void;

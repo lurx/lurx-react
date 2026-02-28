@@ -14,7 +14,7 @@ import { GameControls } from './components/game-controls.component';
 const CELL = 240 / GRID_COLS; // 16px per cell
 const SNAKE_COLOR = '#43d9ad';
 
-interface SnakeGameProps {
+type SnakeGameProps = {
 	onWin: () => void;
 	onSkip: () => void;
 }

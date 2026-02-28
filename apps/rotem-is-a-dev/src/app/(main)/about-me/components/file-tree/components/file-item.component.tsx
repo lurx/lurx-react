@@ -1,7 +1,7 @@
 import { FaIcon } from '@/app/components';
 import styles from '../file-tree.module.scss';
 
-interface FileItemProps {
+type FileItemProps = {
 	label: string;
 	active?: boolean;
 	onClick?: () => void;

@@ -1,7 +1,7 @@
 import type { ShikiLine } from './use-shiki-tokens.hook';
 import { getHighlighter } from './get-highlighter';
 
-interface HighlightCodeParams {
+type HighlightCodeParams = {
 	code: string;
 	language: 'javascript' | 'typescript' | 'json';
 }

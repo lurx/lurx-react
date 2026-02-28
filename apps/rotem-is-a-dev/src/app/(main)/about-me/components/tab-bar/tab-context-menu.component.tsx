@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './tab-context-menu.module.scss';
 
-interface TabContextMenuProps {
+type TabContextMenuProps = {
 	position: { x: number; y: number };
 	onClose: () => void;
 	onCloseOthers: () => void;

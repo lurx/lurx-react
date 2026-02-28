@@ -3,7 +3,7 @@ import { ABOUT_FILES, type AboutFileId, type SectionId } from '../../../data/abo
 import { FileItem } from './file-item.component';
 import styles from '../file-tree.module.scss';
 
-interface FileTreeSectionProps {
+type FileTreeSectionProps = {
 	id: SectionId;
 	files: string[];
 	activeFileId: Nullable<AboutFileId>;

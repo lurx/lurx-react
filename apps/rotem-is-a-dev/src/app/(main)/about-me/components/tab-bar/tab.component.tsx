@@ -3,7 +3,7 @@ import type { AboutFileId } from '../../data/about-files.data';
 import { ABOUT_FILES } from '../../data/about-files.data';
 import styles from './tab-bar.module.scss';
 
-interface TabProps {
+type TabProps = {
 	tabId: AboutFileId;
 	isActive: boolean;
 	onSelect: (fileId: AboutFileId) => void;

@@ -14,13 +14,13 @@ const SheepDemo = dynamic(
 	{ loading },
 );
 
-interface ProjectExternalUrl {
+type ProjectExternalUrl = {
 	origin: string;
 	url: string;
 	iconName?: string; // Optional, can be used to determine which icon to show
 }
 
-export interface Project {
+export type Project = {
 	id: number;
 	number: number;
 	slug: string;

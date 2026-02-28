@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import styles from './link.module.scss';
 
-interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+type LinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
 	href: string;
 }
 

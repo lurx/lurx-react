@@ -3,7 +3,7 @@ import type { Project } from '../../data/projects.data';
 import { ProjectCard } from '../project-card/project-card.component';
 import styles from './projects-grid.module.scss';
 
-interface ProjectsGridProps {
+type ProjectsGridProps = {
 	projects: Project[];
 	onViewProject?: (project: Project) => void;
 }

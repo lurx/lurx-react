@@ -3,7 +3,7 @@
 import { useResponsive } from '@/hooks';
 import styles from './mobile-page-title.module.scss';
 
-interface MobilePageTitleProps {
+type MobilePageTitleProps = {
 	title: string;
 }
 

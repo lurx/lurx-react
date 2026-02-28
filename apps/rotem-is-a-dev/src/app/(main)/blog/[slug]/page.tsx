@@ -5,7 +5,7 @@ import { BlogTagsList } from '../components';
 import styles from './blog-post.module.scss';
 import { BackToBlogLink, BlogPostHeader } from './components';
 
-interface BlogPostPageProps {
+type BlogPostPageProps = {
 	params: Promise<{ slug: string }>;
 }
 

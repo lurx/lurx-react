@@ -59,7 +59,7 @@ const toLines = (content: AboutFileContent): string[] => {
 const toLanguage = (content: AboutFileContent): 'javascript' | 'json' =>
 	content.format === 'json' ? 'json' : 'javascript';
 
-export interface AboutEditorProps {
+export type AboutEditorProps = {
 	content: AboutFileContent;
 }
 

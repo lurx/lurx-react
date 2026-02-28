@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
-interface HeroContextValue {
+type HeroContextValue = {
 	gameCompleted: boolean;
 	handleComplete: () => void;
 }

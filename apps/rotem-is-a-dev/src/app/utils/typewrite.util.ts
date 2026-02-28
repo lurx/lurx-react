@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 
-interface TypewriteOptions {
+type TypewriteOptions = {
 	baseDuration?: number;
 	charSpeed?: number;
 	setDataFullText?: boolean;
