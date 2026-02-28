@@ -92,6 +92,17 @@ npx nx g @nx/next:app demo
 - **Re-exports for backward compatibility**: When extracting types from a data/constants file that others already import from, add `export type { ... } from './file.types'` re-exports to avoid breaking existing consumers.
 - **Global ambient types**: Types shared across 3+ unrelated files (e.g. `ErrorPageProps`) go in `src/@types/*.d.ts` as ambient declarations (no import needed).
 
+### Utils and Helpers Conventions
+
+- **No pure logic in component files**: Functions that don't use React hooks or component state must not live in `.component.tsx` files. Extract them to dedicated files.
+- **Utils vs Helpers**:
+  - **Utils** are general-purpose, reusable across unrelated features. They live in `src/app/utils/` with the suffix `.util.ts` (e.g. `toggle-in-array.util.ts`).
+  - **Helpers** are feature/component-specific. They live alongside their component as `[component-name].helpers.ts` (e.g. `about-editor.helpers.ts`).
+- **What to extract**: Data transformations, filtering/sorting logic, formatting functions, DOM manipulation helpers, localStorage read/write logic, and any pure function defined at module scope outside the component.
+- **What stays in the component**: React hooks, event handlers that call `setState`, render helpers that return JSX, and any logic tightly coupled to the component lifecycle.
+- **Naming**: Use named exports. Helper files use the component's name prefix (e.g. `blog-page.helpers.ts` for `blog-page.component.tsx`).
+- **Constants**: If a constant is only used by the helpers (not the component directly), keep it in the `.helpers.ts` file. If shared, use a `.constants.ts` file.
+
 ### Animation Architecture
 
 - **GSAP Integration**: Complex timelines with `gsap.timeline()` for sequenced animations
