@@ -1,12 +1,8 @@
-import type { Post } from '#velite';
 import Link from 'next/link';
 import { formatDate } from '../blog-page.helpers';
 import styles from '../blog-page.module.scss';
+import type { BlogPostCardProps } from './blog-post-card.types';
 import { BlogTagsList } from './blog-tags';
-
-type BlogPostCardProps = {
-	post: Post;
-}
 
 export const BlogPostCard = ({ post }: BlogPostCardProps) => (
 	<li>

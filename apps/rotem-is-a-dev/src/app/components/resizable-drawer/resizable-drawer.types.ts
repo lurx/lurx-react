@@ -1,5 +1,10 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 
+export type DrawerHeaderProps = {
+	title?: ReactNode;
+	onClose: () => void;
+}
+
 export type ResizableDrawerProps = {
 	/** Whether the drawer is currently visible */
 	isOpen: boolean;

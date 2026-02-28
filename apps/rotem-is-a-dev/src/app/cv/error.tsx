@@ -24,11 +24,6 @@ try {
 
 const NUMBER_OF_LINES = 16;
 
-type ErrorPageProps = {
-	readonly error: Error & { digest?: string };
-	readonly reset: () => void;
-}
-
 export default function CVErrorPage({ error, reset }: ErrorPageProps) {
 	return (
 		<ErrorPage

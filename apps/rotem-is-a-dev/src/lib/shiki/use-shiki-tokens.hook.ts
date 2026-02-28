@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { ThemedToken } from 'shiki/core';
+import type { ShikiLine, UseShikiTokensParams } from './shiki.types';
 
-export type ShikiLine = {
-	tokens: ThemedToken[];
-}
-
-type UseShikiTokensParams = {
-	code: string;
-	language: 'javascript' | 'typescript' | 'json';
-}
+export type { ShikiLine } from './shiki.types';
 
 export function useShikiTokens({ code, language }: UseShikiTokensParams): Nullable<ShikiLine[]> {
 	const [lines, setLines] = useState<Nullable<ShikiLine[]>>(null);

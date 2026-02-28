@@ -25,3 +25,8 @@ export type UseSnakeGameReturn = SnakeGameState & {
 	startGame: () => void;
 	resetGame: () => void;
 }
+
+export type SnakeGameProps = {
+	onWin: () => void;
+	onSkip: () => void;
+}

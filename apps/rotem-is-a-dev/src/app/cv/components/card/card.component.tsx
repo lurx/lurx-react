@@ -1,9 +1,6 @@
 import type { PropsWithChildren } from 'react';
 import styles from './card.module.scss';
-
-type CardProps = {
-	id?: string;
-}
+import type { CardProps } from './card.types';
 
 export const Card = ({ id, children }: PropsWithChildren<CardProps>) => {
 	return (

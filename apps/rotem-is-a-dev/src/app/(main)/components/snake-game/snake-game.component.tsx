@@ -8,16 +8,11 @@ import {
 	useSnakeGame,
 } from './hooks/use-snake-game.hook';
 import styles from './snake-game.module.scss';
-import type { Position } from './snake-game.types';
+import type { Position, SnakeGameProps } from './snake-game.types';
 import { GameControls } from './components/game-controls.component';
 
 const CELL = 240 / GRID_COLS; // 16px per cell
 const SNAKE_COLOR = '#43d9ad';
-
-type SnakeGameProps = {
-	onWin: () => void;
-	onSkip: () => void;
-}
 
 export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -3,14 +3,7 @@
 import { useShikiTokens } from '@/lib/shiki';
 import classNames from 'classnames';
 import styles from './code-block.module.scss';
-
-type CodeBlockProps = {
-	code: string;
-	language?: 'typescript' | 'javascript' | 'json';
-	className?: string;
-	numberOfLines?: number;
-	'aria-label'?: string;
-}
+import type { CodeBlockProps } from './code-block.types';
 
 export const CodeBlock = ({
 	code,

@@ -2,12 +2,9 @@ import { posts } from '#velite';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogTagsList } from '../components';
+import type { BlogPostPageProps } from './blog-post-page.types';
 import styles from './blog-post.module.scss';
 import { BackToBlogLink, BlogPostHeader } from './components';
-
-type BlogPostPageProps = {
-	params: Promise<{ slug: string }>;
-}
 
 function getPostBySlug(slug: string) {
 	return posts.find(post => post.slug === slug && !post.draft);

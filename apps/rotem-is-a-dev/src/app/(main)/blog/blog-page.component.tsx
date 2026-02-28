@@ -1,16 +1,12 @@
 'use client';
 
-import type { Post } from '#velite';
 import { FilterPanel, TechnologyFilter, TextInput } from '@/app/components';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { getAllTags } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
+import type { BlogPageProps } from './blog-page.types';
 import { BlogPostCard } from './components/blog-post-card.component';
 import { NoPosts } from './components/no-posts.component';
-
-type BlogPageProps = {
-	posts: Post[];
-}
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
 	const [search, setSearch] = useState('');

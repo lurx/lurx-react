@@ -1,11 +1,6 @@
-import type { ReactNode } from 'react';
 import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
 import styles from './resizable-drawer.module.scss';
-
-type DrawerHeaderProps = {
-	title?: ReactNode;
-	onClose: () => void;
-}
+import type { DrawerHeaderProps } from './resizable-drawer.types';
 
 export const DrawerHeader = ({ title, onClose }: DrawerHeaderProps) => (
 	<div className={styles.header}>

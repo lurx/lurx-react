@@ -1,12 +1,7 @@
 import { toCodeLike } from '@/app/utils/to-code-like.util';
 import classNames from 'classnames';
 import styles from './mobile-menu.module.scss';
-
-type MobileNavItemProps = {
-	label: string;
-	href: string;
-	pathname: string;
-}
+import type { MobileNavItemProps } from './mobile-nav-item.types';
 
 export const MobileNavItem = ({ label, href, pathname }: MobileNavItemProps) => {
 	const isActive = pathname === href;

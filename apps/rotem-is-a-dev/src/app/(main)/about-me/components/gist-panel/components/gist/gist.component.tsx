@@ -1,14 +1,6 @@
 import { CodeBlock, FaIcon } from '@/app/components';
 import styles from '../../gist-panel.module.scss';
-
-type GistProps = {
-	title: string;
-	username: string;
-	createdAt: string;
-	detailsCount: number;
-	starsCount: number;
-	code: string;
-}
+import type { GistProps } from './gist.types';
 
 export const Gist = ({
 	title,

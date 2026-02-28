@@ -24,11 +24,6 @@ try {
 
 const NUMBER_OF_LINES = 14;
 
-type ErrorPageProps = {
-	readonly error: Error & { digest?: string };
-	readonly reset: () => void;
-}
-
 export default function RootErrorPage({ error, reset }: ErrorPageProps) {
 	return (
 		<div className="root-error-container">

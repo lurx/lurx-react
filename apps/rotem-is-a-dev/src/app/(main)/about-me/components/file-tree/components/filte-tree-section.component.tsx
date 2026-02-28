@@ -1,17 +1,8 @@
 import { FaIcon } from '@/app/components';
-import { ABOUT_FILES, type AboutFileId, type SectionId } from '../../../data/about-files.data';
+import { ABOUT_FILES, type AboutFileId } from '../../../data/about-files.data';
 import { FileItem } from './file-item.component';
+import type { FileTreeSectionProps } from './file-tree-section.types';
 import styles from '../file-tree.module.scss';
-
-type FileTreeSectionProps = {
-	id: SectionId;
-	files: string[];
-	activeFileId: Nullable<AboutFileId>;
-	toggleSection: (sectionId: string) => void;
-	isCollapsed: boolean;
-	onFileSelect: (fileId: AboutFileId) => void;
-	isMobile: boolean;
-}
 
 export const FileTreeSection = ({
 	id,

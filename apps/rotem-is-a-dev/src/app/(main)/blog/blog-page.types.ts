@@ -11,3 +11,7 @@ export type BlogTagsListProps = {
 export type BlogPostHeaderProps = {
   post: Post;
 }
+
+export type BlogPageProps = {
+  posts: Post[];
+}

@@ -1,17 +1,6 @@
-import type { JSX } from 'react';
 import styles from '../social-bar.module.scss';
-import type { SocialLink as SocialLinkData } from '../social-bar.types';
 import { SocialIcon } from './social-icon.component';
-
-type SocialLinkProps = {
-	link: SocialLinkData;
-	iconPosition?: 'start' | 'end' | 'hide';
-}
-
-type RenderItem = {
-	key: string;
-	element: Optional<JSX.Element>;
-}
+import type { RenderItem, SocialLinkProps } from './social-link.types';
 
 export const SocialLink = ({
 	link,
