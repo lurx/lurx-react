@@ -2,6 +2,7 @@
 
 import { useShikiTokens } from '@/lib/shiki';
 import classNames from 'classnames';
+import { ShikiCode } from '../shiki-code/shiki-code.component';
 import styles from './code-block.module.scss';
 import type { CodeBlockProps } from './code-block.types';
 
@@ -24,19 +25,7 @@ export const CodeBlock = ({
 			<pre className={styles.code} aria-label={ariaLabel}>
 				<code>
 					{shikiLines
-						? shikiLines.map((line, lineIndex) => (
-								<span key={`line-${lineIndex}`}>
-									{line.tokens.map((token, tokenIndex) => (
-										<span
-											key={`token-${lineIndex}-${tokenIndex}`}
-											style={{ color: token.color }}
-										>
-											{token.content}
-										</span>
-									))}
-									{'\n'}
-								</span>
-							))
+						? <ShikiCode lines={shikiLines} />
 						: code}
 				</code>
 			</pre>
