@@ -1,11 +1,10 @@
 'use client';
 
-import { FaIcon } from '@/app/components';
 import { useResponsive } from '@/hooks';
 import { useState } from 'react';
 import type { AboutFileId } from '../../data/about-files.data';
-import { ABOUT_FILES } from '../../data/about-files.data';
 import styles from './tab-bar.module.scss';
+import { Tab } from './tab.component';
 import { TabContextMenu } from './tab-context-menu.component';
 
 interface TabBarProps {
@@ -56,38 +55,14 @@ export const TabBar = ({
 			role="tablist"
 		>
 			{openTabs.map(tabId => (
-				<div
+				<Tab
 					key={tabId}
-					className={`${styles.tab} ${tabId === activeFileId ? styles.activeTab : ''}`}
-					role="tab"
-					aria-selected={tabId === activeFileId}
-					tabIndex={tabId === activeFileId ? 0 : -1}
-					onClick={() => onTabSelect(tabId)}
-					onKeyDown={event => {
-						if (event.key === 'Enter' || event.key === ' ') {
-							event.preventDefault();
-							onTabSelect(tabId);
-						}
-					}}
-					onContextMenu={event => handleContextMenu(tabId, event)}
-				>
-					<span>{ABOUT_FILES[tabId].title}</span>
-					<button
-						type="button"
-						className={styles.tabClose}
-						aria-label={`Close ${tabId} tab`}
-						onClick={event => {
-							event.stopPropagation();
-							onTabClose(tabId);
-						}}
-					>
-						<FaIcon
-							iconName="xmark"
-							iconGroup="fas"
-							size="xs"
-						/>
-					</button>
-				</div>
+					tabId={tabId}
+					isActive={tabId === activeFileId}
+					onSelect={onTabSelect}
+					onClose={onTabClose}
+					onContextMenu={handleContextMenu}
+				/>
 			))}
 
 			{contextMenu && (
