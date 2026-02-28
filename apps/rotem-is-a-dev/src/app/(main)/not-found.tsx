@@ -1,5 +1,4 @@
-import { ServerCodeBlock } from '@/app/components/code-block/server-code-block.component';
-import { StatusPage } from '@/app/components/status-page';
+import { ServerCodeBlock, StatusPage } from '@/app/components';
 import { ASCII_404 } from '@/ascii-art';
 
 const SNIPPET = `\

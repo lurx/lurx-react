@@ -1,7 +1,6 @@
 'use client';
 
-import { CodeBlock } from '@/app/components';
-import { ErrorPage } from '@/app/components/error-page';
+import { CodeBlock, ErrorPage } from '@/app/components';
 import { ASCII_ERROR } from '@/ascii-art';
 import './(main)/styles/global.scss';
 import './root-error.css';

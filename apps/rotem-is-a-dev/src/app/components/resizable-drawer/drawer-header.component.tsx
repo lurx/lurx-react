@@ -1,4 +1,4 @@
-import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
+import { FaIcon } from '../fa-icon';
 import styles from './resizable-drawer.module.scss';
 import type { DrawerHeaderProps } from './resizable-drawer.types';
 

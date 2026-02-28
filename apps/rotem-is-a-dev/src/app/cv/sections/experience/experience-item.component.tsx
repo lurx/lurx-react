@@ -1,6 +1,7 @@
 import styles from './experience.module.scss';
+import type { ExperienceItemProps } from './experience-item.types';
 
-export const ExperienceItem = ({ job }: { job: ExperienceItem }) => {
+export const ExperienceItem = ({ job }: ExperienceItemProps) => {
 	return (
 		<div
 			key={job.position}

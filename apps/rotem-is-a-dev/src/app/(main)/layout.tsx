@@ -5,10 +5,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { PropsWithChildren } from 'react';
 import { Navbar, SocialBar } from '../layout/';
-import { BorderLines } from './components/entry-animation/border-lines.component';
-import { EntryAnimation } from './components/entry-animation/entry-animation.component';
-import { EntryAnimationProvider } from './components/entry-animation/entry-animation.context';
-import { ReplayButton } from './components/entry-animation/replay-button.component';
+import { BorderLines, EntryAnimation, EntryAnimationProvider, ReplayButton } from './components/entry-animation';
 import styles from './page.module.scss';
 config.autoAddCss = false;
 

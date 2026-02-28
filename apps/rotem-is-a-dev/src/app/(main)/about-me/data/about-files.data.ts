@@ -1,4 +1,4 @@
-import cv from '@/data/cv';
+import cv from '@/data/cv.data';
 import type {
 	AboutFileContent,
 	AboutFileId,

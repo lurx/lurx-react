@@ -9,9 +9,6 @@ jest.mock('@/app/components', () => ({
 	CodeBlock: ({ code }: { code: string }) => (
 		<pre data-testid="code-block"><code>{code}</code></pre>
 	),
-}));
-
-jest.mock('@/app/components/error-page', () => ({
 	ErrorPage: ({ asciiArt, asciiArtLabel, reset, children }: { asciiArt: string; asciiArtLabel?: string; reset: () => void; children: React.ReactNode }) => (
 		<div>
 			<pre aria-label={asciiArtLabel} aria-hidden={!asciiArtLabel}>{asciiArt}</pre>

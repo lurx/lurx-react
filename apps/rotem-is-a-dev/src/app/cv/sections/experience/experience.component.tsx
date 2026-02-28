@@ -1,19 +1,16 @@
 'use client';
 
-import { Card } from '@/app/cv/components/card';
+import { Card } from '@/app/cv/components';
 import { useCV } from '@/app/cv/context/cv.context';
 
-import { Flex } from '@/app/components/flex';
+import { Flex } from '@/app/components';
 import { ExperienceItem } from './experience-item.component';
+import { sortByEndDate } from './experience.helpers';
 
 export const Experience = () => {
 	const { work_experience } = useCV();
 
-	const sortedExperience = [...work_experience].sort((jobA, jobB) => {
-		if (jobA.duration.end === 'Present') return -1;
-		if (jobB.duration.end === 'Present') return 1;
-		return jobB.duration.end - jobA.duration.end;
-	});
+	const sortedExperience = sortByEndDate(work_experience);
 
 	return (
 		<Card id="work_experience">
