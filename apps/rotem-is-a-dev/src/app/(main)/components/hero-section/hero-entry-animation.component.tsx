@@ -1,6 +1,6 @@
 'use client';
 
-import { useHeroEntryAnimation } from './use-hero-entry-animation.hook';
+import { useHeroEntryAnimation } from './hooks/use-hero-entry-animation.hook';
 
 export const HeroEntryAnimation = () => {
 	useHeroEntryAnimation();

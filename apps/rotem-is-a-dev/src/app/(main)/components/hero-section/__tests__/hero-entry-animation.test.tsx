@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 
-jest.mock('../use-hero-entry-animation.hook', () => ({
+jest.mock('../hooks/use-hero-entry-animation.hook', () => ({
 	useHeroEntryAnimation: jest.fn(),
 }));
 
 import { HeroEntryAnimation } from '../hero-entry-animation.component';
-import { useHeroEntryAnimation } from '../use-hero-entry-animation.hook';
+import { useHeroEntryAnimation } from '../hooks/use-hero-entry-animation.hook';
 
 const mockUseHeroEntryAnimation = useHeroEntryAnimation as jest.MockedFunction<
 	typeof useHeroEntryAnimation
