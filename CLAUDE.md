@@ -80,7 +80,17 @@ npx nx g @nx/next:app demo
 
 - **Strict mode enabled**: No `any` types allowed
 - **Import types**: Use `import type` for type-only imports
-- **Custom types**: Define in `src/types/` directories
+- **Global types**: Ambient declarations in `src/@types/*.d.ts` (e.g. `site-general.d.ts`, `error-page.d.ts`)
+
+### Type File Conventions
+
+- **No inline type definitions**: Never define types directly in `.component.tsx`, `.context.tsx`, `.hook.ts`, `.util.ts`, or `.data.ts` files.
+- **Co-located `.types.ts` files**: Every file's types go in a sibling `[file-name].types.ts` (e.g. `flex.types.ts` for `flex.component.tsx`).
+- **Export with `export type`**: All types in `.types.ts` files must use `export type`.
+- **Import with `import type`**: Source files import from their `.types.ts` using `import type { ... } from './file.types'`.
+- **Shared types across files**: If a type is used by multiple sibling files, place it in a shared `.types.ts` (e.g. `shiki.types.ts` for both `highlight-code.ts` and `use-shiki-tokens.hook.ts`).
+- **Re-exports for backward compatibility**: When extracting types from a data/constants file that others already import from, add `export type { ... } from './file.types'` re-exports to avoid breaking existing consumers.
+- **Global ambient types**: Types shared across 3+ unrelated files (e.g. `ErrorPageProps`) go in `src/@types/*.d.ts` as ambient declarations (no import needed).
 
 ### Animation Architecture
 
