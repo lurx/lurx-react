@@ -1,7 +1,6 @@
 'use client';
 
 import { FaIcon } from '@/app/components';
-import { toCodeLike } from '@/app/utils/to-code-like.util';
 import { useOnClickOutside } from '@/hooks';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
@@ -9,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import { NAV_ITEMS } from '../../nav-items.constants';
 import styles from './mobile-menu.module.scss';
+import { MobileNavItem } from './mobile-nav-item.component';
 
 export const MobileMenu = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -61,18 +61,12 @@ export const MobileMenu = () => {
 
 					<ul className={styles.navList}>
 						{NAV_ITEMS.filter(item => item.enabled).map(({ label, href }) => (
-							<li key={label}>
-								<a
-									href={href}
-									className={classNames(styles.navLink, {
-										[styles.active]: pathname === href,
-									})}
-									aria-current={pathname === href ? 'page' : undefined}
-									role="menuitem"
-								>
-									{toCodeLike(label, { prefix: '_', convertCase: 'kebab-case' })}
-								</a>
-							</li>
+							<MobileNavItem
+								key={label}
+								label={label}
+								href={href}
+								pathname={pathname}
+							/>
 						))}
 					</ul>
 
