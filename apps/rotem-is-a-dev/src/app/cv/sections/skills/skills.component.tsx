@@ -1,7 +1,6 @@
 'use client';
 
-import { FaIcon } from '@/app/components/fa-icon';
-import { Flex } from '@/app/components/flex/flex.component';
+import { FaIcon, Flex } from '@/app/components';
 import { useCV } from '@/app/cv/context/cv.context';
 import styles from './skills.module.scss';
 

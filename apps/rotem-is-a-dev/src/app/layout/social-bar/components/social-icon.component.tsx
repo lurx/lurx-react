@@ -1,4 +1,4 @@
-import { FaIcon } from '@/app/components/fa-icon';
+import { FaIcon } from '@/app/components';
 import styles from '../social-bar.module.scss';
 import type { SocialLink } from '../social-bar.types';
 

@@ -3,11 +3,11 @@
 import { type ChangeEvent, useCallback, useState, type ComponentType } from 'react';
 import type { Project } from '../../data/projects.data';
 import { ALL_TECHNOLOGIES, PROJECTS } from '../../data/projects.data';
-import { ProjectDemoDrawer } from '../project-demo-drawer/project-demo-drawer.component';
-import { ProjectsGrid } from '../projects-grid/projects-grid.component';
-import styles from './projects-page.module.scss';
 import { FilterPanel, TextInput, TechnologyFilter } from '@/app/components';
-import { DemoRenderer } from '../demo-renderer/demo-renderer.component';
+import { DemoRenderer } from '../demo-renderer';
+import { ProjectDemoDrawer } from '../project-demo-drawer';
+import { ProjectsGrid } from '../projects-grid';
+import styles from './projects-page.module.scss';
 
 export const ProjectsPage = () => {
 	const [search, setSearch] = useState('');

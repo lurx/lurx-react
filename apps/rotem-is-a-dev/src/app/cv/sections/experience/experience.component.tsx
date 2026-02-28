@@ -1,9 +1,9 @@
 'use client';
 
-import { Card } from '@/app/cv/components/card';
+import { Card } from '@/app/cv/components';
 import { useCV } from '@/app/cv/context/cv.context';
 
-import { Flex } from '@/app/components/flex';
+import { Flex } from '@/app/components';
 import { ExperienceItem } from './experience-item.component';
 
 export const Experience = () => {

@@ -2,7 +2,7 @@ import { byPrefixAndName } from '@awesome.me/kit-1d40de302b/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../navbar.module.scss';
 import Link from 'next/link';
-import { Logo, LOGO_SIZES } from '@/app/components/logo';
+import { Logo, LOGO_SIZES } from '@/app/components';
 import type { NavBarLogoProps } from './navbar-logo.types';
 
 export const NavbarLogo = ({ title }: NavBarLogoProps) => (

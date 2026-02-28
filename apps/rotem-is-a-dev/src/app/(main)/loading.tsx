@@ -1,4 +1,4 @@
-import { AnimatedLoader } from '@/app/components/loaders/animated-loader';
+import { AnimatedLoader } from '@/app/components';
 
 export default function MainLoading() {
 	return (

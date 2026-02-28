@@ -3,7 +3,7 @@
 import gsap from 'gsap';
 import { useEffect } from 'react';
 import { typewrite } from '@/app/utils/typewrite.util';
-import { useEntryAnimation } from '../entry-animation/entry-animation.context';
+import { useEntryAnimation } from '../entry-animation';
 
 const INTRO_ORDER = ['greeting', 'name', 'role', 'comment', 'const'] as const;
 type IntroKey = (typeof INTRO_ORDER)[number];

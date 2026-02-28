@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ProjectsPage } from './components/projects-page/projects-page.component';
+import { ProjectsPage } from './components';
 
 export const metadata: Metadata = {
 	title: 'Projects',

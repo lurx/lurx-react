@@ -1,6 +1,6 @@
 'use client';
 
-import { ShikiCode } from '@/app/components/shiki-code/shiki-code.component';
+import { ShikiCode } from '@/app/components';
 import { useShikiTokens } from '@/lib/shiki';
 import { useMemo } from 'react';
 import type {

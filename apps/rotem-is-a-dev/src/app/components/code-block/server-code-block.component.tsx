@@ -1,6 +1,6 @@
 import { highlightCode } from '@/lib/shiki/highlight-code';
 import classNames from 'classnames';
-import { ShikiCode } from '../shiki-code/shiki-code.component';
+import { ShikiCode } from '../shiki-code';
 import styles from './code-block.module.scss';
 import type { ServerCodeBlockProps } from './code-block.types';
 
