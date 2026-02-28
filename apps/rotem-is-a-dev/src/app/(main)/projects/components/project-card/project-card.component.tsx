@@ -13,6 +13,7 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 	const DemoComponent = project.demo;
+	const handleViewProject = onViewProject ? () => onViewProject(project) : undefined;
 
 	const previewContent = DemoComponent
 		? <div className={styles.demoPreview} aria-hidden="true">
@@ -50,11 +51,11 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 
 				<div className={styles.textContent}>
 					<p className={styles.description}>{project.description}</p>
-					{onViewProject && (
+					{handleViewProject && (
 						<button
 							type="button"
 							className={styles.viewButton}
-							onClick={() => onViewProject(project)}
+							onClick={handleViewProject}
 							aria-label={`View project ${project.slug}`}
 						>
 							view-project

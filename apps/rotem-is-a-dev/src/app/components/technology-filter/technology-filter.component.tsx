@@ -32,6 +32,10 @@ export const TechnologyFilter = ({
 
 	const showTechList = !isMobile || !isCollapsed;
 
+	const handleToggleCollapse = () => {
+		if (isMobile) setIsCollapsed(prev => !prev);
+	};
+
 	return (
 		<div
 			className={styles.filter}
@@ -44,7 +48,7 @@ export const TechnologyFilter = ({
 				type="button"
 				className={styles.sectionHeader}
 				aria-expanded={showTechList}
-				onClick={() => isMobile && setIsCollapsed(prev => !prev)}
+				onClick={handleToggleCollapse}
 			>
 				<span className={`${styles.chevron} ${isCollapsed ? styles.collapsed : ''}`}>
 					<FaIcon
