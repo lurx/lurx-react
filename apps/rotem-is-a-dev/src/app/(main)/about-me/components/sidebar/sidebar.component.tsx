@@ -1,5 +1,4 @@
 import { useResponsive } from '@/hooks';
-import type { AboutFileId } from '../../data/about-files.data';
 import {
 	getFileSection,
 	SECTIONS,
@@ -7,11 +6,7 @@ import {
 } from '../../data/about-files.data';
 import { SideBarButton } from '../sidebar-button';
 import styles from './sidebar.module.scss';
-
-interface SideBarProps {
-	activeFileId: Nullable<AboutFileId>;
-	onFileSelect: (fileId: AboutFileId) => void;
-}
+import type { SideBarProps } from './sidebar.types';
 
 export const SideBar = ({ activeFileId, onFileSelect }: SideBarProps) => {
 	const { isMobile } = useResponsive();

@@ -1,10 +1,5 @@
-import type { ShikiLine } from './use-shiki-tokens.hook';
 import { getHighlighter } from './get-highlighter';
-
-interface HighlightCodeParams {
-	code: string;
-	language: 'javascript' | 'typescript' | 'json';
-}
+import type { HighlightCodeParams, ShikiLine } from './shiki.types';
 
 export async function highlightCode({ code, language }: HighlightCodeParams): Promise<ShikiLine[]> {
 	const highlighter = await getHighlighter();

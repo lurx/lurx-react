@@ -11,11 +11,13 @@ export const HeroBlurs = () => (
 	<div className={styles.heroBlurs}>
 		<GreenBlur
 			className={styles.greenBlur}
-			{...BLUR_SIZES}
+			width={BLUR_SIZES.width}
+			height={BLUR_SIZES.height}
 		/>
 		<BlueBlur
 			className={styles.blueBlur}
-			{...BLUR_SIZES}
+			width={BLUR_SIZES.width}
+			height={BLUR_SIZES.height}
 		/>
 	</div>
 );

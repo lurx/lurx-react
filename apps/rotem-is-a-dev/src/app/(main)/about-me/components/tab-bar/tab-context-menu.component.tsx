@@ -1,14 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './tab-context-menu.module.scss';
-
-interface TabContextMenuProps {
-	position: { x: number; y: number };
-	onClose: () => void;
-	onCloseOthers: () => void;
-	onCloseAll: () => void;
-	onDismiss: () => void;
-}
+import type { TabContextMenuProps } from './tab-context-menu.types';
 
 export const TabContextMenu = ({
 	position,
@@ -45,6 +38,10 @@ export const TabContextMenu = ({
 		onDismiss();
 	};
 
+	const handleCloseClick = () => handleAction(onClose);
+	const handleCloseOthersClick = () => handleAction(onCloseOthers);
+	const handleCloseAllClick = () => handleAction(onCloseAll);
+
 	return createPortal(
 		<menu
 			ref={menuRef}
@@ -56,7 +53,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onClose)}
+					onClick={handleCloseClick}
 				>
 					Close
 				</button>
@@ -65,7 +62,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onCloseOthers)}
+					onClick={handleCloseOthersClick}
 				>
 					Close Others
 				</button>
@@ -74,7 +71,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onCloseAll)}
+					onClick={handleCloseAllClick}
 				>
 					Close All
 				</button>

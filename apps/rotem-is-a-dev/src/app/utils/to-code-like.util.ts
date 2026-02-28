@@ -1,16 +1,4 @@
-interface ToCodeLikeOptions {
-	// options for the function can be added here in the future
-	prefix?: string; // e.g. to add a specific prefix to the output
-	convertCase?: StringCaseOption; // e.g. to specify the case conversion
-}
-
-type StringCaseOption =
-	| 'lowercase'
-	| 'uppercase'
-	| 'camelCase'
-	| 'snake_case'
-	| 'kebab-case'
-	| 'comment';
+import type { StringCaseOption, ToCodeLikeOptions } from './to-code-like.types';
 
 const TO_CODE_LIKE_DEFAULT_OPTIONS: ToCodeLikeOptions = {
 	convertCase: 'lowercase',

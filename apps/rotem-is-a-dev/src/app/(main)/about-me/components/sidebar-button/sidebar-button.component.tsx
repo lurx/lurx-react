@@ -1,12 +1,6 @@
 import { FaIcon } from '@/app/components';
 import styles from './sidebar-button.module.scss';
-
-interface SideBarButtonProps {
-	ariaLabel: string;
-	iconName: string;
-	isActive?: boolean;
-	onClick?: () => void;
-}
+import type { SideBarButtonProps } from './sidebar-button.types';
 
 export const SideBarButton = ({
 	ariaLabel,

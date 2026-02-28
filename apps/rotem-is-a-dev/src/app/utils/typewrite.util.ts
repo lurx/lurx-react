@@ -1,10 +1,5 @@
 import gsap from 'gsap';
-
-interface TypewriteOptions {
-	baseDuration?: number;
-	charSpeed?: number;
-	setDataFullText?: boolean;
-}
+import type { TypewriteOptions } from './typewrite.types';
 
 export const typewrite = (el: HTMLElement, opts?: TypewriteOptions) => {
 	const { baseDuration = 0.4, charSpeed = 0.055, setDataFullText = false } = opts ?? {};

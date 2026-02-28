@@ -6,8 +6,6 @@ type Technology =
 	| 'scss'
 	| 'svg';
 
-
-
 type IconGroupName =
 	| 'fab' // brands
 	| 'fal' // light

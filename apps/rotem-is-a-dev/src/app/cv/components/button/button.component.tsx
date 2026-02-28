@@ -1,12 +1,7 @@
 import classnames from 'classnames';
 import type { PropsWithChildren } from 'react';
 import styles from './button.module.scss';
-
-interface ButtonProps {
-	variant?: 'primary' | 'secondary' | 'ghost';
-	onClick: () => void;
-	disabled?: boolean;
-}
+import type { ButtonProps } from './button.types';
 
 export const Button = ({
 	variant = 'primary',

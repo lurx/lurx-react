@@ -13,6 +13,24 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 	const DemoComponent = project.demo;
+	const handleViewProject = onViewProject ? () => onViewProject(project) : undefined;
+
+	const previewContent = DemoComponent
+		? <div className={styles.demoPreview} aria-hidden="true">
+				<div className={styles.demoPreviewScaler}>
+					<DemoComponent />
+				</div>
+			</div>
+		: <div className={styles.imagePlaceholder} />;
+
+	const techBadge = techIcon
+		? <div className={styles.techBadge} aria-label={primaryTech}>
+				<FaIcon
+					iconName={techIcon.iconName}
+					iconGroup={techIcon.iconGroup as 'fab' | 'fas'}
+				/>
+			</div>
+		: null;
 
 	return (
 		<article
@@ -27,35 +45,17 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 
 			<div className={styles.cardBody}>
 				<div className={styles.imageWrapper}>
-					{DemoComponent ? (
-						<div className={styles.demoPreview} aria-hidden="true">
-							<div className={styles.demoPreviewScaler}>
-								<DemoComponent />
-							</div>
-						</div>
-					) : (
-						<div className={styles.imagePlaceholder} />
-					)}
-					{techIcon && (
-						<div
-							className={styles.techBadge}
-							aria-label={primaryTech}
-						>
-							<FaIcon
-								iconName={techIcon.iconName}
-								iconGroup={techIcon.iconGroup as 'fab' | 'fas'}
-							/>
-						</div>
-					)}
+					{previewContent}
+					{techBadge}
 				</div>
 
 				<div className={styles.textContent}>
 					<p className={styles.description}>{project.description}</p>
-					{onViewProject && (
+					{handleViewProject && (
 						<button
 							type="button"
 							className={styles.viewButton}
-							onClick={() => onViewProject(project)}
+							onClick={handleViewProject}
 							aria-label={`View project ${project.slug}`}
 						>
 							view-project

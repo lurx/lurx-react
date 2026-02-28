@@ -36,7 +36,15 @@ export const GistPanel = () => {
 
 			<div className={styles.snippets}>
 				{GISTS.map(gist => (
-					<Gist key={gist.title} {...gist} />
+					<Gist
+						key={gist.title}
+						title={gist.title}
+						username={gist.username}
+						createdAt={gist.createdAt}
+						detailsCount={gist.detailsCount}
+						starsCount={gist.starsCount}
+						code={gist.code}
+					/>
 				))}
 			</div>
 		</div>

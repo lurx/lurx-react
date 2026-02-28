@@ -1,17 +1,12 @@
 'use client';
 
-import type { Post } from '#velite';
 import { FilterPanel, TechnologyFilter, TextInput } from '@/app/components';
-import Link from 'next/link';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { formatDate, getAllTags } from './blog-page.helpers';
+import { getAllTags } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
-import { BlogTagsList } from './components';
+import type { BlogPageProps } from './blog-page.types';
+import { BlogPostCard } from './components/blog-post-card.component';
 import { NoPosts } from './components/no-posts.component';
-
-interface BlogPageProps {
-	posts: Post[];
-}
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
 	const [search, setSearch] = useState('');
@@ -50,6 +45,14 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		return matchesTags && matchesSearch;
 	});
 
+	const postListContent = filteredPosts.length === 0
+		? <NoPosts />
+		: <ul className={styles.list}>
+				{filteredPosts.map(post => (
+					<BlogPostCard key={post.slug} post={post} />
+				))}
+			</ul>;
+
 	return (
 		<div className={styles.page}>
 			<FilterPanel>
@@ -68,36 +71,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 			</FilterPanel>
 
 			<div className={styles.content}>
-				{filteredPosts.length === 0 ? (
-          <NoPosts />
-				) : (
-					<ul className={styles.list}>
-						{filteredPosts.map(post => (
-							<li key={post.slug}>
-								<Link
-									href={`/blog/${post.slug}`}
-									className={styles.card}
-								>
-									<h2 className={styles.cardTitle}>
-										{post.title}
-									</h2>
-									<div className={styles.cardMeta}>
-										<time dateTime={post.date}>
-											{formatDate(post.date)}
-										</time>
-										<span>
-											{post.metadata.readingTime} min read
-										</span>
-									</div>
-									<p className={styles.cardDescription}>
-										{post.description}
-									</p>
-									<BlogTagsList tags={post.tags} />
-								</Link>
-							</li>
-						))}
-					</ul>
-				)}
+				{postListContent}
 			</div>
 		</div>
 	);

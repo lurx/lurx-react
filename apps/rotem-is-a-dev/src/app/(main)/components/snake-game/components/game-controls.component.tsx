@@ -3,12 +3,7 @@
 import styles from '../snake-game.module.scss';
 import { ArrowKeys } from './arrow-keys/arrow-keys.component';
 import { SnakeGameInstructions } from './game-instructions.component';
-
-interface GameControlsProps {
-	totalFood: number;
-	displayedRemaining: number;
-	onSkip: () => void;
-}
+import type { GameControlsProps } from './game-controls.types';
 
 export const GameControls = ({
 	totalFood,
@@ -17,7 +12,7 @@ export const GameControls = ({
 }: GameControlsProps) => {
 	const foodDots = Array.from({ length: totalFood }, (_, index) => (
 		<svg
-			key={index}
+			key={`food-${index}`}
 			xmlns="http://www.w3.org/2000/svg"
 			width="21"
 			height="21"
@@ -72,7 +67,7 @@ export const GameControls = ({
 
 			<button
 				className={styles.skipButton}
-				onClick={() => onSkip()}
+				onClick={onSkip}
 				aria-label="Skip game"
 				data-hero-text="skip"
 			>

@@ -1,24 +1,7 @@
 import classNames from 'classnames';
 import type { PropsWithChildren } from 'react';
 import styles from './flex.module.scss';
-
-type FlexDirection = 'row' | 'column';
-type FlexWrap = 'nowrap' | 'wrap';
-type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-type FlexAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-type FlexGap = 'none' | 'small' | 'medium' | 'large' | 'xlarge';
-
-interface FlexProps {
-	tag?: React.ElementType;
-	direction?: FlexDirection;
-	wrap?: FlexWrap;
-	justify?: FlexJustify;
-	align?: FlexAlign;
-	gap?: FlexGap;
-	id?: string;
-	className?: string;
-  style?: React.CSSProperties;
-}
+import type { FlexProps } from './flex.types';
 
 export const Flex = ({
 	id,

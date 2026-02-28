@@ -1,15 +1,6 @@
 import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
-
-type EventType =
-	| 'mousedown'
-	| 'mouseup'
-	| 'touchstart'
-	| 'touchend'
-	| 'focusin'
-	| 'focusout';
-
-  type AllowedElements = HTMLElement | Document;
+import type { AllowedElements, EventType } from './use-on-click-outside.types';
 
 export function useOnClickOutside<T extends AllowedElements = AllowedElements>(
 	ref: RefObject<Nullable<T> | null> | RefObject<Nullable<T> | null>[],

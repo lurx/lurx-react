@@ -2,12 +2,8 @@ import { FaIcon } from '@/app/components';
 import classNames from 'classnames';
 import { useSnakeGame } from '../../hooks/use-snake-game.hook';
 import styles from '../../snake-game.module.scss';
-import type { ArrowDirection } from '../../snake-game.types';
 import { KEY_LABELS } from './arrow-keys.constants';
-
-interface ArrowKeyProps {
-	direction: ArrowDirection;
-}
+import type { ArrowKeyProps } from './arrow-key.types';
 
 export const ArrowKey = ({ direction }: ArrowKeyProps) => {
 	const { activeKey } = useSnakeGame();
