@@ -17,7 +17,7 @@ export const GameControls = ({
 }: GameControlsProps) => {
 	const foodDots = Array.from({ length: totalFood }, (_, index) => (
 		<svg
-			key={index}
+			key={`food-${index}`}
 			xmlns="http://www.w3.org/2000/svg"
 			width="21"
 			height="21"

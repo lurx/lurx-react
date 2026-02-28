@@ -31,11 +31,11 @@ export const CodeBlock = ({
 			<pre className={styles.code} aria-label={ariaLabel}>
 				<code>
 					{shikiLines
-						? shikiLines.map((line, index) => (
-								<span key={line.toString() + index}>
+						? shikiLines.map((line, lineIndex) => (
+								<span key={`line-${lineIndex}`}>
 									{line.tokens.map((token, tokenIndex) => (
 										<span
-											key={token.content + tokenIndex}
+											key={`token-${lineIndex}-${tokenIndex}`}
 											style={{ color: token.color }}
 										>
 											{token.content}

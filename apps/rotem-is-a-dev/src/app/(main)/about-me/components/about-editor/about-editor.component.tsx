@@ -78,7 +78,7 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 			<div className={styles.lineNumbers}>
 				{Array.from({ length: lineCount }, (_, index) => (
 					<span
-						key={index}
+						key={`ln-${index}`}
 						className={styles.lineNumber}
 					>
 						{index + 1}
@@ -87,11 +87,11 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 			</div>
 			<div className={styles.codeContent}>
 				{shikiLines
-					? shikiLines.map((line, index) => (
-							<span key={index}>
+					? shikiLines.map((line, lineIndex) => (
+							<span key={`line-${lineIndex}`}>
 								{line.tokens.map((token, tokenIndex) => (
 									<span
-										key={tokenIndex}
+										key={`token-${lineIndex}-${tokenIndex}`}
 										style={{ color: token.color }}
 									>
 										{token.content}
@@ -101,7 +101,7 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 							</span>
 						))
 					: plainLines.map((line, index) => (
-							<span key={index}>
+							<span key={`plain-${index}`}>
 								{line}
 								{'\n'}
 							</span>
