@@ -51,4 +51,12 @@ describe('sortByEndDate', () => {
 		expect(result[0].duration.end).toBe('Present');
 		expect(result[1].duration.end).toBe('Present');
 	});
+
+	it('returns 1 when only jobB has Present end date', () => {
+		const numericJob = makeJob(2015, 2020);
+		const presentJob = makeJob(2019, 'Present');
+		const result = sortByEndDate([numericJob, presentJob]);
+		expect(result[0]).toBe(presentJob);
+		expect(result[1]).toBe(numericJob);
+	});
 });
