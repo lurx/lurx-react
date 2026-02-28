@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { useResponsive } from '@/hooks';
-import { FileTree } from '../file-tree.component';
-import { FileTreeSection } from '../components/filte-tree-section.component';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { AboutFileId, SectionId } from '../../../data/about-files.data';
+import { FileTreeSection } from '../components/file-tree-section';
+import { FileTree } from '../file-tree.component';
 
 jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),

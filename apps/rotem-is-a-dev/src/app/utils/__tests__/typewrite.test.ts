@@ -92,6 +92,18 @@ describe('typewrite', () => {
 		expect(tweenVars.duration).toBe(0.4);
 	});
 
+	it('defaults to empty string when textContent is null', () => {
+		const el = makeElement('');
+		Object.defineProperty(el, 'textContent', {
+			get: jest.fn().mockReturnValueOnce(null).mockReturnValue(''),
+			set: jest.fn(),
+			configurable: true,
+		});
+		typewrite(el);
+		const [, tweenVars] = mockGsapTo.mock.calls[0];
+		expect(tweenVars.count).toBe(0);
+	});
+
 	it('uses ease none', () => {
 		const el = makeElement('test');
 		typewrite(el);
