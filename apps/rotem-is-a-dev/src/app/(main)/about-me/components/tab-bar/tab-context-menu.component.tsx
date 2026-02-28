@@ -45,6 +45,10 @@ export const TabContextMenu = ({
 		onDismiss();
 	};
 
+	const handleCloseClick = () => handleAction(onClose);
+	const handleCloseOthersClick = () => handleAction(onCloseOthers);
+	const handleCloseAllClick = () => handleAction(onCloseAll);
+
 	return createPortal(
 		<menu
 			ref={menuRef}
@@ -56,7 +60,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onClose)}
+					onClick={handleCloseClick}
 				>
 					Close
 				</button>
@@ -65,7 +69,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onCloseOthers)}
+					onClick={handleCloseOthersClick}
 				>
 					Close Others
 				</button>
@@ -74,7 +78,7 @@ export const TabContextMenu = ({
 				<button
 					type="button"
 					className={styles.item}
-					onClick={() => handleAction(onCloseAll)}
+					onClick={handleCloseAllClick}
 				>
 					Close All
 				</button>

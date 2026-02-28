@@ -72,7 +72,7 @@ export const GameControls = ({
 
 			<button
 				className={styles.skipButton}
-				onClick={() => onSkip()}
+				onClick={onSkip}
 				aria-label="Skip game"
 				data-hero-text="skip"
 			>

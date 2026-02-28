@@ -43,6 +43,13 @@ export const TabBar = ({
 
 	const dismissMenu = () => setContextMenu(null);
 
+	const handleContextMenuClose = () => {
+		if (contextMenu) onTabClose(contextMenu.tabId);
+	};
+	const handleContextMenuCloseOthers = () => {
+		if (contextMenu) onCloseOthers(contextMenu.tabId);
+	};
+
 	return (
 		<div
 			className={styles.tabBar}
@@ -86,8 +93,8 @@ export const TabBar = ({
 			{contextMenu && (
 				<TabContextMenu
 					position={{ x: contextMenu.x, y: contextMenu.y }}
-					onClose={() => onTabClose(contextMenu.tabId)}
-					onCloseOthers={() => onCloseOthers(contextMenu.tabId)}
+					onClose={handleContextMenuClose}
+					onCloseOthers={handleContextMenuCloseOthers}
 					onCloseAll={onCloseAll}
 					onDismiss={dismissMenu}
 				/>
