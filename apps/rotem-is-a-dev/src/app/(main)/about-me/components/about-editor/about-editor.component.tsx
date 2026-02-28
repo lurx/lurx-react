@@ -8,6 +8,7 @@ import type {
 } from '../../data/about-files.data';
 import styles from './about-editor.module.scss';
 import { useShikiTokens } from '@/lib/shiki';
+import { ShikiCode } from '@/app/components/shiki-code/shiki-code.component';
 
 const COMMENT_WRAP_WIDTH = 38;
 
@@ -87,19 +88,7 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 			</div>
 			<div className={styles.codeContent}>
 				{shikiLines
-					? shikiLines.map((line, lineIndex) => (
-							<span key={`line-${lineIndex}`}>
-								{line.tokens.map((token, tokenIndex) => (
-									<span
-										key={`token-${lineIndex}-${tokenIndex}`}
-										style={{ color: token.color }}
-									>
-										{token.content}
-									</span>
-								))}
-								{'\n'}
-							</span>
-						))
+					? <ShikiCode lines={shikiLines} />
 					: plainLines.map((line, index) => (
 							<span key={`plain-${index}`}>
 								{line}
