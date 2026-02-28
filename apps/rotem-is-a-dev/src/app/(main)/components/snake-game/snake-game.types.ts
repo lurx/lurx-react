@@ -1,4 +1,4 @@
-export interface Position {
+export type Position = {
 	x: number;
 	y: number;
 }
@@ -13,7 +13,7 @@ export type ArrowDirection =
 
 export type GameState = 'idle' | 'playing' | 'won' | 'lost';
 
-export interface SnakeGameState {
+export type SnakeGameState = {
 	snake: Position[];
 	food: Position[];
 	direction: Direction;
@@ -21,7 +21,12 @@ export interface SnakeGameState {
 	activeKey: Nullable<string>;
 }
 
-export interface UseSnakeGameReturn extends SnakeGameState {
+export type UseSnakeGameReturn = SnakeGameState & {
 	startGame: () => void;
 	resetGame: () => void;
+}
+
+export type SnakeGameProps = {
+	onWin: () => void;
+	onSkip: () => void;
 }

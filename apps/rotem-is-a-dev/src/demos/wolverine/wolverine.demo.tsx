@@ -7,6 +7,7 @@ import { Link } from '@/app/components/link';
 import { Chelsea_Market } from 'next/font/google';
 import { WolverineCowl } from './components';
 import { WolverineArm } from './components/wolverine-arm.component';
+import type { DemoCredits, DemoCreditsProps } from './wolverine.types';
 
 const chelseaMarket = Chelsea_Market({
 	subsets: ['latin'],
@@ -14,16 +15,6 @@ const chelseaMarket = Chelsea_Market({
 	variable: '--font-chelsea-market',
 });
 // <link href="https://fonts.googleapis.com/css?family=Chelsea+Market" rel="stylesheet">
-
-interface DemoCredits {
-	name: string;
-	url: string;
-	author: string;
-	authorUrl: string;
-}
-interface DemoCreditsProps {
-	credits?: DemoCredits;
-}
 
 const inspiredBy = {
 	name: 'Wolverine',

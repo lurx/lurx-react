@@ -1,6 +1,6 @@
 import type { Project } from '../../data/projects.data';
 
-export interface ProjectCardProps {
+export type ProjectCardProps = {
 	project: Project;
 	onViewProject?: (project: Project) => void;
 }

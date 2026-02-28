@@ -8,7 +8,7 @@ import { SECTIONS, SECTION_FILES } from '../../data/about-files.data';
 import { FileTreeSection } from './components/filte-tree-section.component';
 import styles from './file-tree.module.scss';
 
-export interface FileTreeProps {
+export type FileTreeProps = {
 	activeFileId: Nullable<AboutFileId>;
 	onFileSelect: (fileId: AboutFileId) => void;
 }

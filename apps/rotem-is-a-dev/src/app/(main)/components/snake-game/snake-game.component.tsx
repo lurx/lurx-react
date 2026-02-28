@@ -8,16 +8,11 @@ import {
 	useSnakeGame,
 } from './hooks/use-snake-game.hook';
 import styles from './snake-game.module.scss';
-import type { Position } from './snake-game.types';
+import type { Position, SnakeGameProps } from './snake-game.types';
 import { GameControls } from './components/game-controls.component';
 
 const CELL = 240 / GRID_COLS; // 16px per cell
 const SNAKE_COLOR = '#43d9ad';
-
-interface SnakeGameProps {
-	onWin: () => void;
-	onSkip: () => void;
-}
 
 export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,6 +23,52 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 	const displayedRemaining = gameState === 'idle' ? totalFood : food.length;
 
 	const handleRestart = () => resetGame();
+
+	function renderGameOverlay() {
+		if (gameState === 'idle') {
+			return (
+				<button
+					className={styles.startButton}
+					onClick={startGame}
+					aria-label="Start game"
+					data-hero-text="start-game"
+				>
+					start-game
+				</button>
+			);
+		}
+		if (gameState === 'lost') {
+			return (
+				<div className={styles.boardOverlay}>
+					<div className={styles.overlayBar} />
+					<p className={styles.overlayTitle}>GAME OVER!</p>
+					<button
+						className={styles.overlayAction}
+						onClick={handleRestart}
+						aria-label="Start again"
+					>
+						start-again
+					</button>
+				</div>
+			);
+		}
+		if (gameState === 'won') {
+			return (
+				<div className={styles.boardOverlay}>
+					<div className={styles.overlayBar} />
+					<p className={styles.overlayTitle}>WELL DONE!</p>
+					<button
+						className={styles.overlayAction}
+						onClick={handleRestart}
+						aria-label="Play again"
+					>
+						play-again
+					</button>
+				</div>
+			);
+		}
+		return null;
+	}
 
 	useEffect(() => {
 		if (gameState === 'won') {
@@ -109,44 +150,7 @@ export const SnakeGame = ({ onWin, onSkip }: SnakeGameProps) => {
 						className={styles.gameCanvas}
 					/>
 
-					{gameState === 'idle' && (
-						<button
-							className={styles.startButton}
-							onClick={startGame}
-							aria-label="Start game"
-							data-hero-text="start-game"
-						>
-							start-game
-						</button>
-					)}
-
-					{gameState === 'lost' && (
-						<div className={styles.boardOverlay}>
-							<div className={styles.overlayBar} />
-							<p className={styles.overlayTitle}>GAME OVER!</p>
-							<button
-								className={styles.overlayAction}
-								onClick={handleRestart}
-								aria-label="Start again"
-							>
-								start-again
-							</button>
-						</div>
-					)}
-
-					{gameState === 'won' && (
-						<div className={styles.boardOverlay}>
-							<div className={styles.overlayBar} />
-							<p className={styles.overlayTitle}>WELL DONE!</p>
-							<button
-								className={styles.overlayAction}
-								onClick={handleRestart}
-								aria-label="Play again"
-							>
-								play-again
-							</button>
-						</div>
-					)}
+					{renderGameOverlay()}
 				</div>
 				<GameControls
 					totalFood={INITIAL_FOOD_COUNT}

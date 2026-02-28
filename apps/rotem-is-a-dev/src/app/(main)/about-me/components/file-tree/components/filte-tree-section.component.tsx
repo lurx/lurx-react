@@ -1,17 +1,8 @@
 import { FaIcon } from '@/app/components';
-import { ABOUT_FILES, type AboutFileId, type SectionId } from '../../../data/about-files.data';
+import { ABOUT_FILES, type AboutFileId } from '../../../data/about-files.data';
 import { FileItem } from './file-item.component';
+import type { FileTreeSectionProps } from './file-tree-section.types';
 import styles from '../file-tree.module.scss';
-
-interface FileTreeSectionProps {
-	id: SectionId;
-	files: string[];
-	activeFileId: Nullable<AboutFileId>;
-	toggleSection: (sectionId: string) => void;
-	isCollapsed: boolean;
-	onFileSelect: (fileId: AboutFileId) => void;
-	isMobile: boolean;
-}
 
 export const FileTreeSection = ({
 	id,
@@ -22,6 +13,16 @@ export const FileTreeSection = ({
 	onFileSelect,
 	isMobile,
 }: FileTreeSectionProps) => {
+	const handleToggle = () => toggleSection(id);
+
+	const folderIcon = isMobile
+		? <span className={`${styles.folderChevron} ${isCollapsed ? styles.collapsed : ''}`}>
+				<FaIcon iconName="chevron-down" iconGroup="fas" />
+			</span>
+		: <span className={styles.folderIcon}>
+				<FaIcon iconName={isCollapsed ? 'folder-plus' : 'folder-minus'} iconGroup="fal" />
+			</span>;
+
 	return (
 		<div
 			key={id}
@@ -32,23 +33,9 @@ export const FileTreeSection = ({
 				type="button"
 				className={styles.folderRow}
 				aria-expanded={!isCollapsed}
-				onClick={() => toggleSection(id)}
+				onClick={handleToggle}
 			>
-				{isMobile ? (
-					<span className={`${styles.folderChevron} ${isCollapsed ? styles.collapsed : ''}`}>
-						<FaIcon
-							iconName="chevron-down"
-							iconGroup="fas"
-						/>
-					</span>
-				) : (
-					<span className={styles.folderIcon}>
-						<FaIcon
-							iconName={isCollapsed ? 'folder-plus' : 'folder-minus'}
-							iconGroup="fal"
-						/>
-					</span>
-				)}
+				{folderIcon}
 				<span className={styles.folderLabel}>{id}</span>
 			</button>
 

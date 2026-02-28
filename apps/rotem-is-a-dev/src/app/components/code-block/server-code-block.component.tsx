@@ -1,14 +1,7 @@
 import { highlightCode } from '@/lib/shiki/highlight-code';
 import classNames from 'classnames';
 import styles from './code-block.module.scss';
-
-interface ServerCodeBlockProps {
-	code: string;
-	language?: 'typescript' | 'javascript' | 'json';
-	className?: string;
-	numberOfLines?: number;
-	'aria-label'?: string;
-}
+import type { ServerCodeBlockProps } from './code-block.types';
 
 export const ServerCodeBlock = async ({
 	code,

@@ -1,11 +1,6 @@
 import { FaIcon } from '@/app/components';
 import styles from '../file-tree.module.scss';
-
-interface FileItemProps {
-	label: string;
-	active?: boolean;
-	onClick?: () => void;
-}
+import type { FileItemProps } from './file-item.types';
 
 export const FileItem = ({ label, active, onClick }: FileItemProps) => (
 	<button

@@ -3,14 +3,7 @@
 import { useShikiTokens } from '@/lib/shiki';
 import classNames from 'classnames';
 import styles from './code-block.module.scss';
-
-interface CodeBlockProps {
-	code: string;
-	language?: 'typescript' | 'javascript' | 'json';
-	className?: string;
-	numberOfLines?: number;
-	'aria-label'?: string;
-}
+import type { CodeBlockProps } from './code-block.types';
 
 export const CodeBlock = ({
 	code,
@@ -31,11 +24,11 @@ export const CodeBlock = ({
 			<pre className={styles.code} aria-label={ariaLabel}>
 				<code>
 					{shikiLines
-						? shikiLines.map((line, index) => (
-								<span key={line.toString() + index}>
+						? shikiLines.map((line, lineIndex) => (
+								<span key={`line-${lineIndex}`}>
 									{line.tokens.map((token, tokenIndex) => (
 										<span
-											key={token.content + tokenIndex}
+											key={`token-${lineIndex}-${tokenIndex}`}
 											style={{ color: token.color }}
 										>
 											{token.content}

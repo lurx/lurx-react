@@ -1,9 +1,6 @@
 import type { PropsWithChildren } from 'react';
 import styles from './link.module.scss';
-
-interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-	href: string;
-}
+import type { LinkProps } from './link.types';
 
 const externalIndicators = ['http://', 'https://', 'mailto:'];
 

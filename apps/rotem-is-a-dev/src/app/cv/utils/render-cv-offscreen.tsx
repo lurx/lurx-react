@@ -1,11 +1,7 @@
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import CV from '../page';
-
-interface OffscreenResult {
-	container: HTMLElement;
-	cleanup: () => void;
-}
+import type { OffscreenResult } from './render-cv-offscreen.types';
 
 const CV_CUSTOM_PROPERTIES: Record<string, string> = {
 	'--spacing-unit': '8px',

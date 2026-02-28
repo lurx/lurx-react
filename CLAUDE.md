@@ -80,7 +80,17 @@ npx nx g @nx/next:app demo
 
 - **Strict mode enabled**: No `any` types allowed
 - **Import types**: Use `import type` for type-only imports
-- **Custom types**: Define in `src/types/` directories
+- **Global types**: Ambient declarations in `src/@types/*.d.ts` (e.g. `site-general.d.ts`, `error-page.d.ts`)
+
+### Type File Conventions
+
+- **No inline type definitions**: Never define types directly in `.component.tsx`, `.context.tsx`, `.hook.ts`, `.util.ts`, or `.data.ts` files.
+- **Co-located `.types.ts` files**: Every file's types go in a sibling `[file-name].types.ts` (e.g. `flex.types.ts` for `flex.component.tsx`).
+- **Export with `export type`**: All types in `.types.ts` files must use `export type`.
+- **Import with `import type`**: Source files import from their `.types.ts` using `import type { ... } from './file.types'`.
+- **Shared types across files**: If a type is used by multiple sibling files, place it in a shared `.types.ts` (e.g. `shiki.types.ts` for both `highlight-code.ts` and `use-shiki-tokens.hook.ts`).
+- **Re-exports for backward compatibility**: When extracting types from a data/constants file that others already import from, add `export type { ... } from './file.types'` re-exports to avoid breaking existing consumers.
+- **Global ambient types**: Types shared across 3+ unrelated files (e.g. `ErrorPageProps`) go in `src/@types/*.d.ts` as ambient declarations (no import needed).
 
 ### Animation Architecture
 
@@ -100,6 +110,33 @@ npx nx g @nx/next:app demo
 - **Functional Components**: Use hooks, proper TypeScript typing for refs and state
 - **File Structure**: Component folder with .tsx, .types.ts, .module.scss, **tests**/
 - **100% Test Coverage**: Comprehensive unit tests required
+
+### Component Internal Structure (The "React Sandwich")
+
+Follow this exact order inside every function component:
+
+1. **Props destructuring** — the component's contract
+2. **State** (`useState`) — internal memory
+3. **Refs** (`useRef`) — persistent containers
+4. **Context** (`useContext`) — external data sources
+5. **Custom hooks** — encapsulated logic
+6. **Memoized values** (`useMemo`) — derived data
+7. **Callbacks / handlers** (`useCallback`, `handleX`) — event logic
+8. **Effects** (`useEffect`) — side effects, always last among hooks
+9. **Guard clauses** (early returns) — after all hooks, before render
+10. **Render helpers** — small functions that return JSX fragments
+11. **Return JSX** — the final output
+
+### Clean JSX Rules
+
+- **No ternaries in JSX**: Extract conditional rendering to render helper functions or separate components. Even simple ternaries harm readability at scale.
+- **No inline functions in JSX props**: Extract arrow functions to named constants or `useCallback`. Inline functions break `React.memo` and `useMemo`.
+- **No magic values**: Hardcoded numbers and strings must be named constants. Use design tokens and CSS custom properties.
+- **No blind prop spreading**: Be explicit about which props a component receives. `{...props}` is only acceptable in pass-through wrappers or HOCs.
+- **Extract large `.map()` bodies**: If the JSX inside `.map()` is more than a single component call, extract it to a dedicated component.
+- **Use stable, unique keys**: Never use array index as key unless the list is completely static. Use item IDs or other stable identifiers.
+- **Minimize nesting depth**: If JSX exceeds 4-5 levels of nesting, extract inner blocks to components or render helpers.
+- **Logic before render**: All computation, conditions, and data transformations belong in variables, hooks, or helper functions — not inline in JSX.
 
 ### Third-Party Tools
 
