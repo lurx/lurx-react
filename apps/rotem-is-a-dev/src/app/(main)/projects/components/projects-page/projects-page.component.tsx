@@ -1,9 +1,11 @@
 'use client';
 
+import { FilterPanel, TextInput, TechnologyFilter } from '@/app/components';
+import { toggleInArray } from '@/app/utils/toggle-in-array.util';
 import { type ChangeEvent, useCallback, useState, type ComponentType } from 'react';
 import type { Project } from '../../data/projects.data';
 import { ALL_TECHNOLOGIES, PROJECTS } from '../../data/projects.data';
-import { FilterPanel, TextInput, TechnologyFilter } from '@/app/components';
+import { filterProjects } from './projects-page.helpers';
 import { DemoRenderer } from '../demo-renderer';
 import { ProjectDemoDrawer } from '../project-demo-drawer';
 import { ProjectsGrid } from '../projects-grid';
@@ -25,12 +27,7 @@ export const ProjectsPage = () => {
 	);
 
 	const toggleTechnology = useCallback((tech: string) => {
-		const value = tech as Technology;
-		setSelectedTechnologies(prev =>
-			prev.includes(value)
-				? prev.filter(item => item !== value)
-				: [...prev, value],
-		);
+		setSelectedTechnologies(prev => toggleInArray(prev, tech as Technology));
 	}, []);
 
 	const handleViewProject = useCallback((project: Project) => {
@@ -41,20 +38,7 @@ export const ProjectsPage = () => {
 		setSelectedProject(null);
 	}, []);
 
-	const searchLower = search.toLowerCase();
-
-	const filteredProjects = PROJECTS.filter(project => {
-		const matchesTech =
-			selectedTechnologies.length === 0 ||
-			project.technologies.some(tech =>
-				selectedTechnologies.includes(tech),
-			);
-		const matchesSearch =
-			!search ||
-			project.slug.toLowerCase().includes(searchLower) ||
-			project.description.toLowerCase().includes(searchLower);
-		return matchesTech && matchesSearch;
-	});
+	const filteredProjects = filterProjects(PROJECTS, selectedTechnologies, search);
 
 	const DemoComponent: Nullable<ComponentType> = selectedProject?.demo ?? null;
 
