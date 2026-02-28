@@ -56,11 +56,11 @@ jest.mock('../../projects-grid', () => ({
 		onViewProject?: (project: Project) => void;
 	}) => (
 		<div data-testid="projects-grid">
-			{projects.map(p => (
-				<div key={p.id} data-testid={`project-${p.id}`}>
-					<span>{p.slug}</span>
+			{projects.map(project => (
+				<div key={project.id} data-testid={`project-${project.id}`}>
+					<span>{project.slug}</span>
 					{onViewProject && (
-						<button onClick={() => onViewProject(p)}>view {p.slug}</button>
+						<button onClick={() => onViewProject(project)}>view {project.slug}</button>
 					)}
 				</div>
 			))}
