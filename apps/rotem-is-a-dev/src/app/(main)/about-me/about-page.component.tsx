@@ -52,6 +52,12 @@ export const AboutPage = () => {
 
 	const activeFile = activeFileId ? ABOUT_FILES[activeFileId] : null;
 
+	const editorContent = activeFile
+		? <AboutEditor content={activeFile} />
+		: <p className={styles.emptyState}>
+				{toCodeLike('no file selected. choose a file to learn more about me', { convertCase: 'comment' })}
+			</p>;
+
 	return (
 		<div className={styles.page}>
 			<SideBar
@@ -75,13 +81,7 @@ export const AboutPage = () => {
 				/>
 
 				<div className={styles.panels}>
-					{activeFile ? (
-						<AboutEditor content={activeFile} />
-					) : (
-						<p className={styles.emptyState}>
-							{toCodeLike('no file selected. choose a file to learn more about me', { convertCase: 'comment' })}
-						</p>
-					)}
+					{editorContent}
 					<GistPanel />
 				</div>
 			</div>
