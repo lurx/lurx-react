@@ -1,12 +1,7 @@
 import { Flex } from '@/app/components/flex';
 import classNames from 'classnames';
 import { type PropsWithChildren } from 'react';
-
-type DemoContainerProps = {
-	width?: number | string;
-	height?: number | string;
-	className?: React.HTMLAttributes<HTMLDivElement>['className'];
-}
+import type { DemoContainerProps } from './demo-container.types';
 
 export const DemoContainer = ({
 	width,

@@ -2,15 +2,9 @@
 
 import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import type { EntryAnimationContextValue } from './entry-animation.types';
 
 export const SESSION_KEY = 'entry-animation-played';
-
-type EntryAnimationContextValue = {
-	isShellLoaded: boolean;
-	setIsShellLoaded: (value: boolean) => void;
-	animationKey: number;
-	triggerReplay: () => void;
-}
 
 export const entryAnimationContext =
 	createContext<Nullable<EntryAnimationContextValue>>(null);

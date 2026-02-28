@@ -1,34 +1,12 @@
 import cv from '@/data/cv';
+import type {
+	AboutFileContent,
+	AboutFileId,
+	SectionConfig,
+	SectionId,
+} from './about-files.types';
 
-export type SectionId = 'personal-info' | 'work-experience' | 'hobbies';
-
-export type AboutFileId =
-	| 'bio'
-	| 'interests'
-	| 'payoneer'
-	| 'startup-booster'
-	| 'investing-com'
-	| 'isocia';
-
-export type JsdocFileContent = {
-	title: string;
-	format: 'jsdoc';
-	paragraphs: string[];
-}
-
-export type JsonFileContent = {
-	title: string;
-	format: 'json';
-	json: Record<string, unknown>;
-}
-
-export type AboutFileContent = JsdocFileContent | JsonFileContent;
-
-export type SectionConfig = {
-	id: SectionId;
-	label: string;
-	icon: string;
-}
+export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, SectionConfig, SectionId } from './about-files.types';
 
 export const SECTIONS: SectionConfig[] = [
 	{ id: 'personal-info', label: 'Personal info', icon: 'user' },

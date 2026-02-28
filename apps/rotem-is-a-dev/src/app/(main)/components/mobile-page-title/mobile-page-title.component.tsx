@@ -2,10 +2,7 @@
 
 import { useResponsive } from '@/hooks';
 import styles from './mobile-page-title.module.scss';
-
-type MobilePageTitleProps = {
-	title: string;
-}
+import type { MobilePageTitleProps } from './mobile-page-title.types';
 
 export const MobilePageTitle = ({ title }: MobilePageTitleProps) => {
 	const { isMobile } = useResponsive();

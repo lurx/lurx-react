@@ -1,12 +1,7 @@
 import { CodeBlock } from '@/app/components';
 import { memo } from 'react';
 import styles from './hero-snippets.module.scss';
-
-type SnippetSlideProps = {
-	title: string;
-	code: string;
-	opacity: number;
-}
+import type { SnippetSlideProps } from './hero-snippet-slide.types';
 
 export const SnippetSlide = memo(({ title, code, opacity }: SnippetSlideProps) => {
 	return (

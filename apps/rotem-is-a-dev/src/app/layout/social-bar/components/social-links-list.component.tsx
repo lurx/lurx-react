@@ -1,10 +1,6 @@
 import styles from '../social-bar.module.scss';
-import type { SocialLinks } from '../social-bar.types';
 import { SocialLink } from './social-link.component';
-
-type SocialLinkListProps = {
-	links: SocialLinks;
-}
+import type { SocialLinkListProps } from './social-links-list.types';
 
 export const SocialLinkList = ({ links }: SocialLinkListProps) => (
 	<ul className={styles.socialLinksList}>

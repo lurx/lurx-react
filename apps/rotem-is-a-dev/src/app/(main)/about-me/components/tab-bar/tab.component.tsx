@@ -1,15 +1,7 @@
 import { FaIcon } from '@/app/components';
-import type { AboutFileId } from '../../data/about-files.data';
 import { ABOUT_FILES } from '../../data/about-files.data';
 import styles from './tab-bar.module.scss';
-
-type TabProps = {
-	tabId: AboutFileId;
-	isActive: boolean;
-	onSelect: (fileId: AboutFileId) => void;
-	onClose: (fileId: AboutFileId) => void;
-	onContextMenu: (tabId: AboutFileId, event: React.MouseEvent) => void;
-}
+import type { TabProps } from './tab.types';
 
 export const Tab = ({
 	tabId,

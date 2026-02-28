@@ -4,23 +4,9 @@ import { useResponsive } from '@/hooks';
 import { useState } from 'react';
 import type { AboutFileId } from '../../data/about-files.data';
 import styles from './tab-bar.module.scss';
+import type { ContextMenuState, TabBarProps } from './tab-bar.types';
 import { Tab } from './tab.component';
 import { TabContextMenu } from './tab-context-menu.component';
-
-type TabBarProps = {
-	openTabs: AboutFileId[];
-	activeFileId: Nullable<AboutFileId>;
-	onTabSelect: (fileId: AboutFileId) => void;
-	onTabClose: (fileId: AboutFileId) => void;
-	onCloseOthers: (fileId: AboutFileId) => void;
-	onCloseAll: () => void;
-}
-
-type ContextMenuState = {
-	tabId: AboutFileId;
-	x: number;
-	y: number;
-}
 
 export const TabBar = ({
 	openTabs,

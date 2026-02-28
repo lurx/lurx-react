@@ -1,6 +1,8 @@
 import { AnimatedLoader } from '@/app/components';
 import dynamic from 'next/dynamic';
-import type { ComponentType } from 'react';
+import type { Project } from './projects.types';
+
+export type { Project, ProjectExternalUrl } from './projects.types';
 
 const loading = () => <AnimatedLoader />;
 
@@ -13,22 +15,6 @@ const SheepDemo = dynamic(
 	() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo),
 	{ loading },
 );
-
-type ProjectExternalUrl = {
-	origin: string;
-	url: string;
-	iconName?: string; // Optional, can be used to determine which icon to show
-}
-
-export type Project = {
-	id: number;
-	number: number;
-	slug: string;
-	description: string;
-	technologies: Technology[];
-	externalUrl?: ProjectExternalUrl;
-	demo?: ComponentType;
-}
 
 export const ALL_TECHNOLOGIES: Technology[] = [
 	'react',

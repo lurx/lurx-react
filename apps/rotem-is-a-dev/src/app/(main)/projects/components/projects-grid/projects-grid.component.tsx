@@ -1,12 +1,7 @@
 import { toCodeLike } from '@/app/utils/to-code-like.util';
-import type { Project } from '../../data/projects.data';
 import { ProjectCard } from '../project-card/project-card.component';
 import styles from './projects-grid.module.scss';
-
-type ProjectsGridProps = {
-	projects: Project[];
-	onViewProject?: (project: Project) => void;
-}
+import type { ProjectsGridProps } from './projects-grid.types';
 
 export const ProjectsGrid = ({
 	projects,

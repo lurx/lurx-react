@@ -1,8 +1,6 @@
-export type NavItemConfig = {
-	label: string;
-	href: string;
-	enabled: boolean;
-}
+import type { NavItemConfig } from './nav-items.types';
+
+export type { NavItemConfig } from './nav-items.types';
 
 export const NAV_ITEMS: NavItemConfig[] = [
 	{ label: 'hello', href: '/', enabled: true },

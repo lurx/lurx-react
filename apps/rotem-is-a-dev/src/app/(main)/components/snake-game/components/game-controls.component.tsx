@@ -3,12 +3,7 @@
 import styles from '../snake-game.module.scss';
 import { ArrowKeys } from './arrow-keys/arrow-keys.component';
 import { SnakeGameInstructions } from './game-instructions.component';
-
-type GameControlsProps = {
-	totalFood: number;
-	displayedRemaining: number;
-	onSkip: () => void;
-}
+import type { GameControlsProps } from './game-controls.types';
 
 export const GameControls = ({
 	totalFood,
