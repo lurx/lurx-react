@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex } from '@/app/components/flex';
+import { Flex } from '@/app/components';
 import { useCV } from '@/app/cv/context/cv.context';
 import styles from './languages.module.scss';
 

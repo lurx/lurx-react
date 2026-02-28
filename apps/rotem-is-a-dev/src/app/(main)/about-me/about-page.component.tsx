@@ -1,17 +1,11 @@
 'use client';
 
+import { toCodeLike } from '@/app/utils/to-code-like.util';
 import { useCallback, useState } from 'react';
 import styles from './about-page.module.scss';
-import {
-	AboutEditor,
-	FileTree,
-	GistPanel,
-	SideBar,
-	TabBar,
-} from './components';
+import { AboutContent, AboutEditor, FileTree, GistPanel, SideBar } from './components';
 import type { AboutFileId } from './data/about-files.data';
 import { ABOUT_FILES, DEFAULT_FILE_ID } from './data/about-files.data';
-import { toCodeLike } from '@/app/utils/to-code-like.util';
 
 export const AboutPage = () => {
 	const [activeFileId, setActiveFileId] =
@@ -32,9 +26,7 @@ export const AboutPage = () => {
 			const updatedTabs = openTabs.filter(id => id !== fileId);
 			setOpenTabs(updatedTabs);
 			setActiveFileId(prev =>
-				prev === fileId
-					? updatedTabs[updatedTabs.length - 1] ?? null
-					: prev,
+				prev === fileId ? updatedTabs[updatedTabs.length - 1] ?? null : prev,
 			);
 		},
 		[openTabs],
@@ -52,11 +44,15 @@ export const AboutPage = () => {
 
 	const activeFile = activeFileId ? ABOUT_FILES[activeFileId] : null;
 
-	const editorContent = activeFile
-		? <AboutEditor content={activeFile} />
-		: <p className={styles.emptyState}>
-				{toCodeLike('no file selected. choose a file to learn more about me', { convertCase: 'comment' })}
-			</p>;
+	const editorContent = activeFile ? (
+		<AboutEditor content={activeFile} />
+	) : (
+		<p className={styles.emptyState}>
+			{toCodeLike('no file selected. choose a file to learn more about me', {
+				convertCase: 'comment',
+			})}
+		</p>
+	);
 
 	return (
 		<div className={styles.page}>
@@ -70,21 +66,17 @@ export const AboutPage = () => {
 				onFileSelect={handleFileSelect}
 			/>
 
-			<div className={styles.content}>
-				<TabBar
-					openTabs={openTabs}
-					activeFileId={activeFileId}
-					onTabSelect={handleTabSelect}
-					onTabClose={handleTabClose}
-					onCloseOthers={handleCloseOthers}
-					onCloseAll={handleCloseAll}
-				/>
-
-				<div className={styles.panels}>
-					{editorContent}
-					<GistPanel />
-				</div>
-			</div>
+			<AboutContent
+				openTabs={openTabs}
+				activeFileId={activeFileId}
+				onTabSelect={handleTabSelect}
+				onTabClose={handleTabClose}
+				onCloseOthers={handleCloseOthers}
+				onCloseAll={handleCloseAll}
+			>
+				{editorContent}
+				<GistPanel />
+			</AboutContent>
 		</div>
 	);
 };

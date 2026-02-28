@@ -1,5 +1,6 @@
 import { highlightCode } from '@/lib/shiki/highlight-code';
 import classNames from 'classnames';
+import { ShikiCode } from '../shiki-code';
 import styles from './code-block.module.scss';
 import type { ServerCodeBlockProps } from './code-block.types';
 
@@ -35,19 +36,7 @@ export const ServerCodeBlock = async ({
 				aria-label={ariaLabel}
 			>
 				<code>
-					{shikiLines.map((line, index) => (
-						<span key={JSON.stringify(line) + index}>
-							{line.tokens.map((token, tokenIndex) => (
-								<span
-									key={token.content + tokenIndex}
-									style={{ color: token.color }}
-								>
-									{token.content}
-								</span>
-							))}
-							{'\n'}
-						</span>
-					))}
+					<ShikiCode lines={shikiLines} />
 				</code>
 			</pre>
 		</div>

@@ -1,8 +1,9 @@
 'use client';
 
 import { FilterPanel, TechnologyFilter, TextInput } from '@/app/components';
+import { toggleInArray } from '@/app/utils/toggle-in-array.util';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { getAllTags } from './blog-page.helpers';
+import { filterPosts, getAllTags } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
 import type { BlogPageProps } from './blog-page.types';
 import { BlogPostCard } from './components/blog-post-card.component';
@@ -25,25 +26,10 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 	);
 
 	const toggleTag = useCallback((tag: string) => {
-		setSelectedTags(prev =>
-			prev.includes(tag)
-				? prev.filter(item => item !== tag)
-				: [...prev, tag],
-		);
+		setSelectedTags(prev => toggleInArray(prev, tag));
 	}, []);
 
-	const searchLower = search.toLowerCase();
-
-	const filteredPosts = posts.filter(post => {
-		const matchesTags =
-			selectedTags.length === 0 ||
-			post.tags.some(tag => selectedTags.includes(tag));
-		const matchesSearch =
-			!search ||
-			post.title.toLowerCase().includes(searchLower) ||
-			post.description.toLowerCase().includes(searchLower);
-		return matchesTags && matchesSearch;
-	});
+	const filteredPosts = filterPosts(posts, selectedTags, search);
 
 	const postListContent = filteredPosts.length === 0
 		? <NoPosts />

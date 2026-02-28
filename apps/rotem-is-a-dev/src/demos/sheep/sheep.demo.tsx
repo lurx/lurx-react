@@ -1,5 +1,4 @@
-import { Flex } from '@/app/components/flex/flex.component';
-import { Link } from '@/app/components/link';
+import { Flex, Link } from '@/app/components';
 import classNames from 'classnames';
 import { Bangers } from 'next/font/google';
 import { DemoContainer } from '../demo-container/demo-container.component';

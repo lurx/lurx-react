@@ -1,9 +1,9 @@
 'use client';
 
-import { FaIcon } from '@/app/components/fa-icon';
-import { Flex } from '@/app/components/flex/flex.component';
+import { FaIcon, Flex } from '@/app/components';
 import { useCV } from '@/app/cv/context/cv.context';
 import styles from './skills.module.scss';
+import type { SkillTagProps } from './skills.types';
 
 const skillBrandColors: Record<string, string> = {
 	html: '#e34f26',
@@ -34,7 +34,7 @@ export const Skills = () => {
 	);
 };
 
-const SkillTag = ({ skill }: { skill: SkillObject }) => {
+const SkillTag = ({ skill }: SkillTagProps) => {
 	const { iconGroup, iconName: icon, name, level } = skill;
 	const fillPercent = (level / 10) * 100;
 	const brandColor = skillBrandColors[name] ?? '#646cff';

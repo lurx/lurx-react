@@ -2,7 +2,7 @@
 
 import { useResponsive } from '@/hooks';
 import classNames from 'classnames';
-import { useEntryAnimation } from '../entry-animation/entry-animation.context';
+import { useEntryAnimation } from '../entry-animation';
 import { HeroBlurs } from './components/hero-blurs.component';
 import { HeroIntroduction } from './components/hero-introduction.component';
 import { HeroSnippets } from './components/hero-snippets/hero-snippets.component';

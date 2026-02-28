@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ResizableDrawer } from '../resizable-drawer.component';
 
-jest.mock('@/app/components/fa-icon/fa-icon.component', () => ({
+jest.mock('../../fa-icon/fa-icon.component', () => ({
 	FaIcon: ({ iconName }: { iconName: string }) => (
 		<span data-testid="icon">{iconName}</span>
 	),

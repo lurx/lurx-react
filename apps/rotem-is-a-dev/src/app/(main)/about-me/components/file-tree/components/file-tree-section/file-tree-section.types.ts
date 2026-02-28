@@ -1,4 +1,4 @@
-import type { AboutFileId, SectionId } from '../../../data/about-files.data';
+import type { AboutFileId, SectionId } from '../../../../data/about-files.data';
 
 export type FileTreeSectionProps = {
 	id: SectionId;

@@ -1,5 +1,5 @@
 import { FaIcon } from '@/app/components';
-import styles from '../file-tree.module.scss';
+import styles from '../../file-tree.module.scss';
 import type { FileItemProps } from './file-item.types';
 
 export const FileItem = ({ label, active, onClick }: FileItemProps) => (

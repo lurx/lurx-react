@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import MainLoading from '../loading';
 
-jest.mock('@/app/components/loaders/animated-loader', () => ({
+jest.mock('@/app/components', () => ({
 	AnimatedLoader: () => <div data-testid="animated-loader" />,
 }));
 
