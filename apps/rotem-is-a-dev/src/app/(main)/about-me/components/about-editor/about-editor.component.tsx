@@ -9,6 +9,7 @@ import type {
   JsonFileContent,
 } from '../../data/about-files.data';
 import styles from './about-editor.module.scss';
+import type { AboutEditorProps } from './about-editor.types';
 
 const COMMENT_WRAP_WIDTH = 38;
 
@@ -59,10 +60,6 @@ const toLines = (content: AboutFileContent): string[] => {
 
 const toLanguage = (content: AboutFileContent): 'javascript' | 'json' =>
 	content.format === 'json' ? 'json' : 'javascript';
-
-export type AboutEditorProps = {
-	content: AboutFileContent;
-}
 
 export const AboutEditor = ({ content }: AboutEditorProps) => {
 	const plainLines = useMemo(() => toLines(content), [content]);

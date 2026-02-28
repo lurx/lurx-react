@@ -2,9 +2,10 @@
 
 import { useResponsive } from '@/hooks';
 import styles from '../navbar.module.scss';
+import type { ContactButtonProps } from './contact-button.types';
 import { NavItem } from './nav-item.component';
 
-export const ContactButton = ({hidden}: {hidden?: boolean}) => {
+export const ContactButton = ({ hidden }: ContactButtonProps) => {
 	const { isMobile } = useResponsive();
 
 	if (isMobile || hidden) return null;
