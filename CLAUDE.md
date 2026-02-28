@@ -166,9 +166,99 @@ Follow this exact order inside every function component:
 
 ### File Naming and Structure
 
-- **kebab-case**: All files use lowercase kebab-case naming
-- **Component Structure**: `component-name.tsx`, `component-name.module.scss`, `component-name.types.ts`
-- **Test Files**: Located in `__tests__/` folders with `.test.tsx` extension
+- **kebab-case**: All files use lowercase kebab-case naming with dot-separated suffixes (e.g. `my-component.component.tsx`)
+- **Test Files**: Located in `__tests__/` folders with `.test.tsx` / `.test.ts` extension
+
+#### File Suffixes
+
+| Suffix | Purpose |
+| --- | --- |
+| `.component.tsx` | React component |
+| `.demo.tsx` | Demo/showcase component |
+| `.types.ts` | Type definitions (`export type`) |
+| `.module.scss` | Scoped SCSS styles |
+| `.constants.ts` | Static values / enums |
+| `.helpers.ts` | Pure helper functions (feature-specific) |
+| `.strings.ts` | UI string constants |
+| `.hook.ts` | Custom React hook |
+| `.context.tsx` | React context + provider |
+| `.data.ts` / `.data.tsx` | Data files |
+| `.util.ts` | Utility functions (general-purpose) |
+| `.snippet.ts` | Code snippet functions |
+| `.ascii.ts` | ASCII art strings |
+| `.test.tsx` / `.test.ts` | Test files (inside `__tests__/`) |
+
+#### Component Folder (full)
+
+```
+component-name/
+├── component-name.component.tsx
+├── component-name.types.ts
+├── component-name.module.scss
+├── component-name.constants.ts
+├── component-name.helpers.ts
+├── component-name.strings.ts
+├── index.ts                           # Barrel export
+├── __tests__/
+│   └── component-name.test.tsx
+├── hooks/                             # Co-located hooks
+│   └── use-component-logic.hook.ts
+└── components/                        # Sub-components (same structure recursively)
+    ├── index.ts
+    └── sub-component/
+        ├── sub-component.component.tsx
+        ├── sub-component.types.ts
+        ├── index.ts
+        └── __tests__/
+            └── sub-component.test.tsx
+```
+
+#### Context Provider
+
+```
+feature/
+├── feature.context.tsx                # createContext + Provider + useX hook
+├── feature.context.types.ts           # Context value type + related types
+└── ...
+```
+
+#### Standalone Hook
+
+```
+hooks/
+├── index.ts
+└── use-hook-name/
+    ├── use-hook-name.hook.ts
+    ├── use-hook-name.types.ts
+    ├── index.ts
+    └── __tests__/
+        └── use-hook-name.test.ts
+```
+
+#### Data / Constants File
+
+```
+data/
+├── data-name.data.ts                  # or .data.tsx if it contains JSX
+├── data-name.types.ts
+└── __tests__/
+    └── data-name.data.test.ts
+```
+
+#### Next.js Route (page)
+
+```
+route-name/
+├── page.tsx                           # Next.js entry (thin — delegates to page component)
+├── route-page.component.tsx
+├── route-page.types.ts
+├── route-page.module.scss
+├── components/
+│   └── index.ts
+└── data/
+    ├── data-name.data.ts
+    └── data-name.types.ts
+```
 
 ### Code Standards
 
