@@ -5,7 +5,7 @@ import { useResponsive } from '@/hooks';
 import { MobilePageTitle } from '@/app/(main)/components/mobile-page-title';
 import type { AboutFileId } from '../../data/about-files.data';
 import { SECTIONS, SECTION_FILES } from '../../data/about-files.data';
-import { FileTreeSection } from './components/filte-tree-section.component';
+import { FileTreeSection } from './components';
 import styles from './file-tree.module.scss';
 
 export type FileTreeProps = {

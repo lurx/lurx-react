@@ -1,8 +1,8 @@
 import { FaIcon } from '@/app/components';
-import { ABOUT_FILES, type AboutFileId } from '../../../data/about-files.data';
-import { FileItem } from './file-item.component';
-import type { FileTreeSectionProps } from './file-tree-section.types';
+import { ABOUT_FILES, type AboutFileId } from '../../../../data/about-files.data';
+import { FileItem } from '../file-item';
 import styles from '../file-tree.module.scss';
+import type { FileTreeSectionProps } from './file-tree-section.types';
 
 export const FileTreeSection = ({
 	id,

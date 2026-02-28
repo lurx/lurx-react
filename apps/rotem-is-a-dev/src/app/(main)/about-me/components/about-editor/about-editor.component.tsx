@@ -1,14 +1,14 @@
 'use client';
 
+import { ShikiCode } from '@/app/components/shiki-code/shiki-code.component';
+import { useShikiTokens } from '@/lib/shiki';
 import { useMemo } from 'react';
 import type {
-	AboutFileContent,
-	JsdocFileContent,
-	JsonFileContent,
+  AboutFileContent,
+  JsdocFileContent,
+  JsonFileContent,
 } from '../../data/about-files.data';
 import styles from './about-editor.module.scss';
-import { useShikiTokens } from '@/lib/shiki';
-import { ShikiCode } from '@/app/components/shiki-code/shiki-code.component';
 
 const COMMENT_WRAP_WIDTH = 38;
 
@@ -90,7 +90,7 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 				{shikiLines
 					? <ShikiCode lines={shikiLines} />
 					: plainLines.map((line, index) => (
-							<span key={`plain-${index}`}>
+							<span key={`plain-${index}[${line}]`}>
 								{line}
 								{'\n'}
 							</span>
