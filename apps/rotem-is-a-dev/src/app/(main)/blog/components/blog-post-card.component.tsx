@@ -4,7 +4,7 @@ import { formatDate } from '../blog-page.helpers';
 import styles from '../blog-page.module.scss';
 import { BlogTagsList } from './blog-tags';
 
-interface BlogPostCardProps {
+type BlogPostCardProps = {
 	post: Post;
 }
 

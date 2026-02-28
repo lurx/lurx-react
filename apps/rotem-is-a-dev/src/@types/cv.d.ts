@@ -1,4 +1,4 @@
-interface ExperienceItem {
+type ExperienceItem = {
 	company: string;
 	position: string;
 	duration: {
@@ -9,7 +9,7 @@ interface ExperienceItem {
 	achievements?: string[];
 }
 
-interface CvContextValue {
+type CvContextValue = {
 	name: string;
 	titles: string[];
 	intro: string;
@@ -26,7 +26,7 @@ interface CvContextValue {
 	languages: string[];
 }
 
-interface SkillObject extends IconData {
+type SkillObject = IconData & {
 	name: string;
 	level: number;
 }

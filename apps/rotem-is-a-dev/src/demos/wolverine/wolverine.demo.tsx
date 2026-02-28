@@ -15,13 +15,13 @@ const chelseaMarket = Chelsea_Market({
 });
 // <link href="https://fonts.googleapis.com/css?family=Chelsea+Market" rel="stylesheet">
 
-interface DemoCredits {
+type DemoCredits = {
 	name: string;
 	url: string;
 	author: string;
 	authorUrl: string;
 }
-interface DemoCreditsProps {
+type DemoCreditsProps = {
 	credits?: DemoCredits;
 }
 

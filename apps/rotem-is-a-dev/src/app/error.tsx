@@ -24,7 +24,7 @@ try {
 
 const NUMBER_OF_LINES = 14;
 
-interface ErrorPageProps {
+type ErrorPageProps = {
 	readonly error: Error & { digest?: string };
 	readonly reset: () => void;
 }

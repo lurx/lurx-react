@@ -1,7 +1,7 @@
 import { CodeBlock, FaIcon } from '@/app/components';
 import styles from '../../gist-panel.module.scss';
 
-interface GistProps {
+type GistProps = {
 	title: string;
 	username: string;
 	createdAt: string;

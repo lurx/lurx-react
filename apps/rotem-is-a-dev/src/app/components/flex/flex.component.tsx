@@ -8,7 +8,7 @@ type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 type FlexAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
 type FlexGap = 'none' | 'small' | 'medium' | 'large' | 'xlarge';
 
-interface FlexProps {
+type FlexProps = {
 	tag?: React.ElementType;
 	direction?: FlexDirection;
 	wrap?: FlexWrap;

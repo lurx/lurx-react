@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import styles from './card.module.scss';
 
-interface CardProps {
+type CardProps = {
 	id?: string;
 }
 

@@ -2,7 +2,7 @@ import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import CV from '../page';
 
-interface OffscreenResult {
+type OffscreenResult = {
 	container: HTMLElement;
 	cleanup: () => void;
 }

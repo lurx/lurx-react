@@ -2,7 +2,7 @@ import { CodeBlock } from '@/app/components';
 import { memo } from 'react';
 import styles from './hero-snippets.module.scss';
 
-interface SnippetSlideProps {
+type SnippetSlideProps = {
 	title: string;
 	code: string;
 	opacity: number;

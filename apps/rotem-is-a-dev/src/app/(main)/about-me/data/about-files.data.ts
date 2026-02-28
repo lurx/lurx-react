@@ -10,13 +10,13 @@ export type AboutFileId =
 	| 'investing-com'
 	| 'isocia';
 
-export interface JsdocFileContent {
+export type JsdocFileContent = {
 	title: string;
 	format: 'jsdoc';
 	paragraphs: string[];
 }
 
-export interface JsonFileContent {
+export type JsonFileContent = {
 	title: string;
 	format: 'json';
 	json: Record<string, unknown>;
@@ -24,7 +24,7 @@ export interface JsonFileContent {
 
 export type AboutFileContent = JsdocFileContent | JsonFileContent;
 
-export interface SectionConfig {
+export type SectionConfig = {
 	id: SectionId;
 	label: string;
 	icon: string;

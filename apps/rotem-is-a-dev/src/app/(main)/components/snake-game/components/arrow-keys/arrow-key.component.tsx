@@ -5,7 +5,7 @@ import styles from '../../snake-game.module.scss';
 import type { ArrowDirection } from '../../snake-game.types';
 import { KEY_LABELS } from './arrow-keys.constants';
 
-interface ArrowKeyProps {
+type ArrowKeyProps = {
 	direction: ArrowDirection;
 }
 

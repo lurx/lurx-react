@@ -8,7 +8,7 @@ import styles from './blog-page.module.scss';
 import { BlogPostCard } from './components/blog-post-card.component';
 import { NoPosts } from './components/no-posts.component';
 
-interface BlogPageProps {
+type BlogPageProps = {
 	posts: Post[];
 }
 

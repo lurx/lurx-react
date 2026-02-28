@@ -8,7 +8,7 @@ import {
 import { SideBarButton } from '../sidebar-button';
 import styles from './sidebar.module.scss';
 
-interface SideBarProps {
+type SideBarProps = {
 	activeFileId: Nullable<AboutFileId>;
 	onFileSelect: (fileId: AboutFileId) => void;
 }

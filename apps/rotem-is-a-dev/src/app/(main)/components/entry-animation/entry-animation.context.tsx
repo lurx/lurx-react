@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 
 export const SESSION_KEY = 'entry-animation-played';
 
-interface EntryAnimationContextValue {
+type EntryAnimationContextValue = {
 	isShellLoaded: boolean;
 	setIsShellLoaded: (value: boolean) => void;
 	animationKey: number;

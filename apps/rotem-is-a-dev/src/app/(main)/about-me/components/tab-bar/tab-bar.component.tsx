@@ -7,7 +7,7 @@ import styles from './tab-bar.module.scss';
 import { Tab } from './tab.component';
 import { TabContextMenu } from './tab-context-menu.component';
 
-interface TabBarProps {
+type TabBarProps = {
 	openTabs: AboutFileId[];
 	activeFileId: Nullable<AboutFileId>;
 	onTabSelect: (fileId: AboutFileId) => void;
@@ -16,7 +16,7 @@ interface TabBarProps {
 	onCloseAll: () => void;
 }
 
-interface ContextMenuState {
+type ContextMenuState = {
 	tabId: AboutFileId;
 	x: number;
 	y: number;

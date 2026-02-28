@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import type { ThemedToken } from 'shiki/core';
 
-export interface ShikiLine {
+export type ShikiLine = {
 	tokens: ThemedToken[];
 }
 
-interface UseShikiTokensParams {
+type UseShikiTokensParams = {
 	code: string;
 	language: 'javascript' | 'typescript' | 'json';
 }

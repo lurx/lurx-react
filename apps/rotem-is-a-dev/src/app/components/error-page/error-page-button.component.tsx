@@ -1,6 +1,6 @@
 import styles from './error-page.module.scss';
 
-interface ErrorPageButtonProps {
+type ErrorPageButtonProps = {
 	reset: () => void;
 }
 

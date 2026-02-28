@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { FaIcon } from '@/app/components/fa-icon/fa-icon.component';
 import styles from './resizable-drawer.module.scss';
 
-interface DrawerHeaderProps {
+type DrawerHeaderProps = {
 	title?: ReactNode;
 	onClose: () => void;
 }

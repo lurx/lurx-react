@@ -2,7 +2,7 @@ import { Flex } from '@/app/components/flex';
 import classNames from 'classnames';
 import { type PropsWithChildren } from 'react';
 
-interface DemoContainerProps {
+type DemoContainerProps = {
 	width?: number | string;
 	height?: number | string;
 	className?: React.HTMLAttributes<HTMLDivElement>['className'];

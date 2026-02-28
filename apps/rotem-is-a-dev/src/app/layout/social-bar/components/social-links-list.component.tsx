@@ -2,7 +2,7 @@ import styles from '../social-bar.module.scss';
 import type { SocialLinks } from '../social-bar.types';
 import { SocialLink } from './social-link.component';
 
-interface SocialLinkListProps {
+type SocialLinkListProps = {
 	links: SocialLinks;
 }
 

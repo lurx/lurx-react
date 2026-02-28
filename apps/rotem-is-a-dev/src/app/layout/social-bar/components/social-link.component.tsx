@@ -3,12 +3,12 @@ import styles from '../social-bar.module.scss';
 import type { SocialLink as SocialLinkData } from '../social-bar.types';
 import { SocialIcon } from './social-icon.component';
 
-interface SocialLinkProps {
+type SocialLinkProps = {
 	link: SocialLinkData;
 	iconPosition?: 'start' | 'end' | 'hide';
 }
 
-interface RenderItem {
+type RenderItem = {
 	key: string;
 	element: Optional<JSX.Element>;
 }

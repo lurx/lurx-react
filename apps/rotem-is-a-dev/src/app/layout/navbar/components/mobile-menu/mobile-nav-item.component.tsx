@@ -2,7 +2,7 @@ import { toCodeLike } from '@/app/utils/to-code-like.util';
 import classNames from 'classnames';
 import styles from './mobile-menu.module.scss';
 
-interface MobileNavItemProps {
+type MobileNavItemProps = {
 	label: string;
 	href: string;
 	pathname: string;

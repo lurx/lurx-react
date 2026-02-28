@@ -2,7 +2,7 @@ import { highlightCode } from '@/lib/shiki/highlight-code';
 import classNames from 'classnames';
 import styles from './code-block.module.scss';
 
-interface ServerCodeBlockProps {
+type ServerCodeBlockProps = {
 	code: string;
 	language?: 'typescript' | 'javascript' | 'json';
 	className?: string;

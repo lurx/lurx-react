@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-export interface StatusPageProps {
+export type StatusPageProps = {
 	asciiArt: string;
 	asciiArtLabel?: string;
 }
