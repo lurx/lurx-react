@@ -23,7 +23,7 @@ jest.mock('../../entry-animation/entry-animation.context', () => ({
 }));
 
 // Stub entry animation so GSAP typewrite doesn't clear text in JSDOM
-jest.mock('../use-hero-entry-animation.hook', () => ({
+jest.mock('../hooks/use-hero-entry-animation.hook', () => ({
 	useHeroEntryAnimation: () => undefined,
 }));
 

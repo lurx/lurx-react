@@ -1,3 +1,5 @@
+import type { CvContextValue } from '@/app/cv/context/cv.context.types';
+
 const cv: CvContextValue = {
 	name: 'Rotem Horovitz',
 	titles: ['Senior Frontend Developer', 'Tech Lead', 'CSS Expert'],

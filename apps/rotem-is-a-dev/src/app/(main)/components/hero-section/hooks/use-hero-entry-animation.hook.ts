@@ -3,10 +3,9 @@
 import gsap from 'gsap';
 import { useEffect } from 'react';
 import { typewrite } from '@/app/utils/typewrite.util';
-import { useEntryAnimation } from '../entry-animation';
-
-const INTRO_ORDER = ['greeting', 'name', 'role', 'comment', 'const'] as const;
-type IntroKey = (typeof INTRO_ORDER)[number];
+import { useEntryAnimation } from '../../entry-animation';
+import { INTRO_ORDER } from './use-hero-entry-animation.types';
+import type { IntroKey } from './use-hero-entry-animation.types';
 
 const isReduced = () =>
 	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
