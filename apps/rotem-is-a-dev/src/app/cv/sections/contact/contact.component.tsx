@@ -1,7 +1,5 @@
 'use client';
-import { FaIcon } from '@/app/components/fa-icon';
-import { Flex } from '@/app/components/flex/flex.component';
-import { Link } from '@/app/components/link';
+import { FaIcon, Flex, Link } from '@/app/components';
 import { useCV } from '@/app/cv/context/cv.context';
 import styles from './contact.module.scss';
 

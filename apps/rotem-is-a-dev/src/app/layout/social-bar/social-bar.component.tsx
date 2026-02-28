@@ -1,5 +1,5 @@
 import { AccessibilityWidget } from '../accessibility-widget/accessibility-widget.component';
-import { SocialLinkList } from './components/social-links-list.component';
+import { SocialLinkList } from './components';
 import { leftSideSocialLinks } from './social-bar.constants';
 import styles from './social-bar.module.scss';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { SnakeGame } from '../snake-game/snake-game.component';
+import { SnakeGame } from '../snake-game';
 import { useHeroContext } from './hero.context';
 
 export const HeroGame = () => {

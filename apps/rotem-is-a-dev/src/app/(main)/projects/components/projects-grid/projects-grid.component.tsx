@@ -1,5 +1,5 @@
 import { toCodeLike } from '@/app/utils/to-code-like.util';
-import { ProjectCard } from '../project-card/project-card.component';
+import { ProjectCard } from '../project-card';
 import styles from './projects-grid.module.scss';
 import type { ProjectsGridProps } from './projects-grid.types';
 

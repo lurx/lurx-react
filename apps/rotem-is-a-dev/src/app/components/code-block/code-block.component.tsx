@@ -2,7 +2,7 @@
 
 import { useShikiTokens } from '@/lib/shiki';
 import classNames from 'classnames';
-import { ShikiCode } from '../shiki-code/shiki-code.component';
+import { ShikiCode } from '../shiki-code';
 import styles from './code-block.module.scss';
 import type { CodeBlockProps } from './code-block.types';
 

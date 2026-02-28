@@ -1,4 +1,4 @@
-import { Flex } from '@/app/components/flex';
+import { Flex } from '@/app/components';
 import classNames from 'classnames';
 import { type PropsWithChildren } from 'react';
 import type { DemoContainerProps } from './demo-container.types';

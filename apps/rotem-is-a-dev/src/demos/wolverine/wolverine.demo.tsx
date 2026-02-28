@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import { DemoContainer } from '../demo-container/demo-container.component';
 import styles from './wolverine.module.scss';
 
-import { Flex } from '@/app/components/flex/flex.component';
-import { Link } from '@/app/components/link';
+import { Flex, Link } from '@/app/components';
 import { Chelsea_Market } from 'next/font/google';
 import { WolverineCowl } from './components';
 import { WolverineArm } from './components/wolverine-arm.component';
