@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useHeroContext } from '../../hero.context';
 import { SnippetSlide } from './hero-snippet-slide.component';
 import { SNIPPETS, TOTAL_SNIPPETS } from './hero-snippets.constants';
-import { getOpacity } from './hero-snippets.herlpers';
+import { getOpacity } from './hero-snippets.helpers';
 import styles from './hero-snippets.module.scss';
 
 export const HeroSnippets = () => {
