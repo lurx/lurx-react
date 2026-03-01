@@ -2,6 +2,10 @@
 
 Personal portfolio website built with Next.js, React, and GSAP in an Nx monorepo.
 
+## Design
+
+Design is [Developer portfolio concept](https://www.figma.com/design/6uYS9Jfst5FROmiwrJnkd7/Portfolio-for-Developers-Concept-V.2.1--Community-?node-id=72-1508&p=f&m=dev) By [Yanka Darelova](https://www.darelova.com/).
+
 ## Tech Stack
 
 - **Framework:** Next.js 15, React 19, TypeScript
