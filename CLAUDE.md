@@ -10,7 +10,7 @@ This is Rotem's personal portfolio website built with Next.js 14, React 18, and 
 
 ### Monorepo Structure
 
-- **Framework**: Nx 20.3.0 workspace with TypeScript and Yarn package manager
+- **Framework**: Nx 20.3.0 workspace with TypeScript and pnpm package manager
 - **Apps**: `apps/rotem-is-a-dev/` - Main Next.js application, `apps/rotem-is-a-dev-e2e/` - E2E tests
 
 ### Technology Stack

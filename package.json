@@ -4,6 +4,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "nx serve-with-remotes rotem-is-a-dev",
+		"install:local": "dotenv -e .env.local -- pnpm install",
 		"check:before-push": "bash scripts/check-before-push.sh",
 		"prepare": "husky"
 	},
@@ -52,6 +53,7 @@
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
 		"babel-jest": "30.0.5",
+		"dotenv-cli": "^11.0.0",
 		"eslint": "^9.8.0",
 		"eslint-config-next": "15.5.9",
 		"eslint-config-prettier": "10.1.8",
