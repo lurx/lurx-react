@@ -86,15 +86,3 @@
 	border-radius: var(--radius-sm);
 }
 
-.empty {
-	flex: 1;
-	display: flex;
-  flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	color: var(--muted);
-	font-size: 1rem;
-  [class*='ascii'] {
-    margin-block-end: spacing(4);
-  }
-}
