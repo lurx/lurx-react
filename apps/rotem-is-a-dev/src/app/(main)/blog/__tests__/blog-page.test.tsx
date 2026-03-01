@@ -63,8 +63,11 @@ jest.mock('../components/blog-post-card.component', () => ({
 	),
 }));
 
-jest.mock('../components/no-posts.component', () => ({
-	NoPosts: () => <div data-testid="no-posts">No posts</div>,
+jest.mock('@/app/components/empty-state', () => ({
+	EmptyState: ({ children }: { children: React.ReactNode }) => (
+		<div data-testid="empty-state">{children}</div>
+	),
+	EMPTY_STATE_VARIANTS: { NO_POSTS: 'NO_POSTS' },
 }));
 
 import { filterPosts, getAllTags } from '../blog-page.helpers';
@@ -125,12 +128,12 @@ describe('BlogPage', () => {
 	it('renders NoPosts when filterPosts returns empty array', () => {
 		mockFilterPosts.mockReturnValue([]);
 		render(<BlogPage posts={POSTS} />);
-		expect(screen.getByTestId('no-posts')).toBeInTheDocument();
+		expect(screen.getByTestId('empty-state')).toBeInTheDocument();
 	});
 
 	it('does not render NoPosts when posts are present', () => {
 		render(<BlogPage posts={POSTS} />);
-		expect(screen.queryByTestId('no-posts')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('empty-state')).not.toBeInTheDocument();
 	});
 
 	it('calls getAllTags with the posts on mount', () => {
@@ -175,6 +178,6 @@ describe('BlogPage', () => {
 		mockFilterPosts.mockReturnValue([]);
 		mockGetAllTags.mockReturnValue([]);
 		render(<BlogPage posts={[]} />);
-		expect(screen.getByTestId('no-posts')).toBeInTheDocument();
+		expect(screen.getByTestId('empty-state')).toBeInTheDocument();
 	});
 });

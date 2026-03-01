@@ -1,9 +1,11 @@
 'use client';
 
+import { EmptyState } from '@/app/components/empty-state/empty-state.component';
+import { EMPTY_STATE_VARIANTS } from '@/app/components/empty-state/empty-state.constants';
 import { toCodeLike } from '@/app/utils/to-code-like.util';
 import { useCallback, useState } from 'react';
 import styles from './about-page.module.scss';
-import { AboutContent, AboutEditor, FileTree, GistPanel, SideBar } from './components';
+import { AboutContent, AboutEditor, FileTree, SideBar } from './components';
 import type { AboutFileId } from './data/about-files.data';
 import { ABOUT_FILES, DEFAULT_FILE_ID } from './data/about-files.data';
 
@@ -47,11 +49,11 @@ export const AboutPage = () => {
 	const editorContent = activeFile ? (
 		<AboutEditor content={activeFile} />
 	) : (
-		<p className={styles.emptyState}>
-			{toCodeLike('no file selected. choose a file to learn more about me', {
+		<EmptyState variant={EMPTY_STATE_VARIANTS.NO_DATA}>
+			{toCodeLike('No file selected. Choose a file to learn more about me.', {
 				convertCase: 'comment',
 			})}
-		</p>
+		</EmptyState>
 	);
 
 	return (
@@ -75,7 +77,6 @@ export const AboutPage = () => {
 				onCloseAll={handleCloseAll}
 			>
 				{editorContent}
-				<GistPanel />
 			</AboutContent>
 		</div>
 	);
