@@ -4,7 +4,13 @@ import {
 	EMPTY_STATE_VARIANTS,
 	EMPTY_STATE_ASCII_ART_MAP,
 	EMPTY_STATE_ASCII_LABELS_MAP,
+	EMPTY_STATE_MOBILE_ASCII_ART_MAP,
 } from '../empty-state.constants';
+import { useResponsive } from '@/hooks';
+
+jest.mock('@/hooks', () => ({
+	useResponsive: jest.fn(),
+}));
 
 jest.mock('../../ascii-art-renderer', () => ({
 	AsciiArtRenderer: ({
@@ -19,6 +25,16 @@ jest.mock('../../ascii-art-renderer', () => ({
 		</pre>
 	),
 }));
+
+const mockUseResponsive = useResponsive as jest.Mock;
+
+beforeEach(() => {
+	mockUseResponsive.mockReturnValue({
+		isMobile: false,
+		isTablet: false,
+		isDesktop: true,
+	});
+});
 
 describe('EmptyState', () => {
 	it('renders children text', () => {
@@ -116,5 +132,56 @@ describe('EmptyState', () => {
 		);
 
 		expect(screen.getByTestId('ascii-art-renderer')).toBeInTheDocument();
+	});
+
+	it('uses mobile ascii art map on mobile devices', () => {
+		mockUseResponsive.mockReturnValue({
+			isMobile: true,
+			isTablet: false,
+			isDesktop: false,
+		});
+
+		render(
+			<EmptyState variant={EMPTY_STATE_VARIANTS.NO_DATA}>
+				No data
+			</EmptyState>,
+		);
+
+		const renderer = screen.getByTestId('ascii-art-renderer');
+		expect(renderer.textContent).toBe(
+			EMPTY_STATE_MOBILE_ASCII_ART_MAP[EMPTY_STATE_VARIANTS.NO_DATA],
+		);
+	});
+
+	it('uses mobile ascii art map on tablet devices', () => {
+		mockUseResponsive.mockReturnValue({
+			isMobile: false,
+			isTablet: true,
+			isDesktop: false,
+		});
+
+		render(
+			<EmptyState variant={EMPTY_STATE_VARIANTS.NO_POSTS}>
+				No posts
+			</EmptyState>,
+		);
+
+		const renderer = screen.getByTestId('ascii-art-renderer');
+		expect(renderer.textContent).toBe(
+			EMPTY_STATE_MOBILE_ASCII_ART_MAP[EMPTY_STATE_VARIANTS.NO_POSTS],
+		);
+	});
+
+	it('uses desktop ascii art map on desktop devices', () => {
+		render(
+			<EmptyState variant={EMPTY_STATE_VARIANTS.NO_DATA}>
+				No data
+			</EmptyState>,
+		);
+
+		const renderer = screen.getByTestId('ascii-art-renderer');
+		expect(renderer.textContent).toBe(
+			EMPTY_STATE_ASCII_ART_MAP[EMPTY_STATE_VARIANTS.NO_DATA],
+		);
 	});
 });
