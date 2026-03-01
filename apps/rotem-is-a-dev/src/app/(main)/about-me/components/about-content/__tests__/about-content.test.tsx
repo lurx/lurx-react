@@ -12,6 +12,10 @@ jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(() => ({ isMobile: false, isTablet: false, isDesktop: true })),
 }));
 
+jest.mock('../../gist-panel', () => ({
+	GistPanel: () => <div data-testid="gist-panel">Gist Panel</div>,
+}));
+
 let portalRoot: HTMLDivElement;
 
 beforeEach(() => {

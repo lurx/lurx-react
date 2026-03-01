@@ -1,4 +1,5 @@
 import styles from '../../about-page.module.scss';
+import { GistPanel } from '../gist-panel';
 import { TabBar } from '../tab-bar';
 import type { AboutContentProps } from './about-content.types';
 
@@ -22,7 +23,10 @@ export const AboutContent = ({
 				onCloseAll={onCloseAll}
 			/>
 
-			<div className={styles.panels}>{children}</div>
+			<div className={styles.panels}>
+				{children}
+				{activeFileId && <GistPanel />}
+			</div>
 		</div>
 	);
 };
