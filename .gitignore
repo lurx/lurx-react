@@ -76,3 +76,4 @@ vitest.config.*.timestamp*
 # Railway secrets
 .env.railway
 .env.railway.*
+.env*.local

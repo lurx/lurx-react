@@ -6,8 +6,8 @@ const cv: CvContextValue = {
 	intro:
 		"I taught myself everything I know — and I haven't stopped. Over %numYears% years I've gone from hand-coding landing pages to architecting design systems used across entire product suites. No boot camp, no degree, just curiosity and a stubborn refusal to ship anything I'm not proud of.",
 	contact: {
-		email: 'lurxie@gmail.com',
-		phone: '+972-52-5229-225',
+		email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
+		phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? '',
 		social: {
 			linkedin: 'https://linkedin.com/in/rotem-lurx-horovitz-9601705',
 			github: 'https://github.com/lurx',
