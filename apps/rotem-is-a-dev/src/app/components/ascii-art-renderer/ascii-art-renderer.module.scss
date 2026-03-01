@@ -3,11 +3,10 @@
 .asciiArt {
 	color: var(--muted-dim);
 	line-height: 1;
-	text-align: center;
+  text-align: start;
 	font-size: 0.75rem;
 	flex-shrink: 0;
 	font-family: monospace;
-
   @include media-below('tablet') {
     font-size: 0.625rem;
   }
