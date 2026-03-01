@@ -6,6 +6,8 @@ import styles from './about-page.module.scss';
 import { AboutContent, AboutEditor, FileTree, GistPanel, SideBar } from './components';
 import type { AboutFileId } from './data/about-files.data';
 import { ABOUT_FILES, DEFAULT_FILE_ID } from './data/about-files.data';
+import { EMPTY_STATE_VARIANTS } from '@/app/components/empty-state/empty-state.constants';
+import { EmptyState } from '@/app/components/empty-state/empty-state.component';
 
 export const AboutPage = () => {
 	const [activeFileId, setActiveFileId] =
@@ -47,11 +49,9 @@ export const AboutPage = () => {
 	const editorContent = activeFile ? (
 		<AboutEditor content={activeFile} />
 	) : (
-		<p className={styles.emptyState}>
-			{toCodeLike('no file selected. choose a file to learn more about me', {
-				convertCase: 'comment',
-			})}
-		</p>
+		<EmptyState variant={EMPTY_STATE_VARIANTS.NO_DATA}>
+			No file selected. Choose a file to learn more about me.
+		</EmptyState>
 	);
 
 	return (
@@ -75,7 +75,6 @@ export const AboutPage = () => {
 				onCloseAll={handleCloseAll}
 			>
 				{editorContent}
-				<GistPanel />
 			</AboutContent>
 		</div>
 	);
