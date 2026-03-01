@@ -25,6 +25,9 @@ node_modules
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# environment variables
+.env.local
+
 # misc
 /.sass-cache
 /connect.lock
@@ -73,3 +76,4 @@ vitest.config.*.timestamp*
 # Railway secrets
 .env.railway
 .env.railway.*
+.env*.local
