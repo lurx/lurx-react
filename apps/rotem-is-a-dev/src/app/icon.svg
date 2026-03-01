@@ -3,7 +3,10 @@
 
   <style>
     .favicon {
-      fill: #615fff; stroke: white; stroke-width: 0;
+      fill: #020618; stroke: white; stroke-width: 0;
+      @media (prefers-color-scheme: dark) {
+        fill: #f8fafc;
+      }
     }
   </style>
 
