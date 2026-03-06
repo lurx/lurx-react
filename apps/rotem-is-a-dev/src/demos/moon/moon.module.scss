@@ -1,4 +1,7 @@
+@use 'sass:color';
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:math';
 
 //star map is minified for ease of editing
 $star-map: (
@@ -292,7 +295,7 @@ $shooting-stars-duration: 5s;
 	left: 0;
 	margin: auto;
 	background: $moon-bg;
-	box-shadow: 0 0 10em 5em rgba(lighten(red, 25%), 0.8),
+	box-shadow: 0 0 10em 5em rgba(color.adjust(red, $lightness: 25%), 0.8),
 		inset 0 0 2.5em 0 rgba(red, 0.5);
 	z-index: 1;
 	&-crater {
@@ -575,7 +578,7 @@ $shooting-stars-duration: 5s;
 	position: absolute;
 	top: var(--star-pos-t);
 	left: var(--star-pos-l);
-	animation: $shooting-stars-duration/2 blinking-stars infinite;
+	animation: math.div($shooting-stars-duration, 2) blinking-stars infinite;
 	&.xs {
 		--star-size: 0.2em;
 		box-shadow: none;
@@ -591,7 +594,7 @@ $shooting-stars-duration: 5s;
 	&.l {
 		--star-size: 0.4em;
 	}
-	@for $i from 1 through length($star-map) {
+	@for $i from 1 through list.length($star-map) {
 		//set positions for stars, found in map (array) in the beginning of the css
 		&:nth-child(#{$i}) {
 			$starTop: map-deep-get($star-map, 's#{$i}', 'top');
