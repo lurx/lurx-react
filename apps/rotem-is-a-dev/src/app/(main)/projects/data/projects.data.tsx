@@ -15,6 +15,10 @@ const SheepDemo = dynamic(
 	() => import('@/demos/sheep/sheep.demo').then(mod => mod.SheepDemo),
 	{ loading },
 );
+const MoonDemo = dynamic(
+	() => import('@/demos/moon/moon.demo').then(mod => mod.MoonDemo),
+	{ loading },
+);
 
 export const ALL_TECHNOLOGIES: Technology[] = [
 	'react',
@@ -57,6 +61,20 @@ export const PROJECTS = [
 	{
 		id: 3,
 		number: 3,
+		slug: '_moon-css',
+		description:
+			'A CSS art moon with glowing effect, drifting clouds, and twinkling stars, inspired by a Dribbble shot by Julien Charrieras.',
+		technologies: ['css', 'scss', 'react'],
+		externalUrl: {
+			origin: 'codepen.io',
+			url: 'https://codepen.io/lurx/pen/LMazYq',
+			iconName: 'codepen',
+		},
+		demo: MoonDemo,
+	},
+	{
+		id: 4,
+		number: 4,
 		slug: '_animated-logo-loader',
 		description:
 			'The animated loader for this site, featuring a tracing css-driven animated version of the logo.',

@@ -1,0 +1,628 @@
+@use 'sass:map';
+
+//star map is minified for ease of editing
+$star-map: (
+	s1: (
+		top: 2.9%,
+		left: 54.6%,
+	),
+	s2: (
+		top: 7.7%,
+		left: 62%,
+	),
+	s3: (
+		top: 10.3%,
+		left: 37.4%,
+	),
+	s4: (
+		top: 10.3%,
+		left: 47.3%,
+	),
+	s5: (
+		top: 12.8%,
+		left: 74.4%,
+	),
+	s6: (
+		top: 17.7%,
+		left: 84.2%,
+	),
+	s7: (
+		top: 17.7%,
+		left: 15.2%,
+	),
+	s8: (
+		top: 17.7%,
+		left: 52.3%,
+	),
+	s9: (
+		top: 17.8%,
+		left: 64.4%,
+	),
+	s10: (
+		top: 20.2%,
+		left: 69.5%,
+	),
+	s11: (
+		top: 25.2%,
+		left: 91.45%,
+	),
+	s12: (
+		top: 20.2%,
+		left: 37.2%,
+	),
+	s13: (
+		top: 22.7%,
+		left: 24.7%,
+	),
+	s14: (
+		top: 22.7%,
+		left: 59.1%,
+	),
+	s15: (
+		top: 27.6%,
+		left: 17.4%,
+	),
+	s16: (
+		top: 27.6%,
+		left: 30%,
+	),
+	s17: (
+		top: 27.6%,
+		left: 69.5%,
+	),
+	s18: (
+		top: 30.1%,
+		left: 81.7%,
+	),
+	s19: (
+		top: 35.1%,
+		left: 24.6%,
+	),
+	s20: (
+		top: 35.1%,
+		left: 84%,
+	),
+	s21: (
+		top: 37.4%,
+		left: 2.8%,
+	),
+	s22: (
+		top: 39.9%,
+		left: 92.1%,
+	),
+	s23: (
+		top: 40%,
+		left: 14.9%,
+	),
+	s24: (
+		top: 47.3%,
+		left: 91.8%,
+	),
+	s25: (
+		top: 59.7%,
+		left: 10%,
+	),
+	s26: (
+		top: 64.8%,
+		left: 17.8%,
+	),
+	s27: (
+		top: 52.3%,
+		left: 81.8%,
+	),
+	s28: (
+		top: 57.4%,
+		left: 76.2%,
+	),
+	s29: (
+		top: 62.2%,
+		left: 86.9%,
+	),
+	s30: (
+		top: 67.1%,
+		left: 25.1%,
+	),
+	s31: (
+		top: 69.7%,
+		left: 69.5%,
+	),
+	s32: (
+		top: 67.1%,
+		left: 81.6%,
+	),
+	s33: (
+		top: 67.2%,
+		left: 5%,
+	),
+	s34: (
+		top: 71.9%,
+		left: 17.6%,
+	),
+	s35: (
+		top: 77%,
+		left: 39.9%,
+	),
+	s36: (
+		top: 77%,
+		left: 52.2%,
+	),
+	s37: (
+		top: 77%,
+		left: 62.2%,
+	),
+	s38: (
+		top: 74.6%,
+		left: 76.8%,
+	),
+	s39: (
+		top: 72.2%,
+		left: 89.4%,
+	),
+	s40: (
+		top: 77%,
+		left: 27.3%,
+	),
+	s41: (
+		top: 79.5%,
+		left: 12.6%,
+	),
+	s42: (
+		top: 84.5%,
+		left: 34.5%,
+	),
+	s43: (
+		top: 86.9%,
+		left: 52%,
+	),
+	s44: (
+		top: 84.5%,
+		left: 67%,
+	),
+	s45: (
+		top: 84.5%,
+		left: 79.3%,
+	),
+	s46: (
+		top: 79.5%,
+		left: 89.4%,
+	),
+	s47: (
+		top: 89.4%,
+		left: 24.8%,
+	),
+	s48: (
+		top: 89.5%,
+		left: 39.7%,
+	),
+	s49: (
+		top: 91.6%,
+		left: 44.8%,
+	),
+	s50: (
+		top: 89.3%,
+		left: 73.7%,
+	),
+);
+
+/// Map deep get
+/// @author Hugo Giraudel
+/// @access public
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Key chain
+/// @return {*} - Desired value
+@function map-deep-get($map, $keys...) {
+	@each $key in $keys {
+		$map: map.get($map, $key);
+	}
+	@return $map;
+}
+
+$body-bg: #fbf0f0;
+$moon-bg: #fff;
+$night-bg: rgba(#491f77, 1);
+$moon-wrapper-size: 40.6em;
+$moon-size: 21.4em;
+$alpha: 0.2;
+
+$cloud-size: 11.2em;
+
+$clouds-outer-color: #ff00ff;
+$clouds-inner-color: #fff;
+
+$clouds-top-alpha: 1;
+$clouds-bottom-alpha: 1;
+
+$shooting-stars-duration: 5s;
+
+@mixin clouds-gradient(
+	$col-1: $clouds-outer-color,
+	$col-2: $clouds-inner-color,
+	$alpha: 1
+) {
+	background-image: radial-gradient(
+		ellipse at center,
+		rgba($col-1, $alpha) 0%,
+		rgba($col-2, $alpha) 100%
+	);
+
+	background-size: $moon-wrapper-size $moon-wrapper-size;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.spacer {
+	width: calc(var(--demo-container-width) + 5em);
+	height: calc(var(--demo-container-height) + 5em);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.moonContainer {
+	--moon-scale: 1;
+	--crater-size: 5em;
+	--cloud-size: #{$cloud-size};
+	--star-pos-t: 0;
+	--star-pos-l: 0;
+	position: relative;
+	width: var(--demo-container-width);
+	height: var(--demo-container-height);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: calc(var(--demo-container-height) / 50 * var(--moon-scale));
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+}
+
+.moon {
+	width: $moon-size;
+	height: $moon-size;
+	border-radius: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	background: $moon-bg;
+	box-shadow: 0 0 10em 5em rgba(lighten(red, 25%), 0.8),
+		inset 0 0 2.5em 0 rgba(red, 0.5);
+	z-index: 1;
+	&-crater {
+		width: var(--crater-size);
+		height: var(--crater-size);
+		border-radius: 50%;
+		background: rgba(#000, 0.2);
+		position: absolute;
+		&:nth-child(1) {
+			--crater-size: 5.1em;
+			top: 17%;
+			left: 9%;
+		}
+		&:nth-child(2) {
+			--crater-size: 2em;
+			top: 24%;
+			left: 35%;
+		}
+		&:nth-child(3) {
+			--crater-size: 3em;
+			top: 6%;
+			left: 34%;
+		}
+	}
+	&-wrapper {
+		width: $moon-wrapper-size;
+		height: $moon-wrapper-size;
+		border-radius: 100%;
+		background-color: $night-bg;
+		border: 1px solid #fff;
+		box-shadow: 0 0 0 2em #fff, 0 0 5em 2em rgba(brown, 0.5);
+		position: relative;
+		overflow: hidden;
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: 100%;
+			box-shadow: inset 0 0 5em 1em #7b3bec;
+		}
+	}
+	&-glow {
+		width: $moon-size;
+		height: $moon-size;
+		border-radius: 100%;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		box-shadow: 0 0 0 3.2em rgba(#de607a, 0.5), 0 0 0 6.4em rgba(#ad3c76, 0.5),
+			inset 0 0 10em 1em rgba(red, 0.5);
+	}
+}
+
+.glow-wrap {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	mask-image: linear-gradient(to bottom, black 0%, transparent 90%);
+}
+.cloud {
+	width: var(--cloud-size);
+	height: var(--cloud-size);
+	border-radius: 100%;
+	@include clouds-gradient($clouds-outer-color, $clouds-inner-color);
+	position: absolute;
+	transition: 0.1s all linear;
+	z-index: 0;
+	&s {
+		&-1,
+		&-2,
+		&-3,
+		&-4,
+		&-5 {
+			z-index: 0;
+			background: transparent;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		&-1 {
+			mask-image: linear-gradient(to bottom, black 25%, transparent 50%);
+			.cloud {
+				@include clouds-gradient($clouds-outer-color, $clouds-inner-color);
+				&:nth-child(1) {
+					top: 13.8%;
+					left: -4.5%;
+				}
+				&:nth-child(2) {
+					top: 32%;
+					left: 5%;
+				}
+				&:nth-child(3) {
+					top: 26%;
+					left: -16%;
+				}
+			}
+		}
+		&-2 {
+			mask-image: linear-gradient(to bottom, black 40%, transparent 70%);
+			.cloud {
+				&:nth-child(1) {
+					top: 26.5%;
+					left: -15.85%;
+				}
+				&:nth-child(2) {
+					top: 46.5%;
+					left: -8.9%;
+				}
+			}
+		}
+		&-3 {
+			mask-image: radial-gradient(
+				ellipse at center,
+				transparent 30%,
+				black 80%
+			);
+			.cloud {
+				--cloud-size: 5em;
+				&:nth-child(1) {
+					top: 58.5%;
+					left: -2.5%;
+				}
+				&:nth-child(2) {
+					--cloud-size: 6.5em;
+					top: 67.6%;
+					left: 2.4%;
+				}
+				&:nth-child(3) {
+					--cloud-size: 6.5em;
+					top: 77%;
+					left: 12%;
+				}
+				&:nth-child(4) {
+					--cloud-size: 6.5em;
+					top: 81%;
+					left: 15%;
+				}
+				&:nth-child(5) {
+					--cloud-size: 7em;
+					top: 83%;
+					left: 22%;
+				}
+				&:nth-child(6) {
+					--cloud-size: 4.7em;
+					top: 83.2%;
+					left: 34%;
+				}
+				&:nth-child(7) {
+					--cloud-size: 6.5em;
+					top: 82%;
+					left: 40%;
+				}
+				&:nth-child(8) {
+					--cloud-size: 4em;
+					top: 87.5%;
+					left: 50%;
+				}
+				&:nth-child(9) {
+					--cloud-size: 4em;
+					top: 90.5%;
+					left: 57%;
+				}
+				&:nth-child(10) {
+					--cloud-size: 3.75em;
+					top: 89%;
+					left: 65%;
+				}
+				&:nth-child(11) {
+					--cloud-size: 6em;
+					top: 85%;
+					left: 78.5%;
+				}
+				//fillers
+				&:nth-child(12) {
+					--cloud-size: 6em;
+					top: 93%;
+					left: 35%;
+				}
+				&:nth-child(13) {
+					--cloud-size: 6.5em;
+					top: 93%;
+					left: 45%;
+				}
+			}
+		}
+		&-4 {
+			mask-image: linear-gradient(to bottom, black 15%, transparent 70%);
+			.cloud {
+				&:nth-child(1) {
+					top: 49%;
+					left: 69%;
+				}
+				&:nth-child(2) {
+					top: 41%;
+					left: 84%;
+				}
+				&:nth-child(3) {
+					top: 30%;
+					left: 98%;
+				}
+			}
+		}
+		&-5 {
+			mask-image: linear-gradient(to bottom, black 35%, transparent 95%);
+			.cloud {
+				&:nth-child(1) {
+					top: 70.5%;
+					left: 66%;
+				}
+				&:nth-child(2) {
+					top: 57.7%;
+					left: 83%;
+				}
+			}
+		}
+	}
+}
+
+.comet {
+	width: 0.3em;
+	height: 2.5em;
+	border-radius: 50%;
+	background-image: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.2) 15%,
+		#fff
+	);
+	position: absolute;
+	transform: rotate(-45deg);
+	animation: $shooting-stars-duration shooting-stars infinite;
+	&:nth-child(1) {
+		top: 10%;
+		left: 27%;
+	}
+	&:nth-child(2) {
+		top: 11.5%;
+		left: 71.5%;
+	}
+	&:nth-child(3) {
+		top: 29%;
+		left: 91%;
+	}
+	&:nth-child(4) {
+		top: 50%;
+		left: 9.5%;
+	}
+	&:nth-child(5) {
+		top: 78.5%;
+		left: 27%;
+	}
+	&:nth-child(6) {
+		top: 80%;
+		left: 71.5%;
+	}
+	@for $i from 0 through 6 {
+		&:nth-child(#{$i}) {
+			animation-delay: $i * -1s;
+		}
+	}
+	&s {
+		z-index: 13;
+	}
+}
+
+.star {
+	width: var(--star-size);
+	height: var(--star-size);
+	background: #fff;
+	border-radius: 50%;
+	position: absolute;
+	top: var(--star-pos-t);
+	left: var(--star-pos-l);
+	animation: $shooting-stars-duration/2 blinking-stars infinite;
+	&.xs {
+		--star-size: 0.2em;
+		box-shadow: none;
+	}
+	&.s {
+		--star-size: 0.2em;
+		box-shadow: -0.1em 0 0.1em 0 rgba(#fff, 0.5);
+	}
+	&.m {
+		--star-size: 3px;
+		box-shadow: 0 0 0.1em 0.1em rgba(#fff, 0.5);
+	}
+	&.l {
+		--star-size: 0.4em;
+	}
+	@for $i from 1 through length($star-map) {
+		//set positions for stars, found in map (array) in the beginning of the css
+		&:nth-child(#{$i}) {
+			$starTop: map-deep-get($star-map, 's#{$i}', 'top');
+			$starLeft: map-deep-get($star-map, 's#{$i}', 'left');
+			--star-pos-t: #{$starTop};
+			--star-pos-l: #{$starLeft};
+			animation-delay: $i * -1s;
+		}
+	}
+}
+
+//animations
+@keyframes shooting-stars {
+	0% {
+		transform: rotate(-45deg) translate(0, -5em);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+
+	100% {
+		transform: rotate(-45deg) translate(0, $moon-wrapper-size);
+		opacity: 0.3;
+	}
+}
+@keyframes blinking-stars {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

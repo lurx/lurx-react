@@ -18,6 +18,7 @@ export const DemoContainer = ({
 		<Flex
 			direction="column"
 			align="center"
+      justify="center"
 			className={classNames(className)}
 			style={cssVariables}
 		>
