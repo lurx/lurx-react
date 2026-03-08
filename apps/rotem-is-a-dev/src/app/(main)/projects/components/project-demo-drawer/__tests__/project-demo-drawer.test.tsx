@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 import type { Project } from '../../../data/projects.data';
 import { ProjectDemoDrawer } from '../project-demo-drawer.component';
 
+jest.mock('@/app/components/comments', () => ({
+	Comments: () => <div data-testid="comments-section" />,
+}));
+
 jest.mock('@/app/components', () => ({
 	ResizableDrawer: ({
 		isOpen,

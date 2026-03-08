@@ -1,6 +1,7 @@
 import { Flex } from '@/app/components';
 import classNames from 'classnames';
 import { type PropsWithChildren } from 'react';
+import styles from './demo-container.module.scss';
 import type { DemoContainerProps } from './demo-container.types';
 
 export const DemoContainer = ({
@@ -19,8 +20,9 @@ export const DemoContainer = ({
 			direction="column"
 			align="center"
       justify="center"
-			className={classNames(className)}
+			className={classNames(styles.demoContainer, className)}
 			style={cssVariables}
+      gap="small"
 		>
 			{children}
 		</Flex>
