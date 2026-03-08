@@ -189,4 +189,90 @@ describe('EntryAnimation', () => {
 
 		document.body.removeChild(pageEl);
 	});
+
+	it('uses staggered positions for subsequent navbar elements', () => {
+		const pageEl = document.createElement('div');
+		pageEl.setAttribute('data-page', '');
+		document.body.appendChild(pageEl);
+
+		const nav1 = document.createElement('span');
+		nav1.textContent = 'logo';
+		const nav2 = document.createElement('span');
+		nav2.textContent = 'about';
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([nav1, nav2])
+			.mockReturnValueOnce([]);
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const addCalls = (tl.add as jest.Mock).mock.calls;
+		expect(addCalls[0][1]).toBe(0);
+		expect(addCalls[1][1]).toBe('<+=0.15');
+
+		document.body.removeChild(pageEl);
+	});
+
+	it('uses staggered positions for subsequent footer elements', () => {
+		const pageEl = document.createElement('div');
+		pageEl.setAttribute('data-page', '');
+		document.body.appendChild(pageEl);
+
+		const footer1 = document.createElement('span');
+		footer1.textContent = 'built by';
+		const footer2 = document.createElement('span');
+		footer2.textContent = 'lurx';
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([])
+			.mockReturnValueOnce([footer1, footer2]);
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const addCalls = (tl.add as jest.Mock).mock.calls;
+		expect(addCalls[0][1]).toBe('>');
+		expect(addCalls[1][1]).toBe('<+=0.15');
+
+		document.body.removeChild(pageEl);
+	});
+
+	it('invokes setIsShellLoaded(true) via the tl.call callback', () => {
+		const pageEl = document.createElement('div');
+		pageEl.setAttribute('data-page', '');
+		document.body.appendChild(pageEl);
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const callbackFn = (tl.call as jest.Mock).mock.calls[0][0];
+		callbackFn();
+		expect(mockSetIsShellLoaded).toHaveBeenCalledWith(true);
+
+		document.body.removeChild(pageEl);
+	});
+
+	it('falls back to empty string when element textContent is null', () => {
+		const pageEl = document.createElement('div');
+		pageEl.setAttribute('data-page', '');
+		document.body.appendChild(pageEl);
+
+		const el = document.createElement('span');
+		Object.defineProperty(el, 'textContent', { value: null, writable: true, configurable: true });
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([el])
+			.mockReturnValueOnce([]);
+
+		const { unmount } = render(<EntryAnimation />);
+		unmount();
+
+		expect(el.textContent).toBe('');
+
+		document.body.removeChild(pageEl);
+	});
 });

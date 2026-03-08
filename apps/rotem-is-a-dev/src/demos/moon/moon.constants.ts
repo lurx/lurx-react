@@ -1,3 +1,5 @@
+import type { DemoCreditsData } from "../demo-credits";
+
 export const MOON_SIZE = '600px';
 
 export const CRATER_KEYS = ['crater-1', 'crater-2', 'crater-3'] as const;
@@ -88,3 +90,10 @@ export const STARS = [
 	{ id: 's49', size: 's' },
 	{ id: 's50', size: 's' },
 ] as const;
+
+export const inspiredBy = {
+  name: 'Moon',
+  url: 'https://dribbble.com/shots/5834247-Moon',
+  author: 'Julien',
+  authorUrl: 'https://dribbble.com/julienc',
+} satisfies DemoCreditsData;

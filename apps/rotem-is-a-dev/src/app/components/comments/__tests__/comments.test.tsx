@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { Timestamp } from 'firebase/firestore';
 import type { Comment } from '../comments.types';
 
@@ -393,5 +393,22 @@ describe('Comments', () => {
 		render(<Comments entityType="project" entityId="1" />);
 		const bar = screen.getByTestId('social-actions-bar');
 		expect(bar).toHaveAttribute('data-is-authenticated', 'false');
+	});
+
+	it('scrolls to heading when social actions bar comment is clicked', () => {
+		const scrollIntoViewMock = jest.fn();
+		HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
+		render(<Comments entityType="project" entityId="1" />);
+		fireEvent.doubleClick(screen.getByTestId('social-actions-bar'));
+		expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
+	});
+
+	it('scrolls to heading when autoScrollToComments is true', () => {
+		const scrollIntoViewMock = jest.fn();
+		HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
+		render(<Comments entityType="project" entityId="1" autoScrollToComments />);
+		expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
 	});
 });

@@ -59,4 +59,12 @@ describe('sortByEndDate', () => {
 		expect(result[0]).toBe(presentJob);
 		expect(result[1]).toBe(numericJob);
 	});
+
+	it('sorts Present before numeric when Present is already first in input', () => {
+		const presentJob = makeJob(2019, 'Present');
+		const numericJob = makeJob(2015, 2020);
+		const result = sortByEndDate([presentJob, numericJob]);
+		expect(result[0]).toBe(presentJob);
+		expect(result[1]).toBe(numericJob);
+	});
 });

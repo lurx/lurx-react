@@ -51,9 +51,11 @@ jest.mock('../../projects-grid', () => ({
 	ProjectsGrid: ({
 		projects,
 		onViewProject,
+		onCommentClick,
 	}: {
 		projects: Project[];
 		onViewProject?: (project: Project) => void;
+		onCommentClick?: (project: Project) => void;
 	}) => (
 		<div data-testid="projects-grid">
 			{projects.map(project => (
@@ -61,6 +63,9 @@ jest.mock('../../projects-grid', () => ({
 					<span>{project.slug}</span>
 					{onViewProject && (
 						<button onClick={() => onViewProject(project)}>view {project.slug}</button>
+					)}
+					{onCommentClick && (
+						<button onClick={() => onCommentClick(project)}>comment {project.slug}</button>
 					)}
 				</div>
 			))}
@@ -77,14 +82,16 @@ jest.mock('../../project-demo-drawer', () => ({
 	ProjectDemoDrawer: ({
 		project,
 		onClose,
+		scrollToComments,
 		children,
 	}: {
 		project: Project | null;
 		onClose: () => void;
+		scrollToComments?: boolean;
 		children: React.ReactNode;
 	}) =>
 		project ? (
-			<div data-testid="project-demo-drawer">
+			<div data-testid="project-demo-drawer" data-scroll-to-comments={scrollToComments}>
 				<button onClick={onClose}>close</button>
 				{children}
 			</div>
@@ -180,5 +187,18 @@ describe('ProjectsPage', () => {
 		expect(screen.queryByText('_wolverine-css')).not.toBeInTheDocument();
 		expect(screen.queryByText('_sheep-css')).not.toBeInTheDocument();
 		expect(screen.queryByText('_animated-logo-loader')).not.toBeInTheDocument();
+	});
+
+	it('opens the demo drawer with scrollToComments when comment button is clicked', () => {
+		render(<ProjectsPage />);
+		fireEvent.click(screen.getByRole('button', { name: 'comment _wolverine-css' }));
+		expect(screen.getByTestId('project-demo-drawer')).toBeInTheDocument();
+		expect(screen.getByTestId('project-demo-drawer')).toHaveAttribute('data-scroll-to-comments', 'true');
+	});
+
+	it('sets scrollToComments to false when view button is clicked', () => {
+		render(<ProjectsPage />);
+		fireEvent.click(screen.getByRole('button', { name: 'view _wolverine-css' }));
+		expect(screen.getByTestId('project-demo-drawer')).toHaveAttribute('data-scroll-to-comments', 'false');
 	});
 });

@@ -2,41 +2,18 @@ import classNames from 'classnames';
 import { DemoContainer } from '../demo-container/demo-container.component';
 import styles from './wolverine.module.scss';
 
-import { Flex, Link } from '@/app/components';
 import { Chelsea_Market } from 'next/font/google';
+import { DemoCredits } from '../demo-credits';
 import { WolverineCowl } from './components';
 import { WolverineArm } from './components/wolverine-arm.component';
-import type { DemoCredits, DemoCreditsProps } from './wolverine.types';
+import { inspiredBy } from './wolverine.constants';
 
 const chelseaMarket = Chelsea_Market({
 	subsets: ['latin'],
 	weight: '400',
 	variable: '--font-chelsea-market',
 });
-// <link href="https://fonts.googleapis.com/css?family=Chelsea+Market" rel="stylesheet">
 
-const inspiredBy = {
-	name: 'Wolverine',
-	url: 'https://dribbble.com/shots/2047572-Wolverine',
-	author: 'Gregory Hartman',
-	authorUrl: 'https://dribbble.com/gregoryhartman',
-} satisfies DemoCredits;
-
-const DemoCredits = ({ credits }: DemoCreditsProps) => {
-	if (!credits) return null;
-
-	return (
-		<Flex
-			gap="small"
-			justify="center"
-		>
-			Inspired by
-			<Link href={credits.url}>{credits.name}</Link>
-			by
-			<Link href={credits.authorUrl}>{credits.author}</Link>
-		</Flex>
-	);
-};
 
 export const WolverineDemo = () => {
 	return (
@@ -51,9 +28,6 @@ export const WolverineDemo = () => {
 				)}
 			>
 				<div className={styles.wrapper}>
-					{/* <div className="logo"> */}
-					{/* <img src="http://www.clipartroo.com/images/3/exciting-word-clipart-3646.png" alt="" /> */}
-					{/* </div> */}
 					<div className={styles.wolverine}>
 						<div className={styles['wolverine-body']}>
 							<div className={styles['wolverine-torso']}>
