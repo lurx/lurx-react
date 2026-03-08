@@ -4,7 +4,6 @@ import {
 	mockToggleStar,
 	mockUseStars,
 	mockUseComments,
-	mockUser,
 	mockUseAuth,
 	resetSocialMocks,
 } from '@/app/__test-utils__/social-mocks';

@@ -26,7 +26,13 @@ export const mockUser = {
 	email: 'test@example.com',
 };
 
-export const mockUseAuth = jest.fn(() => ({
+export const mockUseAuth = jest.fn((): {
+	user: typeof mockUser | null;
+	isLoading: boolean;
+	signInWithGoogle: jest.Mock;
+	signInWithGitHub: jest.Mock;
+	signOut: jest.Mock;
+} => ({
 	user: mockUser,
 	isLoading: false,
 	signInWithGoogle: jest.fn(),
