@@ -13,7 +13,29 @@ const scriptSrc = [
 	.filter(Boolean)
 	.join(' ');
 
-const connextSrc = ["'self'", isDev && 'ws:'].filter(Boolean).join(' ');
+const connectSrc = [
+	"'self'",
+	isDev && 'ws:',
+	'https://*.googleapis.com',
+	'https://*.firebaseio.com',
+	'https://*.cloudfunctions.net',
+	'https://identitytoolkit.googleapis.com',
+	'https://securetoken.googleapis.com',
+	'https://firestore.googleapis.com',
+]
+	.filter(Boolean)
+	.join(' ');
+
+const imgSrc = [
+	"'self'",
+	'data:',
+	'https://lh3.googleusercontent.com',
+	'https://avatars.githubusercontent.com',
+]
+	.filter(Boolean)
+	.join(' ');
+
+const frameSrc = ['https://*.firebaseapp.com'].join(' ');
 
 async function headers() {
 	return [
@@ -26,9 +48,10 @@ async function headers() {
 						"default-src 'self'",
 						`script-src ${scriptSrc}`,
 						"style-src 'self' 'unsafe-inline'",
-						"img-src 'self' data:",
+						`img-src ${imgSrc}`,
 						"font-src 'self'",
-						`connect-src ${connextSrc}`,
+						`connect-src ${connectSrc}`,
+						`frame-src ${frameSrc}`,
 						"frame-ancestors 'none'",
 					].join('; '),
 				},
