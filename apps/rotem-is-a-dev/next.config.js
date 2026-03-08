@@ -39,7 +39,12 @@ const imgSrc = [
 	.filter(Boolean)
 	.join(' ');
 
-const frameSrc = ['https://*.firebaseapp.com'].join(' ');
+const frameSrc = [
+	'https://*.firebaseapp.com',
+	isVercelPreview && 'https://vercel.live',
+]
+	.filter(Boolean)
+	.join(' ');
 
 async function headers() {
 	return [
