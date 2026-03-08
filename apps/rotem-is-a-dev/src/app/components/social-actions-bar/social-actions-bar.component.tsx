@@ -15,6 +15,7 @@ export const SocialActionsBar = ({
 	isAuthenticated,
 	onStarClick,
 	onCommentClick,
+	className,
 }: SocialActionsBarProps) => {
 	const [isSignInOpen, setIsSignInOpen] = useState(false);
 
@@ -35,9 +36,10 @@ export const SocialActionsBar = ({
 	const starClassName = hasUserStarred ? `${styles.action} ${styles.starActive}` : styles.action;
 	const commentClassName = hasUserCommented ? `${styles.action} ${styles.commentActive}` : styles.action;
 	const starLabel = hasUserStarred ? SOCIAL_ACTIONS_BAR_LABELS.UNSTAR : SOCIAL_ACTIONS_BAR_LABELS.STAR;
+	const barClassName = className ? `${styles.bar} ${className}` : styles.bar;
 
 	return (
-		<div className={styles.bar} data-testid="social-actions-bar">
+		<div className={barClassName} data-testid="social-actions-bar">
 			<button
 				type="button"
 				className={starClassName}

@@ -66,6 +66,9 @@ jest.mock('../components', () => ({
 		</div>
 	),
 	SignInPrompt: () => <div data-testid="sign-in-prompt" />,
+}));
+
+jest.mock('@/app/components/social-actions-bar', () => ({
 	SocialActionsBar: ({
 		starCount,
 		hasUserStarred,

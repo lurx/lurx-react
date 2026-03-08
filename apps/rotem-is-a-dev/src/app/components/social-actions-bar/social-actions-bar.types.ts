@@ -6,4 +6,5 @@ export type SocialActionsBarProps = {
 	isAuthenticated: boolean;
 	onStarClick: () => void;
 	onCommentClick: () => void;
+	className?: string;
 };

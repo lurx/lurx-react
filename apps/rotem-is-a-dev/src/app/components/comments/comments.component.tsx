@@ -5,7 +5,8 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { COMMENTS_SECTION_ID, COMMENTS_STRINGS } from './comments.constants';
 import styles from './comments.module.scss';
 import type { CommentsProps } from './comments.types';
-import { CommentForm, CommentItem, SignInPrompt, SocialActionsBar } from './components';
+import { SocialActionsBar } from '@/app/components/social-actions-bar';
+import { CommentForm, CommentItem, SignInPrompt } from './components';
 import { useComments, useStars } from './hooks';
 
 export const Comments = ({ entityType, entityId, autoScrollToComments }: CommentsProps) => {

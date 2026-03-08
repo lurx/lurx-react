@@ -129,4 +129,16 @@ describe('SocialActionsBar', () => {
 		renderBar({ isAuthenticated: false });
 		expect(screen.queryByTestId('sign-in-dialog')).not.toBeInTheDocument();
 	});
+
+	it('applies custom className to the bar', () => {
+		renderBar({ className: 'custom-class' });
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar.className).toContain('custom-class');
+	});
+
+	it('does not add extra class when className is not provided', () => {
+		renderBar();
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar.className).not.toContain('undefined');
+	});
 });

@@ -44,19 +44,35 @@ jest.mock('@/app/context/auth', () => ({
 	useAuth: () => mockUseAuth(),
 }));
 
-jest.mock('@/app/components/fa-icon', () => ({
-	FaIcon: ({ iconName, iconGroup }: { iconName: string; iconGroup: string }) => (
-		<span data-testid={`fa-icon-${iconName}`} data-icon-group={iconGroup} />
+jest.mock('@/app/components/social-actions-bar', () => ({
+	SocialActionsBar: ({
+		starCount,
+		hasUserStarred,
+		commentCount,
+		hasUserCommented,
+		isAuthenticated,
+		onStarClick,
+		onCommentClick,
+	}: {
+		starCount: number;
+		hasUserStarred: boolean;
+		commentCount: number;
+		hasUserCommented: boolean;
+		isAuthenticated: boolean;
+		onStarClick: () => void;
+		onCommentClick: () => void;
+	}) => (
+		<div
+			data-testid="social-actions-bar"
+			data-star-count={starCount}
+			data-has-user-starred={hasUserStarred}
+			data-comment-count={commentCount}
+			data-has-user-commented={hasUserCommented}
+			data-is-authenticated={isAuthenticated}
+			onClick={onStarClick}
+			onDoubleClick={onCommentClick}
+		/>
 	),
-}));
-
-jest.mock('@/app/components/sign-in-dialog', () => ({
-	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-		isOpen ? (
-			<div data-testid="sign-in-dialog">
-				<button type="button" onClick={onClose} data-testid="close-dialog">close</button>
-			</div>
-		) : null,
 }));
 
 import { ProjectCardFooter } from '../project-card-footer.component';
@@ -108,7 +124,7 @@ describe('ProjectCardFooter', () => {
 		expect(mockUseComments).toHaveBeenCalledWith('project', '1');
 	});
 
-	it('displays star count', () => {
+	it('passes star count to SocialActionsBar', () => {
 		mockUseStars.mockReturnValue({
 			starCount: 5,
 			hasUserStarred: false,
@@ -118,10 +134,10 @@ describe('ProjectCardFooter', () => {
 		});
 
 		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('card-star-count')).toHaveTextContent('5');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-star-count', '5');
 	});
 
-	it('displays comment count', () => {
+	it('passes comment count to SocialActionsBar', () => {
 		mockUseComments.mockReturnValue({
 			comments: [
 				{ id: 'c1', userId: 'user-2' },
@@ -134,15 +150,10 @@ describe('ProjectCardFooter', () => {
 		});
 
 		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('card-comment-count')).toHaveTextContent('2');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-comment-count', '2');
 	});
 
-	it('uses light star icon when not starred', () => {
-		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-star')).toHaveAttribute('data-icon-group', 'fal');
-	});
-
-	it('uses solid star icon when starred', () => {
+	it('passes hasUserStarred to SocialActionsBar', () => {
 		mockUseStars.mockReturnValue({
 			starCount: 1,
 			hasUserStarred: true,
@@ -152,15 +163,10 @@ describe('ProjectCardFooter', () => {
 		});
 
 		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-star')).toHaveAttribute('data-icon-group', 'fas');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-starred', 'true');
 	});
 
-	it('uses light comment icon when user has not commented', () => {
-		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-comment')).toHaveAttribute('data-icon-group', 'fal');
-	});
-
-	it('uses solid comment icon when user has commented', () => {
+	it('passes hasUserCommented to SocialActionsBar', () => {
 		mockUseComments.mockReturnValue({
 			comments: [{ id: 'c1', userId: 'user-1' }] as Comment[],
 			isLoading: false,
@@ -170,49 +176,43 @@ describe('ProjectCardFooter', () => {
 		});
 
 		render(<ProjectCardFooter {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-comment')).toHaveAttribute('data-icon-group', 'fas');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-commented', 'true');
 	});
 
-	it('calls toggleStar when authenticated user clicks star', () => {
+	it('passes hasUserCommented as false when user has not commented', () => {
 		render(<ProjectCardFooter {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('card-star-button'));
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-commented', 'false');
+	});
+
+	it('passes isAuthenticated as true when user is logged in', () => {
+		render(<ProjectCardFooter {...defaultProps} />);
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-is-authenticated', 'true');
+	});
+
+	it('passes isAuthenticated as false when user is not logged in', () => {
+		mockUseAuth.mockReturnValue({
+			user: null,
+			isLoading: false,
+			signInWithGoogle: jest.fn(),
+			signInWithGitHub: jest.fn(),
+			signOut: jest.fn(),
+		});
+
+		render(<ProjectCardFooter {...defaultProps} />);
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-is-authenticated', 'false');
+	});
+
+	it('passes toggleStar as onStarClick', () => {
+		render(<ProjectCardFooter {...defaultProps} />);
+		screen.getByTestId('social-actions-bar').click();
 		expect(mockToggleStar).toHaveBeenCalledTimes(1);
 	});
 
-	it('opens sign-in dialog when unauthenticated user clicks star', () => {
-		mockUseAuth.mockReturnValue({
-			user: null,
-			isLoading: false,
-			signInWithGoogle: jest.fn(),
-			signInWithGitHub: jest.fn(),
-			signOut: jest.fn(),
-		});
-
-		render(<ProjectCardFooter {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('card-star-button'));
-		expect(mockToggleStar).not.toHaveBeenCalled();
-		expect(screen.getByTestId('sign-in-dialog')).toBeInTheDocument();
-	});
-
-	it('closes sign-in dialog when close is triggered', () => {
-		mockUseAuth.mockReturnValue({
-			user: null,
-			isLoading: false,
-			signInWithGoogle: jest.fn(),
-			signInWithGitHub: jest.fn(),
-			signOut: jest.fn(),
-		});
-
-		render(<ProjectCardFooter {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('card-star-button'));
-		fireEvent.click(screen.getByTestId('close-dialog'));
-		expect(screen.queryByTestId('sign-in-dialog')).not.toBeInTheDocument();
-	});
-
-	it('calls onCommentClick when comment button is clicked', () => {
+	it('passes onCommentClick to SocialActionsBar', () => {
 		const onCommentClick = jest.fn();
 		render(<ProjectCardFooter {...defaultProps} onCommentClick={onCommentClick} />);
-		fireEvent.click(screen.getByTestId('card-comment-button'));
+		const bar = screen.getByTestId('social-actions-bar');
+		bar.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
 		expect(onCommentClick).toHaveBeenCalledTimes(1);
 	});
 

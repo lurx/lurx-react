@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import type { Comment } from '@/app/components/comments/comments.types';
 
 const mockToggleStar = jest.fn();
@@ -44,25 +44,47 @@ jest.mock('@/app/context/auth', () => ({
 	useAuth: () => mockUseAuth(),
 }));
 
-jest.mock('@/app/components/fa-icon', () => ({
-	FaIcon: ({ iconName, iconGroup }: { iconName: string; iconGroup: string }) => (
-		<span data-testid={`fa-icon-${iconName}`} data-icon-group={iconGroup} />
-	),
-}));
+let capturedOnCommentClick: (() => void) | undefined;
 
-jest.mock('@/app/components/sign-in-dialog', () => ({
-	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-		isOpen ? (
-			<div data-testid="sign-in-dialog">
-				<button type="button" onClick={onClose} data-testid="close-dialog">close</button>
-			</div>
-		) : null,
+jest.mock('@/app/components/social-actions-bar', () => ({
+	SocialActionsBar: ({
+		starCount,
+		hasUserStarred,
+		commentCount,
+		hasUserCommented,
+		isAuthenticated,
+		onStarClick,
+		onCommentClick,
+	}: {
+		starCount: number;
+		hasUserStarred: boolean;
+		commentCount: number;
+		hasUserCommented: boolean;
+		isAuthenticated: boolean;
+		onStarClick: () => void;
+		onCommentClick: () => void;
+	}) => {
+		capturedOnCommentClick = onCommentClick;
+		return (
+			<div
+				data-testid="social-actions-bar"
+				data-star-count={starCount}
+				data-has-user-starred={hasUserStarred}
+				data-comment-count={commentCount}
+				data-has-user-commented={hasUserCommented}
+				data-is-authenticated={isAuthenticated}
+				onClick={onStarClick}
+				onDoubleClick={onCommentClick}
+			/>
+		);
+	},
 }));
 
 import { BlogPostActions } from '../blog-post-actions.component';
 
 beforeEach(() => {
 	jest.clearAllMocks();
+	capturedOnCommentClick = undefined;
 	mockUseAuth.mockReturnValue({
 		user: mockUser,
 		isLoading: false,
@@ -107,7 +129,7 @@ describe('BlogPostActions', () => {
 		expect(mockUseComments).toHaveBeenCalledWith('blog', 'my-post');
 	});
 
-	it('displays star count', () => {
+	it('passes star count to SocialActionsBar', () => {
 		mockUseStars.mockReturnValue({
 			starCount: 7,
 			hasUserStarred: false,
@@ -117,10 +139,10 @@ describe('BlogPostActions', () => {
 		});
 
 		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('post-star-count')).toHaveTextContent('7');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-star-count', '7');
 	});
 
-	it('displays comment count', () => {
+	it('passes comment count to SocialActionsBar', () => {
 		mockUseComments.mockReturnValue({
 			comments: [
 				{ id: 'c1', userId: 'user-2' },
@@ -134,15 +156,10 @@ describe('BlogPostActions', () => {
 		});
 
 		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('post-comment-count')).toHaveTextContent('3');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-comment-count', '3');
 	});
 
-	it('uses light star icon when not starred', () => {
-		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-star')).toHaveAttribute('data-icon-group', 'fal');
-	});
-
-	it('uses solid star icon when starred', () => {
+	it('passes hasUserStarred to SocialActionsBar', () => {
 		mockUseStars.mockReturnValue({
 			starCount: 1,
 			hasUserStarred: true,
@@ -152,15 +169,10 @@ describe('BlogPostActions', () => {
 		});
 
 		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-star')).toHaveAttribute('data-icon-group', 'fas');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-starred', 'true');
 	});
 
-	it('uses light comment icon when user has not commented', () => {
-		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-comment')).toHaveAttribute('data-icon-group', 'fal');
-	});
-
-	it('uses solid comment icon when user has commented', () => {
+	it('passes hasUserCommented to SocialActionsBar', () => {
 		mockUseComments.mockReturnValue({
 			comments: [{ id: 'c1', userId: 'user-1' }] as Comment[],
 			isLoading: false,
@@ -170,16 +182,20 @@ describe('BlogPostActions', () => {
 		});
 
 		render(<BlogPostActions {...defaultProps} />);
-		expect(screen.getByTestId('fa-icon-comment')).toHaveAttribute('data-icon-group', 'fas');
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-commented', 'true');
 	});
 
-	it('calls toggleStar when authenticated user clicks star', () => {
+	it('passes hasUserCommented as false when user has not commented', () => {
 		render(<BlogPostActions {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('post-star-button'));
-		expect(mockToggleStar).toHaveBeenCalledTimes(1);
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-has-user-commented', 'false');
 	});
 
-	it('opens sign-in dialog when unauthenticated user clicks star', () => {
+	it('passes isAuthenticated as true when user is logged in', () => {
+		render(<BlogPostActions {...defaultProps} />);
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-is-authenticated', 'true');
+	});
+
+	it('passes isAuthenticated as false when user is not logged in', () => {
 		mockUseAuth.mockReturnValue({
 			user: null,
 			isLoading: false,
@@ -189,12 +205,16 @@ describe('BlogPostActions', () => {
 		});
 
 		render(<BlogPostActions {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('post-star-button'));
-		expect(mockToggleStar).not.toHaveBeenCalled();
-		expect(screen.getByTestId('sign-in-dialog')).toBeInTheDocument();
+		expect(screen.getByTestId('social-actions-bar')).toHaveAttribute('data-is-authenticated', 'false');
 	});
 
-	it('scrolls to comments section when comment button is clicked', () => {
+	it('passes toggleStar as onStarClick', () => {
+		render(<BlogPostActions {...defaultProps} />);
+		screen.getByTestId('social-actions-bar').click();
+		expect(mockToggleStar).toHaveBeenCalledTimes(1);
+	});
+
+	it('scrolls to comments section when onCommentClick is called', () => {
 		const mockScrollIntoView = jest.fn();
 		const commentsSection = document.createElement('section');
 		commentsSection.id = 'comments';
@@ -202,24 +222,9 @@ describe('BlogPostActions', () => {
 		document.body.appendChild(commentsSection);
 
 		render(<BlogPostActions {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('post-comment-button'));
+		capturedOnCommentClick?.();
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
 
 		document.body.removeChild(commentsSection);
-	});
-
-	it('closes sign-in dialog when close is triggered', () => {
-		mockUseAuth.mockReturnValue({
-			user: null,
-			isLoading: false,
-			signInWithGoogle: jest.fn(),
-			signInWithGitHub: jest.fn(),
-			signOut: jest.fn(),
-		});
-
-		render(<BlogPostActions {...defaultProps} />);
-		fireEvent.click(screen.getByTestId('post-star-button'));
-		fireEvent.click(screen.getByTestId('close-dialog'));
-		expect(screen.queryByTestId('sign-in-dialog')).not.toBeInTheDocument();
 	});
 });
