@@ -13,11 +13,10 @@
 	--pink: #ffa1ad;
 	--purple: #dab2ff;
 
-
 	--surface-alt: #1d293d;
 	--muted-dim: #62748e;
 
-  --ui-grid-unit: 8px;
+	--ui-grid-unit: 8px;
 	--spacing-unit: var(--ui-grid-unit);
 
 	--space-1: 8px;
@@ -44,7 +43,27 @@
 	--navbar-height: 56px;
 	--social-bar-height: 48px;
 
-  --code-tab-size: 2;
+	--code-tab-size: 2;
+
+	// brands
+	--google-red: #ea4335;
+	--google-yellow: #fbbc05;
+	--google-green: #34a853;
+	--google-blue: #4285f4;
+	--google-gradient: conic-gradient(
+		var(--google-red) 0deg,
+		var(--google-red) 42deg,
+		var(--google-blue) 42deg,
+		var(--google-blue) 137deg,
+		var(--google-green) 137deg,
+		var(--google-green) 243deg,
+		var(--google-yellow) 243deg,
+		var(--google-yellow) 297deg,
+		var(--google-red) 297deg
+	);
+
+	--github: #3094ff;
+	--github-gradient: conic-gradient(var(--github) 0deg, var(--github) 360deg);
 
 	@include media-below('tablet') {
 		--root-font-size: 16px;

@@ -5,6 +5,16 @@ jest.mock('next/navigation', () => ({
 	usePathname: () => '/',
 }));
 
+jest.mock('@/app/context/auth', () => ({
+	useAuth: () => ({
+		user: null,
+		isLoading: false,
+		signInWithGoogle: jest.fn(),
+		signInWithGitHub: jest.fn(),
+		signOut: jest.fn(),
+	}),
+}));
+
 describe('Navbar', () => {
 	it('renders the logo name', () => {
 		render(<Navbar />);

@@ -13,4 +13,5 @@ export * from './shiki-code';
 export * from './status-page';
 export * from './technology-filter';
 export * from './text-input';
+export * from './user-avatar';
 

@@ -9,6 +9,7 @@ const scriptSrc = [
 	"'unsafe-inline'",
 	"'wasm-unsafe-eval'", // Shiki's WASM module needs 'wasm-unsafe-eval' in script-src to compile WebAssembly in the browser. This is a narrow permission that only allows WASM compilation, not JavaScript eval().
 	isDev && "'unsafe-eval'",
+	'https://apis.google.com',
 ]
 	.filter(Boolean)
 	.join(' ');

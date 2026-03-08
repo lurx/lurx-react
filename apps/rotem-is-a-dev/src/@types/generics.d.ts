@@ -2,6 +2,10 @@ type WithDataAttributes<T> = T & {
 	[key: `data-${string}`]: unknown;
 };
 
+type WithAriaAttributes<T> = T & {
+  [key: `aria-${string}`]: unknown;
+};
+
 type Nullable<T> = T | null;
 
 type Optional<T> = T | undefined;

@@ -6,11 +6,12 @@
 		"dev": "nx serve-with-remotes rotem-is-a-dev",
 		"install:local": "dotenv -e .env.local -- pnpm install",
 		"check:before-push": "bash scripts/check-before-push.sh",
-		"prepare": "husky"
+		"prepare": "husky",
+		"sonar": "dotenv -e .env.local -- docker run -i --rm -e SONARQUBE_TOKEN -e SONARQUBE_ORG -e SONARQUBE_CLOUD_URL -e SONARQUBE_IDE_PORT mcp/sonarqube"
 	},
 	"private": true,
 	"dependencies": {
-		"@awesome.me/kit-1d40de302b": "^1.0.31",
+		"@awesome.me/kit-1d40de302b": "^1.0.33",
 		"@fortawesome/fontawesome-svg-core": "^7.2.0",
 		"@fortawesome/react-fontawesome": "^3.2.0",
 		"classnames": "^2.5.1",
