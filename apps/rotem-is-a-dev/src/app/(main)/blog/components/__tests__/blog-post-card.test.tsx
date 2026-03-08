@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import { BlogPostCard } from '../blog-post-card.component';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { Post } from '@/.velite';
 
 jest.mock('@/app/(main)/blog/blog-page.helpers', () => ({
@@ -11,6 +10,27 @@ jest.mock('@/app/(main)/blog/components/blog-tags', () => ({
 		<div data-testid="blog-tags-list">{tags.join(', ')}</div>
 	),
 }));
+
+jest.mock('@/app/(main)/blog/components/blog-post-card-footer', () => ({
+	BlogPostCardFooter: ({
+		entityType,
+		entityId,
+		onCommentClick,
+	}: {
+		entityType: string;
+		entityId: string;
+		onCommentClick: () => void;
+	}) => (
+		<div
+			data-testid="blog-card-footer"
+			data-entity-type={entityType}
+			data-entity-id={entityId}
+			onClick={onCommentClick}
+		/>
+	),
+}));
+
+import { BlogPostCard } from '../blog-post-card.component';
 
 const mockPost: Post = {
 	slug: 'test-post',
@@ -74,5 +94,33 @@ describe('BlogPostCard', () => {
 	it('renders the card title as an h2', () => {
 		render(<BlogPostCard post={mockPost} />);
 		expect(screen.getByRole('heading', { level: 2, name: 'Test Post Title' })).toBeInTheDocument();
+	});
+
+	describe('with onCommentClick', () => {
+		it('renders the footer when onCommentClick is provided', () => {
+			const onCommentClick = jest.fn();
+			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			expect(screen.getByTestId('blog-card-footer')).toBeInTheDocument();
+		});
+
+		it('does not render footer without onCommentClick', () => {
+			render(<BlogPostCard post={mockPost} />);
+			expect(screen.queryByTestId('blog-card-footer')).not.toBeInTheDocument();
+		});
+
+		it('passes correct entityType and entityId to footer', () => {
+			const onCommentClick = jest.fn();
+			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			const footer = screen.getByTestId('blog-card-footer');
+			expect(footer).toHaveAttribute('data-entity-type', 'blog');
+			expect(footer).toHaveAttribute('data-entity-id', 'test-post');
+		});
+
+		it('calls onCommentClick with the post when footer comment is clicked', () => {
+			const onCommentClick = jest.fn();
+			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			fireEvent.click(screen.getByTestId('blog-card-footer'));
+			expect(onCommentClick).toHaveBeenCalledWith(mockPost);
+		});
 	});
 });

@@ -1,6 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BlogPage } from '../blog-page.component';
 import type { Post } from '@/.velite';
+
+const mockPush = jest.fn();
+
+jest.mock('next/navigation', () => ({
+	useRouter: () => ({
+		push: mockPush,
+	}),
+}));
 
 jest.mock('../blog-page.helpers', () => ({
 	filterPosts: jest.fn((posts: Post[]) => posts),
@@ -58,8 +65,15 @@ jest.mock('@/app/components', () => ({
 }));
 
 jest.mock('../components/blog-post-card.component', () => ({
-	BlogPostCard: ({ post }: { post: Post }) => (
-		<li data-testid={`post-card-${post.slug}`}>{post.title}</li>
+	BlogPostCard: ({ post, onCommentClick }: { post: Post; onCommentClick?: (post: Post) => void }) => (
+		<li data-testid={`post-card-${post.slug}`}>
+			{post.title}
+			{onCommentClick && (
+				<button data-testid={`comment-click-${post.slug}`} onClick={() => onCommentClick(post)}>
+					comment
+				</button>
+			)}
+		</li>
 	),
 }));
 
@@ -71,6 +85,7 @@ jest.mock('@/app/components/empty-state', () => ({
 }));
 
 import { filterPosts, getAllTags } from '../blog-page.helpers';
+import { BlogPage } from '../blog-page.component';
 
 const mockFilterPosts = filterPosts as jest.Mock;
 const mockGetAllTags = getAllTags as jest.Mock;
@@ -93,6 +108,7 @@ const POSTS: Post[] = [
 ];
 
 beforeEach(() => {
+	jest.clearAllMocks();
 	mockFilterPosts.mockImplementation((posts: Post[]) => posts);
 	mockGetAllTags.mockReturnValue(['react', 'typescript']);
 });
@@ -179,5 +195,16 @@ describe('BlogPage', () => {
 		mockGetAllTags.mockReturnValue([]);
 		render(<BlogPage posts={[]} />);
 		expect(screen.getByTestId('empty-state')).toBeInTheDocument();
+	});
+
+	it('passes onCommentClick to blog post cards', () => {
+		render(<BlogPage posts={POSTS} />);
+		expect(screen.getByTestId('comment-click-post-one')).toBeInTheDocument();
+	});
+
+	it('navigates to blog post when comment is clicked', () => {
+		render(<BlogPage posts={POSTS} />);
+		fireEvent.click(screen.getByTestId('comment-click-post-one'));
+		expect(mockPush).toHaveBeenCalledWith('/blog/post-one');
 	});
 });

@@ -154,6 +154,11 @@ describe('Comments', () => {
 		expect(screen.getByTestId('comments-section')).toBeInTheDocument();
 	});
 
+	it('renders the comments section with the comments id', () => {
+		render(<Comments entityType="project" entityId="1" />);
+		expect(screen.getByTestId('comments-section')).toHaveAttribute('id', 'comments');
+	});
+
 	it('renders the heading', () => {
 		render(<Comments entityType="project" entityId="1" />);
 		expect(screen.getByText('Comments')).toBeInTheDocument();

@@ -10,6 +10,7 @@ export type BlogTagsListProps = {
 
 export type BlogPostHeaderProps = {
   post: Post;
+  actions?: React.ReactNode;
 }
 
 export type BlogPageProps = {

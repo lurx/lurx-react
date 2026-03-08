@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/app/context/auth';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { COMMENTS_STRINGS } from './comments.constants';
+import { COMMENTS_SECTION_ID, COMMENTS_STRINGS } from './comments.constants';
 import styles from './comments.module.scss';
 import type { CommentsProps } from './comments.types';
 import { CommentForm, CommentItem, SignInPrompt, SocialActionsBar } from './components';
@@ -58,7 +58,7 @@ export const Comments = ({ entityType, entityId, autoScrollToComments }: Comment
 	};
 
 	return (
-		<section className={styles.container} data-testid="comments-section">
+		<section id={COMMENTS_SECTION_ID} className={styles.container} data-testid="comments-section">
 			<SocialActionsBar
 				starCount={starCount}
 				hasUserStarred={hasUserStarred}

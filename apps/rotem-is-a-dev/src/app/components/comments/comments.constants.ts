@@ -6,6 +6,8 @@ export const ENTITY_TYPES = {
 	BLOG: 'blog',
 } as const;
 
+export const COMMENTS_SECTION_ID = 'comments';
+
 export const COMMENTS_STRINGS = {
 	HEADING: 'Comments',
 	EMPTY: 'No comments yet. Be the first to comment!',
