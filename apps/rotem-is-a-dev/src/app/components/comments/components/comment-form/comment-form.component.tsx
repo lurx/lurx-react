@@ -16,14 +16,13 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
 		try {
 			await onSubmit(text);
 			formRef.current?.reset();
+			return null;
 		} catch {
-			// Submission failed — form remains populated so user can retry
+			return COMMENT_FORM_STRINGS.ERROR;
 		}
-
-		return null;
 	};
 
-	const [, action, isPending] = useActionState(submitAction, null);
+	const [errorMessage, action, isPending] = useActionState(submitAction, null);
 
 	return (
 		<form
@@ -32,6 +31,11 @@ export const CommentForm = ({ onSubmit }: CommentFormProps) => {
 			action={action}
 			data-testid="comment-form"
 		>
+			{errorMessage && (
+				<p className={styles.error} data-testid="comment-form-error">
+					{errorMessage}
+				</p>
+			)}
 			<textarea
 				name="comment"
 				className={styles.textarea}

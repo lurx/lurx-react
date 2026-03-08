@@ -33,6 +33,12 @@
 	}
 }
 
+.error {
+	color: var(--error, #f44336);
+	font-size: 0.8125rem;
+	margin: 0;
+}
+
 .submitButton {
 	align-self: flex-end;
 	padding: spacing(0.5) spacing(2);

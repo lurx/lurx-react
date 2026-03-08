@@ -81,7 +81,7 @@ describe('CommentForm', () => {
 		expect(mockOnSubmit).not.toHaveBeenCalled();
 	});
 
-	it('handles submission failure without crashing', async () => {
+	it('shows error message when submission fails', async () => {
 		mockOnSubmit.mockRejectedValue(new Error('Network error'));
 
 		render(<CommentForm onSubmit={mockOnSubmit} />);
@@ -93,7 +93,27 @@ describe('CommentForm', () => {
 			fireEvent.submit(screen.getByTestId('comment-form'));
 		});
 
-		expect(mockOnSubmit).toHaveBeenCalledWith('Hello!');
+		expect(screen.getByTestId('comment-form-error')).toHaveTextContent(
+			'Failed to post comment. Please try again.',
+		);
+	});
+
+	it('does not show error message initially', () => {
+		render(<CommentForm onSubmit={mockOnSubmit} />);
+		expect(screen.queryByTestId('comment-form-error')).not.toBeInTheDocument();
+	});
+
+	it('does not show error message after successful submission', async () => {
+		render(<CommentForm onSubmit={mockOnSubmit} />);
+		fireEvent.change(screen.getByTestId('comment-textarea'), {
+			target: { value: 'Hello!' },
+		});
+
+		await act(async () => {
+			fireEvent.submit(screen.getByTestId('comment-form'));
+		});
+
+		expect(screen.queryByTestId('comment-form-error')).not.toBeInTheDocument();
 	});
 
 	it('sets maxLength on textarea', () => {

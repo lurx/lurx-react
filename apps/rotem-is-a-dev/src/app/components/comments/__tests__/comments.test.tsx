@@ -68,36 +68,9 @@ jest.mock('../components', () => ({
 	SignInPrompt: () => <div data-testid="sign-in-prompt" />,
 }));
 
-jest.mock('@/app/components/social-actions-bar', () => ({
-	SocialActionsBar: ({
-		starCount,
-		hasUserStarred,
-		commentCount,
-		hasUserCommented,
-		isAuthenticated,
-		onStarClick,
-		onCommentClick,
-	}: {
-		starCount: number;
-		hasUserStarred: boolean;
-		commentCount: number;
-		hasUserCommented: boolean;
-		isAuthenticated: boolean;
-		onStarClick: () => void;
-		onCommentClick: () => void;
-	}) => (
-		<div
-			data-testid="social-actions-bar"
-			data-star-count={starCount}
-			data-has-user-starred={hasUserStarred}
-			data-comment-count={commentCount}
-			data-has-user-commented={hasUserCommented}
-			data-is-authenticated={isAuthenticated}
-			onClick={onStarClick}
-			onDoubleClick={onCommentClick}
-		/>
-	),
-}));
+jest.mock('@/app/components/social-actions-bar', () =>
+	require('@/app/__test-utils__/social-actions-bar.mock')
+);
 
 import { Comments } from '../comments.component';
 

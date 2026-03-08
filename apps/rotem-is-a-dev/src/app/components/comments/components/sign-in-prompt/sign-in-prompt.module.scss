@@ -18,14 +18,10 @@
 	font-weight: 500;
 	color: var(--text);
 	background: none;
-	// border: 1px solid var(--teal);
-	// padding: spacing(0.25) spacing(1);
 	cursor: pointer;
 	transition: background-color 0.2s, color 0.2s;
 
 	&:hover {
-		// background-color: var(--teal);
-		// color: var(--text);
-    text-decoration: underline;
+		text-decoration: underline;
 	}
 }

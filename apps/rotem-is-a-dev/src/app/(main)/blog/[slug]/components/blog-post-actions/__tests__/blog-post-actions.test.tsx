@@ -1,112 +1,30 @@
 import { render, screen } from '@testing-library/react';
 import type { Comment } from '@/app/components/comments/comments.types';
-
-const mockToggleStar = jest.fn();
-
-const mockUseStars = jest.fn(() => ({
-	starCount: 0,
-	hasUserStarred: false,
-	isLoading: false,
-	error: null as Nullable<string>,
-	toggleStar: mockToggleStar,
-}));
-
-const mockUseComments = jest.fn(() => ({
-	comments: [] as Comment[],
-	isLoading: false,
-	error: null as Nullable<string>,
-	addComment: jest.fn(),
-	deleteComment: jest.fn(),
-}));
-
-const mockUser = {
-	uid: 'user-1',
-	displayName: 'Test User',
-	photoURL: 'https://example.com/photo.jpg',
-	provider: 'google',
-	email: 'test@example.com',
-};
-
-const mockUseAuth = jest.fn(() => ({
-	user: mockUser,
-	isLoading: false,
-	signInWithGoogle: jest.fn(),
-	signInWithGitHub: jest.fn(),
-	signOut: jest.fn(),
-}));
+import {
+	mockToggleStar,
+	mockUseStars,
+	mockUseComments,
+	mockUser,
+	mockUseAuth,
+	resetSocialMocks,
+} from '@/app/__test-utils__/social-mocks';
 
 jest.mock('@/app/components/comments/hooks', () => ({
-	useStars: (...args: unknown[]) => mockUseStars(...args),
-	useComments: (...args: unknown[]) => mockUseComments(...args),
+	useStars: (...args: unknown[]) => require('@/app/__test-utils__/social-mocks').mockUseStars(...args),
+	useComments: (...args: unknown[]) => require('@/app/__test-utils__/social-mocks').mockUseComments(...args),
 }));
 
 jest.mock('@/app/context/auth', () => ({
-	useAuth: () => mockUseAuth(),
+	useAuth: () => require('@/app/__test-utils__/social-mocks').mockUseAuth(),
 }));
 
-let capturedOnCommentClick: (() => void) | undefined;
-
-jest.mock('@/app/components/social-actions-bar', () => ({
-	SocialActionsBar: ({
-		starCount,
-		hasUserStarred,
-		commentCount,
-		hasUserCommented,
-		isAuthenticated,
-		onStarClick,
-		onCommentClick,
-	}: {
-		starCount: number;
-		hasUserStarred: boolean;
-		commentCount: number;
-		hasUserCommented: boolean;
-		isAuthenticated: boolean;
-		onStarClick: () => void;
-		onCommentClick: () => void;
-	}) => {
-		capturedOnCommentClick = onCommentClick;
-		return (
-			<div
-				data-testid="social-actions-bar"
-				data-star-count={starCount}
-				data-has-user-starred={hasUserStarred}
-				data-comment-count={commentCount}
-				data-has-user-commented={hasUserCommented}
-				data-is-authenticated={isAuthenticated}
-				onClick={onStarClick}
-				onDoubleClick={onCommentClick}
-			/>
-		);
-	},
-}));
+jest.mock('@/app/components/social-actions-bar', () =>
+	require('@/app/__test-utils__/social-actions-bar.mock')
+);
 
 import { BlogPostActions } from '../blog-post-actions.component';
 
-beforeEach(() => {
-	jest.clearAllMocks();
-	capturedOnCommentClick = undefined;
-	mockUseAuth.mockReturnValue({
-		user: mockUser,
-		isLoading: false,
-		signInWithGoogle: jest.fn(),
-		signInWithGitHub: jest.fn(),
-		signOut: jest.fn(),
-	});
-	mockUseStars.mockReturnValue({
-		starCount: 0,
-		hasUserStarred: false,
-		isLoading: false,
-		error: null,
-		toggleStar: mockToggleStar,
-	});
-	mockUseComments.mockReturnValue({
-		comments: [],
-		isLoading: false,
-		error: null,
-		addComment: jest.fn(),
-		deleteComment: jest.fn(),
-	});
-});
+beforeEach(() => resetSocialMocks());
 
 describe('BlogPostActions', () => {
 	const defaultProps = {
@@ -222,7 +140,8 @@ describe('BlogPostActions', () => {
 		document.body.appendChild(commentsSection);
 
 		render(<BlogPostActions {...defaultProps} />);
-		capturedOnCommentClick?.();
+		const bar = screen.getByTestId('social-actions-bar');
+		bar.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
 
 		document.body.removeChild(commentsSection);
