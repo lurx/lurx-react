@@ -4,12 +4,15 @@ const { composePlugins, withNx } = require('@nx/next');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
+const isVercelPreview = process.env.VERCEL_ENV === 'preview';
+
 const scriptSrc = [
 	"'self'",
 	"'unsafe-inline'",
 	"'wasm-unsafe-eval'", // Shiki's WASM module needs 'wasm-unsafe-eval' in script-src to compile WebAssembly in the browser. This is a narrow permission that only allows WASM compilation, not JavaScript eval().
 	isDev && "'unsafe-eval'",
 	'https://apis.google.com',
+	isVercelPreview && 'https://vercel.live',
 ]
 	.filter(Boolean)
 	.join(' ');
