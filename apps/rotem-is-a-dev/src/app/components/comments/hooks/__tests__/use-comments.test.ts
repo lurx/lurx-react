@@ -1,4 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
+import type { EntityType } from '../../comments.types';
+import { mockUser, mockUseAuth } from '../../../../__test-utils__/social-mocks';
 
 const mockAddDoc = jest.fn();
 const mockDeleteDoc = jest.fn();
@@ -26,24 +28,8 @@ jest.mock('@/lib/firebase', () => ({
 	db: 'mock-db',
 }));
 
-const mockUser = {
-	uid: 'user-1',
-	displayName: 'Test User',
-	photoURL: 'https://example.com/photo.jpg',
-	provider: 'google',
-	email: 'test@example.com',
-};
-
-const mockUseAuth = jest.fn(() => ({
-	user: mockUser,
-	isLoading: false,
-	signInWithGoogle: jest.fn(),
-	signInWithGitHub: jest.fn(),
-	signOut: jest.fn(),
-}));
-
 jest.mock('@/app/context/auth', () => ({
-	useAuth: () => mockUseAuth(),
+	useAuth: () => require('@/app/__test-utils__/social-mocks').mockUseAuth(),
 }));
 
 import { useComments } from '../use-comments.hook';
@@ -180,30 +166,19 @@ describe('useComments', () => {
 		expect(mockDeleteDoc).toHaveBeenCalledWith('mock-doc-ref');
 	});
 
-	it('resubscribes when entityType changes', () => {
+	it.each<{ label: string; initial: { entityType: EntityType; entityId: string }; updated: { entityType: EntityType; entityId: string } }>([
+		{ label: 'entityType', initial: { entityType: 'project', entityId: '1' }, updated: { entityType: 'blog', entityId: '1' } },
+		{ label: 'entityId', initial: { entityType: 'project', entityId: '1' }, updated: { entityType: 'project', entityId: '2' } },
+	])('resubscribes when $label changes', ({ initial, updated }) => {
 		const mockUnsubscribe = jest.fn();
 		mockOnSnapshot.mockReturnValue(mockUnsubscribe);
 
 		const { rerender } = renderHook(
 			({ entityType, entityId }) => useComments(entityType, entityId),
-			{ initialProps: { entityType: 'project' as const, entityId: '1' } },
+			{ initialProps: initial },
 		);
 
-		rerender({ entityType: 'blog' as const, entityId: '1' });
-		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
-		expect(mockOnSnapshot).toHaveBeenCalledTimes(2);
-	});
-
-	it('resubscribes when entityId changes', () => {
-		const mockUnsubscribe = jest.fn();
-		mockOnSnapshot.mockReturnValue(mockUnsubscribe);
-
-		const { rerender } = renderHook(
-			({ entityType, entityId }) => useComments(entityType, entityId),
-			{ initialProps: { entityType: 'project' as const, entityId: '1' } },
-		);
-
-		rerender({ entityType: 'project' as const, entityId: '2' });
+		rerender(updated);
 		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(mockOnSnapshot).toHaveBeenCalledTimes(2);
 	});

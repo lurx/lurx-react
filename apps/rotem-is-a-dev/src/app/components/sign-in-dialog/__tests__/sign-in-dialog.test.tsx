@@ -11,10 +11,8 @@ jest.mock('@/app/context/auth', () => ({
 }));
 
 jest.mock('usehooks-ts', () => ({
-	useEventListener: (event: string, handler: (e: KeyboardEvent) => void) => {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+	useEventListener: (event: string, handler: (ev: Event) => void) => {
 		const { useEffect } = require('react');
-		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useEffect(() => {
 			globalThis.document.addEventListener(event, handler);
 			return () => globalThis.document.removeEventListener(event, handler);
@@ -88,7 +86,7 @@ describe('SignInDialog', () => {
 		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
 		const icons = screen.getAllByTestId('fa-icon');
 		const googleIcon = icons.find(
-			icon => icon.getAttribute('data-icon') === 'google',
+			icon => icon.dataset.icon === 'google',
 		);
 		expect(googleIcon).toHaveAttribute('data-group', 'fab');
 	});
@@ -97,7 +95,7 @@ describe('SignInDialog', () => {
 		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
 		const icons = screen.getAllByTestId('fa-icon');
 		const githubIcon = icons.find(
-			icon => icon.getAttribute('data-icon') === 'github',
+			icon => icon.dataset.icon === 'github',
 		);
 		expect(githubIcon).toHaveAttribute('data-group', 'fab');
 	});

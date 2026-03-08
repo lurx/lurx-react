@@ -17,8 +17,10 @@ jest.mock('../components', () => ({
 			data-testid="project-card-footer"
 			data-entity-type={entityType}
 			data-entity-id={entityId}
-			onClick={onCommentClick}
 		>
+			<button type="button" onClick={onCommentClick} data-testid="footer-comment-button">
+				comment
+			</button>
 			{onViewClick && (
 				<button
 					type="button"
@@ -167,7 +169,7 @@ describe('ProjectCard', () => {
 		it('calls onCommentClick with the project when footer comment is clicked', () => {
 			const onCommentClick = jest.fn();
 			render(<ProjectCard project={mockProject} onCommentClick={onCommentClick} />);
-			fireEvent.click(screen.getByTestId('project-card-footer'));
+			fireEvent.click(screen.getByTestId('footer-comment-button'));
 			expect(onCommentClick).toHaveBeenCalledWith(mockProject);
 		});
 	});

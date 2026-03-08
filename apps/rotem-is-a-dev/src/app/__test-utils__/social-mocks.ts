@@ -20,7 +20,7 @@ export const mockUseComments = jest.fn(() => ({
 
 export const mockUser = {
 	uid: 'user-1',
-	displayName: 'Test User',
+	displayName: 'Test User' as Nullable<string>,
 	photoURL: 'https://example.com/photo.jpg',
 	provider: 'google',
 	email: 'test@example.com',

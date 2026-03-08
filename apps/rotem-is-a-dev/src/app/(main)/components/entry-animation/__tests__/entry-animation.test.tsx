@@ -49,11 +49,18 @@ beforeEach(() => {
 	mockIsShellLoaded = false;
 	mockAnimationKey = 0;
 	sessionStorage.clear();
-	Object.defineProperty(window, 'matchMedia', {
+	Object.defineProperty(globalThis, 'matchMedia', {
 		writable: true,
 		value: jest.fn().mockReturnValue({ matches: false }),
 	});
 });
+
+const createPageElement = () => {
+	const el = document.createElement('div');
+	el.dataset.page = '';
+	document.body.appendChild(el);
+	return el;
+};
 
 describe('EntryAnimation', () => {
 	it('renders null (no DOM output)', () => {
@@ -62,7 +69,7 @@ describe('EntryAnimation', () => {
 	});
 
 	it('skips animation and calls setIsShellLoaded(true) when reduced motion is preferred', () => {
-		Object.defineProperty(window, 'matchMedia', {
+		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
 			value: jest.fn().mockReturnValue({ matches: true }),
 		});
@@ -84,20 +91,16 @@ describe('EntryAnimation', () => {
 	});
 
 	it('builds a GSAP timeline when data-page element exists and animation should run', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		render(<EntryAnimation />);
 		expect(mockGsap.timeline).toHaveBeenCalled();
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('adds typewrite tweens for navbar and footer text elements', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const navEl = document.createElement('span');
 		navEl.textContent = 'nav';
@@ -115,13 +118,11 @@ describe('EntryAnimation', () => {
 		expect(typewrite).toHaveBeenCalledWith(navEl, { setDataFullText: true });
 		expect(typewrite).toHaveBeenCalledWith(footerEl, { setDataFullText: true });
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('restores saved text content on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const navEl = document.createElement('span');
 		navEl.textContent = 'logo';
@@ -144,26 +145,22 @@ describe('EntryAnimation', () => {
 		expect(navEl.style.minWidth).toBe('');
 		expect(navEl.style.minHeight).toBe('');
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('kills the timeline on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const tl = mockGsap.timeline();
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
 		expect(tl.kill).toHaveBeenCalled();
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('cleans up GSAP border props on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
@@ -172,13 +169,11 @@ describe('EntryAnimation', () => {
 			{ clearProps: 'all' },
 		);
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('cleans up GSAP icon props on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
@@ -187,13 +182,11 @@ describe('EntryAnimation', () => {
 			{ clearProps: 'all' },
 		);
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('uses staggered positions for subsequent navbar elements', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const nav1 = document.createElement('span');
 		nav1.textContent = 'logo';
@@ -212,13 +205,11 @@ describe('EntryAnimation', () => {
 		expect(addCalls[0][1]).toBe(0);
 		expect(addCalls[1][1]).toBe('<+=0.15');
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('uses staggered positions for subsequent footer elements', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const footer1 = document.createElement('span');
 		footer1.textContent = 'built by';
@@ -237,13 +228,11 @@ describe('EntryAnimation', () => {
 		expect(addCalls[0][1]).toBe('>');
 		expect(addCalls[1][1]).toBe('<+=0.15');
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('invokes setIsShellLoaded(true) via the tl.call callback', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		render(<EntryAnimation />);
 
@@ -252,13 +241,11 @@ describe('EntryAnimation', () => {
 		callbackFn();
 		expect(mockSetIsShellLoaded).toHaveBeenCalledWith(true);
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('falls back to empty string when element textContent is null', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const el = document.createElement('span');
 		Object.defineProperty(el, 'textContent', { value: null, writable: true, configurable: true });
@@ -273,6 +260,6 @@ describe('EntryAnimation', () => {
 
 		expect(el.textContent).toBe('');
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 });

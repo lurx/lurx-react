@@ -21,7 +21,8 @@ jest.mock('@/app/(main)/blog/components/blog-post-card-footer', () => ({
 		entityId: string;
 		onCommentClick: () => void;
 	}) => (
-		<div
+		<button
+			type="button"
 			data-testid="blog-card-footer"
 			data-entity-type={entityType}
 			data-entity-id={entityId}

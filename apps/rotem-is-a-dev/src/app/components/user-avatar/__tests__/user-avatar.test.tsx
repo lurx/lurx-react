@@ -55,7 +55,7 @@ describe('UserAvatar', () => {
 	it('renders google provider badge', () => {
 		render(<UserAvatar photoURL="https://example.com/avatar.jpg" displayName="Jane" provider="google" />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const providerIcon = icons.find(icon => icon.getAttribute('data-icon') === 'google');
+		const providerIcon = icons.find(icon => icon.dataset.icon === 'google');
 		expect(providerIcon).toHaveAttribute('data-group', 'fab');
 		expect(providerIcon).toHaveAttribute('data-size', 'xs');
 	});
@@ -63,7 +63,7 @@ describe('UserAvatar', () => {
 	it('renders github provider badge', () => {
 		render(<UserAvatar photoURL="https://example.com/avatar.jpg" displayName="Jane" provider="github" />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const providerIcon = icons.find(icon => icon.getAttribute('data-icon') === 'github');
+		const providerIcon = icons.find(icon => icon.dataset.icon === 'github');
 		expect(providerIcon).toBeInTheDocument();
 	});
 

@@ -1,4 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
+import type { EntityType } from '../../comments.types';
+import { mockUseAuth } from '../../../../__test-utils__/social-mocks';
 
 const mockAddDoc = jest.fn();
 const mockDeleteDoc = jest.fn();
@@ -22,27 +24,25 @@ jest.mock('@/lib/firebase', () => ({
 	db: 'mock-db',
 }));
 
-const mockUser = {
-	uid: 'user-1',
-	displayName: 'Test User',
-	photoURL: 'https://example.com/photo.jpg',
-	provider: 'google',
-	email: 'test@example.com',
-};
-
-const mockUseAuth = jest.fn(() => ({
-	user: mockUser,
-	isLoading: false,
-	signInWithGoogle: jest.fn(),
-	signInWithGitHub: jest.fn(),
-	signOut: jest.fn(),
-}));
-
 jest.mock('@/app/context/auth', () => ({
-	useAuth: () => mockUseAuth(),
+	useAuth: () => require('@/app/__test-utils__/social-mocks').mockUseAuth(),
 }));
 
 import { useStars } from '../use-stars.hook';
+
+const createStarDocs = (...userIds: string[]) =>
+	userIds.map((userId, index) => ({
+		id: `star-${index + 1}`,
+		data: () => ({ entityType: 'project', entityId: '1', userId }),
+	}));
+
+const mockSnapshotWith = (docs: ReturnType<typeof createStarDocs>) => {
+	const snapshot = { docs };
+	mockOnSnapshot.mockImplementation((_query: unknown, onNext: (s: typeof snapshot) => void) => {
+		onNext(snapshot);
+		return jest.fn();
+	});
+};
 
 beforeEach(() => {
 	jest.clearAllMocks();
@@ -75,79 +75,20 @@ describe('useStars', () => {
 	});
 
 	it('updates star count when snapshot fires', () => {
-		const mockSnapshot = {
-			docs: [
-				{
-					id: 'star-1',
-					data: () => ({
-						entityType: 'project',
-						entityId: '1',
-						userId: 'user-1',
-					}),
-				},
-				{
-					id: 'star-2',
-					data: () => ({
-						entityType: 'project',
-						entityId: '1',
-						userId: 'user-2',
-					}),
-				},
-			],
-		};
-
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: typeof mockSnapshot) => void) => {
-			onNext(mockSnapshot);
-			return jest.fn();
-		});
-
+		mockSnapshotWith(createStarDocs('user-1', 'user-2'));
 		const { result } = renderHook(() => useStars('project', '1'));
 		expect(result.current.starCount).toBe(2);
 		expect(result.current.isLoading).toBe(false);
 	});
 
 	it('sets hasUserStarred to true when user has starred', () => {
-		const mockSnapshot = {
-			docs: [
-				{
-					id: 'star-1',
-					data: () => ({
-						entityType: 'project',
-						entityId: '1',
-						userId: 'user-1',
-					}),
-				},
-			],
-		};
-
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: typeof mockSnapshot) => void) => {
-			onNext(mockSnapshot);
-			return jest.fn();
-		});
-
+		mockSnapshotWith(createStarDocs('user-1'));
 		const { result } = renderHook(() => useStars('project', '1'));
 		expect(result.current.hasUserStarred).toBe(true);
 	});
 
 	it('sets hasUserStarred to false when user has not starred', () => {
-		const mockSnapshot = {
-			docs: [
-				{
-					id: 'star-1',
-					data: () => ({
-						entityType: 'project',
-						entityId: '1',
-						userId: 'user-2',
-					}),
-				},
-			],
-		};
-
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: typeof mockSnapshot) => void) => {
-			onNext(mockSnapshot);
-			return jest.fn();
-		});
-
+		mockSnapshotWith(createStarDocs('user-2'));
 		const { result } = renderHook(() => useStars('project', '1'));
 		expect(result.current.hasUserStarred).toBe(false);
 	});
@@ -175,10 +116,7 @@ describe('useStars', () => {
 	});
 
 	it('adds a star when toggleStar is called and user has not starred', async () => {
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: { docs: unknown[] }) => void) => {
-			onNext({ docs: [] });
-			return jest.fn();
-		});
+		mockSnapshotWith([]);
 
 		const { result } = renderHook(() => useStars('project', '1'));
 
@@ -194,23 +132,7 @@ describe('useStars', () => {
 	});
 
 	it('removes a star when toggleStar is called and user has already starred', async () => {
-		const mockSnapshot = {
-			docs: [
-				{
-					id: 'star-1',
-					data: () => ({
-						entityType: 'project',
-						entityId: '1',
-						userId: 'user-1',
-					}),
-				},
-			],
-		};
-
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: typeof mockSnapshot) => void) => {
-			onNext(mockSnapshot);
-			return jest.fn();
-		});
+		mockSnapshotWith(createStarDocs('user-1'));
 
 		const { result } = renderHook(() => useStars('project', '1'));
 
@@ -231,10 +153,7 @@ describe('useStars', () => {
 			signOut: jest.fn(),
 		});
 
-		mockOnSnapshot.mockImplementation((queryArg: unknown, onNext: (snap: { docs: unknown[] }) => void) => {
-			onNext({ docs: [] });
-			return jest.fn();
-		});
+		mockSnapshotWith([]);
 
 		const { result } = renderHook(() => useStars('project', '1'));
 
@@ -246,30 +165,19 @@ describe('useStars', () => {
 		expect(mockDeleteDoc).not.toHaveBeenCalled();
 	});
 
-	it('resubscribes when entityType changes', () => {
+	it.each<{ label: string; initial: { entityType: EntityType; entityId: string }; updated: { entityType: EntityType; entityId: string } }>([
+		{ label: 'entityType', initial: { entityType: 'project', entityId: '1' }, updated: { entityType: 'blog', entityId: '1' } },
+		{ label: 'entityId', initial: { entityType: 'project', entityId: '1' }, updated: { entityType: 'project', entityId: '2' } },
+	])('resubscribes when $label changes', ({ initial, updated }) => {
 		const mockUnsubscribe = jest.fn();
 		mockOnSnapshot.mockReturnValue(mockUnsubscribe);
 
 		const { rerender } = renderHook(
 			({ entityType, entityId }) => useStars(entityType, entityId),
-			{ initialProps: { entityType: 'project' as const, entityId: '1' } },
+			{ initialProps: initial },
 		);
 
-		rerender({ entityType: 'blog' as const, entityId: '1' });
-		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
-		expect(mockOnSnapshot).toHaveBeenCalledTimes(2);
-	});
-
-	it('resubscribes when entityId changes', () => {
-		const mockUnsubscribe = jest.fn();
-		mockOnSnapshot.mockReturnValue(mockUnsubscribe);
-
-		const { rerender } = renderHook(
-			({ entityType, entityId }) => useStars(entityType, entityId),
-			{ initialProps: { entityType: 'project' as const, entityId: '1' } },
-		);
-
-		rerender({ entityType: 'project' as const, entityId: '2' });
+		rerender(updated);
 		expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
 		expect(mockOnSnapshot).toHaveBeenCalledTimes(2);
 	});

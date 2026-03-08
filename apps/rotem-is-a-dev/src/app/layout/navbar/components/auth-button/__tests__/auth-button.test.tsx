@@ -30,7 +30,7 @@ jest.mock('@/app/components', () => ({
 
 jest.mock('@/app/components/sign-in-dialog', () => ({
 	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-		isOpen ? <div data-testid="sign-in-dialog" data-open={isOpen} onClick={onClose} /> : null,
+		isOpen ? <button data-testid="sign-in-dialog" data-open={isOpen} onClick={onClose} /> : null,
 }));
 
 import { AuthButton } from '../auth-button.component';

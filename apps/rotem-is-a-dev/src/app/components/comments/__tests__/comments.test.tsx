@@ -14,7 +14,13 @@ const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
 const mockToggleStar = jest.fn();
 
-const mockUseAuth = jest.fn(() => ({
+const mockUseAuth = jest.fn((): {
+	user: typeof mockUser | null;
+	isLoading: boolean;
+	signInWithGoogle: jest.Mock;
+	signInWithGitHub: jest.Mock;
+	signOut: jest.Mock;
+} => ({
 	user: mockUser,
 	isLoading: false,
 	signInWithGoogle: jest.fn(),
@@ -22,7 +28,7 @@ const mockUseAuth = jest.fn(() => ({
 	signOut: jest.fn(),
 }));
 
-const mockUseComments = jest.fn(() => ({
+const mockUseComments = jest.fn((_entityType: string, _entityId: string) => ({
 	comments: [] as Comment[],
 	isLoading: false,
 	error: null as Nullable<string>,
@@ -30,7 +36,7 @@ const mockUseComments = jest.fn(() => ({
 	deleteComment: mockDeleteComment,
 }));
 
-const mockUseStars = jest.fn(() => ({
+const mockUseStars = jest.fn((_entityType: string, _entityId: string) => ({
 	starCount: 0,
 	hasUserStarred: false,
 	isLoading: false,
@@ -43,27 +49,27 @@ jest.mock('@/app/context/auth', () => ({
 }));
 
 jest.mock('../hooks', () => ({
-	useComments: (...args: unknown[]) => mockUseComments(...args),
-	useStars: (...args: unknown[]) => mockUseStars(...args),
+	useComments: (entityType: string, entityId: string) => mockUseComments(entityType, entityId),
+	useStars: (entityType: string, entityId: string) => mockUseStars(entityType, entityId),
 }));
 
 jest.mock('../components', () => ({
 	CommentForm: ({ onSubmit }: { onSubmit: (text: string) => Promise<void> }) => (
-		<div data-testid="comment-form" onClick={() => onSubmit('test')} />
+		<button data-testid="comment-form" onClick={() => onSubmit('test')} />
 	),
 	CommentItem: ({ comment, isOwn, onDelete }: {
 		comment: Comment;
 		isOwn: boolean;
 		onDelete: (id: string) => void;
 	}) => (
-		<div
+		<button
 			data-testid="comment-item"
 			data-comment-id={comment.id}
 			data-is-own={isOwn}
 			onClick={() => onDelete(comment.id)}
 		>
 			{comment.text}
-		</div>
+		</button>
 	),
 	SignInPrompt: () => <div data-testid="sign-in-prompt" />,
 }));

@@ -143,6 +143,6 @@ describe('BlogPostActions', () => {
 		bar.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
 
-		document.body.removeChild(commentsSection);
+		commentsSection.remove();
 	});
 });

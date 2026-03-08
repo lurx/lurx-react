@@ -15,7 +15,8 @@ export const SocialActionsBar = ({
 	onStarClick: () => void;
 	onCommentClick: () => void;
 }) => (
-	<div
+	<button
+		type="button"
 		data-testid="social-actions-bar"
 		data-star-count={starCount}
 		data-has-user-starred={hasUserStarred}
