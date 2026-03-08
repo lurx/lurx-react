@@ -12,6 +12,7 @@ const mockUser = {
 
 const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
+const mockToggleStar = jest.fn();
 
 const mockUseAuth = jest.fn(() => ({
 	user: mockUser,
@@ -29,12 +30,21 @@ const mockUseComments = jest.fn(() => ({
 	deleteComment: mockDeleteComment,
 }));
 
+const mockUseStars = jest.fn(() => ({
+	starCount: 0,
+	hasUserStarred: false,
+	isLoading: false,
+	error: null as Nullable<string>,
+	toggleStar: mockToggleStar,
+}));
+
 jest.mock('@/app/context/auth', () => ({
 	useAuth: () => mockUseAuth(),
 }));
 
 jest.mock('../hooks', () => ({
 	useComments: (...args: unknown[]) => mockUseComments(...args),
+	useStars: (...args: unknown[]) => mockUseStars(...args),
 }));
 
 jest.mock('../components', () => ({
@@ -56,6 +66,34 @@ jest.mock('../components', () => ({
 		</div>
 	),
 	SignInPrompt: () => <div data-testid="sign-in-prompt" />,
+	SocialActionsBar: ({
+		starCount,
+		hasUserStarred,
+		commentCount,
+		hasUserCommented,
+		isAuthenticated,
+		onStarClick,
+		onCommentClick,
+	}: {
+		starCount: number;
+		hasUserStarred: boolean;
+		commentCount: number;
+		hasUserCommented: boolean;
+		isAuthenticated: boolean;
+		onStarClick: () => void;
+		onCommentClick: () => void;
+	}) => (
+		<div
+			data-testid="social-actions-bar"
+			data-star-count={starCount}
+			data-has-user-starred={hasUserStarred}
+			data-comment-count={commentCount}
+			data-has-user-commented={hasUserCommented}
+			data-is-authenticated={isAuthenticated}
+			onClick={onStarClick}
+			onDoubleClick={onCommentClick}
+		/>
+	),
 }));
 
 import { Comments } from '../comments.component';
@@ -101,6 +139,13 @@ beforeEach(() => {
 		addComment: mockAddComment,
 		deleteComment: mockDeleteComment,
 	});
+	mockUseStars.mockReturnValue({
+		starCount: 0,
+		hasUserStarred: false,
+		isLoading: false,
+		error: null,
+		toggleStar: mockToggleStar,
+	});
 });
 
 describe('Comments', () => {
@@ -117,6 +162,11 @@ describe('Comments', () => {
 	it('calls useComments with correct arguments', () => {
 		render(<Comments entityType="project" entityId="1" />);
 		expect(mockUseComments).toHaveBeenCalledWith('project', '1');
+	});
+
+	it('calls useStars with correct arguments', () => {
+		render(<Comments entityType="project" entityId="1" />);
+		expect(mockUseStars).toHaveBeenCalledWith('project', '1');
 	});
 
 	it('shows loading state', () => {
@@ -256,5 +306,87 @@ describe('Comments', () => {
 
 		render(<Comments entityType="project" entityId="1" />);
 		expect(screen.getByTestId('comments-list')).toBeInTheDocument();
+	});
+
+	it('renders the social actions bar', () => {
+		render(<Comments entityType="project" entityId="1" />);
+		expect(screen.getByTestId('social-actions-bar')).toBeInTheDocument();
+	});
+
+	it('passes star data to social actions bar', () => {
+		mockUseStars.mockReturnValue({
+			starCount: 3,
+			hasUserStarred: true,
+			isLoading: false,
+			error: null,
+			toggleStar: mockToggleStar,
+		});
+
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-star-count', '3');
+		expect(bar).toHaveAttribute('data-has-user-starred', 'true');
+	});
+
+	it('passes comment count to social actions bar', () => {
+		mockUseComments.mockReturnValue({
+			comments: mockComments,
+			isLoading: false,
+			error: null,
+			addComment: mockAddComment,
+			deleteComment: mockDeleteComment,
+		});
+
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-comment-count', '2');
+	});
+
+	it('sets hasUserCommented to true when user has commented', () => {
+		mockUseComments.mockReturnValue({
+			comments: mockComments,
+			isLoading: false,
+			error: null,
+			addComment: mockAddComment,
+			deleteComment: mockDeleteComment,
+		});
+
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-has-user-commented', 'true');
+	});
+
+	it('sets hasUserCommented to false when user has not commented', () => {
+		mockUseComments.mockReturnValue({
+			comments: [mockComments[1]],
+			isLoading: false,
+			error: null,
+			addComment: mockAddComment,
+			deleteComment: mockDeleteComment,
+		});
+
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-has-user-commented', 'false');
+	});
+
+	it('passes isAuthenticated as true when user is logged in', () => {
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-is-authenticated', 'true');
+	});
+
+	it('passes isAuthenticated as false when user is not logged in', () => {
+		mockUseAuth.mockReturnValue({
+			user: null,
+			isLoading: false,
+			signInWithGoogle: jest.fn(),
+			signInWithGitHub: jest.fn(),
+			signOut: jest.fn(),
+		});
+
+		render(<Comments entityType="project" entityId="1" />);
+		const bar = screen.getByTestId('social-actions-bar');
+		expect(bar).toHaveAttribute('data-is-authenticated', 'false');
 	});
 });

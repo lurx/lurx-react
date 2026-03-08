@@ -1,0 +1,59 @@
+@use 'mixins/spacing' as *;
+
+.footer {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	padding: spacing(0.5) spacing(3);
+	padding-block-end: spacing(1.5);
+	background-color: var(--bg);
+}
+
+.action {
+	display: flex;
+	align-items: center;
+	gap: spacing(0.5);
+	background: none;
+	border: none;
+	color: var(--muted);
+	cursor: pointer;
+	padding: spacing(0.5) spacing(0.75);
+	border-radius: var(--radius-sm);
+	transition: color 0.2s ease, background-color 0.2s ease;
+
+	&:hover {
+		background-color: var(--surface-alt);
+	}
+}
+
+.starActive {
+	color: var(--orange);
+}
+
+.commentActive {
+	color: var(--teal);
+}
+
+.count {
+	font-variant-numeric: tabular-nums;
+}
+
+.viewButton {
+	margin-inline-start: auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: spacing(1) spacing(1.5);
+	background-color: #45556c;
+	border-radius: var(--radius-md);
+	color: var(--text);
+	cursor: pointer;
+	border: none;
+	font-family: inherit;
+	white-space: nowrap;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: #536277;
+	}
+}

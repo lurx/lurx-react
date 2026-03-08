@@ -6,6 +6,7 @@ import type { ProjectDemoDrawerProps } from './project-demo-drawer.types';
 export const ProjectDemoDrawer = ({
 	project,
 	onClose,
+	scrollToComments,
 	children,
 }: ProjectDemoDrawerProps) => {
 	const isOpen = project !== null;
@@ -47,7 +48,7 @@ export const ProjectDemoDrawer = ({
 							</a>
 						</div>
 					)}
-					<Comments entityType="project" entityId={String(project.id)} />
+					<Comments entityType="project" entityId={String(project.id)} autoScrollToComments={scrollToComments} />
 				</div>
 			)}
 		</ResizableDrawer>

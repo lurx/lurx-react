@@ -1,0 +1,39 @@
+@use 'mixins/spacing' as *;
+
+.bar {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	padding: spacing(1) 0;
+	margin-block-end: spacing(1.5);
+}
+
+.action {
+	display: flex;
+	align-items: center;
+	gap: spacing(0.5);
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-size: 0.875rem;
+	cursor: pointer;
+	padding: spacing(0.5) spacing(1);
+	border-radius: var(--radius-sm);
+	transition: color 0.2s ease, background-color 0.2s ease;
+
+	&:hover {
+		background-color: var(--surface-alt);
+	}
+}
+
+.starActive {
+	color: var(--orange);
+}
+
+.commentActive {
+	color: var(--teal);
+}
+
+.count {
+	font-variant-numeric: tabular-nums;
+}

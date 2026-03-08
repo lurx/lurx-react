@@ -21,4 +21,5 @@ export type Comment = CommentData & {
 export type CommentsProps = {
 	entityType: EntityType;
 	entityId: string;
+	autoScrollToComments?: boolean;
 };

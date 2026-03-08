@@ -1,15 +1,34 @@
 'use client';
 
 import { useAuth } from '@/app/context/auth';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { COMMENTS_STRINGS } from './comments.constants';
 import styles from './comments.module.scss';
 import type { CommentsProps } from './comments.types';
-import { CommentForm, CommentItem, SignInPrompt } from './components';
-import { useComments } from './hooks';
+import { CommentForm, CommentItem, SignInPrompt, SocialActionsBar } from './components';
+import { useComments, useStars } from './hooks';
 
-export const Comments = ({ entityType, entityId }: CommentsProps) => {
+export const Comments = ({ entityType, entityId, autoScrollToComments }: CommentsProps) => {
 	const { user } = useAuth();
 	const { comments, isLoading, error, addComment, deleteComment } = useComments(entityType, entityId);
+	const { starCount, hasUserStarred, toggleStar } = useStars(entityType, entityId);
+
+	const headingRef = useRef<HTMLHeadingElement>(null);
+
+	const hasUserCommented = useMemo(
+		() => comments.some(comment => comment.userId === user?.uid),
+		[comments, user],
+	);
+
+	const handleCommentClick = useCallback(() => {
+		headingRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, []);
+
+	useEffect(() => {
+		if (autoScrollToComments) {
+			headingRef.current?.scrollIntoView({ behavior: 'smooth' });
+		}
+	}, [autoScrollToComments]);
 
 	const renderContent = () => {
 		if (isLoading) {
@@ -40,7 +59,16 @@ export const Comments = ({ entityType, entityId }: CommentsProps) => {
 
 	return (
 		<section className={styles.container} data-testid="comments-section">
-			<h3 className={styles.heading}>
+			<SocialActionsBar
+				starCount={starCount}
+				hasUserStarred={hasUserStarred}
+				commentCount={comments.length}
+				hasUserCommented={hasUserCommented}
+				isAuthenticated={Boolean(user)}
+				onStarClick={toggleStar}
+				onCommentClick={handleCommentClick}
+			/>
+			<h3 className={styles.heading} ref={headingRef}>
 				{COMMENTS_STRINGS.HEADING}
 				{!isLoading && !error && comments.length > 0 && (
 					<span className={styles.count} data-testid="comments-count">

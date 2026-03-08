@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.33
-        version: 1.0.33
+        specifier: ^1.0.37
+        version: 1.0.37
       '@fortawesome/fontawesome-svg-core':
         specifier: ^7.2.0
         version: 7.2.0
@@ -211,8 +211,8 @@ importers:
   apps/rotem-is-a-dev:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.33
-        version: 1.0.33
+        specifier: ^1.0.37
+        version: 1.0.37
       '@eslint/eslintrc':
         specifier: 3.2.0
         version: 3.2.0
@@ -234,6 +234,9 @@ importers:
       es-toolkit:
         specifier: 1.39.10
         version: 1.39.10
+      firebase:
+        specifier: 12.10.0
+        version: 12.10.0
       gsap:
         specifier: 3.14.2
         version: 3.14.2
@@ -276,8 +279,8 @@ packages:
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
 
-  '@awesome.me/kit-1d40de302b@1.0.33':
-    resolution: {integrity: sha512-TWj1s2qvPRQQBN9doUncUI6qAK6SXx14WfZi2RG5he+3aVV5JGiJgueevhlK5dU+D8QZL2EUR+SxbDs4WEC6pw==}
+  '@awesome.me/kit-1d40de302b@1.0.37':
+    resolution: {integrity: sha512-iHQOiIzWF018I5eDHGrRZrz59Qywcicc7tYM9A8GHQC20SXQfXXOpIy/7l3QMDBk7af0kX/XWU3sslzhuvGaFg==}
     engines: {node: '>=16'}
 
   '@babel/code-frame@7.27.1':
@@ -8673,7 +8676,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
-  '@awesome.me/kit-1d40de302b@1.0.33':
+  '@awesome.me/kit-1d40de302b@1.0.37':
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
 

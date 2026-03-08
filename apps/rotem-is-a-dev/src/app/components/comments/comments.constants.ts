@@ -1,4 +1,5 @@
 export const COMMENTS_COLLECTION = 'comments';
+export const STARS_COLLECTION = 'stars';
 
 export const ENTITY_TYPES = {
 	PROJECT: 'project',
