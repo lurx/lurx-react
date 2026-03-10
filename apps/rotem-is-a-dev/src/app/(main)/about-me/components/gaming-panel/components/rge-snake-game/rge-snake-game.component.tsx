@@ -1,61 +1,82 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { GameEngine } from 'react-game-engine';
 import { GameControls } from './components/game-controls';
 import { GameOverlay } from './components/game-overlay';
 import { FoodRenderer } from './renderers/food-renderer.component';
 import { SnakeRenderer } from './renderers/snake-renderer.component';
-import { CELL_SIZE, GRID_COLS, GRID_ROWS } from './rge-snake-game.constants';
+import { DEFAULT_SNAKE_CONFIG } from './rge-snake-game.constants';
 import styles from './rge-snake-game.module.scss';
-import type { Direction, Entities, GameEvent, GamePhase } from './rge-snake-game.types';
+import type { Direction, Entities, GameEvent, GamePhase, SnakeGameConfig } from './rge-snake-game.types';
 import { checkCollision, checkFood, handleInput, moveSnake } from './systems';
 import { resetMoveSnakeTick } from './systems/move-snake.system';
 
-const INITIAL_SNAKE_BODY = [
-	{ x: Math.floor(GRID_COLS / 2), y: Math.floor(GRID_ROWS / 2) - 1 },
-	{ x: Math.floor(GRID_COLS / 2), y: Math.floor(GRID_ROWS / 2) },
-	{ x: Math.floor(GRID_COLS / 2), y: Math.floor(GRID_ROWS / 2) + 1 },
+type ResolvedConfig = Required<SnakeGameConfig>;
+
+const resolveConfig = (config?: SnakeGameConfig): ResolvedConfig => ({
+	...DEFAULT_SNAKE_CONFIG,
+	...config,
+});
+
+const buildInitialSnakeBody = (gridCols: number, gridRows: number) => [
+	{ x: Math.floor(gridCols / 2), y: Math.floor(gridRows / 2) - 1 },
+	{ x: Math.floor(gridCols / 2), y: Math.floor(gridRows / 2) },
+	{ x: Math.floor(gridCols / 2), y: Math.floor(gridRows / 2) + 1 },
 ];
 
-const spawnInitialFood = (): { x: number; y: number } => {
-	const occupiedKeys = new Set(INITIAL_SNAKE_BODY.map((pos) => `${pos.x},${pos.y}`));
+const spawnInitialFood = (snakeBody: { x: number; y: number }[], gridCols: number, gridRows: number) => {
+	const occupiedKeys = new Set(snakeBody.map((pos) => `${pos.x},${pos.y}`));
 	let position = { x: 0, y: 0 };
 
 	do {
 		position = {
-			x: Math.floor(Math.random() * GRID_COLS),
-			y: Math.floor(Math.random() * GRID_ROWS),
+			x: Math.floor(Math.random() * gridCols),
+			y: Math.floor(Math.random() * gridRows),
 		};
 	} while (occupiedKeys.has(`${position.x},${position.y}`));
 
 	return position;
 };
 
-const createEntities = (): Entities => ({
-	snake: {
-		body: [...INITIAL_SNAKE_BODY.map((pos) => ({ ...pos }))],
-		direction: 'UP' as Direction,
-		growing: false,
-		renderer: <SnakeRenderer body={INITIAL_SNAKE_BODY} />,
-	},
-	food: {
-		position: spawnInitialFood(),
-		renderer: <FoodRenderer position={{ x: 0, y: 0 }} />,
-	},
-	board: {
-		width: GRID_COLS,
-		height: GRID_ROWS,
-	},
-});
+const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig): Entities => {
+	const initialBody = buildInitialSnakeBody(gridCols, gridRows);
+
+	return {
+		snake: {
+			body: [...initialBody.map((pos) => ({ ...pos }))],
+			direction: 'UP' as Direction,
+			growing: false,
+			cellSize,
+			renderer: <SnakeRenderer body={initialBody} cellSize={cellSize} />,
+		},
+		food: {
+			position: spawnInitialFood(initialBody, gridCols, gridRows),
+			cellSize,
+			renderer: <FoodRenderer position={{ x: 0, y: 0 }} cellSize={cellSize} />,
+		},
+		board: {
+			width: gridCols,
+			height: gridRows,
+			cellSize,
+			tickMs,
+		},
+	};
+};
 
 const SYSTEMS = [handleInput, moveSnake, checkFood, checkCollision];
 
-export const RgeSnakeGame = () => {
+export type RgeSnakeGameProps = {
+	config?: SnakeGameConfig;
+};
+
+export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
+	const resolved = useMemo(() => resolveConfig(config), [config]);
+
 	const [phase, setPhase] = useState<GamePhase>('idle');
 	const [score, setScore] = useState(0);
 	const [activeDirection, setActiveDirection] = useState<Direction | null>(null);
-	const [entities, setEntities] = useState<Entities>(createEntities);
+	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved));
 
 	const engineRef = useRef<GameEngine>(null);
 
@@ -75,12 +96,13 @@ export const RgeSnakeGame = () => {
 
 	const handleStart = useCallback(() => {
 		resetMoveSnakeTick();
-		const newEntities = createEntities();
+		const newEntities = createEntities(resolved);
 		setEntities(newEntities);
 		setScore(0);
 		setActiveDirection(null);
 		setPhase('playing');
-	}, []);
+		engineRef.current?.swap(newEntities as unknown as Record<string, unknown>);
+	}, [resolved]);
 
 	const handleRestart = useCallback(() => {
 		handleStart();
@@ -92,11 +114,11 @@ export const RgeSnakeGame = () => {
 
 	const isRunning = phase === 'playing';
 
-  const boardCssVariables = {
-    '--board-cols': GRID_COLS,
-    '--board-rows': GRID_ROWS,
-    '--board-cell-size': `${CELL_SIZE}px`,
-  } as React.CSSProperties;  // Type assertion to satisfy React's CSSProperties type
+	const boardCssVariables = {
+		'--board-cols': resolved.gridCols,
+		'--board-rows': resolved.gridRows,
+		'--board-cell-size': `${resolved.cellSize}px`,
+	} as React.CSSProperties;
 
 	return (
 		<div className={styles.wrapper}>

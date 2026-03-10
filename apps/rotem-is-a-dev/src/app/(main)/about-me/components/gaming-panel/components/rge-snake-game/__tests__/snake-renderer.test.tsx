@@ -3,7 +3,7 @@ import { SnakeRenderer } from '../renderers/snake-renderer.component';
 
 describe('SnakeRenderer', () => {
 	it('renders the snake head', () => {
-		render(<SnakeRenderer body={[{ x: 5, y: 5 }]} />);
+		render(<SnakeRenderer body={[{ x: 5, y: 5 }]} cellSize={20} />);
 		expect(screen.getByTestId('snake-head')).toBeInTheDocument();
 	});
 
@@ -13,20 +13,20 @@ describe('SnakeRenderer', () => {
 			{ x: 5, y: 6 },
 			{ x: 5, y: 7 },
 		];
-		render(<SnakeRenderer body={body} />);
+		render(<SnakeRenderer body={body} cellSize={20} />);
 		expect(screen.getByTestId('snake-head')).toBeInTheDocument();
 		expect(screen.getAllByTestId('snake-segment')).toHaveLength(2);
 	});
 
 	it('positions the head based on cell size', () => {
-		render(<SnakeRenderer body={[{ x: 3, y: 4 }]} />);
+		render(<SnakeRenderer body={[{ x: 3, y: 4 }]} cellSize={20} />);
 		const head = screen.getByTestId('snake-head');
 		expect(head.style.left).toBe('60px');
 		expect(head.style.top).toBe('80px');
 	});
 
 	it('applies head styling with larger border radius', () => {
-		render(<SnakeRenderer body={[{ x: 0, y: 0 }]} />);
+		render(<SnakeRenderer body={[{ x: 0, y: 0 }]} cellSize={20} />);
 		const head = screen.getByTestId('snake-head');
 		expect(head.style.borderRadius).toBe('4px');
 	});
@@ -38,6 +38,7 @@ describe('SnakeRenderer', () => {
 					{ x: 0, y: 0 },
 					{ x: 0, y: 1 },
 				]}
+				cellSize={20}
 			/>
 		);
 		const segment = screen.getByTestId('snake-segment');
@@ -50,7 +51,7 @@ describe('SnakeRenderer', () => {
 			{ x: 0, y: 1 },
 			{ x: 0, y: 2 },
 		];
-		render(<SnakeRenderer body={body} />);
+		render(<SnakeRenderer body={body} cellSize={20} />);
 		const head = screen.getByTestId('snake-head');
 		const segments = screen.getAllByTestId('snake-segment');
 		const headOpacity = parseFloat(head.style.opacity);

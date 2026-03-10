@@ -2,6 +2,7 @@ import type {
 	AboutFileContent,
 	JsdocFileContent,
 	JsonFileContent,
+	MarkdownFileContent,
 } from '../../data/about-files.data';
 
 const COMMENT_WRAP_WIDTH = 38;
@@ -44,12 +45,22 @@ export const toJsonLines = ({ json }: JsonFileContent): string[] => {
 	return JSON.stringify(json, null, 2).split('\n');
 };
 
+export const toMarkdownLines = ({ raw }: MarkdownFileContent): string[] => {
+	return raw.split('\n');
+};
+
 export const toLines = (content: AboutFileContent): string[] => {
 	if (content.format === 'json') {
 		return toJsonLines(content);
 	}
+	if (content.format === 'markdown') {
+		return toMarkdownLines(content);
+	}
 	return toJsdocLines(content);
 };
 
-export const toLanguage = (content: AboutFileContent): 'javascript' | 'json' =>
-	content.format === 'json' ? 'json' : 'javascript';
+export const toLanguage = (content: AboutFileContent): 'javascript' | 'json' | 'markdown' => {
+	if (content.format === 'json') return 'json';
+	if (content.format === 'markdown') return 'markdown';
+	return 'javascript';
+};

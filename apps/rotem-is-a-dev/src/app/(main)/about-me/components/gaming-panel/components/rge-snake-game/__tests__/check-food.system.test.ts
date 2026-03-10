@@ -17,7 +17,7 @@ const createMockEntities = (
 			growing: false,
 		},
 		food: { position: { x: foodX, y: foodY } },
-		board: { width: 15, height: 15 },
+		board: { width: 15, height: 15, cellSize: 20, tickMs: 150 },
 	}) as unknown as Entities;
 
 const createMockArgs = (): SystemArgs => ({

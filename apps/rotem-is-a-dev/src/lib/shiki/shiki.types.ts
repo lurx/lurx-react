@@ -6,10 +6,10 @@ export type ShikiLine = {
 
 export type UseShikiTokensParams = {
 	code: string;
-	language: 'javascript' | 'typescript' | 'json';
+	language: 'javascript' | 'typescript' | 'json' | 'markdown';
 }
 
 export type HighlightCodeParams = {
 	code: string;
-	language: 'javascript' | 'typescript' | 'json';
+	language: 'javascript' | 'typescript' | 'json' | 'markdown';
 }

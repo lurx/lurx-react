@@ -30,7 +30,7 @@ describe('AboutEditor', () => {
 		render(<AboutEditor content={mockContent} />);
 		const lineNumbers = screen
 			.getAllByRole('generic')
-			.filter((el) => el.className.split(' ').includes('lineNumber'));
+			.filter((el) => el.classList.contains('lineNumber'));
 		expect(lineNumbers[0]).toHaveTextContent('1');
 		lineNumbers.forEach((el, index) => {
 			expect(el).toHaveTextContent(String(index + 1));
@@ -114,7 +114,7 @@ describe('AboutEditor', () => {
 		render(<AboutEditor content={jsonContent} />);
 		const lineNumbers = screen
 			.getAllByRole('generic')
-			.filter((el) => el.className.split(' ').includes('lineNumber'));
+			.filter((el) => el.classList.contains('lineNumber'));
 		expect(lineNumbers.length).toBeGreaterThan(0);
 	});
 
@@ -140,7 +140,7 @@ describe('AboutEditor', () => {
 		render(<AboutEditor content={content} />);
 		const lineNumbers = screen
 			.getAllByRole('generic')
-			.filter((el) => el.className.split(' ').includes('lineNumber'));
+			.filter((el) => el.classList.contains('lineNumber'));
 		expect(lineNumbers.length).toBeGreaterThan(0);
 	});
 });

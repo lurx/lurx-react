@@ -1,4 +1,3 @@
-import { TICK_MS } from '../rge-snake-game.constants';
 import type { Direction, Entities, Position, SystemArgs } from '../rge-snake-game.types';
 
 let lastTickTime = 0;
@@ -15,7 +14,7 @@ const DIRECTION_DELTAS: Record<Direction, Position> = {
 };
 
 export const moveSnake = (entities: Entities, { time }: SystemArgs): Entities => {
-	if (time.current - lastTickTime < TICK_MS) return entities;
+	if (time.current - lastTickTime < entities.board.tickMs) return entities;
 	lastTickTime = time.current;
 
 	const { snake } = entities;

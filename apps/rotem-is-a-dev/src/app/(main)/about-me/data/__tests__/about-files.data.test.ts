@@ -1,3 +1,5 @@
+jest.mock('../snake-instructions.md?raw', () => 'Paragraph one.\n\nParagraph two.', { virtual: true });
+
 import {
 	getFileSection,
 	ABOUT_FILES,
@@ -56,7 +58,7 @@ describe('about-files.data', () => {
 			expect(ABOUT_FILES['bio'].format).toBe('jsdoc');
 			expect(ABOUT_FILES['payoneer'].format).toBe('json');
 			expect(ABOUT_FILES['snake-game']).toBeDefined();
-			expect(ABOUT_FILES['snake-game'].format).toBe('jsdoc');
+			expect(ABOUT_FILES['snake-game'].format).toBe('markdown');
 		});
 	});
 });

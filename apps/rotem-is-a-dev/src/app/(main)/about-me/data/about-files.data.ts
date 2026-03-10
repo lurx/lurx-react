@@ -1,4 +1,5 @@
 import cv from '@/data/cv.data';
+import snakeInstructions from './snake-instructions.md?raw';
 import type {
 	AboutFileContent,
 	AboutFileId,
@@ -6,7 +7,7 @@ import type {
 	SectionId,
 } from './about-files.types';
 
-export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, SectionConfig, SectionId } from './about-files.types';
+export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, MarkdownFileContent, SectionConfig, SectionId } from './about-files.types';
 
 export const SECTIONS: SectionConfig[] = [
 	{ id: 'personal-info', label: 'Personal info', icon: 'user' },
@@ -59,11 +60,8 @@ export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
 	},
 	'snake-game': {
 		title: 'snake-game',
-		format: 'jsdoc',
-		paragraphs: [
-			'Use the arrow keys to guide the snake and eat all the food dots on the board. Each dot you eat makes the snake grow longer.',
-			'Avoid running into the walls or your own tail — one wrong move and it\'s game over. Clear all the food to win!',
-		],
+		format: 'markdown',
+		raw: snakeInstructions,
 	},
 };
 

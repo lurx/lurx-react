@@ -21,7 +21,13 @@ export type JsonFileContent = {
 	json: Record<string, unknown>;
 }
 
-export type AboutFileContent = JsdocFileContent | JsonFileContent;
+export type MarkdownFileContent = {
+	title: string;
+	format: 'markdown';
+	raw: string;
+}
+
+export type AboutFileContent = JsdocFileContent | JsonFileContent | MarkdownFileContent;
 
 export type SectionConfig = {
 	id: SectionId;

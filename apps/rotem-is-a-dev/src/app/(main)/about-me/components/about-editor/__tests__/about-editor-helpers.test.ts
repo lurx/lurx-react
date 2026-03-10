@@ -2,10 +2,11 @@ import {
 	wrapWords,
 	toJsdocLines,
 	toJsonLines,
+	toMarkdownLines,
 	toLines,
 	toLanguage,
 } from '../about-editor.helpers';
-import type { JsdocFileContent, JsonFileContent } from '../../../data/about-files.data';
+import type { JsdocFileContent, JsonFileContent, MarkdownFileContent } from '../../../data/about-files.data';
 
 describe('about-editor.helpers', () => {
 	describe('wrapWords', () => {
@@ -164,6 +165,26 @@ describe('about-editor.helpers', () => {
 		});
 	});
 
+	describe('toMarkdownLines', () => {
+		it('splits raw markdown into lines', () => {
+			const content: MarkdownFileContent = {
+				title: 'test',
+				format: 'markdown',
+				raw: '# Title\n\nSome text.',
+			};
+			expect(toMarkdownLines(content)).toEqual(['# Title', '', 'Some text.']);
+		});
+
+		it('returns a single-element array for a single line', () => {
+			const content: MarkdownFileContent = {
+				title: 'test',
+				format: 'markdown',
+				raw: 'One line only.',
+			};
+			expect(toMarkdownLines(content)).toEqual(['One line only.']);
+		});
+	});
+
 	describe('toLines', () => {
 		it('delegates to toJsonLines when format is "json"', () => {
 			const content: JsonFileContent = {
@@ -202,6 +223,16 @@ describe('about-editor.helpers', () => {
 			};
 			expect(toLines(content)[0]).toBe('{');
 		});
+
+		it('delegates to toMarkdownLines when format is "markdown"', () => {
+			const content: MarkdownFileContent = {
+				title: 'test',
+				format: 'markdown',
+				raw: '# Hello\n\nWorld.',
+			};
+			const lines = toLines(content);
+			expect(lines).toEqual(toMarkdownLines(content));
+		});
 	});
 
 	describe('toLanguage', () => {
@@ -221,6 +252,15 @@ describe('about-editor.helpers', () => {
 				paragraphs: [],
 			};
 			expect(toLanguage(content)).toBe('javascript');
+		});
+
+		it('returns "markdown" for markdown format', () => {
+			const content: MarkdownFileContent = {
+				title: 'test',
+				format: 'markdown',
+				raw: '# Hello',
+			};
+			expect(toLanguage(content)).toBe('markdown');
 		});
 	});
 });

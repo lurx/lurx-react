@@ -13,6 +13,7 @@ export async function getHighlighter(): Promise<HighlighterCore> {
 				import('shiki/langs/javascript'),
 				import('shiki/langs/typescript'),
 				import('shiki/langs/json'),
+				import('shiki/langs/markdown'),
 			],
 			engine: createOnigurumaEngine(import('shiki/wasm')),
 		});
