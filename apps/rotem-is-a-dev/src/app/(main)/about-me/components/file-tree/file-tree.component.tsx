@@ -41,6 +41,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 			{SECTIONS.map(({ id }) => {
 				const files = SECTION_FILES[id];
 				if (files.length === 0) return null;
+				if (isMobile && id === 'gaming') return null;
 
 				const isCollapsed = collapsedSections.has(id);
 
