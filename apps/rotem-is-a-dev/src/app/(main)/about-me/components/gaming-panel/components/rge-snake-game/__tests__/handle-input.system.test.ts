@@ -1,7 +1,7 @@
 import { handleInput } from '../systems/handle-input.system';
 import type { Entities, SystemArgs } from '../rge-snake-game.types';
 
-const createMockEntities = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' = 'UP'): Entities =>
+const createMockEntities = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' = 'UP', keyScheme: 'arrows' | 'wasd' = 'arrows'): Entities =>
 	({
 		snake: {
 			body: [{ x: 7, y: 7 }],
@@ -9,7 +9,7 @@ const createMockEntities = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' = 'UP'):
 			growing: false,
 		},
 		food: { position: { x: 3, y: 3 } },
-		board: { width: 15, height: 15, cellSize: 20, tickMs: 150 },
+		board: { width: 15, height: 15, cellSize: 20, tickMs: 150, keyScheme },
 	}) as unknown as Entities;
 
 const createMockArgs = (key?: string): SystemArgs =>
@@ -80,5 +80,23 @@ describe('handleInput', () => {
 		];
 		const result = handleInput(entities, args);
 		expect(result.snake.direction).toBe('LEFT');
+	});
+
+	it('ignores WASD keys when keyScheme is arrows', () => {
+		const entities = createMockEntities('UP', 'arrows');
+		const result = handleInput(entities, createMockArgs('w'));
+		expect(result.snake.direction).toBe('UP');
+	});
+
+	it('responds to WASD keys when keyScheme is wasd', () => {
+		const entities = createMockEntities('UP', 'wasd');
+		const result = handleInput(entities, createMockArgs('d'));
+		expect(result.snake.direction).toBe('RIGHT');
+	});
+
+	it('ignores arrow keys when keyScheme is wasd', () => {
+		const entities = createMockEntities('UP', 'wasd');
+		const result = handleInput(entities, createMockArgs('ArrowRight'));
+		expect(result.snake.direction).toBe('UP');
 	});
 });

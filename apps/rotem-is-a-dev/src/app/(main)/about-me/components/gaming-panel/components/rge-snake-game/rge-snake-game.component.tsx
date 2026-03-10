@@ -1,14 +1,14 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GameEngine } from 'react-game-engine';
 import { GameControls } from './components/game-controls';
 import { GameOverlay } from './components/game-overlay';
 import { FoodRenderer } from './renderers/food-renderer.component';
 import { SnakeRenderer } from './renderers/snake-renderer.component';
-import { DEFAULT_SNAKE_CONFIG } from './rge-snake-game.constants';
+import { DEFAULT_SNAKE_CONFIG, DIRECTION_MAPS } from './rge-snake-game.constants';
 import styles from './rge-snake-game.module.scss';
-import type { Direction, Entities, GameEvent, GamePhase, SnakeGameConfig } from './rge-snake-game.types';
+import type { Direction, Entities, GameEvent, GamePhase, KeyScheme, SnakeGameConfig } from './rge-snake-game.types';
 import { checkCollision, checkFood, handleInput, moveSnake } from './systems';
 import { resetMoveSnakeTick } from './systems/move-snake.system';
 
@@ -60,6 +60,7 @@ const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig
 			height: gridRows,
 			cellSize,
 			tickMs,
+			keyScheme: 'arrows',
 		},
 	};
 };
@@ -76,6 +77,7 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 	const [phase, setPhase] = useState<GamePhase>('idle');
 	const [score, setScore] = useState(0);
 	const [activeDirection, setActiveDirection] = useState<Direction | null>(null);
+	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');
 	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved));
 
 	const engineRef = useRef<GameEngine>(null);
@@ -112,6 +114,31 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 		setActiveDirection(direction);
 	}, []);
 
+	const handleToggleKeyScheme = useCallback(() => {
+		setKeyScheme((prev) => {
+			const next = prev === 'arrows' ? 'wasd' : 'arrows';
+			entities.board.keyScheme = next;
+			return next;
+		});
+	}, [entities]);
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			const direction = DIRECTION_MAPS[keyScheme][event.key];
+			if (direction) setActiveDirection(direction);
+		};
+
+		const handleKeyUp = () => setActiveDirection(null);
+
+		globalThis.addEventListener('keydown', handleKeyDown);
+		globalThis.addEventListener('keyup', handleKeyUp);
+
+		return () => {
+			globalThis.removeEventListener('keydown', handleKeyDown);
+			globalThis.removeEventListener('keyup', handleKeyUp);
+		};
+	}, [keyScheme]);
+
 	const isRunning = phase === 'playing';
 
 	const boardCssVariables = {
@@ -145,6 +172,8 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 				score={score}
 				onDirectionPress={handleDirectionPress}
 				activeDirection={activeDirection}
+				keyScheme={keyScheme}
+				onToggleKeyScheme={handleToggleKeyScheme}
 			/>
 		</div>
 	);

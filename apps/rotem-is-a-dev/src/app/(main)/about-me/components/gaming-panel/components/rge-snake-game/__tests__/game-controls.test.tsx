@@ -7,6 +7,7 @@ jest.mock('../../rge-snake-game.module.scss', () => ({
 	arrowGrid: 'arrowGrid',
 	arrowButton: 'arrowButton',
 	arrowButtonActive: 'arrowButtonActive',
+	schemeToggle: 'schemeToggle',
 }));
 
 describe('GameControls', () => {
@@ -14,6 +15,8 @@ describe('GameControls', () => {
 		score: 5,
 		onDirectionPress: jest.fn(),
 		activeDirection: null as 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null,
+		keyScheme: 'arrows' as const,
+		onToggleKeyScheme: jest.fn(),
 	};
 
 	it('renders the score', () => {
@@ -62,5 +65,30 @@ describe('GameControls', () => {
 		expect(screen.getByLabelText('Move down')).toBeInTheDocument();
 		expect(screen.getByLabelText('Move left')).toBeInTheDocument();
 		expect(screen.getByLabelText('Move right')).toBeInTheDocument();
+	});
+
+	it('renders WASD labels when keyScheme is wasd', () => {
+		render(<GameControls {...defaultProps} keyScheme="wasd" />);
+		expect(screen.getByTestId('arrow-up')).toHaveTextContent('W');
+		expect(screen.getByTestId('arrow-down')).toHaveTextContent('S');
+		expect(screen.getByTestId('arrow-left')).toHaveTextContent('A');
+		expect(screen.getByTestId('arrow-right')).toHaveTextContent('D');
+	});
+
+	it('shows "use WASD" toggle when keyScheme is arrows', () => {
+		render(<GameControls {...defaultProps} keyScheme="arrows" />);
+		expect(screen.getByTestId('key-scheme-toggle')).toHaveTextContent('use WASD');
+	});
+
+	it('shows "use arrows" toggle when keyScheme is wasd', () => {
+		render(<GameControls {...defaultProps} keyScheme="wasd" />);
+		expect(screen.getByTestId('key-scheme-toggle')).toHaveTextContent('use arrows');
+	});
+
+	it('calls onToggleKeyScheme when toggle button is clicked', () => {
+		const onToggleKeyScheme = jest.fn();
+		render(<GameControls {...defaultProps} onToggleKeyScheme={onToggleKeyScheme} />);
+		fireEvent.click(screen.getByTestId('key-scheme-toggle'));
+		expect(onToggleKeyScheme).toHaveBeenCalledTimes(1);
 	});
 });

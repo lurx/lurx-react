@@ -9,6 +9,8 @@ export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 export type GamePhase = 'idle' | 'playing' | 'won' | 'lost';
 
+export type KeyScheme = 'arrows' | 'wasd';
+
 export type SnakeGameConfig = {
 	gridCols?: number;
 	gridRows?: number;
@@ -35,6 +37,7 @@ export type BoardEntity = {
 	height: number;
 	cellSize: number;
 	tickMs: number;
+	keyScheme: KeyScheme;
 };
 
 export type Entities = {

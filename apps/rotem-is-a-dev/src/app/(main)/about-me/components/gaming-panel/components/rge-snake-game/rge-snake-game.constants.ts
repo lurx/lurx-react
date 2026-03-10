@@ -18,12 +18,30 @@ export const COLORS = {
 	foodGlow: 'rgba(255, 184, 106, 0.6)',
 } as const;
 
-export const DIRECTION_MAP: Record<string, 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'> = {
+export const ARROW_DIRECTION_MAP: Record<string, 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'> = {
 	ArrowUp: 'UP',
 	ArrowDown: 'DOWN',
 	ArrowLeft: 'LEFT',
 	ArrowRight: 'RIGHT',
 };
+
+/* eslint-disable id-length */
+export const WASD_DIRECTION_MAP: Record<string, 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'> = {
+  w: 'UP',
+	W: 'UP',
+	s: 'DOWN',
+	S: 'DOWN',
+	a: 'LEFT',
+	A: 'LEFT',
+	d: 'RIGHT',
+	D: 'RIGHT',
+};
+/* eslint-enable id-length */
+
+export const DIRECTION_MAPS = {
+	arrows: ARROW_DIRECTION_MAP,
+	wasd: WASD_DIRECTION_MAP,
+} as const;
 
 export const OPPOSITE_DIRECTIONS: Record<string, string> = {
 	UP: 'DOWN',

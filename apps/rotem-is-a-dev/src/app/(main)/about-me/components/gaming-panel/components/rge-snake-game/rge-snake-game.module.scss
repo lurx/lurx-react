@@ -175,3 +175,19 @@
 	border-color: var(--teal);
 	color: var(--teal);
 }
+
+.schemeToggle {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
