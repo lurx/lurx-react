@@ -33,6 +33,13 @@ jest.mock('../../fa-icon', () => ({
 	),
 }));
 
+jest.mock('next/link', () => ({
+	__esModule: true,
+	default: ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => (
+		<a href={href} onClick={onClick}>{children}</a>
+	),
+}));
+
 import { SignInDialog } from '../sign-in-dialog.component';
 
 const mockOnClose = jest.fn();
@@ -114,5 +121,22 @@ describe('SignInDialog', () => {
 		fireEvent.click(screen.getByTestId('sign-in-github'));
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 		expect(mockSignInWithGitHub).toHaveBeenCalledTimes(1);
+	});
+
+	it('renders privacy policy note', () => {
+		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		expect(screen.getByText(/By signing in, you agree to my/)).toBeInTheDocument();
+	});
+
+	it('renders privacy policy link with correct href', () => {
+		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		const link = screen.getByRole('link', { name: 'Privacy Policy', hidden: true });
+		expect(link).toHaveAttribute('href', '/privacy-policy');
+	});
+
+	it('calls onClose when privacy policy link is clicked', () => {
+		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		fireEvent.click(screen.getByRole('link', { name: 'Privacy Policy', hidden: true }));
+		expect(mockOnClose).toHaveBeenCalledTimes(1);
 	});
 });

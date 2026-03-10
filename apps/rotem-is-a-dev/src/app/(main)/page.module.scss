@@ -1,7 +1,7 @@
 @use 'mixins/media' as *;
 
 .backdrop {
-  --backdrop-padding: 72px;
+  --backdrop-padding: 48px;
   display: flex;
   align-items: center;
   justify-content: center;

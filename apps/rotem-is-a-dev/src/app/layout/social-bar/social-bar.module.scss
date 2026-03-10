@@ -1,4 +1,5 @@
 @use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
 
 .socialBar {
 	display: flex;
@@ -71,7 +72,6 @@
 	height: 100%;
 	color: var(--muted);
 	transition: color 0.2s;
-	gap: 5px;
 	&:hover {
 		color: var(--text);
 	}
@@ -85,6 +85,25 @@
 	border-inline-start: 1px solid var(--border);
 	@include media-below('tablet') {
 		padding: 0;
+	}
+}
+
+.privacyLink {
+	display: flex;
+	align-items: center;
+	font-size: 0.8125rem;
+	color: var(--muted);
+	text-decoration: none;
+	transition: color 0.2s;
+	padding: 0 spacing(2);
+	border-inline-start: 1px solid var(--border);
+
+	&:hover {
+		color: var(--text);
+	}
+
+	@include media-below('tablet') {
+		display: none;
 	}
 }
 

@@ -1,4 +1,5 @@
 import { useAuth } from '@/app/context/auth';
+import Link from 'next/link';
 import { useCallback } from 'react';
 import { Dialog } from '../dialog';
 import { SIGN_IN_DIALOG_STRINGS } from './sign-in-dialog.constants';
@@ -37,6 +38,12 @@ export const SignInDialog = ({ isOpen, onClose }: SignInDialogProps) => {
 					);
 				})}
 			</div>
+			<p className={styles.privacyNote}>
+				{SIGN_IN_DIALOG_STRINGS.PRIVACY_NOTE}{' '}
+				<Link href={SIGN_IN_DIALOG_STRINGS.PRIVACY_LINK_HREF} onClick={onClose}>
+					{SIGN_IN_DIALOG_STRINGS.PRIVACY_LINK_TEXT}
+				</Link>
+			</p>
 		</Dialog>
 	);
 };

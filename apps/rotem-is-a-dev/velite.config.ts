@@ -16,6 +16,18 @@ const posts = defineCollection({
 	}),
 });
 
+const pages = defineCollection({
+	name: 'Page',
+	pattern: 'pages/**/*.md',
+	schema: s.object({
+		title: s.string(),
+		slug: s.slug('pages'),
+		lastUpdated: s.string(),
+		description: s.string(),
+		content: s.markdown(),
+	}),
+});
+
 export default defineConfig({
 	root: 'src/app/content',
 	output: {
@@ -24,7 +36,7 @@ export default defineConfig({
 		base: '/static/',
 		clean: true,
 	},
-	collections: { posts },
+	collections: { posts, pages },
 	markdown: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		rehypePlugins: [[rehypeShiki as any, { theme: 'night-owl' }]],

@@ -40,10 +40,18 @@ describe('SocialBar', () => {
 
 	it('opens all external links in a new tab', () => {
 		render(<SocialBar />);
-		const links = screen.getAllByRole('link');
-		links.forEach((link) => {
+		const externalLinks = screen.getAllByRole('link').filter(
+			(link) => link.getAttribute('href')?.startsWith('http'),
+		);
+		externalLinks.forEach((link) => {
 			expect(link).toHaveAttribute('target', '_blank');
 			expect(link).toHaveAttribute('rel', 'noopener noreferrer');
 		});
+	});
+
+	it('renders a privacy policy link', () => {
+		render(<SocialBar />);
+		const privacyLink = screen.getByRole('link', { name: 'privacy' });
+		expect(privacyLink).toHaveAttribute('href', '/privacy-policy');
 	});
 });
