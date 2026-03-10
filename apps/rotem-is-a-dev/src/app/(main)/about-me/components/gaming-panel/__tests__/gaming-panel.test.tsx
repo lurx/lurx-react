@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { useResponsive } from '@/hooks';
 import { GamingPanel } from '../gaming-panel.component';
 
@@ -6,12 +6,8 @@ jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),
 }));
 
-jest.mock('@/app/(main)/components/snake-game', () => ({
-	SnakeGame: ({ onWin, onSkip }: { onWin: () => void; onSkip: () => void }) => (
-		<div data-testid="snake-game" data-on-win={!!onWin} data-on-skip={!!onSkip}>
-			Snake Game
-		</div>
-	),
+jest.mock('../components/rge-snake-game', () => ({
+	RgeSnakeGame: () => <div data-testid="rge-snake-game">RGE Snake Game</div>,
 }));
 
 const mockUseResponsive = useResponsive as jest.Mock;
@@ -21,16 +17,11 @@ beforeEach(() => {
 });
 
 describe('GamingPanel', () => {
-	it('renders the SnakeGame component', () => {
-		render(<GamingPanel />);
-		expect(screen.getByTestId('snake-game')).toBeInTheDocument();
-	});
-
-	it('passes noop callbacks to SnakeGame', () => {
-		render(<GamingPanel />);
-		const snakeGame = screen.getByTestId('snake-game');
-		expect(snakeGame).toHaveAttribute('data-on-win', 'true');
-		expect(snakeGame).toHaveAttribute('data-on-skip', 'true');
+	it('renders the RgeSnakeGame component', async () => {
+		await act(async () => {
+			render(<GamingPanel />);
+		});
+		expect(screen.getByTestId('rge-snake-game')).toBeInTheDocument();
 	});
 
 	it('renders nothing on mobile', () => {

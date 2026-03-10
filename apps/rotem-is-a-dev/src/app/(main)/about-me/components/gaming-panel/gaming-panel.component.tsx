@@ -1,9 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useResponsive } from '@/hooks';
-import { SnakeGame } from '@/app/(main)/components/snake-game';
-import { noop } from 'es-toolkit';
 import styles from './gaming-panel.module.scss';
+
+const RgeSnakeGame = dynamic(
+	() => import('regenerator-runtime/runtime').then(() =>
+		import('./components/rge-snake-game').then((mod) => mod.RgeSnakeGame)
+	),
+	{ ssr: false }
+);
 
 export const GamingPanel = () => {
 	const { isMobile } = useResponsive();
@@ -12,7 +18,7 @@ export const GamingPanel = () => {
 
 	return (
 		<div className={styles.panel}>
-			<SnakeGame onWin={noop} onSkip={noop} />
+			<RgeSnakeGame />
 		</div>
 	);
 };

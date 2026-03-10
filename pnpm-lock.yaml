@@ -47,6 +47,12 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
+      react-game-engine:
+        specifier: 1.2.0
+        version: 1.2.0(react@19.2.4)
+      regenerator-runtime:
+        specifier: ^0.14.1
+        version: 0.14.1
       shiki:
         specifier: ^3.22.0
         version: 3.22.0
@@ -255,6 +261,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
+      react-game-engine:
+        specifier: 1.2.0
+        version: 1.2.0(react@19.2.4)
       sharp:
         specifier: 0.34.5
         version: 0.34.5
@@ -7216,6 +7225,11 @@ packages:
     peerDependencies:
       react: ^19.2.4
 
+  react-game-engine@1.2.0:
+    resolution: {integrity: sha512-VWyzGAa4B1k4dA4s96c1rM6RK7hiUy8vJfjh5NGr2PAjT3Ne9Duvr2nIgWTonJIRuc+sroRCbu9krXoEbuin3A==}
+    peerDependencies:
+      react: '>= 16.3.0'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -7281,6 +7295,9 @@ packages:
 
   regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+
+  regenerator-runtime@0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
   regenerator-transform@0.15.2:
     resolution: {integrity: sha512-hfMp2BoF0qOk3uc5V20ALGDS2ddjQaLrdl7xrGXvAIow7qeWRM2VA2HuCHkUKk9slq3VwEwLNK3DFBqDfPGYtg==}
@@ -17551,6 +17568,10 @@ snapshots:
       react: 19.2.4
       scheduler: 0.27.0
 
+  react-game-engine@1.2.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
@@ -17640,6 +17661,8 @@ snapshots:
 
   regenerator-runtime@0.13.11:
     optional: true
+
+  regenerator-runtime@0.14.1: {}
 
   regenerator-transform@0.15.2:
     dependencies:

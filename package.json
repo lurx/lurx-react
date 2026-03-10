@@ -4,11 +4,14 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "nx serve-with-remotes rotem-is-a-dev",
+		"clean:website:dist": "rm -rf dist/apps/rotem-is-a-dev",
+		"clean:website:next": "rm -rf apps/rotem-is-a-dev/.next",
+		"clean:website": "pnpm run clean:website:dist && pnpm run clean:website:next",
 		"install:local": "dotenv -e .env.local -- pnpm install",
 		"check:before-push": "bash scripts/check-before-push.sh",
 		"prepare": "husky",
 		"sonar": "dotenv -e .env.local -- docker run -i --rm -e SONARQUBE_TOKEN -e SONARQUBE_ORG -e SONARQUBE_CLOUD_URL -e SONARQUBE_IDE_PORT mcp/sonarqube",
-    "firebase:deploy-rules": "firebase deploy --only firestore:rules --project=rotem-is-a-dev"
+		"firebase:deploy-rules": "firebase deploy --only firestore:rules --project=rotem-is-a-dev"
 	},
 	"private": true,
 	"dependencies": {
@@ -25,6 +28,8 @@
 		"next": "^15.3.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
+		"react-game-engine": "1.2.0",
+		"regenerator-runtime": "^0.14.1",
 		"shiki": "^3.22.0",
 		"usehooks-ts": "3.1.1"
 	},
