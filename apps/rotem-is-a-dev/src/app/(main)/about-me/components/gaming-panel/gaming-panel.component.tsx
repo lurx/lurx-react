@@ -5,7 +5,7 @@ import { useResponsive } from '@/hooks';
 import styles from './gaming-panel.module.scss';
 
 const RgeSnakeGame = dynamic(
-	() => import('./components/rge-snake-game').then((mod) => mod.RgeSnakeGame),
+	() => import('@/games/rge-snake-game').then((mod) => mod.RgeSnakeGame),
 	{ ssr: false }
 );
 

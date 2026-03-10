@@ -6,7 +6,7 @@ jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),
 }));
 
-jest.mock('../components/rge-snake-game', () => ({
+jest.mock('@/games/rge-snake-game', () => ({
 	RgeSnakeGame: () => <div data-testid="rge-snake-game">RGE Snake Game</div>,
 }));
 

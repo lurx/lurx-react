@@ -39,7 +39,7 @@ const spawnInitialFood = (snakeBody: { x: number; y: number }[], gridCols: numbe
 	return position;
 };
 
-const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig): Entities => {
+const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig, keyScheme: KeyScheme): Entities => {
 	const initialBody = buildInitialSnakeBody(gridCols, gridRows);
 
 	return {
@@ -60,7 +60,7 @@ const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig
 			height: gridRows,
 			cellSize,
 			tickMs,
-			keyScheme: 'arrows',
+			keyScheme,
 		},
 	};
 };
@@ -78,7 +78,7 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 	const [score, setScore] = useState(0);
 	const [activeDirection, setActiveDirection] = useState<Direction | null>(null);
 	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');
-	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved));
+	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved, keyScheme));
 
 	const engineRef = useRef<GameEngine>(null);
 
@@ -98,13 +98,13 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 
 	const handleStart = useCallback(() => {
 		resetMoveSnakeTick();
-		const newEntities = createEntities(resolved);
+		const newEntities = createEntities(resolved, keyScheme);
 		setEntities(newEntities);
 		setScore(0);
 		setActiveDirection(null);
 		setPhase('playing');
 		engineRef.current?.swap(newEntities as unknown as Record<string, unknown>);
-	}, [resolved]);
+	}, [resolved, keyScheme]);
 
 	const handleRestart = useCallback(() => {
 		handleStart();
