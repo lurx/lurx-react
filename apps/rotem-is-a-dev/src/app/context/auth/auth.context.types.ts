@@ -16,4 +16,5 @@ export type AuthContextValue = {
 	signInWithGoogle: () => Promise<void>;
 	signInWithGitHub: () => Promise<void>;
 	signOut: () => Promise<void>;
+	deleteUser: () => Promise<void>;
 };

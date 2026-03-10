@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
+	deleteUser as firebaseDeleteUser,
 	onAuthStateChanged,
 	signInWithPopup,
 	signOut as firebaseSignOut,
@@ -7,6 +8,7 @@ import {
 
 jest.mock('firebase/auth', () => ({
 	getAuth: jest.fn(),
+	deleteUser: jest.fn(),
 	onAuthStateChanged: jest.fn(),
 	signInWithPopup: jest.fn(),
 	signOut: jest.fn(),
@@ -19,6 +21,7 @@ jest.mock('@/lib/firebase', () => ({
 	db: {},
 }));
 
+const mockDeleteUser = firebaseDeleteUser as jest.Mock;
 const mockOnAuthStateChanged = onAuthStateChanged as jest.Mock;
 const mockSignInWithPopup = signInWithPopup as jest.Mock;
 const mockSignOut = firebaseSignOut as jest.Mock;
@@ -26,7 +29,7 @@ const mockSignOut = firebaseSignOut as jest.Mock;
 import { AuthProvider, useAuth } from '../auth.context';
 
 const TestConsumer = () => {
-	const { user, isLoading, signInWithGoogle, signInWithGitHub, signOut } =
+	const { user, isLoading, signInWithGoogle, signInWithGitHub, signOut, deleteUser } =
 		useAuth();
 
 	return (
@@ -37,6 +40,7 @@ const TestConsumer = () => {
 			<button onClick={signInWithGoogle}>Google</button>
 			<button onClick={signInWithGitHub}>GitHub</button>
 			<button onClick={signOut}>Sign out</button>
+			<button onClick={deleteUser}>Delete account</button>
 		</div>
 	);
 };
@@ -56,6 +60,7 @@ beforeEach(() => {
 	});
 	mockSignInWithPopup.mockResolvedValue({});
 	mockSignOut.mockResolvedValue(undefined);
+	mockDeleteUser.mockResolvedValue(undefined);
 });
 
 describe('AuthProvider', () => {
@@ -125,6 +130,31 @@ describe('AuthProvider', () => {
 		fireEvent.click(screen.getByText('Sign out'));
 		await waitFor(() => {
 			expect(mockSignOut).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	it('calls firebaseDeleteUser with currentUser when deleteUser is called', async () => {
+		const mockCurrentUser = { uid: '123' };
+		const mockAuth = jest.requireMock('@/lib/firebase').auth;
+		mockAuth.currentUser = mockCurrentUser;
+
+		renderWithProvider();
+		fireEvent.click(screen.getByText('Delete account'));
+		await waitFor(() => {
+			expect(mockDeleteUser).toHaveBeenCalledWith(mockCurrentUser);
+		});
+
+		mockAuth.currentUser = undefined;
+	});
+
+	it('does nothing when deleteUser is called with no currentUser', async () => {
+		const mockAuth = jest.requireMock('@/lib/firebase').auth;
+		mockAuth.currentUser = null;
+
+		renderWithProvider();
+		fireEvent.click(screen.getByText('Delete account'));
+		await waitFor(() => {
+			expect(mockDeleteUser).not.toHaveBeenCalled();
 		});
 	});
 

@@ -4,7 +4,7 @@ let mockUser: { displayName: string; email: string; photoURL: string | null; pro
 let mockIsLoading = false;
 const mockSignInWithGoogle = jest.fn();
 const mockSignOut = jest.fn();
-let mockIsMobile = false;
+const mockDeleteUser = jest.fn();
 
 jest.mock('@/app/context/auth', () => ({
 	useAuth: () => ({
@@ -13,11 +13,11 @@ jest.mock('@/app/context/auth', () => ({
 		signInWithGoogle: mockSignInWithGoogle,
 		signInWithGitHub: jest.fn(),
 		signOut: mockSignOut,
+		deleteUser: mockDeleteUser,
 	}),
 }));
 
 jest.mock('@/hooks', () => ({
-	useResponsive: () => ({ isMobile: mockIsMobile }),
 	useOnClickOutside: jest.fn(),
 }));
 
@@ -33,24 +33,22 @@ jest.mock('@/app/components/sign-in-dialog', () => ({
 		isOpen ? <button data-testid="sign-in-dialog" data-open={isOpen} onClick={onClose} /> : null,
 }));
 
+jest.mock('@/app/components/user-settings-dialog', () => ({
+	UserSettingsDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+		isOpen ? <button data-testid="user-settings-dialog" onClick={onClose} /> : null,
+}));
+
 import { AuthButton } from '../auth-button.component';
 
 beforeEach(() => {
 	jest.clearAllMocks();
 	mockUser = null;
 	mockIsLoading = false;
-	mockIsMobile = false;
 });
 
 describe('AuthButton', () => {
 	it('returns null when loading', () => {
 		mockIsLoading = true;
-		const { container } = render(<AuthButton />);
-		expect(container).toBeEmptyDOMElement();
-	});
-
-	it('returns null on mobile', () => {
-		mockIsMobile = true;
 		const { container } = render(<AuthButton />);
 		expect(container).toBeEmptyDOMElement();
 	});
@@ -95,11 +93,11 @@ describe('AuthButton', () => {
 		};
 		render(<AuthButton />);
 		fireEvent.click(screen.getByLabelText('User menu'));
-		expect(screen.getByText('Test User')).toBeInTheDocument();
-		expect(screen.getByText('test@example.com')).toBeInTheDocument();
+		expect(screen.getByText('Settings')).toBeInTheDocument();
+		expect(screen.getByText('Sign out')).toBeInTheDocument();
 	});
 
-	it('shows sign out button in dropdown', () => {
+	it('shows settings and sign out menu items in dropdown', () => {
 		mockUser = {
 			displayName: 'Test User',
 			email: 'test@example.com',
@@ -108,10 +106,13 @@ describe('AuthButton', () => {
 		};
 		render(<AuthButton />);
 		fireEvent.click(screen.getByLabelText('User menu'));
-		expect(screen.getByRole('menuitem')).toHaveTextContent('Sign out');
+		const menuItems = screen.getAllByRole('menuitem');
+		expect(menuItems).toHaveLength(2);
+		expect(menuItems[0]).toHaveTextContent('Settings');
+		expect(menuItems[1]).toHaveTextContent('Sign out');
 	});
 
-	it('calls signOut when sign out button is clicked', () => {
+	it('calls signOut when sign out menu item is clicked', () => {
 		mockUser = {
 			displayName: 'Test User',
 			email: 'test@example.com',
@@ -120,7 +121,7 @@ describe('AuthButton', () => {
 		};
 		render(<AuthButton />);
 		fireEvent.click(screen.getByLabelText('User menu'));
-		fireEvent.click(screen.getByRole('menuitem'));
+		fireEvent.click(screen.getByText('Sign out'));
 		expect(mockSignOut).toHaveBeenCalledTimes(1);
 	});
 
@@ -133,9 +134,50 @@ describe('AuthButton', () => {
 		};
 		render(<AuthButton />);
 		fireEvent.click(screen.getByLabelText('User menu'));
-		expect(screen.getByText('Test User')).toBeInTheDocument();
-		fireEvent.click(screen.getByRole('menuitem'));
-		expect(screen.queryByText('Test User')).not.toBeInTheDocument();
+		expect(screen.getByText('Settings')).toBeInTheDocument();
+		fireEvent.click(screen.getByText('Sign out'));
+		expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+	});
+
+	it('opens settings dialog when Settings menu item is clicked', () => {
+		mockUser = {
+			displayName: 'Test User',
+			email: 'test@example.com',
+			photoURL: 'https://photo.url/avatar.jpg',
+			provider: 'google',
+		};
+		render(<AuthButton />);
+		fireEvent.click(screen.getByLabelText('User menu'));
+		fireEvent.click(screen.getByText('Settings'));
+		expect(screen.getByTestId('user-settings-dialog')).toBeInTheDocument();
+	});
+
+	it('closes dropdown when settings dialog is opened', () => {
+		mockUser = {
+			displayName: 'Test User',
+			email: 'test@example.com',
+			photoURL: 'https://photo.url/avatar.jpg',
+			provider: 'google',
+		};
+		render(<AuthButton />);
+		fireEvent.click(screen.getByLabelText('User menu'));
+		fireEvent.click(screen.getByText('Settings'));
+		expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+	});
+
+	it('closes settings dialog when onClose is called', () => {
+		mockUser = {
+			displayName: 'Test User',
+			email: 'test@example.com',
+			photoURL: 'https://photo.url/avatar.jpg',
+			provider: 'google',
+		};
+		render(<AuthButton />);
+		fireEvent.click(screen.getByLabelText('User menu'));
+		fireEvent.click(screen.getByText('Settings'));
+		expect(screen.getByTestId('user-settings-dialog')).toBeInTheDocument();
+		fireEvent.click(screen.getByTestId('user-settings-dialog'));
+		expect(screen.queryByTestId('user-settings-dialog')).not.toBeInTheDocument();
 	});
 
 	it('toggles dropdown open and closed', () => {
@@ -149,10 +191,10 @@ describe('AuthButton', () => {
 		const avatarButton = screen.getByLabelText('User menu');
 
 		fireEvent.click(avatarButton);
-		expect(screen.getByText('Test User')).toBeInTheDocument();
+		expect(screen.getByText('Settings')).toBeInTheDocument();
 
 		fireEvent.click(avatarButton);
-		expect(screen.queryByText('Test User')).not.toBeInTheDocument();
+		expect(screen.queryByText('Settings')).not.toBeInTheDocument();
 	});
 
 	it('sets aria-expanded on avatar button', () => {

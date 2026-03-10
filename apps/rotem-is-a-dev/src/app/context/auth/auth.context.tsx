@@ -2,6 +2,7 @@
 
 import { auth } from '@/lib/firebase';
 import {
+  deleteUser as firebaseDeleteUser,
   signOut as firebaseSignOut,
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -46,6 +47,12 @@ export const AuthProvider = ({ children }: Readonly<PropsWithChildren>) => {
 		await firebaseSignOut(auth);
 	}, []);
 
+	const deleteUser = useCallback(async () => {
+		if (auth.currentUser) {
+			await firebaseDeleteUser(auth.currentUser);
+		}
+	}, []);
+
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, firebaseUser => {
 			setUser(firebaseUser ? mapFirebaseUser(firebaseUser) : null);
@@ -56,8 +63,8 @@ export const AuthProvider = ({ children }: Readonly<PropsWithChildren>) => {
 	}, []);
 
 	const value = useMemo(
-		() => ({ user, isLoading, signInWithGoogle, signInWithGitHub, signOut }),
-		[user, isLoading, signInWithGoogle, signInWithGitHub, signOut],
+		() => ({ user, isLoading, signInWithGoogle, signInWithGitHub, signOut, deleteUser }),
+		[user, isLoading, signInWithGoogle, signInWithGitHub, signOut, deleteUser],
 	);
 
 	return <authContext.Provider value={value}>{children}</authContext.Provider>;

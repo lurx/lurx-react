@@ -2,8 +2,9 @@
 
 import { FaIcon, UserAvatar } from '@/app/components';
 import { SignInDialog } from '@/app/components/sign-in-dialog';
+import { UserSettingsDialog } from '@/app/components/user-settings-dialog';
 import { useAuth } from '@/app/context/auth';
-import { useOnClickOutside, useResponsive } from '@/hooks';
+import { useOnClickOutside } from '@/hooks';
 import { useCallback, useRef, useState } from 'react';
 import { NavItem } from '../nav-item.component';
 import { AUTH_BUTTON_STRINGS } from './auth-button.constants';
@@ -11,10 +12,10 @@ import styles from './auth-button.module.scss';
 
 export const AuthButton = () => {
 	const { user, isLoading, signOut } = useAuth();
-	const { isMobile } = useResponsive();
 
 	const [isSignInOpen, setIsSignInOpen] = useState(false);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const toggleDropdown = useCallback(() => {
@@ -33,6 +34,15 @@ export const AuthButton = () => {
 		setIsSignInOpen(false);
 	}, []);
 
+	const openSettings = useCallback(() => {
+		setIsDropdownOpen(false);
+		setIsSettingsOpen(true);
+	}, []);
+
+	const closeSettings = useCallback(() => {
+		setIsSettingsOpen(false);
+	}, []);
+
 	const handleSignOut = useCallback(async () => {
 		closeDropdown();
 		await signOut();
@@ -40,7 +50,7 @@ export const AuthButton = () => {
 
 	useOnClickOutside(dropdownRef, closeDropdown, 'mousedown');
 
-	if (isMobile || isLoading) return null;
+	if (isLoading) return null;
 
 	if (!user) {
 		return (
@@ -71,13 +81,18 @@ export const AuthButton = () => {
 
 	const renderDropdown = () => (
 		<div className={styles.dropdown} role="menu">
-			<div className={styles.userInfo}>
-				<span className={styles.displayName}>{user.displayName}</span>
-				<span className={styles.email}>{user.email}</span>
-			</div>
 			<button
 				type="button"
-				className={styles.signOutButton}
+				className={styles.menuItem}
+				onClick={openSettings}
+				role="menuitem"
+			>
+				<FaIcon iconName="gear" iconGroup="fal" size="sm" />
+				{AUTH_BUTTON_STRINGS.SETTINGS}
+			</button>
+			<button
+				type="button"
+				className={styles.menuItem}
 				onClick={handleSignOut}
 				role="menuitem"
 			>
@@ -91,6 +106,7 @@ export const AuthButton = () => {
 		<div ref={dropdownRef} className={styles.auth}>
 			{renderAvatar()}
 			{isDropdownOpen && renderDropdown()}
+			<UserSettingsDialog isOpen={isSettingsOpen} onClose={closeSettings} />
 		</div>
 	);
 };

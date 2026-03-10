@@ -20,8 +20,12 @@ export const UserAvatar = ({
 		);
 	}
 
+	const containerStyle = size !== DEFAULT_AVATAR_SIZE
+		? { '--avatar-size': `${size}px` } as React.CSSProperties
+		: undefined;
+
 	return (
-		<div className={classNames(styles.avatarContainer, styles[provider])}>
+		<div className={classNames(styles.avatarContainer, styles[provider])} style={containerStyle}>
 			<Image
 				src={photoURL}
 				alt={displayName ?? ''}

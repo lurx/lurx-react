@@ -14,7 +14,9 @@
 	}
 
 	@include media-below('tablet') {
-		display: none;
+		margin-inline-start: auto;
+		padding: 0 16px;
+		border-inline-start: none;
 	}
 }
 
@@ -39,25 +41,7 @@
 	flex-direction: column;
 }
 
-.userInfo {
-	padding: 12px 16px;
-	border-block-end: 1px solid var(--border);
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-}
-
-.displayName {
-	color: var(--text);
-	font-size: 0.875rem;
-}
-
-.email {
-	color: var(--muted);
-	font-size: 0.75rem;
-}
-
-.signOutButton {
+.menuItem {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
