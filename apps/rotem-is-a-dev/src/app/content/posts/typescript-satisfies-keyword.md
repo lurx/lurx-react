@@ -1,8 +1,8 @@
 ---
 title: "The `satisfies` Keyword in TypeScript (Or: Having Your Type Cake and Eating It Too)"
 slug: typescript-satisfies
-date: 2025-02-27
-description: ""
+date: 2025-03-10
+description: "Explore TypeScript's `satisfies` keyword — how it validates your data without sacrificing type inference. Learn when and why to use it over traditional type annotations, with real-world examples."
 tags: [typescript]
 draft: false
 ---

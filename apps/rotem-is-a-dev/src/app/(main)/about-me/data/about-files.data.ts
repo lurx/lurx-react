@@ -11,13 +11,13 @@ export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, 
 export const SECTIONS: SectionConfig[] = [
 	{ id: 'personal-info', label: 'Personal info', icon: 'user' },
 	{ id: 'work-experience', label: 'Work experience', icon: 'briefcase' },
-	{ id: 'hobbies', label: 'Hobbies', icon: 'gamepad' },
+	{ id: 'gaming', label: 'Gaming', icon: 'alien-8bit' },
 ];
 
 export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'personal-info': ['bio', 'interests'],
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
-	hobbies: [],
+	'gaming': [],
 };
 
 export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {

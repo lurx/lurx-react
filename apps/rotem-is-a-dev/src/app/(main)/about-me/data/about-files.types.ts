@@ -1,4 +1,4 @@
-export type SectionId = 'personal-info' | 'work-experience' | 'hobbies';
+export type SectionId = 'personal-info' | 'work-experience' | 'gaming';
 
 export type AboutFileId =
 	| 'bio'
