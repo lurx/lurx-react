@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import type { PropsWithChildren } from 'react';
 
 const mockSignInWithGoogle = jest.fn();
 const mockSignInWithGitHub = jest.fn();
@@ -10,14 +11,20 @@ jest.mock('@/app/context/auth', () => ({
 	}),
 }));
 
-jest.mock('usehooks-ts', () => ({
-	useEventListener: (event: string, handler: (ev: Event) => void) => {
-		const { useEffect } = require('react');
-		useEffect(() => {
-			globalThis.document.addEventListener(event, handler);
-			return () => globalThis.document.removeEventListener(event, handler);
-		}, [event, handler]);
-	},
+type MockDialogProps = PropsWithChildren<{
+	isOpen: boolean;
+	onClose: () => void;
+	ariaLabel: string;
+	className?: string;
+}>;
+
+jest.mock('../../dialog', () => ({
+	Dialog: ({ isOpen, onClose, ariaLabel, children }: MockDialogProps) =>
+		isOpen ? (
+			<dialog data-testid="mock-dialog" data-aria-label={ariaLabel} data-on-close={String(!!onClose)}>
+				{children}
+			</dialog>
+		) : null,
 }));
 
 jest.mock('../../fa-icon', () => ({
@@ -32,32 +39,27 @@ const mockOnClose = jest.fn();
 
 beforeEach(() => {
 	jest.clearAllMocks();
-	document.body.style.overflow = '';
-
-	let portalRoot = document.getElementById('portal-root');
-	if (!portalRoot) {
-		portalRoot = document.createElement('div');
-		portalRoot.id = 'portal-root';
-		document.body.appendChild(portalRoot);
-	}
-});
-
-afterEach(() => {
-	const portalRoot = document.getElementById('portal-root');
-	if (portalRoot) {
-		portalRoot.innerHTML = '';
-	}
 });
 
 describe('SignInDialog', () => {
 	it('renders nothing when closed', () => {
 		render(<SignInDialog isOpen={false} onClose={mockOnClose} />);
-		expect(screen.queryByTestId('sign-in-dialog')).not.toBeInTheDocument();
+		expect(screen.queryByTestId('mock-dialog')).not.toBeInTheDocument();
 	});
 
 	it('renders dialog when open', () => {
 		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		expect(screen.getByTestId('sign-in-dialog')).toBeInTheDocument();
+		expect(screen.getByTestId('mock-dialog')).toBeInTheDocument();
+	});
+
+	it('passes correct ariaLabel to Dialog', () => {
+		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		expect(screen.getByTestId('mock-dialog')).toHaveAttribute('data-aria-label', 'Sign in');
+	});
+
+	it('passes onClose to Dialog', () => {
+		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		expect(screen.getByTestId('mock-dialog')).toHaveAttribute('data-on-close', 'true');
 	});
 
 	it('renders title text', () => {
@@ -73,13 +75,13 @@ describe('SignInDialog', () => {
 	it('renders Google sign-in button', () => {
 		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
 		expect(screen.getByTestId('sign-in-google')).toBeInTheDocument();
-		expect(screen.getByText('Google')).toBeInTheDocument();
+		expect(screen.getByText('Sign in with Google')).toBeInTheDocument();
 	});
 
 	it('renders GitHub sign-in button', () => {
 		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
 		expect(screen.getByTestId('sign-in-github')).toBeInTheDocument();
-		expect(screen.getByText('GitHub')).toBeInTheDocument();
+		expect(screen.getByText('Sign in with GitHub')).toBeInTheDocument();
 	});
 
 	it('renders Google icon with fab group', () => {
@@ -112,51 +114,5 @@ describe('SignInDialog', () => {
 		fireEvent.click(screen.getByTestId('sign-in-github'));
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 		expect(mockSignInWithGitHub).toHaveBeenCalledTimes(1);
-	});
-
-	it('calls onClose when overlay is clicked', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		fireEvent.click(screen.getByTestId('sign-in-dialog-overlay'));
-		expect(mockOnClose).toHaveBeenCalledTimes(1);
-	});
-
-	it('calls onClose when Escape key is pressed', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		fireEvent.keyDown(document, { key: 'Escape' });
-		expect(mockOnClose).toHaveBeenCalledTimes(1);
-	});
-
-	it('does not call onClose for non-Escape keys', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		fireEvent.keyDown(document, { key: 'Enter' });
-		expect(mockOnClose).not.toHaveBeenCalled();
-	});
-
-	it('locks body scroll when open', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		expect(document.body.style.overflow).toBe('hidden');
-	});
-
-	it('restores body scroll on unmount', () => {
-		const { unmount } = render(
-			<SignInDialog isOpen={true} onClose={mockOnClose} />,
-		);
-		expect(document.body.style.overflow).toBe('hidden');
-		unmount();
-		expect(document.body.style.overflow).toBe('');
-	});
-
-	it('uses native dialog element with aria-label', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		const dialog = screen.getByTestId('sign-in-dialog');
-		expect(dialog.tagName).toBe('DIALOG');
-		expect(dialog).toHaveAttribute('open');
-		expect(dialog).toHaveAttribute('aria-label', 'Sign in');
-	});
-
-	it('portals into portal-root', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
-		const portalRoot = document.getElementById('portal-root');
-		expect(portalRoot?.querySelector('[data-testid="sign-in-dialog"]')).toBeInTheDocument();
 	});
 });

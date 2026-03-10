@@ -1,5 +1,6 @@
 export * from './ascii-art-renderer';
 export * from './code-block';
+export * from './dialog';
 export * from './empty-state';
 export * from './error-page';
 export * from './fa-icon';

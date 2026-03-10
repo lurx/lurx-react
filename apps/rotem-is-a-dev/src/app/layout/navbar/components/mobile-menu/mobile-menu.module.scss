@@ -2,7 +2,6 @@
 
 .wrapper {
 	display: none;
-	margin-inline-start: auto;
 	@include media-below('tablet') {
 		display: flex;
 		align-items: stretch;
