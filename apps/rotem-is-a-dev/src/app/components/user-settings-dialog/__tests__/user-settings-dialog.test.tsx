@@ -20,9 +20,7 @@ jest.mock('@/app/context/auth', () => ({
 }));
 
 jest.mock('../components', () => ({
-	GeneralSection: ({ user }: { user: { displayName: string } }) => (
-		<div data-testid="general-section">{user.displayName}</div>
-	),
+	GeneralSection: () => <div data-testid="general-section" />,
 	AccessibilitySection: () => <div data-testid="accessibility-section" />,
 	DangerZoneSection: ({ onDeleteAccount }: { onDeleteAccount: () => void }) => (
 		<button data-testid="danger-zone-section" onClick={onDeleteAccount} />
@@ -71,11 +69,6 @@ describe('UserSettingsDialog', () => {
 		expect(screen.getByTestId('accessibility-section')).toBeInTheDocument();
 		expect(screen.getByTestId('danger-zone-section')).toBeInTheDocument();
 		expect(screen.getByTestId('logout-section')).toBeInTheDocument();
-	});
-
-	it('passes user to GeneralSection', () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
-		expect(screen.getByTestId('general-section')).toHaveTextContent('Test User');
 	});
 
 	it('calls signOut and onClose when logout section triggers', async () => {

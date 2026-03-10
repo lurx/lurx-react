@@ -1,5 +1,3 @@
-'use client';
-
 import { useActionState, useRef } from 'react';
 import { MAX_COMMENT_LENGTH } from '../../comments.constants';
 import { COMMENT_FORM_STRINGS } from './comment-form.constants';

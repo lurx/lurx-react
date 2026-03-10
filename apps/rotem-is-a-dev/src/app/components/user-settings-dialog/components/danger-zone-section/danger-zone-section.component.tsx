@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useState } from 'react';
 import { USER_SETTINGS_STRINGS } from '../../user-settings-dialog.constants';
 import styles from './danger-zone-section.module.scss';

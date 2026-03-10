@@ -1,5 +1,3 @@
-'use client';
-
 import { FaIcon } from '@/app/components/fa-icon';
 import { SignInDialog } from '@/app/components/sign-in-dialog';
 import { useCallback, useState } from 'react';

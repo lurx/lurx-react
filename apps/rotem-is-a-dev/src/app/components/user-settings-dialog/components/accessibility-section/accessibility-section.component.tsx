@@ -1,5 +1,3 @@
-'use client';
-
 import { FaIcon } from '@/app/components';
 import {
 	applySpacing,

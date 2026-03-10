@@ -1,5 +1,3 @@
-'use client';
-
 import { SignInDialog } from '@/app/components/sign-in-dialog';
 import { useCallback, useState } from 'react';
 import { SIGN_IN_PROMPT_STRINGS } from './sign-in-prompt.constants';

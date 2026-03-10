@@ -1,14 +1,18 @@
 import { FaIcon, UserAvatar } from '@/app/components';
+import { useAuth } from '@/app/context/auth';
 import { USER_SETTINGS_STRINGS } from '../../user-settings-dialog.constants';
 import styles from './general-section.module.scss';
-import type { GeneralSectionProps } from './general-section.types';
 
 const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
 	google: 'Google',
 	github: 'GitHub',
 };
 
-export const GeneralSection = ({ user }: GeneralSectionProps) => {
+export const GeneralSection = () => {
+	const { user } = useAuth();
+
+	if (!user) return null;
+
 	const providerDisplayName = PROVIDER_DISPLAY_NAMES[user.provider] ?? user.provider;
 
 	return (

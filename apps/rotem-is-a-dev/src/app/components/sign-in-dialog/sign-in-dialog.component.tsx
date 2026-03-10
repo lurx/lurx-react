@@ -1,5 +1,3 @@
-'use client';
-
 import { useAuth } from '@/app/context/auth';
 import { useCallback } from 'react';
 import { Dialog } from '../dialog';

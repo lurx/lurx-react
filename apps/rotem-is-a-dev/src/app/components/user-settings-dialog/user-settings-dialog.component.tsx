@@ -1,5 +1,3 @@
-'use client';
-
 import { useAuth } from '@/app/context/auth';
 import { useCallback } from 'react';
 import { Dialog } from '../dialog';
@@ -14,7 +12,7 @@ import styles from './user-settings-dialog.module.scss';
 import type { UserSettingsDialogProps } from './user-settings-dialog.types';
 
 export const UserSettingsDialog = ({ isOpen, onClose }: UserSettingsDialogProps) => {
-	const { user, signOut, deleteUser } = useAuth();
+	const { signOut, deleteUser } = useAuth();
 
 	const handleSignOut = useCallback(async () => {
 		await signOut();
@@ -26,8 +24,6 @@ export const UserSettingsDialog = ({ isOpen, onClose }: UserSettingsDialogProps)
 		onClose();
 	}, [deleteUser, onClose]);
 
-	if (!user) return null;
-
 	return (
 		<Dialog
 			isOpen={isOpen}
@@ -38,7 +34,7 @@ export const UserSettingsDialog = ({ isOpen, onClose }: UserSettingsDialogProps)
 			<span className={styles.title}>{USER_SETTINGS_STRINGS.TITLE}</span>
 			<div className={styles.section}>
 				<span className={styles.sectionTitle}>{USER_SETTINGS_STRINGS.GENERAL_TITLE}</span>
-				<GeneralSection user={user} />
+				<GeneralSection />
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.section}>
