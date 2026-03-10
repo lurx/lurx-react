@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useEventListener } from 'usehooks-ts';
@@ -25,9 +26,9 @@ export const ResizableDrawer = ({
 	const [width, setWidth] = useState<number>(
 		() =>
 			initialWidth ??
-			(typeof globalThis.window !== 'undefined'
-				? globalThis.window.innerWidth * DEFAULT_WIDTH_FRACTION
-				: /* istanbul ignore next */ INITIAL_WIDTH_FALLBACK),
+			(globalThis.window === undefined
+				? /* istanbul ignore next */ INITIAL_WIDTH_FALLBACK
+				: globalThis.window.innerWidth * DEFAULT_WIDTH_FRACTION),
 	);
 	const isDraggingRef = useRef(false);
 	const startXRef = useRef(0);
@@ -36,9 +37,9 @@ export const ResizableDrawer = ({
 	const resolveMaxWidth = useCallback(
 		() =>
 			maxWidth ??
-			(typeof window !== 'undefined'
-				? window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION
-				: /* istanbul ignore next */ 1200),
+			(globalThis.window === undefined
+				? /* istanbul ignore next */ 1200
+				: globalThis.window.innerWidth * DEFAULT_MAX_WIDTH_FRACTION),
 		[maxWidth],
 	);
 

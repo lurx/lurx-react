@@ -1,0 +1,7 @@
+@use 'mixins/spacing' as *;
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+}

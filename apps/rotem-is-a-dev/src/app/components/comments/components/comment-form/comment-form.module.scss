@@ -1,0 +1,62 @@
+@use 'mixins/spacing' as *;
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(1);
+}
+
+.textarea {
+	width: 100%;
+	padding: spacing(1);
+	background-color: var(--surface-alt);
+	border: 1px solid var(--border);
+	color: var(--text);
+	font: inherit;
+	font-size: 0.875rem;
+	resize: vertical;
+	min-height: 80px;
+	transition: border-color 0.2s;
+
+	&::placeholder {
+		color: var(--muted);
+	}
+
+	&:focus {
+		outline: none;
+		border-color: var(--teal);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
+.error {
+	color: var(--error, #f44336);
+	font-size: 0.8125rem;
+	margin: 0;
+}
+
+.submitButton {
+	align-self: flex-end;
+	padding: spacing(0.5) spacing(2);
+	background-color: var(--teal);
+	color: var(--bg);
+	border: none;
+	font: inherit;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: opacity 0.2s;
+
+	&:hover:not(:disabled) {
+		opacity: 0.85;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}

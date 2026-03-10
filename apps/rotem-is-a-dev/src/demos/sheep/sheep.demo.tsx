@@ -1,33 +1,15 @@
-import { Flex, Link } from '@/app/components';
 import classNames from 'classnames';
 import { Bangers } from 'next/font/google';
 import { DemoContainer } from '../demo-container/demo-container.component';
 import styles from './sheep.module.scss';
+import { DemoCredits } from '../demo-credits';
+import { inspiredBy } from './sheep.constants';
 
 const bangers = Bangers({
 	subsets: ['latin'],
 	weight: '400',
 	variable: '--font-bangers',
 });
-
-const inspiredBy = {
-	name: 'BAAAHHHHH',
-	url: 'https://dribbble.com/shots/6204781-BAAAHHHHH',
-	author: 'Gregory Hartman',
-	authorUrl: 'https://dribbble.com/gregoryhartman',
-};
-
-const DemoCredits = () => (
-	<Flex
-		gap="small"
-		justify="center"
-	>
-		Inspired by
-		<Link href={inspiredBy.url}>{inspiredBy.name}</Link>
-		by
-		<Link href={inspiredBy.authorUrl}>{inspiredBy.author}</Link>
-	</Flex>
-);
 
 export const SheepDemo = () => {
 	return (
@@ -54,7 +36,7 @@ export const SheepDemo = () => {
 					</div>
 				</div>
 			</div>
-			<DemoCredits />
+			<DemoCredits credits={inspiredBy} />
 		</DemoContainer>
 	);
 };

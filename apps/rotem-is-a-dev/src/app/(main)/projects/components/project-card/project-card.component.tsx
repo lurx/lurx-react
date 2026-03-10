@@ -1,4 +1,5 @@
 import { FaIcon } from '@/app/components';
+import { ProjectCardFooter } from './components';
 import styles from './project-card.module.scss';
 import type { ProjectCardProps } from './project-card.types';
 
@@ -9,11 +10,12 @@ const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
 	css: { iconName: 'css', iconGroup: 'fab' },
 };
 
-export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onViewProject, onCommentClick }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 	const DemoComponent = project.demo;
 	const handleViewProject = onViewProject ? () => onViewProject(project) : undefined;
+	const handleCommentClick = onCommentClick ? () => onCommentClick(project) : undefined;
 
 	const previewContent = DemoComponent
 		? <div className={styles.demoPreview} aria-hidden="true">
@@ -51,17 +53,16 @@ export const ProjectCard = ({ project, onViewProject }: ProjectCardProps) => {
 
 				<div className={styles.textContent}>
 					<p className={styles.description}>{project.description}</p>
-					{handleViewProject && (
-						<button
-							type="button"
-							className={styles.viewButton}
-							onClick={handleViewProject}
-							aria-label={`View project ${project.slug}`}
-						>
-							view-project
-						</button>
-					)}
 				</div>
+
+				{handleCommentClick && (
+					<ProjectCardFooter
+						entityType="project"
+						entityId={String(project.id)}
+						onCommentClick={handleCommentClick}
+						onViewClick={handleViewProject}
+					/>
+				)}
 			</div>
 		</article>
 	);

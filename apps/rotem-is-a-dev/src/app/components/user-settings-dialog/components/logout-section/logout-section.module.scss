@@ -1,0 +1,21 @@
+.signOutButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 8px 16px;
+	font: inherit;
+	font-size: 0.8125rem;
+	color: var(--muted);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background: none;
+	cursor: pointer;
+	transition: color 0.2s, border-color 0.2s;
+	width: 100%;
+
+	&:hover {
+		color: var(--text);
+		border-color: var(--text);
+	}
+}

@@ -1,0 +1,27 @@
+@use 'mixins/spacing' as *;
+
+.prompt {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	padding: spacing(1.5) 0;
+}
+
+.message {
+	font-size: 0.875rem;
+	color: var(--muted);
+}
+
+.signInButton {
+	font: inherit;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: var(--text);
+	background: none;
+	cursor: pointer;
+	transition: background-color 0.2s, color 0.2s;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

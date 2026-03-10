@@ -69,4 +69,5 @@ describe('WolverineDemo', () => {
 		expect(wolverineLink).toHaveAttribute('href', 'https://dribbble.com/shots/2047572-Wolverine');
 		expect(authorLink).toHaveAttribute('href', 'https://dribbble.com/gregoryhartman');
 	});
+
 });

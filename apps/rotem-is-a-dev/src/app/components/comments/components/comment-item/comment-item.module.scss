@@ -1,0 +1,53 @@
+@use 'mixins/spacing' as *;
+
+.comment {
+	padding: spacing(1.5) 0;
+	border-bottom: 1px solid var(--border);
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	margin-block-end: spacing(0.5);
+}
+
+.author {
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: var(--text);
+}
+
+.time {
+	font-size: 0.75rem;
+	color: var(--muted);
+	margin-inline-start: auto;
+}
+
+.deleteButton {
+	font: inherit;
+	font-size: 0.75rem;
+	color: var(--muted);
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: spacing(0.25) spacing(0.5);
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--danger, #e53e3e);
+	}
+}
+
+.text {
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--text);
+	line-height: 1.5;
+	white-space: pre-wrap;
+	word-break: break-word;
+}

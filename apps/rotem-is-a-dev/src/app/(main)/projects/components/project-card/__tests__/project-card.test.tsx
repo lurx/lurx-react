@@ -1,6 +1,41 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ProjectCard } from '../project-card.component';
 import type { Project } from '../../../data/projects.data';
+
+jest.mock('../components', () => ({
+	ProjectCardFooter: ({
+		entityType,
+		entityId,
+		onCommentClick,
+		onViewClick,
+	}: {
+		entityType: string;
+		entityId: string;
+		onCommentClick: () => void;
+		onViewClick?: () => void;
+	}) => (
+		<div
+			data-testid="project-card-footer"
+			data-entity-type={entityType}
+			data-entity-id={entityId}
+		>
+			<button type="button" onClick={onCommentClick} data-testid="footer-comment-button">
+				comment
+			</button>
+			{onViewClick && (
+				<button
+					type="button"
+					onClick={onViewClick}
+					aria-label="View project"
+					data-testid="footer-view-button"
+				>
+					view-project
+				</button>
+			)}
+		</div>
+	),
+}));
+
+import { ProjectCard } from '../project-card.component';
 
 const mockProject: Project = {
 	id: 1,
@@ -26,11 +61,6 @@ describe('ProjectCard', () => {
 		expect(
 			screen.getByText('A test project description.'),
 		).toBeInTheDocument();
-	});
-
-	it('does not render view-project button without onViewProject', () => {
-		render(<ProjectCard project={mockProject} />);
-		expect(screen.queryByText('view-project')).not.toBeInTheDocument();
 	});
 
 	it('renders with article role', () => {
@@ -86,25 +116,61 @@ describe('ProjectCard', () => {
 	});
 
 	describe('with onViewProject', () => {
-		it('renders a button instead of a link', () => {
+		it('renders the view button in the footer', () => {
 			const onViewProject = jest.fn();
-			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
-			expect(screen.getByRole('button', { name: /view project/i })).toBeInTheDocument();
-			expect(screen.queryByRole('link', { name: /view project/i })).not.toBeInTheDocument();
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} onCommentClick={onCommentClick} />);
+			expect(screen.getByTestId('footer-view-button')).toBeInTheDocument();
 		});
 
 		it('calls onViewProject with the project when the button is clicked', () => {
 			const onViewProject = jest.fn();
-			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
-			fireEvent.click(screen.getByRole('button', { name: /view project/i }));
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} onCommentClick={onCommentClick} />);
+			fireEvent.click(screen.getByTestId('footer-view-button'));
 			expect(onViewProject).toHaveBeenCalledWith(mockProject);
 		});
 
 		it('calls onViewProject exactly once per click', () => {
 			const onViewProject = jest.fn();
-			render(<ProjectCard project={mockProject} onViewProject={onViewProject} />);
-			fireEvent.click(screen.getByRole('button', { name: /view project/i }));
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onViewProject={onViewProject} onCommentClick={onCommentClick} />);
+			fireEvent.click(screen.getByTestId('footer-view-button'));
 			expect(onViewProject).toHaveBeenCalledTimes(1);
+		});
+
+		it('does not render footer view button without onViewProject', () => {
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onCommentClick={onCommentClick} />);
+			expect(screen.queryByTestId('footer-view-button')).not.toBeInTheDocument();
+		});
+	});
+
+	describe('with onCommentClick', () => {
+		it('renders the project card footer', () => {
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onCommentClick={onCommentClick} />);
+			expect(screen.getByTestId('project-card-footer')).toBeInTheDocument();
+		});
+
+		it('does not render footer without onCommentClick', () => {
+			render(<ProjectCard project={mockProject} />);
+			expect(screen.queryByTestId('project-card-footer')).not.toBeInTheDocument();
+		});
+
+		it('passes correct entityType and entityId to footer', () => {
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onCommentClick={onCommentClick} />);
+			const footer = screen.getByTestId('project-card-footer');
+			expect(footer).toHaveAttribute('data-entity-type', 'project');
+			expect(footer).toHaveAttribute('data-entity-id', '1');
+		});
+
+		it('calls onCommentClick with the project when footer comment is clicked', () => {
+			const onCommentClick = jest.fn();
+			render(<ProjectCard project={mockProject} onCommentClick={onCommentClick} />);
+			fireEvent.click(screen.getByTestId('footer-comment-button'));
+			expect(onCommentClick).toHaveBeenCalledWith(mockProject);
 		});
 	});
 });

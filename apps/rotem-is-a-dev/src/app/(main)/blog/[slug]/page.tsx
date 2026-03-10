@@ -1,10 +1,10 @@
+import { Comments } from '@/app/components/comments';
 import { posts } from '#velite';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { BlogTagsList } from '../components';
 import type { BlogPostPageProps } from './blog-post-page.types';
 import styles from './blog-post.module.scss';
-import { BackToBlogLink, BlogPostHeader } from './components';
+import { BackToBlogLink, BlogPostActions, BlogPostHeader } from './components';
 
 function getPostBySlug(slug: string) {
 	return posts.find(post => post.slug === slug && !post.draft);
@@ -30,14 +30,6 @@ export async function generateMetadata({
 	};
 }
 
-function formatDate(dateString: string): string {
-	return new Date(dateString).toLocaleDateString('en-US', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	});
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 	const post = getPostBySlug(slug);
@@ -47,11 +39,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	return (
 		<article className={styles.page}>
       <BackToBlogLink />
-      <BlogPostHeader post={post} />
+      <BlogPostHeader post={post} actions={<BlogPostActions entityType="blog" entityId={slug} />} />
 			<div
 				className={styles.content}
 				dangerouslySetInnerHTML={{ __html: post.content }}
 			/>
+			<Comments entityType="blog" entityId={slug} />
 		</article>
 	);
 }

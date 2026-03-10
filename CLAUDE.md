@@ -319,3 +319,11 @@ useEffect(() => {
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+## SonarQube
+
+- After finishing generating or modifying code files, call the `analyze_file_list` tool (if available) to analyze the created/modified files
+- When starting a new task, disable automatic analysis with the `toggle_automatic_analysis` tool (if available)
+- When done generating code, re-enable automatic analysis with `toggle_automatic_analysis` (if available)
+- Don't guess project keys — use `search_my_sonarqube_projects` to look them up
+- After fixing issues, don't verify via `search_sonar_issues_in_projects` as the server won't yet reflect updates

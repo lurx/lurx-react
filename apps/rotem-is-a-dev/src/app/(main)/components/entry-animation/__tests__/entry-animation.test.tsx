@@ -49,11 +49,18 @@ beforeEach(() => {
 	mockIsShellLoaded = false;
 	mockAnimationKey = 0;
 	sessionStorage.clear();
-	Object.defineProperty(window, 'matchMedia', {
+	Object.defineProperty(globalThis, 'matchMedia', {
 		writable: true,
 		value: jest.fn().mockReturnValue({ matches: false }),
 	});
 });
+
+const createPageElement = () => {
+	const el = document.createElement('div');
+	el.dataset.page = '';
+	document.body.appendChild(el);
+	return el;
+};
 
 describe('EntryAnimation', () => {
 	it('renders null (no DOM output)', () => {
@@ -62,7 +69,7 @@ describe('EntryAnimation', () => {
 	});
 
 	it('skips animation and calls setIsShellLoaded(true) when reduced motion is preferred', () => {
-		Object.defineProperty(window, 'matchMedia', {
+		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
 			value: jest.fn().mockReturnValue({ matches: true }),
 		});
@@ -84,20 +91,16 @@ describe('EntryAnimation', () => {
 	});
 
 	it('builds a GSAP timeline when data-page element exists and animation should run', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		render(<EntryAnimation />);
 		expect(mockGsap.timeline).toHaveBeenCalled();
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('adds typewrite tweens for navbar and footer text elements', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const navEl = document.createElement('span');
 		navEl.textContent = 'nav';
@@ -115,13 +118,11 @@ describe('EntryAnimation', () => {
 		expect(typewrite).toHaveBeenCalledWith(navEl, { setDataFullText: true });
 		expect(typewrite).toHaveBeenCalledWith(footerEl, { setDataFullText: true });
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('restores saved text content on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const navEl = document.createElement('span');
 		navEl.textContent = 'logo';
@@ -144,26 +145,22 @@ describe('EntryAnimation', () => {
 		expect(navEl.style.minWidth).toBe('');
 		expect(navEl.style.minHeight).toBe('');
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('kills the timeline on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const tl = mockGsap.timeline();
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
 		expect(tl.kill).toHaveBeenCalled();
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('cleans up GSAP border props on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
@@ -172,13 +169,11 @@ describe('EntryAnimation', () => {
 			{ clearProps: 'all' },
 		);
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
 	});
 
 	it('cleans up GSAP icon props on unmount', () => {
-		const pageEl = document.createElement('div');
-		pageEl.setAttribute('data-page', '');
-		document.body.appendChild(pageEl);
+		const pageEl = createPageElement();
 
 		const { unmount } = render(<EntryAnimation />);
 		unmount();
@@ -187,6 +182,84 @@ describe('EntryAnimation', () => {
 			{ clearProps: 'all' },
 		);
 
-		document.body.removeChild(pageEl);
+		pageEl.remove();
+	});
+
+	it('uses staggered positions for subsequent navbar elements', () => {
+		const pageEl = createPageElement();
+
+		const nav1 = document.createElement('span');
+		nav1.textContent = 'logo';
+		const nav2 = document.createElement('span');
+		nav2.textContent = 'about';
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([nav1, nav2])
+			.mockReturnValueOnce([]);
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const addCalls = (tl.add as jest.Mock).mock.calls;
+		expect(addCalls[0][1]).toBe(0);
+		expect(addCalls[1][1]).toBe('<+=0.15');
+
+		pageEl.remove();
+	});
+
+	it('uses staggered positions for subsequent footer elements', () => {
+		const pageEl = createPageElement();
+
+		const footer1 = document.createElement('span');
+		footer1.textContent = 'built by';
+		const footer2 = document.createElement('span');
+		footer2.textContent = 'lurx';
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([])
+			.mockReturnValueOnce([footer1, footer2]);
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const addCalls = (tl.add as jest.Mock).mock.calls;
+		expect(addCalls[0][1]).toBe('>');
+		expect(addCalls[1][1]).toBe('<+=0.15');
+
+		pageEl.remove();
+	});
+
+	it('invokes setIsShellLoaded(true) via the tl.call callback', () => {
+		const pageEl = createPageElement();
+
+		render(<EntryAnimation />);
+
+		const tl = mockGsap.timeline();
+		const callbackFn = (tl.call as jest.Mock).mock.calls[0][0];
+		callbackFn();
+		expect(mockSetIsShellLoaded).toHaveBeenCalledWith(true);
+
+		pageEl.remove();
+	});
+
+	it('falls back to empty string when element textContent is null', () => {
+		const pageEl = createPageElement();
+
+		const el = document.createElement('span');
+		Object.defineProperty(el, 'textContent', { value: null, writable: true, configurable: true });
+
+		const toArrayMock = mockGsap.utils.toArray as jest.Mock;
+		toArrayMock
+			.mockReturnValueOnce([el])
+			.mockReturnValueOnce([]);
+
+		const { unmount } = render(<EntryAnimation />);
+		unmount();
+
+		expect(el.textContent).toBe('');
+
+		pageEl.remove();
 	});
 });

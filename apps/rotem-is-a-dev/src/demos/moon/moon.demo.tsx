@@ -1,33 +1,15 @@
-import { Flex, Link } from '@/app/components';
 import classNames from 'classnames';
 import { DemoContainer } from '../demo-container/demo-container.component';
+import { DemoCredits } from '../demo-credits';
 import {
-	CLOUD_GROUPS,
-	COMET_KEYS,
-	CRATER_KEYS,
-	MOON_SIZE,
-	STARS,
+  CLOUD_GROUPS,
+  COMET_KEYS,
+  CRATER_KEYS,
+  inspiredBy,
+  MOON_SIZE,
+  STARS,
 } from './moon.constants';
 import styles from './moon.module.scss';
-
-const inspiredBy = {
-	name: 'Moon',
-	url: 'https://dribbble.com/shots/5834247-Moon',
-	author: 'Julien',
-	authorUrl: 'https://dribbble.com/julienc',
-};
-
-const DemoCredits = () => (
-	<Flex
-		gap="small"
-		justify="center"
-	>
-		Inspired by
-		<Link href={inspiredBy.url}>{inspiredBy.name}</Link>
-		by
-		<Link href={inspiredBy.authorUrl}>{inspiredBy.author}</Link>
-	</Flex>
-);
 
 export const MoonDemo = () => (
 	<DemoContainer
@@ -80,7 +62,7 @@ export const MoonDemo = () => (
 					</div>
 				</div>
 			</div>
-			<DemoCredits />
+			<DemoCredits credits={inspiredBy} />
 		</div>
 	</DemoContainer>
 );

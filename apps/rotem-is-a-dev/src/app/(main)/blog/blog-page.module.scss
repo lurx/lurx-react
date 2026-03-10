@@ -35,18 +35,22 @@
 }
 
 .card {
-	display: block;
-	padding: spacing(3);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-md);
 	background-color: var(--surface-alt);
 	transition: border-color 0.2s;
-	text-decoration: none;
-	color: inherit;
 
 	&:hover {
 		border-color: var(--muted-dim);
 	}
+}
+
+.cardLink {
+	display: block;
+	padding: spacing(3);
+  padding-block-end: spacing(1.5);
+	text-decoration: none;
+	color: inherit;
 }
 
 .cardTitle {

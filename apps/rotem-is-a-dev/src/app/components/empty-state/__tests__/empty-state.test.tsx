@@ -6,6 +6,7 @@ import {
 	EMPTY_STATE_ASCII_LABELS_MAP,
 	EMPTY_STATE_MOBILE_ASCII_ART_MAP,
 } from '../empty-state.constants';
+import type { EmptyStateVariant } from '../empty-state.types';
 import { useResponsive } from '@/hooks';
 
 jest.mock('@/hooks', () => ({
@@ -183,5 +184,16 @@ describe('EmptyState', () => {
 		expect(renderer.textContent).toBe(
 			EMPTY_STATE_ASCII_ART_MAP[EMPTY_STATE_VARIANTS.NO_DATA],
 		);
+	});
+
+	it('falls back to lowercased variant name when label is not in the map', () => {
+		render(
+			<EmptyState variant={'CUSTOM_VARIANT' as EmptyStateVariant}>
+				Custom message
+			</EmptyState>,
+		);
+
+		const renderer = screen.getByTestId('ascii-art-renderer');
+		expect(renderer).toHaveAttribute('aria-label', 'custom_variant');
 	});
 });

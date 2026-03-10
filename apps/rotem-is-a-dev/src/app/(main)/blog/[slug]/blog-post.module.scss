@@ -60,11 +60,19 @@
 	border-block-end: 1px solid var(--border);
 }
 
+.titleRow {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: spacing(2);
+	margin-block-end: spacing(1.5);
+}
+
 .title {
 	font-size: 1.75rem;
 	font-weight: 700;
 	color: var(--text);
-	margin: 0 0 spacing(1.5);
+	margin: 0;
 	line-height: 1.3;
 
 	@include media-below('tablet') {

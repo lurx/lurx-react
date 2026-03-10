@@ -1,0 +1,61 @@
+@use 'mixins/media' as *;
+
+.auth {
+	display: flex;
+	align-items: center;
+	padding: 0 24px;
+	border-inline-start: 1px solid var(--border);
+	color: var(--muted);
+	transition: color 0.2s;
+	position: relative;
+
+	&:hover {
+		color: var(--text);
+	}
+
+	@include media-below('tablet') {
+		margin-inline-start: auto;
+		padding: 0 16px;
+		border-inline-start: none;
+	}
+}
+
+.avatarButton {
+	display: flex;
+	align-items: center;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+}
+
+.dropdown {
+	position: absolute;
+	inset-block-start: calc(100% + 1px);
+	inset-inline-end: 0;
+	z-index: var(--z-overlay);
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	min-width: 200px;
+	display: flex;
+	flex-direction: column;
+}
+
+.menuItem {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 10px 16px;
+	color: var(--muted);
+	background: none;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	transition: color 0.2s;
+	width: 100%;
+
+	&:hover {
+		color: var(--text);
+		background-color: var(--surface-alt);
+	}
+}

@@ -3,5 +3,9 @@
 	"nxConsole.generateAiAgentRules": true,
 	"typescript.preferences.preferTypeOnlyAutoImports": true,
 	"typescript.suggest.autoImports": true,
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"sonarlint.connectedMode.project": {
+		"connectionId": "lurx",
+		"projectKey": "lurx_lurx-react"
+	}
 }

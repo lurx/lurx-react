@@ -1,0 +1,9 @@
+@use 'mixins/spacing' as *;
+
+.footer {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	padding: spacing(0.5) spacing(3);
+	padding-block-end: spacing(1.5);
+}

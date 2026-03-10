@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import { AccessibilityWidget } from '../accessibility-widget/accessibility-widget.component';
-import { SocialLinkList } from './components';
+import { SocialLink, SocialLinkList } from './components';
 import { leftSideSocialLinks } from './social-bar.constants';
 import styles from './social-bar.module.scss';
+
 
 export const SocialBar = () => {
 	return (
@@ -13,6 +15,9 @@ export const SocialBar = () => {
 				<span className={styles.label} data-animate-text="footer-label">find me in:</span>
 				<SocialLinkList links={leftSideSocialLinks} />
 			</div>
+			<Link href="/privacy-policy" className={styles.privacyLink}>
+				privacy
+			</Link>
 			<div className={styles.right}>
 				<AccessibilityWidget />
 			</div>
