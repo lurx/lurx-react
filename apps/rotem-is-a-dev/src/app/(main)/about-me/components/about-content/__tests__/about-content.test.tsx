@@ -16,6 +16,10 @@ jest.mock('../../gist-panel', () => ({
 	GistPanel: () => <div data-testid="gist-panel">Gist Panel</div>,
 }));
 
+jest.mock('../../gaming-panel', () => ({
+	GamingPanel: () => <div data-testid="gaming-panel">Gaming Panel</div>,
+}));
+
 let portalRoot: HTMLDivElement;
 
 beforeEach(() => {
@@ -30,7 +34,8 @@ afterEach(() => {
 
 const defaultProps = {
 	openTabs: ['bio'] as AboutFileId[],
-	activeFileId: 'bio' as AboutFileId,
+	activeFileId: 'bio' as Nullable<AboutFileId>,
+	activeSection: 'personal-info' as Nullable<'personal-info' | 'work-experience' | 'gaming'>,
 	onTabSelect: jest.fn(),
 	onTabClose: jest.fn(),
 	onCloseOthers: jest.fn(),
@@ -74,9 +79,34 @@ describe('AboutContent', () => {
 				{...defaultProps}
 				openTabs={[]}
 				activeFileId={null}
+				activeSection={null}
 			/>,
 		);
 		expect(screen.queryAllByRole('tab')).toHaveLength(0);
+	});
+
+	it('renders GamingPanel when activeSection is gaming', () => {
+		render(
+			<AboutContent
+				{...defaultProps}
+				activeFileId={'snake-game' as AboutFileId}
+				activeSection="gaming"
+			>
+				<p>Editor content</p>
+			</AboutContent>,
+		);
+		expect(screen.getByTestId('gaming-panel')).toBeInTheDocument();
+		expect(screen.queryByTestId('gist-panel')).not.toBeInTheDocument();
+	});
+
+	it('renders GistPanel for non-gaming sections', () => {
+		render(
+			<AboutContent {...defaultProps}>
+				<p>Editor content</p>
+			</AboutContent>,
+		);
+		expect(screen.getByTestId('gist-panel')).toBeInTheDocument();
+		expect(screen.queryByTestId('gaming-panel')).not.toBeInTheDocument();
 	});
 
 	it('renders children alongside the tab bar', () => {

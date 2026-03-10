@@ -6,7 +6,8 @@ export type AboutFileId =
 	| 'payoneer'
 	| 'startup-booster'
 	| 'investing-com'
-	| 'isocia';
+	| 'isocia'
+	| 'snake-game';
 
 export type JsdocFileContent = {
 	title: string;

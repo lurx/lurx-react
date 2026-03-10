@@ -18,6 +18,10 @@ jest.mock('@/app/components/empty-state/empty-state.component', () => ({
 	),
 }));
 
+jest.mock('@/app/(main)/components/snake-game', () => ({
+	SnakeGame: () => <div data-testid="snake-game">Snake Game</div>,
+}));
+
 let portalRoot: HTMLDivElement;
 
 beforeEach(() => {
@@ -50,11 +54,11 @@ describe('AboutPage', () => {
 		).toBeInTheDocument();
 	});
 
-	it('does not render sidebar buttons for empty sections', () => {
+	it('renders the gaming sidebar button', () => {
 		render(<AboutPage />);
 		expect(
-			screen.queryByRole('button', { name: 'Hobbies' }),
-		).not.toBeInTheDocument();
+			screen.getByRole('button', { name: 'Gaming' }),
+		).toBeInTheDocument();
 	});
 
 	it('renders the file tree navigation', () => {

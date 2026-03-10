@@ -17,7 +17,7 @@ export const SECTIONS: SectionConfig[] = [
 export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'personal-info': ['bio', 'interests'],
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
-	'gaming': [],
+	'gaming': ['snake-game'],
 };
 
 export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
@@ -56,6 +56,14 @@ export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
 		title: 'isocia',
 		format: 'json',
 		json: cv.work_experience[3] as unknown as Record<string, unknown>,
+	},
+	'snake-game': {
+		title: 'snake-game',
+		format: 'jsdoc',
+		paragraphs: [
+			'Use the arrow keys to guide the snake and eat all the food dots on the board. Each dot you eat makes the snake grow longer.',
+			'Avoid running into the walls or your own tail — one wrong move and it\'s game over. Clear all the food to win!',
+		],
 	},
 };
 

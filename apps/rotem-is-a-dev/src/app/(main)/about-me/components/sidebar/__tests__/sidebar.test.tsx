@@ -37,9 +37,9 @@ describe('SideBar', () => {
 		expect(screen.getByRole('button', { name: 'Work experience' })).toBeInTheDocument();
 	});
 
-	it('does not render sidebar buttons for empty sections', () => {
+	it('renders the gaming sidebar button', () => {
 		render(<SideBar {...defaultProps} />);
-		expect(screen.queryByRole('button', { name: 'Hobbies' })).not.toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Gaming' })).toBeInTheDocument();
 	});
 
 	it('marks the active section button as pressed', () => {
