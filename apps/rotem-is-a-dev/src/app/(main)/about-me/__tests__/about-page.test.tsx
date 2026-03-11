@@ -1,6 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AboutPage } from '../about-page.component';
 
+const mockSearchParams = new URLSearchParams();
+
+jest.mock('next/navigation', () => ({
+	useSearchParams: () => mockSearchParams,
+}));
+
 jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
 		code.split('\n').map((line: string) => ({
