@@ -17,9 +17,9 @@ export const NextPiecePreview = ({ type }: NextPiecePreviewProps) => {
 				height: PREVIEW_SIZE * PREVIEW_CELL_SIZE,
 			}}
 		>
-			{cells.map((cell, index) => (
+			{cells.map((cell) => (
 				<div
-					key={`preview-${index}`}
+					key={`preview-${cell.x}-${cell.y}`}
 					data-testid="preview-cell"
 					style={{
 						position: 'absolute',

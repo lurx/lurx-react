@@ -67,7 +67,7 @@ export const clearFullLines = (
 	grid: PlayfieldGrid,
 	cols: number,
 ): { grid: PlayfieldGrid; linesCleared: number } => {
-	const remaining = grid.filter((row) => row.some((cell) => cell === null));
+	const remaining = grid.filter((row) => row.includes(null));
 	const linesCleared = grid.length - remaining.length;
 
 	if (linesCleared === 0) return { grid, linesCleared: 0 };

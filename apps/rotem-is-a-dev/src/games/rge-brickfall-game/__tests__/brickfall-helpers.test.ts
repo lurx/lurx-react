@@ -11,7 +11,6 @@ import {
 	randomTetrominoType,
 } from '../rge-brickfall-game.helpers';
 import { ALL_TETROMINO_TYPES } from '../rge-brickfall-game.constants';
-import type { PlayfieldGrid } from '../rge-brickfall-game.types';
 
 describe('getAbsoluteCells', () => {
 	it('returns absolute positions for a T piece at origin', () => {
