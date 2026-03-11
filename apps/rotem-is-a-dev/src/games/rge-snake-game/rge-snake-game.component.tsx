@@ -172,6 +172,7 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 				onDirectionPress={handleDirectionPress}
 				activeDirection={activeDirection}
 				keyScheme={keyScheme}
+				isPlaying={isRunning}
 				onToggleKeyScheme={handleToggleKeyScheme}
 			/>
 		</div>

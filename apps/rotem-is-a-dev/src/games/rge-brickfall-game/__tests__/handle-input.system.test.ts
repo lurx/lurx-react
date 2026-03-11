@@ -1,8 +1,8 @@
 import { handleInput } from '../systems/handle-input.system';
 import { createEmptyGrid } from '../rge-brickfall-game.helpers';
-import type { Entities, KeyScheme, SystemArgs } from '../rge-brickfall-game.types';
+import type { BrickfallAction, Entities, SystemArgs } from '../rge-brickfall-game.types';
 
-const createMockEntities = (keyScheme: KeyScheme = 'arrows'): Entities =>
+const createMockEntities = (pendingActions: BrickfallAction[] = []): Entities =>
 	({
 		board: {
 			width: 10,
@@ -10,11 +10,13 @@ const createMockEntities = (keyScheme: KeyScheme = 'arrows'): Entities =>
 			cellSize: 20,
 			tickMs: 800,
 			lastGravityTime: 0,
-			keyScheme,
+			keyScheme: 'arrows',
 			softDropping: false,
+			pendingActions,
 			level: 1,
 			score: 0,
 			linesCleared: 0,
+			clearingStartTime: 0,
 		},
 		activePiece: {
 			piece: { type: 'T', position: { x: 3, y: 0 }, rotation: 0 },
@@ -25,112 +27,86 @@ const createMockEntities = (keyScheme: KeyScheme = 'arrows'): Entities =>
 		ghost: { position: { x: 3, y: 18 }, type: 'T', rotation: 0, cellSize: 20 },
 	}) as unknown as Entities;
 
-const createMockArgs = (key?: string): SystemArgs =>
+const createMockArgs = (): SystemArgs =>
 	({
-		input: key ? [{ name: 'onKeyDown', payload: { key } }] : [],
+		input: [],
 		events: [],
 		dispatch: jest.fn(),
 		time: { current: 0, previous: null, delta: 0, previousDelta: null },
 	}) as SystemArgs;
 
 describe('handleInput', () => {
-	it('moves piece left on ArrowLeft', () => {
-		const entities = createMockEntities();
-		const result = handleInput(entities, createMockArgs('ArrowLeft'));
+	it('moves piece left on LEFT action', () => {
+		const entities = createMockEntities(['LEFT']);
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.position.x).toBe(2);
 	});
 
-	it('moves piece right on ArrowRight', () => {
-		const entities = createMockEntities();
-		const result = handleInput(entities, createMockArgs('ArrowRight'));
+	it('moves piece right on RIGHT action', () => {
+		const entities = createMockEntities(['RIGHT']);
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.position.x).toBe(4);
 	});
 
 	it('does not move left into wall', () => {
-		const entities = createMockEntities();
+		const entities = createMockEntities(['LEFT']);
 		entities.activePiece.piece.position.x = 0;
-		const result = handleInput(entities, createMockArgs('ArrowLeft'));
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.position.x).toBe(0);
 	});
 
-	it('rotates piece on ArrowUp', () => {
-		const entities = createMockEntities();
-		const result = handleInput(entities, createMockArgs('ArrowUp'));
+	it('rotates piece on ROTATE action', () => {
+		const entities = createMockEntities(['ROTATE']);
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.rotation).toBe(1);
 	});
 
 	it('applies wall kick when rotation collides', () => {
-		const entities = createMockEntities();
+		const entities = createMockEntities(['ROTATE']);
 		entities.activePiece.piece.type = 'I';
 		entities.activePiece.piece.position = { x: -1, y: 5 };
 		entities.activePiece.piece.rotation = 0;
-		const result = handleInput(entities, createMockArgs('ArrowUp'));
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.rotation).toBe(1);
 	});
 
-	it('sets softDropping on ArrowDown', () => {
-		const entities = createMockEntities();
-		const result = handleInput(entities, createMockArgs('ArrowDown'));
-		expect(result.board.softDropping).toBe(true);
-	});
-
-	it('dispatches lock-piece on hard drop (Space)', () => {
-		const entities = createMockEntities();
-		const args = createMockArgs(' ');
+	it('dispatches lock-piece on HARD_DROP action', () => {
+		const entities = createMockEntities(['HARD_DROP']);
+		const args = createMockArgs();
 		handleInput(entities, args);
 		expect(args.dispatch).toHaveBeenCalledWith({ type: 'lock-piece' });
 	});
 
 	it('moves piece to ghost position on hard drop', () => {
-		const entities = createMockEntities();
+		const entities = createMockEntities(['HARD_DROP']);
 		entities.activePiece.piece.position = { x: 3, y: 0 };
-		handleInput(entities, createMockArgs(' '));
+		handleInput(entities, createMockArgs());
 		expect(entities.activePiece.piece.position.y).toBe(18);
 	});
 
 	it('updates ghost position after move', () => {
-		const entities = createMockEntities();
+		const entities = createMockEntities(['LEFT']);
 		entities.activePiece.piece.position = { x: 3, y: 0 };
-		handleInput(entities, createMockArgs('ArrowLeft'));
+		handleInput(entities, createMockArgs());
 		expect(entities.ghost.position.x).toBe(2);
 	});
 
-	it('ignores empty input', () => {
+	it('ignores empty pendingActions', () => {
 		const entities = createMockEntities();
 		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.position.x).toBe(3);
 	});
 
-	it('ignores unknown keys', () => {
-		const entities = createMockEntities();
-		const result = handleInput(entities, createMockArgs('z'));
-		expect(result.activePiece.piece.position.x).toBe(3);
-	});
-
-	it('responds to WASD keys when keyScheme is wasd', () => {
-		const entities = createMockEntities('wasd');
-		const result = handleInput(entities, createMockArgs('a'));
-		expect(result.activePiece.piece.position.x).toBe(2);
-	});
-
-	it('ignores arrow keys when keyScheme is wasd', () => {
-		const entities = createMockEntities('wasd');
-		const result = handleInput(entities, createMockArgs('ArrowLeft'));
-		expect(result.activePiece.piece.position.x).toBe(3);
-	});
-
-	it('handles input event with undefined key', () => {
-		const entities = createMockEntities();
-		const args = createMockArgs();
-		args.input = [{ name: 'onKeyDown', payload: {} }];
-		const result = handleInput(entities, args);
-		expect(result.activePiece.piece.position.x).toBe(3);
+	it('clears pendingActions after processing', () => {
+		const entities = createMockEntities(['LEFT', 'ROTATE']);
+		handleInput(entities, createMockArgs());
+		expect(entities.board.pendingActions).toEqual([]);
 	});
 
 	it('skips input when lines are being cleared', () => {
-		const entities = createMockEntities();
+		const entities = createMockEntities(['LEFT']);
 		entities.playfield.clearingRows = [19];
-		const result = handleInput(entities, createMockArgs('ArrowLeft'));
+		const result = handleInput(entities, createMockArgs());
 		expect(result.activePiece.piece.position.x).toBe(3);
 	});
 });

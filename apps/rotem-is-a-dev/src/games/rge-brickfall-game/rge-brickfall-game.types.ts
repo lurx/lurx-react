@@ -44,6 +44,7 @@ export type BoardEntity = {
 	lastGravityTime: number;
 	keyScheme: KeyScheme;
 	softDropping: boolean;
+	pendingActions: BrickfallAction[];
 	level: number;
 	score: number;
 	linesCleared: number;

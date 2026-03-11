@@ -54,6 +54,7 @@ const createEntities = (
 			lastGravityTime: 0,
 			keyScheme,
 			softDropping: false,
+			pendingActions: [],
 			level: 1,
 			score: 0,
 			linesCleared: 0,
@@ -153,6 +154,7 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 			const action = ACTION_MAPS[keyScheme][event.key];
 			if (action) {
 				setActiveAction(action);
+				entities.board.pendingActions.push(action);
 
 				if (action === 'SOFT_DROP') {
 					entities.board.softDropping = true;
@@ -224,6 +226,7 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 				nextPieceType={entities.nextPiece.type}
 				activeAction={activeAction}
 				keyScheme={keyScheme}
+				isPlaying={isRunning}
 				onToggleKeyScheme={handleToggleKeyScheme}
 			/>
 		</div>

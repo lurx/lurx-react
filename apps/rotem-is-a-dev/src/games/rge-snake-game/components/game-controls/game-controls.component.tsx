@@ -14,6 +14,7 @@ export const GameControls = ({
 	onDirectionPress,
 	activeDirection,
 	keyScheme,
+	isPlaying,
 	onToggleKeyScheme,
 }: GameControlsProps) => {
 	const labels = KEY_LABELS[keyScheme];
@@ -37,14 +38,16 @@ export const GameControls = ({
 					</button>
 				))}
 			</div>
-			<button
-				className={styles.schemeToggle}
-				onClick={onToggleKeyScheme}
-				type="button"
-				data-testid="key-scheme-toggle"
-			>
-				{keyScheme === 'arrows' ? 'use WASD' : 'use arrows'}
-			</button>
+			{!isPlaying && (
+				<button
+					className={styles.schemeToggle}
+					onClick={onToggleKeyScheme}
+					type="button"
+					data-testid="key-scheme-toggle"
+				>
+					{keyScheme === 'arrows' ? 'use WASD' : 'use arrows'}
+				</button>
+			)}
 		</div>
 	);
 };

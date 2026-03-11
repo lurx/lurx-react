@@ -16,6 +16,7 @@ describe('GameControls', () => {
 		onDirectionPress: jest.fn(),
 		activeDirection: null as 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null,
 		keyScheme: 'arrows' as const,
+		isPlaying: false,
 		onToggleKeyScheme: jest.fn(),
 	};
 
@@ -90,5 +91,15 @@ describe('GameControls', () => {
 		render(<GameControls {...defaultProps} onToggleKeyScheme={onToggleKeyScheme} />);
 		fireEvent.click(screen.getByTestId('key-scheme-toggle'));
 		expect(onToggleKeyScheme).toHaveBeenCalledTimes(1);
+	});
+
+	it('hides the key scheme toggle while playing', () => {
+		render(<GameControls {...defaultProps} isPlaying={true} />);
+		expect(screen.queryByTestId('key-scheme-toggle')).not.toBeInTheDocument();
+	});
+
+	it('shows the key scheme toggle when not playing', () => {
+		render(<GameControls {...defaultProps} isPlaying={false} />);
+		expect(screen.getByTestId('key-scheme-toggle')).toBeInTheDocument();
 	});
 });

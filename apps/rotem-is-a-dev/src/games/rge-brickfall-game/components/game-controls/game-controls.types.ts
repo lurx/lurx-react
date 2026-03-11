@@ -7,5 +7,6 @@ export type GameControlsProps = {
 	nextPieceType: TetrominoType;
 	activeAction: BrickfallAction | null;
 	keyScheme: KeyScheme;
+	isPlaying: boolean;
 	onToggleKeyScheme: () => void;
 };

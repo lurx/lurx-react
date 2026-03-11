@@ -12,9 +12,11 @@ const createMockEntities = (): Entities =>
 			lastGravityTime: 0,
 			keyScheme: 'arrows',
 			softDropping: false,
+			pendingActions: [],
 			level: 1,
 			score: 0,
 			linesCleared: 0,
+			clearingStartTime: 0,
 		},
 		activePiece: {
 			piece: { type: 'T', position: { x: 3, y: 0 }, rotation: 0 },

@@ -19,6 +19,7 @@ const defaultProps = {
 	nextPieceType: 'T' as const,
 	activeAction: null,
 	keyScheme: 'arrows' as const,
+	isPlaying: false,
 	onToggleKeyScheme: jest.fn(),
 };
 
@@ -78,5 +79,15 @@ describe('GameControls', () => {
 	it('shows "use arrows" when scheme is wasd', () => {
 		render(<GameControls {...defaultProps} keyScheme="wasd" />);
 		expect(screen.getByTestId('key-scheme-toggle')).toHaveTextContent('use arrows');
+	});
+
+	it('hides the key scheme toggle while playing', () => {
+		render(<GameControls {...defaultProps} isPlaying={true} />);
+		expect(screen.queryByTestId('key-scheme-toggle')).not.toBeInTheDocument();
+	});
+
+	it('shows the key scheme toggle when not playing', () => {
+		render(<GameControls {...defaultProps} isPlaying={false} />);
+		expect(screen.getByTestId('key-scheme-toggle')).toBeInTheDocument();
 	});
 });

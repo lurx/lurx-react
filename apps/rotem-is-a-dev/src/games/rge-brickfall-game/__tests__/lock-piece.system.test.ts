@@ -13,6 +13,7 @@ const createMockEntities = (): Entities =>
 			lastGravityTime: 0,
 			keyScheme: 'arrows',
 			softDropping: false,
+			pendingActions: [],
 			level: 1,
 			score: 0,
 			linesCleared: 0,
