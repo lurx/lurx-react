@@ -103,6 +103,7 @@ type BoardEntity = {
  tickMs: number;
  lastTickTime: number;
  keyScheme: KeyScheme;
+ winLength: number;
 };
 
 type Entities = {
@@ -245,7 +246,7 @@ export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): En
   return entities;
  }
 
- if (snake.body.length >= WIN_LENGTH) {
+ if (snake.body.length >= board.winLength) {
   dispatch({ type: 'game-won' });
  }
 
@@ -431,7 +432,7 @@ The game flow is dead simple:
 
 ## 📐 Config-Driven Sizing
 
-The snake game accepts an optional `config` prop with four fields:
+The snake game accepts an optional `config` prop with five fields:
 
 ```typescript
 type SnakeGameConfig = {
@@ -439,10 +440,11 @@ type SnakeGameConfig = {
  gridRows?: number;
  cellSize?: number;
  tickMs?: number;
+ winLength?: number;
 };
 ```
 
-All fields have defaults (`10×20` grid, `20px` cells, `150ms` tick), but every value is overridable. This means the same component can render as a tiny sidebar widget or a full-screen game — just change the numbers:
+All fields have defaults (`10×20` grid, `20px` cells, `150ms` tick, win at `20` body length), but every value is overridable. This means the same component can render as a tiny sidebar widget or a full-screen game — just change the numbers:
 
 ```tsx
 // Compact sidebar version (default)
@@ -453,6 +455,9 @@ All fields have defaults (`10×20` grid, `20px` cells, `150ms` tick), but every 
 
 // Speed run mode
 <RgeSnakeGame config={{ tickMs: 80 }} />
+
+// Quick win (eat 10 food to win, snake starts at length 3)
+<RgeSnakeGame config={{ winLength: 13 }} />
 ```
 
 The trick is that the config drives _both_ the game logic and the visual layout. Entities use `gridCols`, `gridRows`, and `cellSize` to position the snake and food. But the same values also get injected as CSS custom properties:
@@ -542,6 +547,68 @@ it('increments score on food-eaten event', () => {
 ```
 
 The mock lets you trigger game events by clicking — no need to simulate 60fps game loops in tests.
+
+---
+
+## 🪆 Embedding in Custom Chrome
+
+The snake game lives on the homepage inside a glassmorphism widget with its own controls panel, food tracker, and skip button. But the `RgeSnakeGame` component has its own wrapper, score display, and d-pad. We need the game board _without_ the surrounding UI, so the host widget can provide its own.
+
+Two props make this possible:
+
+```typescript
+type RgeSnakeGameProps = {
+ config?: SnakeGameConfig;
+ onWin?: () => void;
+ onSkip?: () => void;
+ onScoreChange?: (score: number) => void;
+ hideControls?: boolean;
+};
+```
+
+When `hideControls` is `true`, the component returns just the board element — no wrapper div, no `GameControls`. The host widget wraps it in its own layout:
+
+```tsx
+const HERO_SNAKE_CONFIG = {
+ gridCols: 15,
+ gridRows: 25,
+ cellSize: 16,
+ tickMs: 200,
+ winLength: 13, // 3 initial + 10 food = quick game
+};
+
+<div className={styles.widget}>
+ <div className={styles.body}>
+  <div className={styles.gridWrapper}>
+   <RgeSnakeGame
+    config={HERO_SNAKE_CONFIG}
+    onWin={handleComplete}
+    onScoreChange={setScore}
+    hideControls
+   />
+  </div>
+  <div className={styles.controls}>
+   {/* instructions, arrow keys, food dots, skip */}
+  </div>
+ </div>
+</div>
+```
+
+The `onScoreChange` callback fires whenever the score updates, letting the host track progress externally. The homepage widget uses this to drive a row of food dot indicators — 10 SVG circles that dim as the snake eats:
+
+```tsx
+const foodRemaining = FOOD_TOTAL - score;
+
+{Array.from({ length: FOOD_TOTAL }, (_, index) => (
+ <svg className={index >= foodRemaining ? styles.eaten : ''}>
+  <circle opacity="0.1" cx="10" cy="10" r="10" fill="#46ECD5" />
+  <circle opacity="0.2" cx="10" cy="10" r="7" fill="#46ECD5" />
+  <circle cx="10" cy="10" r="4" fill="#46ECD5" />
+ </svg>
+))}
+```
+
+The `winLength` config ties everything together: set it to `initialSnakeLength + foodTotal` (3 + 10 = 13), and the game ends exactly when the last food dot dims. One config value, two systems (game logic and UI indicators), zero coordination.
 
 ---
 

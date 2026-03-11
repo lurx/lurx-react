@@ -1,7 +1,7 @@
 import type { GameOverlayProps } from './game-overlay.types';
 import styles from '../../rge-snake-game.module.scss';
 
-export const GameOverlay = ({ phase, score, onStart, onRestart }: GameOverlayProps) => {
+export const GameOverlay = ({ phase, score, onStart, onRestart, onSkip }: GameOverlayProps) => {
 	if (phase === 'playing') return null;
 
 	const renderIdleOverlay = () => (
@@ -10,6 +10,11 @@ export const GameOverlay = ({ phase, score, onStart, onRestart }: GameOverlayPro
 			<button className={styles.overlayButton} onClick={onStart} type="button">
 				START GAME
 			</button>
+			{onSkip && (
+				<button className={styles.overlaySkip} onClick={onSkip} type="button" data-testid="overlay-skip">
+					skip
+				</button>
+			)}
 		</div>
 	);
 

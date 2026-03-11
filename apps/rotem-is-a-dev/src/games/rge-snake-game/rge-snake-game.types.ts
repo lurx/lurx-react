@@ -19,6 +19,7 @@ export type SnakeGameConfig = {
 	gridRows?: number;
 	cellSize?: number;
 	tickMs?: number;
+	winLength?: number;
 };
 
 export type SnakeEntity = {
@@ -42,6 +43,7 @@ export type BoardEntity = {
 	tickMs: number;
 	lastTickTime: number;
 	keyScheme: KeyScheme;
+	winLength: number;
 };
 
 export type Entities = {

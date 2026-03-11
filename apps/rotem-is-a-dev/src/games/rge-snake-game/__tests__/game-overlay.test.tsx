@@ -6,6 +6,7 @@ jest.mock('../../rge-snake-game.module.scss', () => ({
 	overlayTitle: 'overlayTitle',
 	overlayScore: 'overlayScore',
 	overlayButton: 'overlayButton',
+	overlaySkip: 'overlaySkip',
 }));
 
 describe('GameOverlay', () => {
@@ -63,5 +64,19 @@ describe('GameOverlay', () => {
 		render(<GameOverlay {...defaultProps} phase="won" onRestart={onRestart} />);
 		fireEvent.click(screen.getByText('PLAY AGAIN'));
 		expect(onRestart).toHaveBeenCalledTimes(1);
+	});
+
+	it('renders skip button when onSkip is provided', () => {
+		const onSkip = jest.fn();
+		render(<GameOverlay {...defaultProps} onSkip={onSkip} />);
+		const skipButton = screen.getByTestId('overlay-skip');
+		expect(skipButton).toBeInTheDocument();
+		fireEvent.click(skipButton);
+		expect(onSkip).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not render skip button when onSkip is not provided', () => {
+		render(<GameOverlay {...defaultProps} />);
+		expect(screen.queryByTestId('overlay-skip')).not.toBeInTheDocument();
 	});
 });

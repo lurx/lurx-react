@@ -20,7 +20,7 @@ const createMockEntities = (headX: number, headY: number, body?: { x: number; y:
 			growing: false,
 		},
 		food: { position: { x: 3, y: 3 } },
-		board: { width: 15, height: 15, cellSize: 20, tickMs: 150, keyScheme: 'arrows' },
+		board: { width: 15, height: 15, cellSize: 20, tickMs: 150, keyScheme: 'arrows', winLength: 20 },
 	}) as unknown as Entities;
 
 describe('checkCollision', () => {

@@ -5,4 +5,5 @@ export type GameOverlayProps = {
 	score: number;
 	onStart: () => void;
 	onRestart: () => void;
+	onSkip?: () => void;
 };

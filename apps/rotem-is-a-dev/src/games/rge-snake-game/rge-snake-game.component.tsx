@@ -38,7 +38,7 @@ const spawnInitialFood = (snakeBody: { x: number; y: number }[], gridCols: numbe
 	return position;
 };
 
-const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig, keyScheme: KeyScheme): Entities => {
+const createEntities = ({ gridCols, gridRows, cellSize, tickMs, winLength }: ResolvedConfig, keyScheme: KeyScheme): Entities => {
 	const initialBody = buildInitialSnakeBody(gridCols, gridRows);
 
 	return {
@@ -61,6 +61,7 @@ const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig
 			tickMs,
 			lastTickTime: 0,
 			keyScheme,
+			winLength,
 		},
 	};
 };
@@ -69,9 +70,13 @@ const SYSTEMS = [handleInput, moveSnake, checkFood, checkCollision];
 
 export type RgeSnakeGameProps = {
 	config?: SnakeGameConfig;
+	onWin?: () => void;
+	onSkip?: () => void;
+	onScoreChange?: (score: number) => void;
+	hideControls?: boolean;
 };
 
-export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
+export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControls }: RgeSnakeGameProps) => {
 	const resolved = useMemo(() => resolveConfig(config), [config]);
 
 	const [phase, setPhase] = useState<GamePhase>('idle');
@@ -138,6 +143,16 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 		};
 	}, [keyScheme]);
 
+	useEffect(() => {
+		if (phase === 'won' && onWin) {
+			onWin();
+		}
+	}, [phase, onWin]);
+
+	useEffect(() => {
+		onScoreChange?.(score);
+	}, [score, onScoreChange]);
+
 	const isRunning = phase === 'playing';
 
 	const boardCssVariables = {
@@ -146,27 +161,34 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 		'--board-cell-size': `${resolved.cellSize}px`,
 	} as React.CSSProperties;
 
+	const boardElement = (
+		<div
+			className={styles.board}
+			style={boardCssVariables}
+		>
+			<GameEngine
+				ref={engineRef}
+				className={styles.engineContainer}
+				systems={SYSTEMS}
+				entities={entities}
+				running={isRunning}
+				onEvent={handleEvent}
+			/>
+			<GameOverlay
+				phase={phase}
+				score={score}
+				onStart={handleStart}
+				onRestart={handleRestart}
+				onSkip={onSkip}
+			/>
+		</div>
+	);
+
+	if (hideControls) return boardElement;
+
 	return (
 		<div className={styles.wrapper}>
-			<div
-				className={styles.board}
-				style={boardCssVariables}
-			>
-				<GameEngine
-					ref={engineRef}
-					className={styles.engineContainer}
-					systems={SYSTEMS}
-					entities={entities}
-					running={isRunning}
-					onEvent={handleEvent}
-				/>
-				<GameOverlay
-					phase={phase}
-					score={score}
-					onStart={handleStart}
-					onRestart={handleRestart}
-				/>
-			</div>
+			{boardElement}
 			<GameControls
 				score={score}
 				onDirectionPress={handleDirectionPress}

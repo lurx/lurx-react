@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
 jest.mock('@/hooks', () => ({
@@ -27,18 +27,15 @@ jest.mock('../hooks/use-hero-entry-animation.hook', () => ({
 	useHeroEntryAnimation: () => undefined,
 }));
 
-// Stub SnakeGame to control win/skip callbacks via HeroGame
-jest.mock('../../snake-game/snake-game.component', () => ({
-	SnakeGame: ({
+// Stub RgeSnakeGame to control win callback via HeroGame
+jest.mock('@/games/rge-snake-game', () => ({
+	RgeSnakeGame: ({
 		onWin,
-		onSkip,
 	}: {
 		onWin: () => void;
-		onSkip: () => void;
 	}) => (
 		<div data-testid="snake-game">
 			<button onClick={onWin}>win</button>
-			<button onClick={onSkip}>skip</button>
 		</div>
 	),
 }));
@@ -76,21 +73,27 @@ describe('HeroSection', () => {
 		).toHaveAttribute('href', 'https://github.com/lurx');
 	});
 
-	it('renders the snake game initially', () => {
-		render(<HeroSection />);
+	it('renders the snake game initially', async () => {
+		await act(async () => {
+			render(<HeroSection />);
+		});
 		expect(screen.getByTestId('snake-game')).toBeInTheDocument();
 		expect(screen.queryByTestId('hero-snippets')).not.toBeInTheDocument();
 	});
 
-	it('hides the snake game and shows snippets when skip is triggered', () => {
-		render(<HeroSection />);
-		fireEvent.click(screen.getByText('skip'));
+	it('hides the snake game and shows snippets when skip is triggered', async () => {
+		await act(async () => {
+			render(<HeroSection />);
+		});
+		fireEvent.click(screen.getByText('Skip'));
 		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
 		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
 	});
 
-	it('hides the snake game and shows snippets when win is triggered', () => {
-		render(<HeroSection />);
+	it('hides the snake game and shows snippets when win is triggered', async () => {
+		await act(async () => {
+			render(<HeroSection />);
+		});
 		fireEvent.click(screen.getByText('win'));
 		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
 		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();

@@ -9,7 +9,7 @@ export const SnakeRenderer = ({ body, cellSize }: { body: Position[]; cellSize: 
 
 			return (
 				<div
-					key={`snake-${segment.x}-${segment.y}`}
+					key={`snake-${index}-${segment.x}-${segment.y}`}
 					data-testid={isHead ? 'snake-head' : 'snake-segment'}
 					style={{
 						position: 'absolute',

@@ -1,4 +1,3 @@
-import { WIN_LENGTH } from '../rge-snake-game.constants';
 import type { Entities, SystemArgs } from '../rge-snake-game.types';
 
 export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): Entities => {
@@ -23,7 +22,7 @@ export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): En
 		return entities;
 	}
 
-	if (snake.body.length >= WIN_LENGTH) {
+	if (snake.body.length >= board.winLength) {
 		dispatch({ type: 'game-won' });
 	}
 

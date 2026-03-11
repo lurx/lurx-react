@@ -102,6 +102,21 @@
 	}
 }
 
+.overlaySkip {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	letter-spacing: 1px;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
 .controls {
 	display: flex;
 	flex-direction: column;

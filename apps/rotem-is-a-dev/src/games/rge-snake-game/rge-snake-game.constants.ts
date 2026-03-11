@@ -1,14 +1,13 @@
-export const GRID_COLS = 10;
-export const GRID_ROWS = 20;
+export const GRID_COLS = 15;
+export const GRID_ROWS = 25;
 export const CELL_SIZE = 20;
 export const TICK_MS = 150;
-export const WIN_LENGTH = 20;
-
 export const DEFAULT_SNAKE_CONFIG = {
   gridCols: GRID_COLS,
   gridRows: GRID_ROWS,
   cellSize: CELL_SIZE,
   tickMs: TICK_MS,
+  winLength: GRID_COLS * GRID_ROWS,
 }
 
 export const COLORS = {
