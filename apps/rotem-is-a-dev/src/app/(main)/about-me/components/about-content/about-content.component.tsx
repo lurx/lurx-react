@@ -15,7 +15,7 @@ export const AboutContent = ({
 	children,
 }: AboutContentProps) => {
 	function renderSidePanel() {
-		if (activeSection === 'gaming') return <GamingPanel />;
+		if (activeSection === 'gaming') return <GamingPanel activeFileId={activeFileId} />;
 		if (activeFileId) return <GistPanel />;
 		return null;
 	}

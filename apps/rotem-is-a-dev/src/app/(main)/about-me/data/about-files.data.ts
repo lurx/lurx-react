@@ -1,4 +1,5 @@
 import cv from '@/data/cv.data';
+import brickfallInstructions from './brickfall-instructions.md?raw';
 import snakeInstructions from './snake-instructions.md?raw';
 import type {
 	AboutFileContent,
@@ -18,7 +19,7 @@ export const SECTIONS: SectionConfig[] = [
 export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'personal-info': ['bio', 'interests'],
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
-	'gaming': ['snake-game'],
+	'gaming': ['snake-game', 'brickfall-game'],
 };
 
 export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
@@ -62,6 +63,11 @@ export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
 		title: 'snake-game',
 		format: 'markdown',
 		raw: snakeInstructions,
+	},
+	'brickfall-game': {
+		title: 'brickfall-game',
+		format: 'markdown',
+		raw: brickfallInstructions,
 	},
 };
 

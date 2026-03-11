@@ -1,0 +1,212 @@
+@use 'mixins/media' as *;
+
+.wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.board {
+	--board-rows: 20;
+	--board-cols: 10;
+	--board-cell-size: 20px;
+	width: calc(var(--board-cols) * var(--board-cell-size));
+	height: calc(var(--board-rows) * var(--board-cell-size));
+	position: relative;
+	background-color: var(--surface-alt);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	background-image: linear-gradient(
+			rgba(199, 146, 234, 0.06) 1px,
+			transparent 1px
+		),
+		linear-gradient(90deg, rgba(199, 146, 234, 0.06) 1px, transparent 1px);
+	background-size: var(--board-cell-size) var(--board-cell-size);
+	box-shadow: inset 1px 5px 11px 0 rgba(2, 18, 27, 0.71);
+}
+
+.engineContainer {
+	position: relative;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: rgba(1, 22, 39, 0.84);
+	z-index: var(--z-decoration);
+}
+
+.overlayTitle {
+	font-size: 28px;
+	font-weight: bold;
+	color: var(--cyan);
+	text-shadow: 0 0 10px rgba(0, 213, 190, 0.5);
+	letter-spacing: 4px;
+	text-transform: uppercase;
+}
+
+.overlayScore {
+	font-size: 14px;
+	color: var(--muted);
+	letter-spacing: 2px;
+}
+
+.overlayButton {
+	margin-top: 8px;
+	padding: 10px 16px;
+	background-color: var(--orange);
+	color: var(--bg);
+	border: none;
+	border-radius: var(--radius-md);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 450;
+	cursor: pointer;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.85;
+	}
+}
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+}
+
+.stats {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.score {
+	font-size: 16px;
+	color: var(--teal);
+	letter-spacing: 2px;
+}
+
+.statLine {
+	font-size: 12px;
+	color: var(--muted);
+	letter-spacing: 2px;
+}
+
+.arrowGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 48px);
+	grid-template-rows: repeat(2, 36px);
+	gap: 8px;
+	justify-items: center;
+}
+
+.arrowButton {
+	width: 48px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #0a0a0a;
+	border: 1px solid var(--border);
+	color: var(--muted);
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: var(--radius-md);
+	transition:
+		background-color 0.1s,
+		border-color 0.1s,
+		color 0.1s;
+
+	&:hover {
+		background-color: #1e2d3d;
+		color: var(--text);
+	}
+
+	/* ROTATE button: column 2, row 1 */
+	&:nth-child(1) {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	/* LEFT button: column 1, row 2 */
+	&:nth-child(2) {
+		grid-column: 1;
+		grid-row: 2;
+	}
+
+	/* RIGHT button: column 3, row 2 */
+	&:nth-child(3) {
+		grid-column: 3;
+		grid-row: 2;
+	}
+
+	/* SOFT_DROP button: column 2, row 2 */
+	&:nth-child(4) {
+		grid-column: 2;
+		grid-row: 2;
+	}
+
+	/* HARD_DROP button: column 2, row 3 — spans full width */
+	&:nth-child(5) {
+		grid-column: 1 / -1;
+		grid-row: 3;
+		width: 100%;
+	}
+}
+
+.arrowButtonActive {
+	background-color: #1e2d3d;
+	border-color: var(--teal);
+	color: var(--teal);
+}
+
+@keyframes lineClearBlink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+}
+
+.clearingCell {
+	animation: lineClearBlink 100ms linear 4;
+}
+
+.schemeToggle {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}

@@ -7,7 +7,8 @@ export type AboutFileId =
 	| 'startup-booster'
 	| 'investing-com'
 	| 'isocia'
-	| 'snake-game';
+	| 'snake-game'
+	| 'brickfall-game';
 
 export type JsdocFileContent = {
 	title: string;

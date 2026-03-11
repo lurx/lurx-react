@@ -29,7 +29,7 @@ export const AboutPage = () => {
 			const updatedTabs = openTabs.filter(id => id !== fileId);
 			setOpenTabs(updatedTabs);
 			setActiveFileId(prev =>
-				prev === fileId ? updatedTabs[updatedTabs.length - 1] ?? null : prev,
+				prev === fileId ? updatedTabs.at(-1) ?? null : prev,
 			);
 		},
 		[openTabs],
@@ -50,6 +50,7 @@ export const AboutPage = () => {
 
 	useEffect(() => {
 		if (playGame === 'snake') handleFileSelect('snake-game');
+		if (playGame === 'brickfall') handleFileSelect('brickfall-game');
 	}, [playGame, handleFileSelect]);
 
 	const activeFile = activeFileId ? ABOUT_FILES[activeFileId] : null;
