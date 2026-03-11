@@ -272,6 +272,56 @@ Keeping `lastTickTime` on the entity instead of in module-level state is importa
 
 ---
 
+## 🎯 The Focus Trap: Why RGE's Input Pipeline Can Break
+
+There's a subtle gotcha with how `react-game-engine` captures keyboard input that bit me when I added a second game (a Tetris-style brickfall).
+
+RGE renders a `<div>` with `tabIndex={0}` and attaches `onKeyDown` to it. On mount, it calls `this.container.current.focus()`. This works perfectly — until the user clicks _anywhere_ outside that div. A controls panel, a score display, a "restart" button — one click and the div loses focus. `onKeyDown` stops firing. Your systems stop receiving input events. The game appears frozen.
+
+The insidious part: it works flawlessly in initial testing. You load the page, the div auto-focuses, keys work. It only breaks after the user interacts with surrounding UI — which is exactly what a real player does.
+
+### The fix: bypass the engine's input pipeline
+
+Instead of relying on RGE's focus-dependent `onKeyDown`, attach a global listener and queue actions directly on the entity:
+
+```typescript
+// In the component — global listener always fires, regardless of focus
+useEffect(() => {
+ const handleKeyDown = (event: KeyboardEvent) => {
+  const action = ACTION_MAPS[keyScheme][event.key];
+  if (action) {
+   entities.board.pendingActions.push(action);
+  }
+ };
+
+ globalThis.addEventListener('keydown', handleKeyDown);
+ return () => globalThis.removeEventListener('keydown', handleKeyDown);
+}, [keyScheme, entities]);
+```
+
+```typescript
+// In the system — read from the entity, not from RGE's input arg
+export const handleInput = (entities: Entities, { dispatch }: SystemArgs): Entities => {
+ const { pendingActions } = entities.board;
+
+ for (const action of pendingActions) {
+  if (action === 'LEFT' || action === 'RIGHT') {
+   handleMove(piece, grid, board, action === 'LEFT' ? -1 : 1);
+  }
+  // ... other actions
+ }
+
+ board.pendingActions = [];
+ return entities;
+};
+```
+
+The component maps raw keys to game actions (respecting the active key scheme) and pushes them onto a `pendingActions` array on the board entity. The system reads and clears that array each frame. No focus required. No dependency on RGE's internal event plumbing.
+
+This is the same principle as `lastTickTime` — store runtime state on the entity, not in a side channel. The system stays pure, the component owns the browser integration, and the two communicate through the entity graph.
+
+---
+
 ## 🎨 Renderers as React Components
 
 Renderers are just React components. RGE passes the entity's properties as props and renders them inside its container. Here's the snake:
