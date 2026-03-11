@@ -37,6 +37,7 @@ export type BoardEntity = {
 	height: number;
 	cellSize: number;
 	tickMs: number;
+	lastTickTime: number;
 	keyScheme: KeyScheme;
 };
 

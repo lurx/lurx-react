@@ -1,4 +1,4 @@
-import { moveSnake, resetMoveSnakeTick } from '../systems/move-snake.system';
+import { moveSnake } from '../systems/move-snake.system';
 import type { Entities, SystemArgs } from '../rge-snake-game.types';
 
 const createMockEntities = (
@@ -16,7 +16,7 @@ const createMockEntities = (
 			growing,
 		},
 		food: { position: { x: 3, y: 3 } },
-		board: { width: 15, height: 15, cellSize: 20, tickMs: 150, keyScheme: 'arrows' },
+		board: { width: 15, height: 15, cellSize: 20, tickMs: 150, lastTickTime: 0, keyScheme: 'arrows' },
 	}) as unknown as Entities;
 
 const createMockArgs = (currentTime: number): SystemArgs =>
@@ -26,10 +26,6 @@ const createMockArgs = (currentTime: number): SystemArgs =>
 		dispatch: jest.fn(),
 		time: { current: currentTime, previous: null, delta: 0, previousDelta: null },
 	}) as SystemArgs;
-
-beforeEach(() => {
-	resetMoveSnakeTick();
-});
 
 describe('moveSnake', () => {
 	it('moves the snake head in the current direction (UP)', () => {

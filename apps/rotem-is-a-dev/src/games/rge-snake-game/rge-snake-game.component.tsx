@@ -10,7 +10,6 @@ import { DEFAULT_SNAKE_CONFIG, DIRECTION_MAPS } from './rge-snake-game.constants
 import styles from './rge-snake-game.module.scss';
 import type { Direction, Entities, GameEvent, GamePhase, KeyScheme, SnakeGameConfig } from './rge-snake-game.types';
 import { checkCollision, checkFood, handleInput, moveSnake } from './systems';
-import { resetMoveSnakeTick } from './systems/move-snake.system';
 
 type ResolvedConfig = Required<SnakeGameConfig>;
 
@@ -60,6 +59,7 @@ const createEntities = ({ gridCols, gridRows, cellSize, tickMs }: ResolvedConfig
 			height: gridRows,
 			cellSize,
 			tickMs,
+			lastTickTime: 0,
 			keyScheme,
 		},
 	};
@@ -97,7 +97,6 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 	}, []);
 
 	const handleStart = useCallback(() => {
-		resetMoveSnakeTick();
 		const newEntities = createEntities(resolved, keyScheme);
 		setEntities(newEntities);
 		setScore(0);
