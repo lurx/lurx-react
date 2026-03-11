@@ -54,8 +54,8 @@ describe('SnakeRenderer', () => {
 		render(<SnakeRenderer body={body} cellSize={20} />);
 		const head = screen.getByTestId('snake-head');
 		const segments = screen.getAllByTestId('snake-segment');
-		const headOpacity = parseFloat(head.style.opacity);
-		const lastOpacity = parseFloat(segments[segments.length - 1].style.opacity);
+		const headOpacity = Number.parseFloat(head.style.opacity);
+		const lastOpacity = Number.parseFloat(segments[segments.length - 1].style.opacity);
 		expect(headOpacity).toBeGreaterThan(lastOpacity);
 	});
 });

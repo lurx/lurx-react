@@ -27,28 +27,15 @@ describe('handleInput', () => {
 		expect(result.snake.direction).toBe('RIGHT');
 	});
 
-	it('prevents 180-degree reversal from UP to DOWN', () => {
-		const entities = createMockEntities('UP');
-		const result = handleInput(entities, createMockArgs('ArrowDown'));
-		expect(result.snake.direction).toBe('UP');
-	});
-
-	it('prevents 180-degree reversal from LEFT to RIGHT', () => {
-		const entities = createMockEntities('LEFT');
-		const result = handleInput(entities, createMockArgs('ArrowRight'));
-		expect(result.snake.direction).toBe('LEFT');
-	});
-
-	it('prevents 180-degree reversal from RIGHT to LEFT', () => {
-		const entities = createMockEntities('RIGHT');
-		const result = handleInput(entities, createMockArgs('ArrowLeft'));
-		expect(result.snake.direction).toBe('RIGHT');
-	});
-
-	it('prevents 180-degree reversal from DOWN to UP', () => {
-		const entities = createMockEntities('DOWN');
-		const result = handleInput(entities, createMockArgs('ArrowUp'));
-		expect(result.snake.direction).toBe('DOWN');
+	it.each([
+		['UP', 'ArrowDown'],
+		['DOWN', 'ArrowUp'],
+		['LEFT', 'ArrowRight'],
+		['RIGHT', 'ArrowLeft'],
+	] as const)('prevents 180-degree reversal from %s via %s', (startDir, key) => {
+		const entities = createMockEntities(startDir);
+		const result = handleInput(entities, createMockArgs(key));
+		expect(result.snake.direction).toBe(startDir);
 	});
 
 	it('ignores non-arrow key input', () => {
@@ -82,21 +69,18 @@ describe('handleInput', () => {
 		expect(result.snake.direction).toBe('LEFT');
 	});
 
-	it('ignores WASD keys when keyScheme is arrows', () => {
-		const entities = createMockEntities('UP', 'arrows');
-		const result = handleInput(entities, createMockArgs('w'));
-		expect(result.snake.direction).toBe('UP');
+	it.each([
+		['arrows', 'w', 'UP'],
+		['wasd', 'ArrowRight', 'UP'],
+	] as const)('ignores wrong scheme keys (%s scheme, key %s)', (scheme, key, expectedDir) => {
+		const entities = createMockEntities('UP', scheme);
+		const result = handleInput(entities, createMockArgs(key));
+		expect(result.snake.direction).toBe(expectedDir);
 	});
 
 	it('responds to WASD keys when keyScheme is wasd', () => {
 		const entities = createMockEntities('UP', 'wasd');
 		const result = handleInput(entities, createMockArgs('d'));
 		expect(result.snake.direction).toBe('RIGHT');
-	});
-
-	it('ignores arrow keys when keyScheme is wasd', () => {
-		const entities = createMockEntities('UP', 'wasd');
-		const result = handleInput(entities, createMockArgs('ArrowRight'));
-		expect(result.snake.direction).toBe('UP');
 	});
 });
