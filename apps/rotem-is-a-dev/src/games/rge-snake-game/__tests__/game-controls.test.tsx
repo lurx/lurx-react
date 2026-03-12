@@ -4,10 +4,16 @@ import { GameControls } from '../components/game-controls';
 jest.mock('../../rge-snake-game.module.scss', () => ({
 	controls: 'controls',
 	score: 'score',
-	arrowGrid: 'arrowGrid',
-	arrowButton: 'arrowButton',
-	arrowButtonActive: 'arrowButtonActive',
 	schemeToggle: 'schemeToggle',
+}));
+
+jest.mock('../../../components/arrow-key-grid/arrow-key-grid.module.scss', () => ({
+	grid: 'grid',
+	gridWithBottom: 'gridWithBottom',
+	key: 'key',
+	button: 'button',
+	active: 'active',
+	bottomKey: 'bottomKey',
 }));
 
 describe('GameControls', () => {
@@ -43,13 +49,13 @@ describe('GameControls', () => {
 	it('highlights the active direction button', () => {
 		render(<GameControls {...defaultProps} activeDirection="UP" />);
 		const upButton = screen.getByTestId('arrow-up');
-		expect(upButton.className).toContain('arrowButtonActive');
+		expect(upButton.className).toContain('active');
 	});
 
 	it('does not highlight inactive direction buttons', () => {
 		render(<GameControls {...defaultProps} activeDirection="UP" />);
 		const downButton = screen.getByTestId('arrow-down');
-		expect(downButton.className).not.toContain('arrowButtonActive');
+		expect(downButton.className).not.toContain('active');
 	});
 
 	it('renders arrow labels in buttons', () => {
@@ -62,10 +68,10 @@ describe('GameControls', () => {
 
 	it('has accessible labels on arrow buttons', () => {
 		render(<GameControls {...defaultProps} />);
-		expect(screen.getByLabelText('Move up')).toBeInTheDocument();
-		expect(screen.getByLabelText('Move down')).toBeInTheDocument();
-		expect(screen.getByLabelText('Move left')).toBeInTheDocument();
-		expect(screen.getByLabelText('Move right')).toBeInTheDocument();
+		expect(screen.getByLabelText('up')).toBeInTheDocument();
+		expect(screen.getByLabelText('down')).toBeInTheDocument();
+		expect(screen.getByLabelText('left')).toBeInTheDocument();
+		expect(screen.getByLabelText('right')).toBeInTheDocument();
 	});
 
 	it('renders WASD labels when keyScheme is wasd', () => {

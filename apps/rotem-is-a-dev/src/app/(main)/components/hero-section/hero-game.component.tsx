@@ -2,6 +2,12 @@
 
 import { useCallback, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { FaIcon } from '@/app/components/fa-icon';
+import { ArrowKeyGrid } from '@/games/components/arrow-key-grid';
+import type { ArrowKeyGridItem } from '@/games/components/arrow-key-grid';
+import { useActiveKey } from '@/games/hooks/use-active-key';
+import { ARROW_DIRECTION_MAP } from '@/games/rge-snake-game/rge-snake-game.constants';
+import type { Direction } from '@/games/rge-snake-game/rge-snake-game.types';
 import styles from './hero-game.module.scss';
 import { useHeroContext } from './hero.context';
 
@@ -19,16 +25,17 @@ const HERO_SNAKE_CONFIG = {
 	winLength: INITIAL_SNAKE_LENGTH + HERO_FOOD_TOTAL,
 };
 
-const ARROW_KEYS = [
-	{ direction: 'up', label: '\u25B2' },
-	{ direction: 'left', label: '\u25C0' },
-	{ direction: 'down', label: '\u25BC' },
-	{ direction: 'right', label: '\u25B6' },
-] as const;
+const ARROW_ITEMS: ArrowKeyGridItem<Direction>[] = [
+	{ value: 'UP', label: <FaIcon iconName="caret-up" size="sm" />, testId: 'arrow-key-up' },
+	{ value: 'LEFT', label: <FaIcon iconName="caret-left" size="sm" />, testId: 'arrow-key-left' },
+	{ value: 'RIGHT', label: <FaIcon iconName="caret-right" size="sm" />, testId: 'arrow-key-right' },
+	{ value: 'DOWN', label: <FaIcon iconName="caret-down" size="sm" />, testId: 'arrow-key-down' },
+];
 
 export const HeroGame = () => {
 	const { gameCompleted, handleComplete } = useHeroContext();
 	const [score, setScore] = useState(0);
+	const activeDirection = useActiveKey<Direction>(ARROW_DIRECTION_MAP);
 
 	const handleScoreChange = useCallback((newScore: number) => {
 		setScore(newScore);
@@ -57,17 +64,7 @@ export const HeroGame = () => {
 								<p className={styles.comment}>{'// use keyboard'}</p>
 								<p className={styles.comment}>{'// arrows to play'}</p>
 							</div>
-							<div className={styles.arrowKeys}>
-								{ARROW_KEYS.map(({ direction, label }) => (
-									<div
-										key={direction}
-										className={`${styles.arrowKey} ${styles[direction]}`}
-										aria-label={direction}
-									>
-										{label}
-									</div>
-								))}
-							</div>
+							<ArrowKeyGrid items={ARROW_ITEMS} activeValue={activeDirection} />
 						</div>
 
 						<div className={styles.foodSection}>

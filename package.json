@@ -15,7 +15,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"@awesome.me/kit-1d40de302b": "^1.0.37",
+		"@awesome.me/kit-1d40de302b": "^1.0.38",
 		"@fortawesome/fontawesome-svg-core": "^7.2.0",
 		"@fortawesome/react-fontawesome": "^3.2.0",
 		"classnames": "^2.5.1",

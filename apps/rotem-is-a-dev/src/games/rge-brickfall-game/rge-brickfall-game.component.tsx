@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GameEngine } from 'react-game-engine';
+import { useActiveKey } from '../hooks/use-active-key';
 import { GameControls } from './components/game-controls';
 import { GameOverlay } from './components/game-overlay';
 import { GhostRenderer } from './renderers/ghost-renderer.component';
@@ -104,9 +105,10 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 	const [score, setScore] = useState(0);
 	const [level, setLevel] = useState(1);
 	const [linesCleared, setLinesCleared] = useState(0);
-	const [activeAction, setActiveAction] = useState<BrickfallAction | null>(null);
 	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');
 	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved, keyScheme));
+
+	const activeAction = useActiveKey<BrickfallAction>(ACTION_MAPS[keyScheme]);
 
 	const engineRef = useRef<GameEngine>(null);
 
@@ -132,7 +134,6 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 		setScore(0);
 		setLevel(1);
 		setLinesCleared(0);
-		setActiveAction(null);
 		setPhase('playing');
 		engineRef.current?.swap(newEntities as unknown as Record<string, unknown>);
 	}, [resolved, keyScheme]);
@@ -153,7 +154,6 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			const action = ACTION_MAPS[keyScheme][event.key];
 			if (action) {
-				setActiveAction(action);
 				entities.board.pendingActions.push(action);
 
 				if (action === 'SOFT_DROP') {
@@ -168,8 +168,6 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 			if (action === 'SOFT_DROP') {
 				entities.board.softDropping = false;
 			}
-
-			setActiveAction(null);
 		};
 
 		globalThis.addEventListener('keydown', handleKeyDown);

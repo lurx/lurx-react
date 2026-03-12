@@ -6,10 +6,16 @@ jest.mock('../rge-brickfall-game.module.scss', () => ({
 	stats: 'stats',
 	score: 'score',
 	statLine: 'statLine',
-	arrowGrid: 'arrowGrid',
-	arrowButton: 'arrowButton',
-	arrowButtonActive: 'arrowButtonActive',
 	schemeToggle: 'schemeToggle',
+}));
+
+jest.mock('../../components/arrow-key-grid/arrow-key-grid.module.scss', () => ({
+	grid: 'grid',
+	gridWithBottom: 'gridWithBottom',
+	key: 'key',
+	button: 'button',
+	active: 'active',
+	bottomKey: 'bottomKey',
 }));
 
 const defaultProps = {
@@ -61,7 +67,7 @@ describe('GameControls', () => {
 	it('highlights the active action button', () => {
 		render(<GameControls {...defaultProps} activeAction="LEFT" />);
 		const leftButton = screen.getByTestId('action-left');
-		expect(leftButton.className).toContain('arrowButtonActive');
+		expect(leftButton.className).toContain('active');
 	});
 
 	it('calls onToggleKeyScheme when toggle is clicked', () => {

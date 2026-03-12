@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GameEngine } from 'react-game-engine';
+import { useActiveKey } from '../hooks/use-active-key';
 import { GameControls } from './components/game-controls';
 import { GameOverlay } from './components/game-overlay';
 import { FoodRenderer } from './renderers/food-renderer.component';
@@ -81,9 +82,10 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 
 	const [phase, setPhase] = useState<GamePhase>('idle');
 	const [score, setScore] = useState(0);
-	const [activeDirection, setActiveDirection] = useState<Direction | null>(null);
 	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');
 	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved, keyScheme));
+
+	const activeDirection = useActiveKey<Direction>(DIRECTION_MAPS[keyScheme]);
 
 	const engineRef = useRef<GameEngine>(null);
 
@@ -105,7 +107,6 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 		const newEntities = createEntities(resolved, keyScheme);
 		setEntities(newEntities);
 		setScore(0);
-		setActiveDirection(null);
 		setPhase('playing');
 		engineRef.current?.swap(newEntities as unknown as Record<string, unknown>);
 	}, [resolved, keyScheme]);
@@ -114,8 +115,8 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 		handleStart();
 	}, [handleStart]);
 
-	const handleDirectionPress = useCallback((direction: Direction) => {
-		setActiveDirection(direction);
+	const handleDirectionPress = useCallback((_direction: Direction) => {
+		/* no-op: direction presses are handled by useActiveKey */
 	}, []);
 
 	const handleToggleKeyScheme = useCallback(() => {
@@ -125,23 +126,6 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 			return next;
 		});
 	}, [entities]);
-
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			const direction = DIRECTION_MAPS[keyScheme][event.key];
-			if (direction) setActiveDirection(direction);
-		};
-
-		const handleKeyUp = () => setActiveDirection(null);
-
-		globalThis.addEventListener('keydown', handleKeyDown);
-		globalThis.addEventListener('keyup', handleKeyUp);
-
-		return () => {
-			globalThis.removeEventListener('keydown', handleKeyDown);
-			globalThis.removeEventListener('keyup', handleKeyUp);
-		};
-	}, [keyScheme]);
 
 	useEffect(() => {
 		if (phase === 'won' && onWin) {

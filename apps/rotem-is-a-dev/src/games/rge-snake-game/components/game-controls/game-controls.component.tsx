@@ -1,13 +1,31 @@
-import type { GameControlsProps } from './game-controls.types';
+import { ArrowKeyGrid } from '../../../components/arrow-key-grid';
+import type { ArrowKeyGridItem } from '../../../components/arrow-key-grid';
 import type { Direction, KeyScheme } from '../../rge-snake-game.types';
+import type { GameControlsProps } from './game-controls.types';
 import styles from '../../rge-snake-game.module.scss';
 
-const KEY_LABELS: Record<KeyScheme, Record<Direction, string>> = {
-	arrows: { UP: '\u25B2', LEFT: '\u25C0', RIGHT: '\u25B6', DOWN: '\u25BC' },
-	wasd: { UP: 'W', LEFT: 'A', RIGHT: 'D', DOWN: 'S' },
+const ARROW_LABELS: Record<Direction, string> = {
+	UP: '\u25B2', LEFT: '\u25C0', RIGHT: '\u25B6', DOWN: '\u25BC',
 };
 
-const BUTTON_ORDER: Direction[] = ['UP', 'LEFT', 'RIGHT', 'DOWN'];
+const WASD_LABELS: Record<Direction, string> = {
+	UP: 'W', LEFT: 'A', RIGHT: 'D', DOWN: 'S',
+};
+
+const LABEL_MAPS: Record<KeyScheme, Record<Direction, string>> = {
+	arrows: ARROW_LABELS,
+	wasd: WASD_LABELS,
+};
+
+const buildItems = (keyScheme: KeyScheme): ArrowKeyGridItem<Direction>[] => {
+	const labels = LABEL_MAPS[keyScheme];
+	return [
+		{ value: 'UP', label: labels.UP, testId: 'arrow-up' },
+		{ value: 'LEFT', label: labels.LEFT, testId: 'arrow-left' },
+		{ value: 'RIGHT', label: labels.RIGHT, testId: 'arrow-right' },
+		{ value: 'DOWN', label: labels.DOWN, testId: 'arrow-down' },
+	];
+};
 
 export const GameControls = ({
 	score,
@@ -17,27 +35,18 @@ export const GameControls = ({
 	isPlaying,
 	onToggleKeyScheme,
 }: GameControlsProps) => {
-	const labels = KEY_LABELS[keyScheme];
+	const items = buildItems(keyScheme);
 
 	return (
 		<div className={styles.controls} data-testid="game-controls">
 			<div className={styles.score} data-testid="score">
 				SCORE: {score}
 			</div>
-			<div className={styles.arrowGrid}>
-				{BUTTON_ORDER.map((direction) => (
-					<button
-						key={direction}
-						data-testid={`arrow-${direction.toLowerCase()}`}
-						className={`${styles.arrowButton} ${activeDirection === direction ? styles.arrowButtonActive : ''}`}
-						onClick={() => onDirectionPress(direction)}
-						type="button"
-						aria-label={`Move ${direction.toLowerCase()}`}
-					>
-						{labels[direction]}
-					</button>
-				))}
-			</div>
+			<ArrowKeyGrid
+				items={items}
+				activeValue={activeDirection}
+				onPress={onDirectionPress}
+			/>
 			{!isPlaying && (
 				<button
 					className={styles.schemeToggle}
