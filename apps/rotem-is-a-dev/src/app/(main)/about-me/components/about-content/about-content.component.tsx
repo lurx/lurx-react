@@ -12,6 +12,8 @@ export const AboutContent = ({
 	onCloseAll,
 	children,
 }: AboutContentProps) => {
+	const sidePanel = activeFileId ? <GistPanel /> : null;
+
 	return (
 		<div className={styles.content}>
 			<TabBar
@@ -25,7 +27,7 @@ export const AboutContent = ({
 
 			<div className={styles.panels}>
 				{children}
-				{activeFileId && <GistPanel />}
+				{sidePanel}
 			</div>
 		</div>
 	);

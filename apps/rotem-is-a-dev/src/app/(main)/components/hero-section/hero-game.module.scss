@@ -1,0 +1,155 @@
+// ── Widget shell (glass container with screws) ──────────────────────────────
+
+.widget {
+	position: relative;
+	background: linear-gradient(
+		152deg,
+		rgba(23, 85, 83, 0.7) 1.7%,
+		rgba(67, 217, 173, 0.091) 81.8%
+	);
+	backdrop-filter: blur(32px);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	box-shadow: inset 0px 2px 0px 0px rgba(255, 255, 255, 0.3);
+
+	// Corner screws (top-left, top-right)
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--border);
+		border: 1px solid #2a3f55;
+		z-index: var(--z-content);
+	}
+
+	&::before {
+		inset-block-start: 12px;
+		inset-inline-start: 12px;
+	}
+
+	&::after {
+		inset-block-start: 12px;
+		inset-inline-end: 12px;
+	}
+}
+
+.bottomScrews {
+	position: absolute;
+	inset-block-end: 12px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 12px;
+	pointer-events: none;
+
+	span {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--border);
+		border: 1px solid #2a3f55;
+		display: block;
+	}
+}
+
+// ── Body (horizontal layout: board left, controls right) ─────────────────────
+
+.body {
+	display: flex;
+	gap: 24px;
+	align-items: flex-start;
+}
+
+.gridWrapper {
+	flex-shrink: 0;
+}
+
+// ── Controls panel (right column) ───────────────────────────────────────────
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	flex: 0 0 180px;
+	width: 180px;
+	align-self: stretch;
+}
+
+.controlsTop {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.gameNav {
+	background-color: var(--surface-alt);
+	border-radius: 8px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+	width: 100%;
+}
+
+.comment {
+	font-size: 1rem;
+	color: var(--text);
+	line-height: 1.4;
+}
+
+// ── Food indicators ─────────────────────────────────────────────────────────
+
+.foodSection {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: flex-start;
+	padding: 0 10px;
+	width: 100%;
+}
+
+.foodDots {
+	display: grid;
+	grid-template-columns: repeat(5, 21px);
+	gap: 8px;
+}
+
+.foodDot {
+	width: 21px;
+	height: 21px;
+	flex-shrink: 0;
+	transition: opacity 0.2s;
+}
+
+.eaten {
+	opacity: 0.3;
+}
+
+// ── Skip button ──────────────────────────────────────────────────────────────
+
+.skipButton {
+	background: transparent;
+	border: 1px solid var(--text);
+	color: var(--text);
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-family: inherit;
+	transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+
+	&:hover {
+		background-color: rgba(248, 250, 252, 0.1);
+	}
+}

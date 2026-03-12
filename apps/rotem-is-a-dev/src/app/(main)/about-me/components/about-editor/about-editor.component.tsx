@@ -1,6 +1,5 @@
 'use client';
 
-import { ShikiCode } from '@/app/components';
 import { useShikiTokens } from '@/lib/shiki';
 import { useMemo } from 'react';
 import { toLanguage, toLines } from './about-editor.helpers';
@@ -14,31 +13,34 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 
 	const lineCount = shikiLines ? shikiLines.length : plainLines.length;
 
+	const renderShikiLine = (index: number) => (
+		<span className={styles.codeLine}>
+			{shikiLines![index].tokens.map((token, tokenIndex) => (
+				<span
+					key={`token-${index}-${tokenIndex}`}
+					style={{ color: token.color }}
+				>
+					{token.content}
+				</span>
+			))}
+		</span>
+	);
+
+	const renderPlainLine = (index: number) => (
+		<span className={styles.codeLine}>{plainLines[index]}</span>
+	);
+
 	return (
 		<div
 			className={styles.editor}
 			aria-label={`${content.title} content`}
 		>
-			<div className={styles.lineNumbers}>
-				{Array.from({ length: lineCount }, (_, index) => (
-					<span
-						key={`ln-${index}`}
-						className={styles.lineNumber}
-					>
-						{index + 1}
-					</span>
-				))}
-			</div>
-			<div className={styles.codeContent}>
-				{shikiLines
-					? <ShikiCode lines={shikiLines} />
-					: plainLines.map((line, index) => (
-							<span key={`plain-${index}[${line}]`}>
-								{line}
-								{'\n'}
-							</span>
-						))}
-			</div>
+			{Array.from({ length: lineCount }, (_, index) => (
+				<div key={`row-${index}`} className={styles.line}>
+					<span className={styles.lineNumber}>{index + 1}</span>
+					{shikiLines ? renderShikiLine(index) : renderPlainLine(index)}
+				</div>
+			))}
 		</div>
 	);
 };

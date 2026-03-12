@@ -1,4 +1,5 @@
 import rehypeShiki from '@shikijs/rehype';
+import rehypeMermaid from 'rehype-mermaid';
 import { defineCollection, defineConfig, s } from 'velite';
 
 const posts = defineCollection({
@@ -38,7 +39,38 @@ export default defineConfig({
 	},
 	collections: { posts, pages },
 	markdown: {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		rehypePlugins: [[rehypeShiki as any, { theme: 'night-owl' }]],
+		rehypePlugins: [
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			[rehypeMermaid as any, {
+				strategy: 'img-svg',
+				colorScheme: 'dark',
+				mermaidConfig: {
+					theme: 'base',
+					themeVariables: {
+						background: '#1d293d',
+						primaryColor: '#1d293d',
+						primaryTextColor: '#f8fafc',
+						primaryBorderColor: '#314158',
+						secondaryColor: '#0f172b',
+						secondaryTextColor: '#f8fafc',
+						secondaryBorderColor: '#314158',
+						tertiaryColor: '#0f172b',
+						tertiaryTextColor: '#f8fafc',
+						tertiaryBorderColor: '#314158',
+						lineColor: '#43d9ad',
+						textColor: '#f8fafc',
+						mainBkg: '#1d293d',
+						nodeBorder: '#314158',
+						clusterBkg: '#0f172b',
+						clusterBorder: '#314158',
+						titleColor: '#f8fafc',
+						edgeLabelBackground: '#0f172b',
+						nodeTextColor: '#f8fafc',
+					},
+				},
+			}],
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			[rehypeShiki as any, { theme: 'night-owl' }],
+		],
 	},
 });

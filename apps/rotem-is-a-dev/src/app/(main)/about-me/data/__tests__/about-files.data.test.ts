@@ -38,13 +38,11 @@ describe('about-files.data', () => {
 			const sectionIds = SECTIONS.map(section => section.id);
 			expect(sectionIds).toContain('personal-info');
 			expect(sectionIds).toContain('work-experience');
-			expect(sectionIds).toContain('hobbies');
 		});
 
 		it('maps section files correctly', () => {
 			expect(SECTION_FILES['personal-info']).toContain('bio');
 			expect(SECTION_FILES['work-experience']).toContain('payoneer');
-			expect(SECTION_FILES['hobbies']).toHaveLength(0);
 		});
 
 		it('defines all about file entries', () => {

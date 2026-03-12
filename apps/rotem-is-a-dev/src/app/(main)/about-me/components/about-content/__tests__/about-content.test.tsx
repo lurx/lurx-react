@@ -30,7 +30,7 @@ afterEach(() => {
 
 const defaultProps = {
 	openTabs: ['bio'] as AboutFileId[],
-	activeFileId: 'bio' as AboutFileId,
+	activeFileId: 'bio' as Nullable<AboutFileId>,
 	onTabSelect: jest.fn(),
 	onTabClose: jest.fn(),
 	onCloseOthers: jest.fn(),
@@ -77,6 +77,26 @@ describe('AboutContent', () => {
 			/>,
 		);
 		expect(screen.queryAllByRole('tab')).toHaveLength(0);
+	});
+
+	it('renders GistPanel when a file is active', () => {
+		render(
+			<AboutContent {...defaultProps}>
+				<p>Editor content</p>
+			</AboutContent>,
+		);
+		expect(screen.getByTestId('gist-panel')).toBeInTheDocument();
+	});
+
+	it('does not render GistPanel when no file is active', () => {
+		render(
+			<AboutContent
+				{...defaultProps}
+				openTabs={[]}
+				activeFileId={null}
+			/>,
+		);
+		expect(screen.queryByTestId('gist-panel')).not.toBeInTheDocument();
 	});
 
 	it('renders children alongside the tab bar', () => {

@@ -1,0 +1,148 @@
+@use 'mixins/media' as *;
+
+.wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+	font-family: var(--font-game), 'Courier New', Courier, monospace;
+
+	@include media-below('tablet') {
+		flex-direction: column;
+	}
+}
+
+.board {
+	--board-rows: 20;
+	--board-cols: 10;
+	--board-cell-size: 20px;
+	width: calc(var(--board-cols) * var(--board-cell-size));
+	height: calc(var(--board-rows) * var(--board-cell-size));
+	position: relative;
+	background-color: var(--surface-alt);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	background-image: linear-gradient(
+			rgba(199, 146, 234, 0.06) 1px,
+			transparent 1px
+		),
+		linear-gradient(90deg, rgba(199, 146, 234, 0.06) 1px, transparent 1px);
+	background-size: var(--board-cell-size) var(--board-cell-size);
+	box-shadow: inset 1px 5px 11px 0 rgba(2, 18, 27, 0.71);
+}
+
+.engineContainer {
+	position: relative;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: rgba(1, 22, 39, 0.84);
+	z-index: var(--z-decoration);
+}
+
+.overlayTitle {
+	font-size: 28px;
+	font-weight: bold;
+	color: var(--cyan);
+	text-shadow: 0 0 10px rgba(0, 213, 190, 0.5);
+
+	text-transform: uppercase;
+}
+
+.overlayScore {
+	font-size: 14px;
+	color: var(--muted);
+
+}
+
+.overlayButton {
+	margin-top: 8px;
+	padding: 10px 16px;
+	background-color: var(--orange);
+	color: var(--bg);
+	border: none;
+	border-radius: var(--radius-md);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 450;
+	cursor: pointer;
+
+	text-transform: uppercase;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.85;
+	}
+}
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+}
+
+.stats {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.score {
+	font-size: 16px;
+	color: var(--teal);
+
+}
+
+.statLine {
+	font-size: 12px;
+	color: var(--muted);
+
+}
+
+@keyframes lineClearBlink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+}
+
+.clearingCell {
+	animation: lineClearBlink 100ms linear 4;
+}
+
+.schemeToggle {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+
+	text-transform: uppercase;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}

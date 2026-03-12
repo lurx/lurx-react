@@ -3,4 +3,5 @@ export type DialogProps = {
 	onClose: () => void;
 	ariaLabel: string;
 	className?: string;
+	fullScreen?: boolean;
 };

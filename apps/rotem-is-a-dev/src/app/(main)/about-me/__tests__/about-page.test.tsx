@@ -50,13 +50,6 @@ describe('AboutPage', () => {
 		).toBeInTheDocument();
 	});
 
-	it('does not render sidebar buttons for empty sections', () => {
-		render(<AboutPage />);
-		expect(
-			screen.queryByRole('button', { name: 'Hobbies' }),
-		).not.toBeInTheDocument();
-	});
-
 	it('renders the file tree navigation', () => {
 		render(<AboutPage />);
 		expect(

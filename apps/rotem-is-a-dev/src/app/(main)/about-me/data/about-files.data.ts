@@ -6,18 +6,16 @@ import type {
 	SectionId,
 } from './about-files.types';
 
-export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, SectionConfig, SectionId } from './about-files.types';
+export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, MarkdownFileContent, SectionConfig, SectionId } from './about-files.types';
 
 export const SECTIONS: SectionConfig[] = [
 	{ id: 'personal-info', label: 'Personal info', icon: 'user' },
 	{ id: 'work-experience', label: 'Work experience', icon: 'briefcase' },
-	{ id: 'gaming', label: 'Gaming', icon: 'alien-8bit' },
 ];
 
 export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'personal-info': ['bio', 'interests'],
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
-	'gaming': [],
 };
 
 export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {

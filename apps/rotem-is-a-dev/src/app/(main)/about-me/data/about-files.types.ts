@@ -1,4 +1,4 @@
-export type SectionId = 'personal-info' | 'work-experience' | 'gaming';
+export type SectionId = 'personal-info' | 'work-experience';
 
 export type AboutFileId =
 	| 'bio'
@@ -20,7 +20,13 @@ export type JsonFileContent = {
 	json: Record<string, unknown>;
 }
 
-export type AboutFileContent = JsdocFileContent | JsonFileContent;
+export type MarkdownFileContent = {
+	title: string;
+	format: 'markdown';
+	raw: string;
+}
+
+export type AboutFileContent = JsdocFileContent | JsonFileContent | MarkdownFileContent;
 
 export type SectionConfig = {
 	id: SectionId;

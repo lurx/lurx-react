@@ -32,6 +32,11 @@ declare module 'shiki/langs/json' {
 	export default lang;
 }
 
+declare module 'shiki/langs/markdown' {
+	const lang: import('shiki').LanguageRegistration;
+	export default lang;
+}
+
 declare module 'shiki/wasm' {
 	const wasm: unknown;
 	export default wasm;

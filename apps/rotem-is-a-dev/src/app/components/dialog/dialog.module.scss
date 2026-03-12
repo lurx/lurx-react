@@ -1,3 +1,5 @@
+@use 'mixins/media' as *;
+
 .wrapper {
 	position: fixed;
 	inset: 0;
@@ -37,6 +39,20 @@
 	min-width: 280px;
 	max-width: 90dvw;
 	animation: scaleIn 0.2s ease-out forwards;
+}
+
+.fullScreen {
+	@include media-below('tablet') {
+		width: 100dvw;
+		height: 100dvh;
+		max-width: 100dvw;
+		max-height: 100dvh;
+		border: none;
+		border-radius: 0;
+		padding: 16px;
+		overflow: auto;
+		animation: none;
+	}
 }
 
 .closeButton {

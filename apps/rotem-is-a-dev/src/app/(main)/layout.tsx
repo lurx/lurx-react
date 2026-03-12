@@ -1,4 +1,4 @@
-import { Fira_Code } from 'next/font/google';
+import { Bitcount_Grid_Single, Fira_Code } from 'next/font/google';
 import './styles/global.scss';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -16,9 +16,15 @@ const firaCode = Fira_Code({
 	variable: '--font-mono',
 });
 
+const bitcountGridSingle = Bitcount_Grid_Single({
+	subsets: ['latin'],
+	weight: ['400'],
+	variable: '--font-game',
+});
+
 export default function MainLayout({ children }: Readonly<PropsWithChildren>) {
 	return (
-		<div className={`${firaCode.variable} ${firaCode.className}`}>
+		<div className={`${firaCode.variable} ${bitcountGridSingle.variable} ${firaCode.className}`}>
 			<AuthProvider>
 				<EntryAnimationProvider>
 					<div className={styles.backdrop}>

@@ -37,11 +37,6 @@ describe('SideBar', () => {
 		expect(screen.getByRole('button', { name: 'Work experience' })).toBeInTheDocument();
 	});
 
-	it('does not render sidebar buttons for empty sections', () => {
-		render(<SideBar {...defaultProps} />);
-		expect(screen.queryByRole('button', { name: 'Hobbies' })).not.toBeInTheDocument();
-	});
-
 	it('marks the active section button as pressed', () => {
 		render(<SideBar {...defaultProps} activeFileId="bio" />);
 		expect(screen.getByRole('button', { name: 'Personal info' })).toHaveAttribute('aria-pressed', 'true');

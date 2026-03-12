@@ -28,7 +28,7 @@ export const AboutPage = () => {
 			const updatedTabs = openTabs.filter(id => id !== fileId);
 			setOpenTabs(updatedTabs);
 			setActiveFileId(prev =>
-				prev === fileId ? updatedTabs[updatedTabs.length - 1] ?? null : prev,
+				prev === fileId ? updatedTabs.at(-1) ?? null : prev,
 			);
 		},
 		[openTabs],

@@ -18,6 +18,7 @@ jest.mock('shiki/themes/night-owl', () => ({ default: { name: 'night-owl' } }), 
 jest.mock('shiki/langs/javascript', () => ({ default: { name: 'javascript' } }), { virtual: true });
 jest.mock('shiki/langs/typescript', () => ({ default: { name: 'typescript' } }), { virtual: true });
 jest.mock('shiki/langs/json', () => ({ default: { name: 'json' } }), { virtual: true });
+jest.mock('shiki/langs/markdown', () => ({ default: { name: 'markdown' } }), { virtual: true });
 jest.mock('shiki/wasm', () => ({ default: 'mock-wasm' }), { virtual: true });
 
 describe('getHighlighter', () => {
@@ -43,7 +44,7 @@ describe('getHighlighter', () => {
 		expect(callArgs).toHaveProperty('langs');
 		expect(callArgs).toHaveProperty('engine');
 		expect(callArgs.themes).toHaveLength(1);
-		expect(callArgs.langs).toHaveLength(3);
+		expect(callArgs.langs).toHaveLength(4);
 	});
 
 	it('calls createOnigurumaEngine with shiki wasm', async () => {

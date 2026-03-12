@@ -2,7 +2,7 @@
   "name": "rotem-is-a-dev",
   "version": "0.0.1",
   "dependencies": {
-    "@awesome.me/kit-1d40de302b": "^1.0.37",
+    "@awesome.me/kit-1d40de302b": "^1.0.38",
     "@eslint/eslintrc": "3.2.0",
     "@fortawesome/fontawesome-svg-core": "7.2.0",
     "@fortawesome/react-fontawesome": "3.2.0",
@@ -17,6 +17,8 @@
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-game-engine": "1.2.0",
+    "regenerator-runtime": "0.14.1",
     "sharp": "0.34.5",
     "shiki": "3.22.0",
     "typescript": "5.9.3",
