@@ -37,11 +37,6 @@ describe('SideBar', () => {
 		expect(screen.getByRole('button', { name: 'Work experience' })).toBeInTheDocument();
 	});
 
-	it('renders the gaming sidebar button', () => {
-		render(<SideBar {...defaultProps} />);
-		expect(screen.getByRole('button', { name: 'Gaming' })).toBeInTheDocument();
-	});
-
 	it('marks the active section button as pressed', () => {
 		render(<SideBar {...defaultProps} activeFileId="bio" />);
 		expect(screen.getByRole('button', { name: 'Personal info' })).toHaveAttribute('aria-pressed', 'true');

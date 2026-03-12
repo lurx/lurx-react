@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { GameControls } from '../components/game-controls';
 
+jest.mock('@/app/components/fa-icon', () => ({
+	FaIcon: ({ iconName }: { iconName: string }) => (
+		<span data-testid="fa-icon" data-icon={iconName} />
+	),
+}));
+
 jest.mock('../rge-brickfall-game.module.scss', () => ({
 	controls: 'controls',
 	stats: 'stats',

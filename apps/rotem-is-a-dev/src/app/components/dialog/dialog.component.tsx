@@ -14,6 +14,7 @@ export const Dialog = ({
 	onClose,
 	ariaLabel,
 	className,
+	fullScreen = false,
 	children,
 }: PropsWithChildren<DialogProps>) => {
 	const handleKeyDown = useCallback(
@@ -61,7 +62,7 @@ export const Dialog = ({
 
 			<dialog
 				open
-				className={classNames(styles.card, className)}
+				className={classNames(styles.card, fullScreen && styles.fullScreen, className)}
 				aria-label={ariaLabel}
 				data-testid="dialog"
 			>

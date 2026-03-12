@@ -1,5 +1,3 @@
-jest.mock('../snake-instructions.md?raw', () => 'Paragraph one.\n\nParagraph two.', { virtual: true });
-
 import {
 	getFileSection,
 	ABOUT_FILES,
@@ -26,10 +24,6 @@ describe('about-files.data', () => {
 			expect(getFileSection('startup-booster')).toBe('work-experience');
 		});
 
-		it('returns "gaming" for snake-game', () => {
-			expect(getFileSection('snake-game')).toBe('gaming');
-		});
-
 		it('returns null for a file not in any section', () => {
 			expect(getFileSection('nonexistent' as never)).toBeNull();
 		});
@@ -44,21 +38,17 @@ describe('about-files.data', () => {
 			const sectionIds = SECTIONS.map(section => section.id);
 			expect(sectionIds).toContain('personal-info');
 			expect(sectionIds).toContain('work-experience');
-			expect(sectionIds).toContain('gaming');
 		});
 
 		it('maps section files correctly', () => {
 			expect(SECTION_FILES['personal-info']).toContain('bio');
 			expect(SECTION_FILES['work-experience']).toContain('payoneer');
-			expect(SECTION_FILES['gaming']).toContain('snake-game');
 		});
 
 		it('defines all about file entries', () => {
 			expect(ABOUT_FILES['bio']).toBeDefined();
 			expect(ABOUT_FILES['bio'].format).toBe('jsdoc');
 			expect(ABOUT_FILES['payoneer'].format).toBe('json');
-			expect(ABOUT_FILES['snake-game']).toBeDefined();
-			expect(ABOUT_FILES['snake-game'].format).toBe('markdown');
 		});
 	});
 });

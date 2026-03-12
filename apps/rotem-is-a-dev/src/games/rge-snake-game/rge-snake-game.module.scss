@@ -5,7 +5,7 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 16px;
-	font-family: 'Courier New', Courier, monospace;
+	font-family: var(--font-game), 'Courier New', Courier, monospace;
 }
 
 .board {
@@ -72,14 +72,14 @@
 	font-weight: bold;
 	color: var(--cyan);
 	text-shadow: 0 0 10px rgba(0, 213, 190, 0.5);
-	letter-spacing: 4px;
+
 	text-transform: uppercase;
 }
 
 .overlayScore {
 	font-size: 14px;
 	color: var(--muted);
-	letter-spacing: 2px;
+
 }
 
 .overlayButton {
@@ -93,7 +93,7 @@
 	font-size: 14px;
 	font-weight: 450;
 	cursor: pointer;
-	letter-spacing: 1px;
+
 	text-transform: uppercase;
 	transition: opacity 0.2s;
 
@@ -109,7 +109,7 @@
 	font-family: inherit;
 	font-size: 12px;
 	cursor: pointer;
-	letter-spacing: 1px;
+
 	transition: color 0.2s;
 
 	&:hover {
@@ -127,7 +127,7 @@
 .score {
 	font-size: 16px;
 	color: var(--teal);
-	letter-spacing: 2px;
+
 }
 
 .schemeToggle {
@@ -137,7 +137,7 @@
 	font-family: inherit;
 	font-size: 12px;
 	cursor: pointer;
-	letter-spacing: 1px;
+
 	text-transform: uppercase;
 	transition: color 0.2s;
 

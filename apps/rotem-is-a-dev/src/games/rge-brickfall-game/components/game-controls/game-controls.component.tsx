@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+import { FaIcon } from '@/app/components/fa-icon';
 import { ArrowKeyGrid } from '../../../components/arrow-key-grid';
 import type { ArrowKeyGridItem } from '../../../components/arrow-key-grid';
 import type { BrickfallAction, KeyScheme } from '../../rge-brickfall-game.types';
@@ -5,15 +7,20 @@ import { NextPiecePreview } from '../next-piece-preview';
 import type { GameControlsProps } from './game-controls.types';
 import styles from '../../rge-brickfall-game.module.scss';
 
-const ARROW_LABELS: Record<BrickfallAction, string> = {
-	ROTATE: '\u25B2', LEFT: '\u25C0', RIGHT: '\u25B6', SOFT_DROP: '\u25BC', HARD_DROP: '\u2587',
+const ARROW_LABELS: Record<BrickfallAction, ReactNode> = {
+	ROTATE: <FaIcon iconName="caret-up" iconGroup="fas" size="lg" />,
+	LEFT: <FaIcon iconName="caret-left" iconGroup="fas" size="lg" />,
+	RIGHT: <FaIcon iconName="caret-right" iconGroup="fas" size="lg" />,
+	SOFT_DROP: <FaIcon iconName="caret-down" iconGroup="fas" size="lg" />,
+	HARD_DROP: <FaIcon iconName="angles-down" iconGroup="fas" size="lg" />,
 };
 
-const WASD_LABELS: Record<BrickfallAction, string> = {
-	ROTATE: 'W', LEFT: 'A', RIGHT: 'D', SOFT_DROP: 'S', HARD_DROP: '\u2587',
+const WASD_LABELS: Record<BrickfallAction, ReactNode> = {
+	ROTATE: 'W', LEFT: 'A', RIGHT: 'D', SOFT_DROP: 'S',
+	HARD_DROP: <FaIcon iconName="angles-down" iconGroup="fas" size="lg" />,
 };
 
-const LABEL_MAPS: Record<KeyScheme, Record<BrickfallAction, string>> = {
+const LABEL_MAPS: Record<KeyScheme, Record<BrickfallAction, ReactNode>> = {
 	arrows: ARROW_LABELS,
 	wasd: WASD_LABELS,
 };

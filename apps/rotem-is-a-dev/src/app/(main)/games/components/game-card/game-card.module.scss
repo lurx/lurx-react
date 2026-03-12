@@ -1,0 +1,117 @@
+@use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
+@use 'mixins/normalize-to-grid' as *;
+
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 460px;
+	flex-shrink: 0;
+
+	@include media-below('tablet') {
+		width: 100%;
+	}
+}
+
+.cardTitle {
+	white-space: pre-wrap;
+}
+
+.cardTitleNumber {
+	font-weight: 700;
+	color: var(--keyword);
+}
+
+.cardTitleSeparator {
+	font-weight: 400;
+	color: var(--muted);
+}
+
+.cardTitleSlug {
+	font-weight: 400;
+	color: var(--muted);
+}
+
+.cardBody {
+	display: flex;
+	flex-direction: column;
+	border-radius: 16px;
+	border: 1px solid var(--surface-alt);
+	overflow: hidden;
+	position: relative;
+}
+
+// ─── Preview Area ──────────────────────────────────────────────────────────────
+
+.imageWrapper {
+	--game-preview-bg: #0d1b2e;
+	position: relative;
+	height: #{normalize-to-grid(260px)};
+	background-color: var(--game-preview-bg);
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.previewContainer {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.previewScaler {
+	flex-shrink: 0;
+	transform: scale(0.5);
+	transform-origin: center center;
+}
+
+// ─── Text Content ──────────────────────────────────────────────────────────────
+
+.textContent {
+	flex: 1;
+	padding: spacing(3);
+	padding-block-end: spacing(1);
+	background-color: var(--bg);
+}
+
+.description {
+	flex: 1;
+	min-width: 0;
+	line-height: 1.5;
+	color: var(--muted);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+// ─── Footer ────────────────────────────────────────────────────────────────────
+
+.footer {
+	display: flex;
+	padding: spacing(2) spacing(3);
+	background-color: var(--bg);
+	border-top: 1px solid var(--surface-alt);
+}
+
+.playButton {
+	padding: 8px 16px;
+	background-color: var(--keyword);
+	color: var(--bg);
+	border: none;
+	border-radius: var(--radius-md);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 450;
+	cursor: pointer;
+	letter-spacing: 1px;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.85;
+	}
+}

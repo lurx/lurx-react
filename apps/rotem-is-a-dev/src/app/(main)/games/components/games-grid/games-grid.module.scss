@@ -1,0 +1,23 @@
+@use 'mixins/media' as *;
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	overflow: hidden;
+}
+
+.grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	padding: 64px;
+	overflow-y: auto;
+	flex: 1;
+	align-content: flex-start;
+
+	@include media-below('tablet') {
+		padding: 24px 16px;
+		gap: 24px;
+	}
+}

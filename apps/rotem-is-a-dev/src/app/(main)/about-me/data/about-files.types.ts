@@ -1,4 +1,4 @@
-export type SectionId = 'personal-info' | 'work-experience' | 'gaming';
+export type SectionId = 'personal-info' | 'work-experience';
 
 export type AboutFileId =
 	| 'bio'
@@ -6,9 +6,7 @@ export type AboutFileId =
 	| 'payoneer'
 	| 'startup-booster'
 	| 'investing-com'
-	| 'isocia'
-	| 'snake-game'
-	| 'brickfall-game';
+	| 'isocia';
 
 export type JsdocFileContent = {
 	title: string;

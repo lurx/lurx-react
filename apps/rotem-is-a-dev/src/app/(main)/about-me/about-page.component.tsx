@@ -3,12 +3,11 @@
 import { EmptyState } from '@/app/components/empty-state/empty-state.component';
 import { EMPTY_STATE_VARIANTS } from '@/app/components/empty-state/empty-state.constants';
 import { toCodeLike } from '@/app/utils/to-code-like.util';
-import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './about-page.module.scss';
 import { AboutContent, AboutEditor, FileTree, SideBar } from './components';
 import type { AboutFileId } from './data/about-files.data';
-import { ABOUT_FILES, DEFAULT_FILE_ID, getFileSection } from './data/about-files.data';
+import { ABOUT_FILES, DEFAULT_FILE_ID } from './data/about-files.data';
 
 export const AboutPage = () => {
 	const [activeFileId, setActiveFileId] =
@@ -45,16 +44,7 @@ export const AboutPage = () => {
 		setActiveFileId(null);
 	}, []);
 
-	const searchParams = useSearchParams();
-	const playGame = searchParams.get('play-game');
-
-	useEffect(() => {
-		if (playGame === 'snake') handleFileSelect('snake-game');
-		if (playGame === 'brickfall') handleFileSelect('brickfall-game');
-	}, [playGame, handleFileSelect]);
-
 	const activeFile = activeFileId ? ABOUT_FILES[activeFileId] : null;
-	const activeSection = activeFileId ? getFileSection(activeFileId) : null;
 
 	const editorContent = activeFile ? (
 		<AboutEditor content={activeFile} />
@@ -81,7 +71,6 @@ export const AboutPage = () => {
 			<AboutContent
 				openTabs={openTabs}
 				activeFileId={activeFileId}
-				activeSection={activeSection}
 				onTabSelect={handleTabSelect}
 				onTabClose={handleTabClose}
 				onCloseOthers={handleCloseOthers}

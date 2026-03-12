@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { GameControls } from '../components/game-controls';
 
+jest.mock('@/app/components/fa-icon', () => ({
+	FaIcon: ({ iconName }: { iconName: string }) => (
+		<span data-testid="fa-icon" data-icon={iconName} />
+	),
+}));
+
 jest.mock('../../rge-snake-game.module.scss', () => ({
 	controls: 'controls',
 	score: 'score',
@@ -58,12 +64,12 @@ describe('GameControls', () => {
 		expect(downButton.className).not.toContain('active');
 	});
 
-	it('renders arrow labels in buttons', () => {
+	it('renders arrow icon labels in buttons', () => {
 		render(<GameControls {...defaultProps} />);
-		expect(screen.getByTestId('arrow-up')).toHaveTextContent('\u25B2');
-		expect(screen.getByTestId('arrow-down')).toHaveTextContent('\u25BC');
-		expect(screen.getByTestId('arrow-left')).toHaveTextContent('\u25C0');
-		expect(screen.getByTestId('arrow-right')).toHaveTextContent('\u25B6');
+		expect(screen.getByTestId('arrow-up').querySelector('[data-icon="caret-up"]')).toBeInTheDocument();
+		expect(screen.getByTestId('arrow-down').querySelector('[data-icon="caret-down"]')).toBeInTheDocument();
+		expect(screen.getByTestId('arrow-left').querySelector('[data-icon="caret-left"]')).toBeInTheDocument();
+		expect(screen.getByTestId('arrow-right').querySelector('[data-icon="caret-right"]')).toBeInTheDocument();
 	});
 
 	it('has accessible labels on arrow buttons', () => {

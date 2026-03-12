@@ -1,6 +1,4 @@
 import cv from '@/data/cv.data';
-import brickfallInstructions from './brickfall-instructions.md?raw';
-import snakeInstructions from './snake-instructions.md?raw';
 import type {
 	AboutFileContent,
 	AboutFileId,
@@ -13,13 +11,11 @@ export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, 
 export const SECTIONS: SectionConfig[] = [
 	{ id: 'personal-info', label: 'Personal info', icon: 'user' },
 	{ id: 'work-experience', label: 'Work experience', icon: 'briefcase' },
-	{ id: 'gaming', label: 'Gaming', icon: 'alien-8bit' },
 ];
 
 export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'personal-info': ['bio', 'interests'],
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
-	'gaming': ['snake-game', 'brickfall-game'],
 };
 
 export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
@@ -58,16 +54,6 @@ export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
 		title: 'isocia',
 		format: 'json',
 		json: cv.work_experience[3] as unknown as Record<string, unknown>,
-	},
-	'snake-game': {
-		title: 'snake-game',
-		format: 'markdown',
-		raw: snakeInstructions,
-	},
-	'brickfall-game': {
-		title: 'brickfall-game',
-		format: 'markdown',
-		raw: brickfallInstructions,
 	},
 };
 

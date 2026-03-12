@@ -151,6 +151,31 @@ describe('Dialog', () => {
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 	});
 
+	it('applies fullScreen class when fullScreen prop is true', () => {
+		render(
+			<Dialog
+				isOpen={true}
+				onClose={mockOnClose}
+				ariaLabel="Test dialog"
+				fullScreen
+			>
+				<p>Content</p>
+			</Dialog>,
+		);
+		const dialog = screen.getByTestId('dialog');
+		expect(dialog.className).toContain('fullScreen');
+	});
+
+	it('does not apply fullScreen class by default', () => {
+		render(
+			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+				<p>Content</p>
+			</Dialog>,
+		);
+		const dialog = screen.getByTestId('dialog');
+		expect(dialog.className).not.toContain('fullScreen');
+	});
+
 	it('applies custom className to card', () => {
 		render(
 			<Dialog

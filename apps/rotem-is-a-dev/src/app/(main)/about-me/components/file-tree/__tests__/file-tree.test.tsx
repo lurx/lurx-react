@@ -112,17 +112,6 @@ describe('FileTree', () => {
 		expect(chevronIcons.length).toBeGreaterThanOrEqual(2);
 	});
 
-	it('hides the gaming section on mobile', () => {
-		mockUseResponsive.mockReturnValue({ isMobile: true, isTablet: false, isDesktop: false });
-		render(<FileTree {...defaultProps} />);
-		expect(screen.queryByText('gaming')).not.toBeInTheDocument();
-	});
-
-	it('shows the gaming section on desktop', () => {
-		render(<FileTree {...defaultProps} />);
-		expect(screen.getByText('gaming')).toBeInTheDocument();
-	});
-
 	it('renders data-section attributes on section wrappers', () => {
 		render(<FileTree {...defaultProps} />);
 		const personalInfo = screen.getByText('personal-info').closest('[data-section]');

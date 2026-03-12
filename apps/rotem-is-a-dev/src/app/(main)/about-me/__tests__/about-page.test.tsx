@@ -1,12 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AboutPage } from '../about-page.component';
 
-const mockSearchParams = new URLSearchParams();
-
-jest.mock('next/navigation', () => ({
-	useSearchParams: () => mockSearchParams,
-}));
-
 jest.mock('@/lib/shiki', () => ({
 	useShikiTokens: ({ code }: { code: string }) =>
 		code.split('\n').map((line: string) => ({
@@ -22,10 +16,6 @@ jest.mock('@/app/components/empty-state/empty-state.component', () => ({
 	EmptyState: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="empty-state">{children}</div>
 	),
-}));
-
-jest.mock('@/app/(main)/components/snake-game', () => ({
-	SnakeGame: () => <div data-testid="snake-game">Snake Game</div>,
 }));
 
 let portalRoot: HTMLDivElement;
@@ -57,13 +47,6 @@ describe('AboutPage', () => {
 		render(<AboutPage />);
 		expect(
 			screen.getByRole('button', { name: 'Personal info' }),
-		).toBeInTheDocument();
-	});
-
-	it('renders the gaming sidebar button', () => {
-		render(<AboutPage />);
-		expect(
-			screen.getByRole('button', { name: 'Gaming' }),
 		).toBeInTheDocument();
 	});
 
