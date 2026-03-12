@@ -630,5 +630,5 @@ If you've been itching to build something that _isn't_ a form, give it a shot. T
 
 ## Links
 
-- [Play the Snake game](/about-me?play-game=snake)
+- [Play the Snake game](/games?play-game=snake)
 - [See the full code](https://github.com/lurx/lurx-react/tree/main/apps/rotem-is-a-dev/src/games/rge-snake-game/)
