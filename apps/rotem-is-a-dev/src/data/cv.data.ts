@@ -9,7 +9,7 @@ const cv: CvContextValue = {
 		email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
 		phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? '',
 		social: {
-			linkedin: 'https://linkedin.com/in/rotem-lurx-horovitz-9601705',
+			linkedin: 'https://linkedin.com/in/rotem-horovitz',
 			github: 'https://github.com/lurx',
 		},
 	},

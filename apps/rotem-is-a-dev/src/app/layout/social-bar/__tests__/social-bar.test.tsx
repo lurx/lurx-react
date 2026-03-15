@@ -21,7 +21,7 @@ describe('SocialBar', () => {
 		expect(linkedinLink).toBeInTheDocument();
 		expect(linkedinLink).toHaveAttribute(
 			'href',
-			'https://linkedin.com/in/rotem-lurx-horovitz-9601705',
+			'https://linkedin.com/in/rotem-horovitz',
 		);
 	});
 
