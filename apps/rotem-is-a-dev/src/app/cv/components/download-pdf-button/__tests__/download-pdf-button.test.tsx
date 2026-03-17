@@ -1,10 +1,15 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 const mockUseSearchParams = jest.fn();
 
 jest.mock('@/app/cv/utils/generate-pdf', () => ({
 	generateCvPdf: (...args: unknown[]) => mockGenerateCvPdf(...args),
+}));
+
+jest.mock('@/app/cv/utils/react-pdf', () => ({
+	generateReactPdf: (...args: unknown[]) => mockGenerateReactPdf(...args),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -37,6 +42,7 @@ import { DownloadPdfButton } from '../download-pdf-button.component';
 
 beforeEach(() => {
 	mockGenerateCvPdf.mockClear();
+	mockGenerateReactPdf.mockClear();
 	mockUseSearchParams.mockReturnValue({ has: () => false });
 });
 
@@ -117,6 +123,32 @@ describe('DownloadPdfButton', () => {
 
 		await waitFor(() => {
 			expect(screen.getByRole('button')).not.toBeDisabled();
+		});
+	});
+
+	it('calls generateReactPdf when new-pdf param is present', async () => {
+		mockUseSearchParams.mockReturnValue({
+			has: (key: string) => key === 'new-pdf',
+		});
+
+		render(<DownloadPdfButton />);
+		fireEvent.click(screen.getByRole('button'));
+
+		await waitFor(() => {
+			expect(mockGenerateReactPdf).toHaveBeenCalledTimes(1);
+			expect(mockGenerateCvPdf).not.toHaveBeenCalled();
+		});
+	});
+
+	it('calls generateCvPdf when new-pdf param is absent', async () => {
+		mockUseSearchParams.mockReturnValue({ has: () => false });
+
+		render(<DownloadPdfButton />);
+		fireEvent.click(screen.getByRole('button'));
+
+		await waitFor(() => {
+			expect(mockGenerateCvPdf).toHaveBeenCalledTimes(1);
+			expect(mockGenerateReactPdf).not.toHaveBeenCalled();
 		});
 	});
 });

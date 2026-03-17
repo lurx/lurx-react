@@ -8,9 +8,14 @@ const mockRenderCvOffscreen = jest.fn(() => ({
 }));
 
 const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 
 jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),
+}));
+
+jest.mock('@/app/cv/utils/react-pdf', () => ({
+	generateReactPdf: (...args: unknown[]) => mockGenerateReactPdf(...args),
 }));
 
 jest.mock('@/app/cv/utils/render-cv-offscreen', () => ({
@@ -36,11 +41,13 @@ beforeEach(() => {
 	mockCleanup.mockClear();
 	mockRenderCvOffscreen.mockClear();
 	mockGenerateCvPdf.mockClear();
+	mockGenerateReactPdf.mockClear();
 	mockUseResponsive.mockReturnValue({
 		isMobile: false,
 		isTablet: false,
 		isDesktop: true,
 	});
+	window.history.pushState({}, '', '/');
 });
 
 describe('DownloadCVButton', () => {
@@ -145,6 +152,30 @@ describe('DownloadCVButton', () => {
 
 		await waitFor(() => {
 			expect(screen.getByText('file-pdf')).toBeInTheDocument();
+		});
+	});
+
+	it('calls generateReactPdf when new-pdf param is present', async () => {
+		window.history.pushState({}, '', '/?new-pdf');
+
+		render(<DownloadCVButton />);
+		fireEvent.click(screen.getByRole('button'));
+
+		await waitFor(() => {
+			expect(mockGenerateReactPdf).toHaveBeenCalledTimes(1);
+			expect(mockRenderCvOffscreen).not.toHaveBeenCalled();
+			expect(mockGenerateCvPdf).not.toHaveBeenCalled();
+		});
+	});
+
+	it('uses old PDF flow when new-pdf param is absent', async () => {
+		render(<DownloadCVButton />);
+		fireEvent.click(screen.getByRole('button'));
+
+		await waitFor(() => {
+			expect(mockRenderCvOffscreen).toHaveBeenCalledTimes(1);
+			expect(mockGenerateCvPdf).toHaveBeenCalledTimes(1);
+			expect(mockGenerateReactPdf).not.toHaveBeenCalled();
 		});
 	});
 });

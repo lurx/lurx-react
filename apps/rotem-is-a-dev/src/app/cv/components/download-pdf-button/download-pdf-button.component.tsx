@@ -14,7 +14,14 @@ export const DownloadPdfButton = () => {
 
 	const handleClick = async () => {
 		setIsGenerating(true);
-		await generateCvPdf();
+
+		if (searchParams.has('new-pdf')) {
+			const { generateReactPdf } = await import('@/app/cv/utils/react-pdf');
+			await generateReactPdf();
+		} else {
+			await generateCvPdf();
+		}
+
 		setIsGenerating(false);
 	};
 
