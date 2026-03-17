@@ -1,0 +1,319 @@
+@use 'mixins/media' as *;
+
+.wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+	font-family: var(--font-game), 'Courier New', Courier, monospace;
+
+	@include media-below('tablet') {
+		flex-direction: column;
+	}
+}
+
+.board {
+	--board-rows: 31;
+	--board-cols: 28;
+	--board-cell-size: 16px;
+	width: calc(var(--board-cols) * var(--board-cell-size));
+	height: calc(var(--board-rows) * var(--board-cell-size));
+	position: relative;
+	background-color: #000;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	box-shadow: inset 1px 5px 11px 0 rgba(2, 18, 27, 0.71);
+}
+
+.engineContainer {
+	position: relative;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: rgba(0, 0, 0, 0.84);
+	z-index: var(--z-decoration);
+}
+
+.overlayTitle {
+	font-size: 28px;
+	font-weight: bold;
+	color: #ffe000;
+	text-shadow: 0 0 10px rgba(255, 224, 0, 0.5);
+	text-transform: uppercase;
+}
+
+.overlayScore {
+	font-size: 14px;
+	color: var(--muted);
+}
+
+.overlayButton {
+	margin-top: 8px;
+	padding: 10px 16px;
+	background-color: var(--orange);
+	color: var(--bg);
+	border: none;
+	border-radius: var(--radius-md);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 450;
+	cursor: pointer;
+	text-transform: uppercase;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.85;
+	}
+}
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+}
+
+.stats {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.score {
+	font-size: 16px;
+	color: var(--teal);
+}
+
+.statLine {
+	font-size: 12px;
+	color: var(--muted);
+}
+
+@keyframes powerPulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	50% {
+		opacity: 0.4;
+		transform: scale(0.7);
+	}
+}
+
+.powerPellet {
+	animation: powerPulse 600ms ease-in-out infinite;
+}
+
+@keyframes frightenedFlash {
+	0%,
+	100% {
+		background-color: #2121de;
+	}
+
+	50% {
+		background-color: #fff;
+	}
+}
+
+.frightenedFlash {
+	animation: frightenedFlash 200ms linear infinite;
+}
+
+.schemeToggle {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: 12px;
+	cursor: pointer;
+	text-transform: uppercase;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
+$ghosts: (
+  blinky: #ff0000,
+  pinky: #ffb8ff,
+  inky: #00ffff,
+  clyde: #ffb852,
+);
+
+// Pac-Man — circle with chomping mouth via clip-path
+.pacman {
+  position: absolute;
+  width: var(--board-cell-size);
+  height: var(--board-cell-size);
+  border-radius: 100%;
+  background-color: #f1eb35;
+  z-index: 2;
+  clip-path: polygon(50% 50%, 80% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 20% 0%);
+  animation: chompChompChomp 250ms linear infinite;
+
+  &.dirUp { transform: rotate(0deg); }
+  &.dirRight { transform: rotate(90deg); }
+  &.dirDown { transform: rotate(180deg); }
+  &.dirLeft { transform: rotate(270deg); }
+
+  &.dying {
+    animation: pacmanDeath 1s ease-in 0.5s forwards;
+  }
+}
+
+@keyframes chompChompChomp {
+  0% {
+    clip-path: polygon(50% 50%, 100% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 0%);
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
+  }
+}
+
+@keyframes pacmanDeath {
+  0% {
+    clip-path: polygon(50% 50%, 80% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 20% 0%);
+    opacity: 1;
+  }
+
+  25% {
+    clip-path: polygon(50% 50%, 100% 50%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 50%);
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 0% 100%, 0% 100%, 0% 100%);
+  }
+
+  75% {
+    clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%);
+    opacity: 1;
+  }
+
+  100% {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%);
+    opacity: 0;
+  }
+}
+
+// Ghost — rounded top + wavy bottom via clip-path, eyes via pseudo-elements
+.ghost {
+  --eye: 50% 50% radial-gradient(ellipse, #dcdcdc, #dcdcdc 50%, transparent 50%);
+
+  position: absolute;
+  width: var(--board-cell-size);
+  height: var(--board-cell-size);
+  z-index: 1;
+  border-radius: 80% 80% 50% 50%;
+  clip-path: polygon(0% 100%, 25% 80%, 50% 100%, 75% 80%, 100% 100%, 100% 0%, 0% 0%);
+  background:
+    no-repeat left 15% top 30% / var(--eye),
+    no-repeat right 15% top 30% / var(--eye);
+
+  // Pupils — positioned by direction class
+  &::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 20%;
+    right: 20%;
+    height: 20%;
+    background:
+      no-repeat left top / 35% 100% linear-gradient(#012ad6, #012ad6),
+      no-repeat right top / 35% 100% linear-gradient(#012ad6, #012ad6);
+  }
+
+  &.pupilUp::after { transform: translate(0%, -35%); }
+  &.pupilDown::after { transform: translate(0%, 35%); }
+  &.pupilLeft::after { transform: translate(-20%, 0%); }
+  &.pupilRight::after { transform: translate(20%, 0%); }
+
+  @each $name, $color in $ghosts {
+    &.#{$name} {
+      background-color: $color;
+    }
+  }
+
+  &.frightened {
+    background-color: #2121de;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &.eaten {
+    background: transparent;
+    clip-path: none;
+    border-radius: 0;
+  }
+}
+
+// Maze cells
+.mazeCell {
+  position: absolute;
+  width: var(--board-cell-size);
+  height: var(--board-cell-size);
+}
+
+.wall {
+  background-color: #2121de;
+}
+
+.dot {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.power {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.fruit {
+  position: absolute;
+  width: var(--board-cell-size);
+  height: var(--board-cell-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 2;
+}

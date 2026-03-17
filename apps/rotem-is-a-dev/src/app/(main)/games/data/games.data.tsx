@@ -1,6 +1,7 @@
 import { AnimatedLoader } from '@/app/components';
 import dynamic from 'next/dynamic';
 import { BrickfallPreview } from './brickfall-preview.component';
+import { PacmanPreview } from './pacman-preview.component';
 import { SnakePreview } from './snake-preview.component';
 import type { Game } from './games.types';
 
@@ -15,6 +16,11 @@ const RgeSnakeGame = dynamic(
 
 const RgeBrickfallGame = dynamic(
 	() => import('@/games/rge-brickfall-game').then(mod => mod.RgeBrickfallGame),
+	{ ssr: false, loading },
+);
+
+const RgePacmanGame = dynamic(
+	() => import('@/games/rge-pacman-game').then(mod => mod.RgePacmanGame),
 	{ ssr: false, loading },
 );
 
@@ -36,5 +42,14 @@ export const GAMES: Game[] = [
 			'Tetris-inspired brick game. Rotate and place falling tetrominoes to clear lines.',
 		preview: BrickfallPreview,
 		game: RgeBrickfallGame,
+	},
+	{
+		id: 3,
+		number: 3,
+		slug: '_pacman',
+		description:
+			'Pac-Man arcade game. Navigate the maze, eat dots, avoid ghosts, and use power pellets.',
+		preview: PacmanPreview,
+		game: RgePacmanGame,
 	},
 ];
