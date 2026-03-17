@@ -35,12 +35,6 @@ importers:
       gsap:
         specifier: ^3.14.2
         version: 3.14.2
-      html2canvas:
-        specifier: ^1.4.1
-        version: 1.4.1
-      jspdf:
-        specifier: ^4.1.0
-        version: 4.1.0
       next:
         specifier: ^15.3.0
         version: 15.5.12(@babel/core@7.28.4)(@playwright/test@1.52.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.97.3)

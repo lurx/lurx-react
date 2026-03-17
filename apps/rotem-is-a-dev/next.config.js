@@ -20,7 +20,6 @@ const scriptSrc = [
 const connectSrc = [
 	"'self'",
 	isDev && 'ws:',
-	isDev && 'data:', // @react-pdf/renderer yoga WASM module
 	'https://*.googleapis.com',
 	'https://*.firebaseio.com',
 	'https://*.cloudfunctions.net',
@@ -42,7 +41,6 @@ const imgSrc = [
 
 const frameSrc = [
 	'https://*.firebaseapp.com',
-	isDev && 'blob:', // @react-pdf/renderer PDFViewer iframe
 	isVercelPreview && 'https://vercel.live',
 ]
 	.filter(Boolean)

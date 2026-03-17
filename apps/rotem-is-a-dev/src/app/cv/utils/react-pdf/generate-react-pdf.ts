@@ -7,7 +7,7 @@ export const generateReactPdf = async (): Promise<void> => {
 
 	const anchor = document.createElement('a');
 	anchor.href = url;
-	anchor.download = 'rotem-horovitz-cv-new.pdf';
+	anchor.download = 'rotem-horovitz-cv.pdf';
 	document.body.appendChild(anchor);
 	anchor.click();
 

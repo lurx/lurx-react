@@ -1,31 +1,29 @@
 {
-  "name": "rotem-is-a-dev",
-  "version": "0.0.1",
-  "dependencies": {
-    "@awesome.me/kit-1d40de302b": "^1.0.38",
-    "@eslint/eslintrc": "3.2.0",
-    "@fortawesome/fontawesome-svg-core": "7.2.0",
-    "@fortawesome/react-fontawesome": "3.2.0",
-    "@svgr/webpack": "8.1.0",
-    "classnames": "2.5.1",
-    "embla-carousel-react": "8.6.0",
-    "es-toolkit": "1.39.10",
-    "firebase": "12.10.0",
-    "gsap": "3.14.2",
-    "html2canvas": "1.4.1",
-    "jspdf": "4.1.0",
-    "next": "^15.3.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-game-engine": "1.2.0",
-    "regenerator-runtime": "0.14.1",
-    "sharp": "0.34.5",
-    "shiki": "3.22.0",
-    "typescript": "5.9.3",
-    "usehooks-ts": "3.1.1"
-  },
-  "packageManager": "pnpm@9.15.9",
-  "scripts": {
-    "start": "next start"
-  }
+	"name": "rotem-is-a-dev",
+	"version": "0.0.1",
+	"dependencies": {
+		"@awesome.me/kit-1d40de302b": "^1.0.38",
+		"@eslint/eslintrc": "3.2.0",
+		"@fortawesome/fontawesome-svg-core": "7.2.0",
+		"@fortawesome/react-fontawesome": "3.2.0",
+		"@svgr/webpack": "8.1.0",
+		"classnames": "2.5.1",
+		"embla-carousel-react": "8.6.0",
+		"es-toolkit": "1.39.10",
+		"firebase": "12.10.0",
+		"gsap": "3.14.2",
+		"next": "^15.3.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-game-engine": "1.2.0",
+		"regenerator-runtime": "0.14.1",
+		"sharp": "0.34.5",
+		"shiki": "3.22.0",
+		"typescript": "5.9.3",
+		"usehooks-ts": "3.1.1"
+	},
+	"packageManager": "pnpm@9.15.9",
+	"scripts": {
+		"start": "next start"
+	}
 }

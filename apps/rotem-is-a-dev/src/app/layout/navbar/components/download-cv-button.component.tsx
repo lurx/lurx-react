@@ -17,22 +17,8 @@ export const DownloadCVButton = () => {
 		setIsGenerating(true);
 
 		try {
-			const useNewPdf = new URLSearchParams(globalThis.location.search).has('new-pdf');
-
-			if (useNewPdf) {
-				const { generateReactPdf } = await import('@/app/cv/utils/react-pdf');
-				await generateReactPdf();
-			} else {
-				const { renderCvOffscreen } = await import('@/app/cv/utils/render-cv-offscreen');
-				const { generateCvPdf } = await import('@/app/cv/utils/generate-pdf');
-
-				const { container, cleanup } = renderCvOffscreen();
-				try {
-					await generateCvPdf(container);
-				} finally {
-					cleanup();
-				}
-			}
+			const { generateReactPdf } = await import('@/app/cv/utils/react-pdf');
+			await generateReactPdf();
 		} catch {
 			// PDF generation may fail silently — the user can retry
 		} finally {
