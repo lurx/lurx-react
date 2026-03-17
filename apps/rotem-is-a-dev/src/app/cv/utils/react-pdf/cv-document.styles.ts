@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: PDF_COLORS.background,
 		padding: PDF_LAYOUT.pageMargin,
 		fontFamily: 'Helvetica',
-		fontSize: 9,
+		fontSize: 10,
 		color: PDF_COLORS.text,
 	},
 	columns: {
@@ -27,37 +27,41 @@ export const styles = StyleSheet.create({
 		padding: PDF_LAYOUT.cardPadding,
 	},
 	name: {
-		fontSize: 22,
+		fontSize: 24,
 		fontFamily: 'Helvetica-Bold',
 		marginBottom: 2,
 	},
 	titles: {
-		fontSize: 10,
+		fontSize: 12,
 		color: PDF_COLORS.textMuted,
 		marginBottom: 8,
 	},
 	contactRow: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		gap: 6,
+		gap: 4,
 		marginBottom: 10,
-		fontSize: 8,
+		fontSize: 10,
 		color: PDF_COLORS.textMuted,
 	},
 	contactItem: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
+	contactLink: {
+		color: PDF_COLORS.textMuted,
+		textDecoration: 'none',
+	},
 	contactSeparator: {
-		marginHorizontal: 2,
+		marginHorizontal: 1,
 	},
 	introText: {
-		fontSize: 9,
-		lineHeight: 1.5,
+		fontSize: 10,
+		lineHeight: 1.15,
 		color: PDF_COLORS.text,
 	},
 	sectionTitle: {
-		fontSize: 11,
+		fontSize: 12,
 		fontFamily: 'Helvetica-Bold',
 		textTransform: 'uppercase',
 		color: PDF_COLORS.accent,
@@ -68,19 +72,19 @@ export const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	experiencePosition: {
-		fontSize: 10,
+		fontSize: 11,
 		fontFamily: 'Helvetica-Bold',
 	},
 	experienceMeta: {
-		fontSize: 8,
+		fontSize: 9,
 		color: PDF_COLORS.textMuted,
-		marginBottom: 4,
+		marginVertical: 4,
 	},
 	experienceDescription: {
-		fontSize: 8.5,
+		fontSize: 10,
 		color: PDF_COLORS.text,
 		marginBottom: 4,
-		lineHeight: 1.4,
+		lineHeight: 1.15,
 	},
 	achievementItem: {
 		flexDirection: 'row',
@@ -89,13 +93,13 @@ export const styles = StyleSheet.create({
 	},
 	achievementBullet: {
 		width: 10,
-		fontSize: 8.5,
+		fontSize: 10,
 		color: PDF_COLORS.textMuted,
 	},
 	achievementText: {
 		flex: 1,
-		fontSize: 8.5,
-		lineHeight: 1.4,
+		fontSize: 10,
+		lineHeight: 1.15,
 	},
 	separator: {
 		borderBottomWidth: 1,
@@ -103,20 +107,19 @@ export const styles = StyleSheet.create({
 		marginVertical: 8,
 	},
 	skillsContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		gap: 6,
+		gap: 4,
 	},
 	skillTag: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'space-between',
 		paddingHorizontal: 8,
 		paddingVertical: 4,
 		borderRadius: 4,
 		backgroundColor: PDF_COLORS.languageBg,
 	},
 	skillName: {
-		fontSize: 8,
+		fontSize: 9,
 		fontFamily: 'Helvetica-Bold',
 		textTransform: 'uppercase',
 	},
@@ -132,15 +135,13 @@ export const styles = StyleSheet.create({
 		borderRadius: 2,
 	},
 	languagesContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		gap: 6,
+		gap: 4,
 	},
 	languageTag: {
 		paddingHorizontal: 10,
 		paddingVertical: 5,
 		borderRadius: 12,
 		backgroundColor: PDF_COLORS.languageBg,
-		fontSize: 8.5,
+		fontSize: 9,
 	},
 });

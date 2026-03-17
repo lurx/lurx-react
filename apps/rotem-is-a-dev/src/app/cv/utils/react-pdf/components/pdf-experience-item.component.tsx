@@ -4,7 +4,7 @@ import { styles } from '../cv-document.styles';
 import type { PdfExperienceItemProps } from './pdf-experience-item.types';
 
 export const PdfExperienceItem = ({ item, isLast }: PdfExperienceItemProps) => (
-	<View style={styles.experienceItem} wrap={false}>
+	<View style={styles.experienceItem}>
 		<Text style={styles.experiencePosition}>{item.position}</Text>
 		<Text style={styles.experienceMeta}>
 			{item.company} &middot; {formatDuration(item.duration)}
@@ -14,13 +14,13 @@ export const PdfExperienceItem = ({ item, isLast }: PdfExperienceItemProps) => (
 			<Text style={styles.experienceDescription}>{item.description}</Text>
 		) : null}
 
-		{item.achievements?.map((achievement, index) => (
-			<View style={styles.achievementItem} key={index}>
+		{item.achievements?.map(achievement => (
+			<View style={styles.achievementItem} key={achievement}>
 				<Text style={styles.achievementBullet}>&bull;</Text>
 				<Text style={styles.achievementText}>{achievement}</Text>
 			</View>
 		))}
 
-		{!isLast ? <View style={styles.separator} /> : null}
+		{isLast ? null : <View style={styles.separator} />}
 	</View>
 );
