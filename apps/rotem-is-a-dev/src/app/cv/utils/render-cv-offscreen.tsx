@@ -105,7 +105,7 @@ export function renderCvOffscreen(): OffscreenResult {
 
 	const root = createRoot(wrapper);
 	flushSync(() => {
-		root.render(<CV />);
+		root.render(<CV searchParams={Promise.resolve({})} />);
 	});
 
 	const container = wrapper.querySelector<HTMLElement>('.container');
