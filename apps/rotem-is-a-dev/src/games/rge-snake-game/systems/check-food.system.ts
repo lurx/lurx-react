@@ -1,4 +1,5 @@
-import type { Entities, Position, SystemArgs } from '../rge-snake-game.types';
+import type { Position, SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 const positionKey = (pos: Position): string => `${pos.x},${pos.y}`;
 

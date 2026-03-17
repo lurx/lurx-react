@@ -19,13 +19,12 @@ import {
 	randomTetrominoType,
 } from './rge-brickfall-game.helpers';
 import styles from './rge-brickfall-game.module.scss';
+import type { GameEvent, KeyScheme } from '../games.types';
 import type {
 	BrickfallAction,
 	BrickfallGameConfig,
+	BrickfallGamePhase,
 	Entities,
-	GameEvent,
-	GamePhase,
-	KeyScheme,
 } from './rge-brickfall-game.types';
 import { checkGameOver, gravity, handleInput, lockPiece } from './systems';
 
@@ -101,7 +100,7 @@ export type RgeBrickfallGameProps = {
 export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 	const resolved = useMemo(() => resolveConfig(config), [config]);
 
-	const [phase, setPhase] = useState<GamePhase>('idle');
+	const [phase, setPhase] = useState<BrickfallGamePhase>('idle');
 	const [score, setScore] = useState(0);
 	const [level, setLevel] = useState(1);
 	const [linesCleared, setLinesCleared] = useState(0);

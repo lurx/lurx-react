@@ -1,4 +1,5 @@
-import type { Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-brickfall-game.types';
 import { handleHardDrop, handleMove, handleRotate, syncGhost } from './handle-input.helpers';
 
 export const handleInput = (entities: Entities, { dispatch }: SystemArgs): Entities => {

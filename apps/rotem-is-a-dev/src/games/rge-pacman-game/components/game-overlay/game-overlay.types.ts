@@ -1,7 +1,7 @@
-import type { GamePhase } from '../../rge-pacman-game.types';
+import type { PacmanGamePhase } from '../../rge-pacman-game.types';
 
 export type GameOverlayProps = {
-	phase: GamePhase;
+	phase: PacmanGamePhase;
 	score: number;
 	lives: number;
 	onStart: () => void;

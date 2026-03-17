@@ -1,4 +1,5 @@
-import type { Direction, Entities, Position, SystemArgs } from '../rge-snake-game.types';
+import type { Direction, Position, SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 const DIRECTION_DELTAS: Record<Direction, Position> = {
 	UP: { x: 0, y: -1 },

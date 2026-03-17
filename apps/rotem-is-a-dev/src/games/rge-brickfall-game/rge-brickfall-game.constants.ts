@@ -1,4 +1,5 @@
-import type { BrickfallAction, Position, RotationState, TetrominoType } from './rge-brickfall-game.types';
+import type { Position } from '../games.types';
+import type { BrickfallAction, RotationState, TetrominoType } from './rge-brickfall-game.types';
 
 export const GRID_COLS = 10;
 export const GRID_ROWS = 20;

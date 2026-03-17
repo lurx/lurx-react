@@ -1,6 +1,7 @@
 import { gravity } from '../systems/gravity.system';
 import { createEmptyGrid } from '../rge-brickfall-game.helpers';
-import type { Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-brickfall-game.types';
 
 const createMockEntities = (): Entities =>
 	({

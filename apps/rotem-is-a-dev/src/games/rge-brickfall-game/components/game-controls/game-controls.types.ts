@@ -1,4 +1,5 @@
-import type { BrickfallAction, KeyScheme, TetrominoType } from '../../rge-brickfall-game.types';
+import type { KeyScheme } from '../../../games.types';
+import type { BrickfallAction, TetrominoType } from '../../rge-brickfall-game.types';
 
 export type GameControlsProps = {
 	score: number;

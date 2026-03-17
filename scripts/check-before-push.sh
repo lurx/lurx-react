@@ -5,7 +5,7 @@
 
 set -e
 
-echo "==> Lint, test (Nx affected)..."
-npx nx affected -t lint test
+echo "==> Typecheck, lint, test (Nx affected)..."
+npx nx affected -t typecheck lint test
 
 echo "==> Done."

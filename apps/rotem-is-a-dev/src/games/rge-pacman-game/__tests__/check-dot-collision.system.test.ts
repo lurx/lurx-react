@@ -1,5 +1,6 @@
 import { checkDotCollision } from '../systems/check-dot-collision.system';
-import type { CellType, Entities, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { CellType, Entities } from '../rge-pacman-game.types';
 import type { ReactElement } from 'react';
 
 /* ------------------------------------------------------------------ */

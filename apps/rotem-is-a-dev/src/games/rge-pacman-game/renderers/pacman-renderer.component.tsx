@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { Direction } from '../../game-controls.types';
+import type { Direction } from '../../games.types';
 import type { PacmanRendererProps } from '../rge-pacman-game.types';
 import styles from '../rge-pacman-game.module.scss';
 

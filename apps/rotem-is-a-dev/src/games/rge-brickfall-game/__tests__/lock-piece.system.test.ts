@@ -1,7 +1,8 @@
 import { lockPiece } from '../systems/lock-piece.system';
 import { createEmptyGrid } from '../rge-brickfall-game.helpers';
 import { LINE_CLEAR_BLINK_MS } from '../rge-brickfall-game.constants';
-import type { Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-brickfall-game.types';
 
 const createMockEntities = (): Entities =>
 	({

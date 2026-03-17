@@ -1,7 +1,7 @@
-import type { GamePhase } from '../../rge-snake-game.types';
+import type { SnakeGamePhase } from '../../rge-snake-game.types';
 
 export type GameOverlayProps = {
-	phase: GamePhase;
+	phase: SnakeGamePhase;
 	score: number;
 	onStart: () => void;
 	onRestart: () => void;

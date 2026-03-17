@@ -18,6 +18,9 @@
 				"dev": true
 			}
 		},
+    "typecheck": {
+      "command": "tsc --noEmit -p apps/rotem-is-a-dev/tsconfig.json"
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {

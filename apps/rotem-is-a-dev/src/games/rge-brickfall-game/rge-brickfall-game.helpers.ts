@@ -6,7 +6,8 @@ import {
 	TETROMINO_SHAPES,
 	TICK_REDUCTION_PER_LEVEL,
 } from './rge-brickfall-game.constants';
-import type { CellColor, PlayfieldGrid, Position, RotationState, TetrominoType } from './rge-brickfall-game.types';
+import type { Position } from '../games.types';
+import type { CellColor, PlayfieldGrid, RotationState, TetrominoType } from './rge-brickfall-game.types';
 
 export const getAbsoluteCells = (
 	type: TetrominoType,

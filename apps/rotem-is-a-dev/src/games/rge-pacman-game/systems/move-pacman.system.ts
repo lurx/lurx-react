@@ -1,6 +1,7 @@
 import { DIRECTION_DELTAS } from '../rge-pacman-game.constants';
 import { canMove, wrapPosition } from '../rge-pacman-game.helpers';
-import type { Entities, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-pacman-game.types';
 
 export const movePacman = (entities: Entities, { time }: SystemArgs): Entities => {
 	const { board, pacman, maze } = entities;

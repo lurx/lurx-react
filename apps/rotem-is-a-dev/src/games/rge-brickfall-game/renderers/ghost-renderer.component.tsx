@@ -1,6 +1,7 @@
 import { GHOST_OPACITY, TETROMINO_COLORS } from '../rge-brickfall-game.constants';
 import { getAbsoluteCells } from '../rge-brickfall-game.helpers';
-import type { Position, RotationState, TetrominoType } from '../rge-brickfall-game.types';
+import type { Position } from '../../games.types';
+import type { RotationState, TetrominoType } from '../rge-brickfall-game.types';
 
 export const GhostRenderer = ({
 	position,

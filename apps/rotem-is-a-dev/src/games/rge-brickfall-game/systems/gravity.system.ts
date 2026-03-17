@@ -1,6 +1,7 @@
 import { SOFT_DROP_TICK_MS } from '../rge-brickfall-game.constants';
 import { collides, getAbsoluteCells, getTickMsForLevel } from '../rge-brickfall-game.helpers';
-import type { Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-brickfall-game.types';
 
 export const gravity = (entities: Entities, { events, dispatch, time }: SystemArgs): Entities => {
 	if (entities.playfield.clearingRows.length > 0) return entities;

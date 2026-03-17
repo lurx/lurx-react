@@ -1,5 +1,6 @@
 import { checkFood } from '../systems/check-food.system';
-import type { Entities, SystemArgs } from '../rge-snake-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 const createMockEntities = (
 	headX: number,

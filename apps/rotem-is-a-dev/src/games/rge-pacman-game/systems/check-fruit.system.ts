@@ -4,7 +4,8 @@ import {
 	FRUIT_POSITION,
 	FRUIT_SPAWN_DOT_THRESHOLDS,
 } from '../rge-pacman-game.constants';
-import type { Entities, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-pacman-game.types';
 
 export const checkFruit = (entities: Entities, { dispatch, time }: SystemArgs): Entities => {
 	const { board, pacman, fruit } = entities;

@@ -1,5 +1,6 @@
 import { moveGhosts } from '../systems/move-ghosts.system';
-import type { CellType, Entities, GhostEntity, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { CellType, Entities, GhostEntity } from '../rge-pacman-game.types';
 import type { ReactElement } from 'react';
 
 /* ------------------------------------------------------------------ */

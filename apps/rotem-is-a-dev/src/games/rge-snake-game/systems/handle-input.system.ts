@@ -1,5 +1,6 @@
 import { DIRECTION_MAPS, OPPOSITE_DIRECTIONS } from '../rge-snake-game.constants';
-import type { Entities, SystemArgs } from '../rge-snake-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 export const handleInput = (entities: Entities, { input }: SystemArgs): Entities => {
 	const keyDownEvents = input.filter((event) => event.name === 'onKeyDown');

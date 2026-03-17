@@ -1,4 +1,4 @@
-import type { Direction, KeyScheme } from '../../rge-pacman-game.types';
+import type { Direction, KeyScheme } from '../../../games.types';
 
 export type GameControlsProps = {
 	score: number;

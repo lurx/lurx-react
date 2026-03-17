@@ -1,18 +1,8 @@
 import type { ReactElement } from 'react';
-import type { GameEvent, GameTime, InputEvent } from '../rge-engine.types';
 
-export type { GameEvent, GameTime, InputEvent };
+import type { Direction, GamePhase, KeyScheme, Position, SystemArgs } from '../games.types';
 
-export type Position = {
-	x: number;
-	y: number;
-};
-
-export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
-
-export type GamePhase = 'idle' | 'playing' | 'won' | 'lost';
-
-export type KeyScheme = 'arrows' | 'wasd';
+export type SnakeGamePhase = GamePhase<'won'>;
 
 export type SnakeGameConfig = {
 	gridCols?: number;
@@ -50,13 +40,6 @@ export type Entities = {
 	snake: SnakeEntity;
 	food: FoodEntity;
 	board: BoardEntity;
-};
-
-export type SystemArgs = {
-	input: InputEvent[];
-	events: GameEvent[];
-	dispatch: (event: GameEvent) => void;
-	time: GameTime;
 };
 
 export type System = (entities: Entities, args: SystemArgs) => Entities;

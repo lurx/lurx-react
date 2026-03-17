@@ -1,5 +1,6 @@
 import { getAbsoluteCells } from '../rge-brickfall-game.helpers';
-import type { Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-brickfall-game.types';
 
 export const checkGameOver = (entities: Entities, { dispatch }: SystemArgs): Entities => {
 	if (entities.playfield.clearingRows.length > 0) return entities;

@@ -1,4 +1,4 @@
-import type { Direction } from '../game-controls.types';
+import type { Direction, Position } from '../games.types';
 import {
 	ALL_DIRECTIONS,
 	DIRECTION_DELTAS,
@@ -6,7 +6,7 @@ import {
 	OPPOSITE_DIRECTIONS,
 	PACMAN_START,
 } from './rge-pacman-game.constants';
-import type { BoardEntity, CellType, Entities, GhostName, Position } from './rge-pacman-game.types';
+import type { BoardEntity, CellType, Entities, GhostName } from './rge-pacman-game.types';
 
 const CELL_TYPE_MAP: Record<number, CellType> = {
 	0: 'wall',

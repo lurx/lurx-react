@@ -7,7 +7,7 @@ import { ArrowKeyGrid } from '@/games/components/arrow-key-grid';
 import type { ArrowKeyGridItem } from '@/games/components/arrow-key-grid';
 import { useActiveKey } from '@/games/hooks/use-active-key';
 import { ARROW_DIRECTION_MAP } from '@/games/rge-snake-game/rge-snake-game.constants';
-import type { Direction } from '@/games/rge-snake-game/rge-snake-game.types';
+import type { Direction } from '@/games/games.types';
 import styles from './hero-game.module.scss';
 import { useHeroContext } from './hero.context';
 

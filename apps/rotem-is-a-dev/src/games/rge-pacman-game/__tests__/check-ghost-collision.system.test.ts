@@ -1,5 +1,6 @@
 import { checkGhostCollision } from '../systems/check-ghost-collision.system';
-import type { Entities, GhostEntity, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities, GhostEntity } from '../rge-pacman-game.types';
 import type { ReactElement } from 'react';
 
 

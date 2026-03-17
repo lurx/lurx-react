@@ -1,4 +1,5 @@
-import type { Entities, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-pacman-game.types';
 
 export const checkWinLose = (entities: Entities, { dispatch }: SystemArgs): Entities => {
 	const { maze } = entities;

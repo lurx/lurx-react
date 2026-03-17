@@ -2,8 +2,7 @@ import type { ReactNode } from 'react';
 import { FaIcon } from '@/app/components/fa-icon';
 import { ArrowKeyGrid } from '../../../components/arrow-key-grid';
 import type { ArrowKeyGridItem } from '../../../components/arrow-key-grid';
-import type { Direction } from '../../../game-controls.types';
-import type { KeyScheme } from '../../rge-pacman-game.types';
+import type { Direction, KeyScheme } from '../../../games.types';
 import type { GameControlsProps } from './game-controls.types';
 import styles from '../../rge-pacman-game.module.scss';
 

@@ -1,5 +1,5 @@
 import { COLORS } from '../rge-snake-game.constants';
-import type { Position } from '../rge-snake-game.types';
+import type { Position } from '../../games.types';
 
 export const SnakeRenderer = ({ body, cellSize }: { body: Position[]; cellSize: number }) => (
 	<>

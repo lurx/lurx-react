@@ -1,5 +1,6 @@
 import { handleInput } from '../systems/handle-input.system';
-import type { Entities, SystemArgs } from '../rge-snake-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 const createMockEntities = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' = 'UP', keyScheme: 'arrows' | 'wasd' = 'arrows'): Entities =>
 	({

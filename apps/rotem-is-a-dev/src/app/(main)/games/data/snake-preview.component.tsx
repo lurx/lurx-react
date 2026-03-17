@@ -1,5 +1,5 @@
 import { CELL_SIZE, GRID_COLS, GRID_ROWS } from '@/games/rge-brickfall-game/rge-brickfall-game.constants';
-import type { Position } from '@/games/rge-snake-game/rge-snake-game.types';
+import type { Position } from '@/games/games.types';
 import { SnakeRenderer } from '@/games/rge-snake-game/renderers/snake-renderer.component';
 import { FoodRenderer } from '@/games/rge-snake-game/renderers/food-renderer.component';
 

@@ -1,12 +1,8 @@
 import type { ReactElement } from 'react';
 
-import type { GameEvent, GameTime, InputEvent } from '../rge-engine.types';
-import type { Direction } from '../game-controls.types';
+import type { Direction, GamePhase, KeyScheme, Position, SystemArgs } from '../games.types';
 
-export type Position = {
-	x: number;
-	y: number;
-};
+export type PacmanGamePhase = GamePhase<'dying' | 'won'>;
 
 export type GhostName = 'blinky' | 'pinky' | 'inky' | 'clyde';
 
@@ -20,10 +16,6 @@ export type FruitConfig = {
 };
 
 export type CellType = 'wall' | 'dot' | 'power' | 'empty' | 'ghost-house' | 'ghost-door' | 'tunnel';
-
-export type GamePhase = 'idle' | 'playing' | 'dying' | 'won' | 'lost';
-
-export type KeyScheme = 'arrows' | 'wasd';
 
 export type PacmanEntity = {
 	position: Position;
@@ -102,13 +94,6 @@ export type Entities = {
 	clyde: GhostEntity;
 	maze: MazeEntity;
 	fruit: FruitEntity;
-};
-
-export type SystemArgs = {
-	input: InputEvent[];
-	events: GameEvent[];
-	dispatch: (event: GameEvent) => void;
-	time: GameTime;
 };
 
 export type System = (entities: Entities, args: SystemArgs) => Entities;

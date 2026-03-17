@@ -1,5 +1,5 @@
-import type { Direction } from '../game-controls.types';
-import type { FruitConfig, FruitType, GhostConfig, GhostName, KeyScheme, Position, ScatterChasePhase } from './rge-pacman-game.types';
+import type { Direction, KeyScheme, Position } from '../games.types';
+import type { FruitConfig, FruitType, GhostConfig, GhostName, ScatterChasePhase } from './rge-pacman-game.types';
 
 const SPEED_MULTIPLIER = 1.5; // bigger value = slower game
 

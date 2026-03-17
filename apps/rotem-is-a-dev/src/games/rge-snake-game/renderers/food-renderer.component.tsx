@@ -1,5 +1,5 @@
 import { COLORS } from '../rge-snake-game.constants';
-import type { Position } from '../rge-snake-game.types';
+import type { Position } from '../../games.types';
 import styles from '../rge-snake-game.module.scss';
 
 export const FoodRenderer = ({ position, cellSize }: { position: Position; cellSize: number }) => (

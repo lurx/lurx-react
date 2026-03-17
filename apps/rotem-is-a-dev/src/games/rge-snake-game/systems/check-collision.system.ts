@@ -1,4 +1,5 @@
-import type { Entities, SystemArgs } from '../rge-snake-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-snake-game.types';
 
 export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): Entities => {
 	const { snake, board } = entities;

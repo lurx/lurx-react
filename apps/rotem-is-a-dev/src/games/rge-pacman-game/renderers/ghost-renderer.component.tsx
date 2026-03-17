@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { Direction } from '../../game-controls.types';
+import type { Direction } from '../../games.types';
 import { FRIGHTENED_FLASH_MS } from '../rge-pacman-game.constants';
 import type { GhostRendererProps } from '../rge-pacman-game.types';
 import styles from '../rge-pacman-game.module.scss';

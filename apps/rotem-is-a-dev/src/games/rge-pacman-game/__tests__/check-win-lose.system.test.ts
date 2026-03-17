@@ -1,5 +1,6 @@
 import { checkWinLose } from '../systems/check-win-lose.system';
-import type { Entities, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities } from '../rge-pacman-game.types';
 import type { ReactElement } from 'react';
 
 /* ------------------------------------------------------------------ */

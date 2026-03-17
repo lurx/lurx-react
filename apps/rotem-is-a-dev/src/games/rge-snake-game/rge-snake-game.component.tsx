@@ -9,7 +9,8 @@ import { FoodRenderer } from './renderers/food-renderer.component';
 import { SnakeRenderer } from './renderers/snake-renderer.component';
 import { DEFAULT_SNAKE_CONFIG, DIRECTION_MAPS } from './rge-snake-game.constants';
 import styles from './rge-snake-game.module.scss';
-import type { Direction, Entities, GameEvent, GamePhase, KeyScheme, SnakeGameConfig } from './rge-snake-game.types';
+import type { Direction, GameEvent, KeyScheme } from '../games.types';
+import type { Entities, SnakeGameConfig, SnakeGamePhase } from './rge-snake-game.types';
 import { checkCollision, checkFood, handleInput, moveSnake } from './systems';
 
 type ResolvedConfig = Required<SnakeGameConfig>;
@@ -80,7 +81,7 @@ export type RgeSnakeGameProps = {
 export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControls }: RgeSnakeGameProps) => {
 	const resolved = useMemo(() => resolveConfig(config), [config]);
 
-	const [phase, setPhase] = useState<GamePhase>('idle');
+	const [phase, setPhase] = useState<SnakeGamePhase>('idle');
 	const [score, setScore] = useState(0);
 	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');
 	const [entities, setEntities] = useState<Entities>(() => createEntities(resolved, keyScheme));

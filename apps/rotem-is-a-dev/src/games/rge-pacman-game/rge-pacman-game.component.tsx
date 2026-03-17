@@ -30,12 +30,11 @@ import {
 } from './rge-pacman-game.constants';
 import { createMazeGrid, resetPositions } from './rge-pacman-game.helpers';
 import styles from './rge-pacman-game.module.scss';
-import type { GameEvent } from '../rge-engine.types';
+import type { Direction, GameEvent, KeyScheme } from '../games.types';
 import type {
 	Entities,
-	GamePhase,
 	GhostName,
-	KeyScheme,
+	PacmanGamePhase,
 } from './rge-pacman-game.types';
 import {
 	checkDotCollision,
@@ -47,7 +46,6 @@ import {
 	movePacman,
 	updateMode,
 } from './systems';
-import type { Direction } from '../game-controls.types';
 
 const createEntities = (keyScheme: KeyScheme): Entities => {
 	const { grid, totalDots } = createMazeGrid(LEVEL_1_MAZE);
@@ -163,7 +161,7 @@ const SYSTEMS = [
 ];
 
 export const RgePacmanGame = () => {
-	const [phase, setPhase] = useState<GamePhase>('idle');
+	const [phase, setPhase] = useState<PacmanGamePhase>('idle');
 	const [score, setScore] = useState(0);
 	const [lives, setLives] = useState(INITIAL_LIVES);
 	const [keyScheme, setKeyScheme] = useState<KeyScheme>('arrows');

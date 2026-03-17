@@ -1,6 +1,7 @@
 import { handleInput } from '../systems/handle-input.system';
 import { createEmptyGrid } from '../rge-brickfall-game.helpers';
-import type { BrickfallAction, Entities, SystemArgs } from '../rge-brickfall-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { BrickfallAction, Entities } from '../rge-brickfall-game.types';
 
 const createMockEntities = (pendingActions: BrickfallAction[] = []): Entities =>
 	({

@@ -1,13 +1,8 @@
 import type { ReactElement } from 'react';
 
-import type { GameEvent, GameTime, InputEvent } from '../rge-engine.types';
+import type { GamePhase, KeyScheme, Position, SystemArgs } from '../games.types';
 
-export type { GameEvent, GameTime, InputEvent };
-
-export type Position = {
-	x: number;
-	y: number;
-};
+export type BrickfallGamePhase = GamePhase;
 
 export type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'L' | 'J';
 
@@ -24,10 +19,6 @@ export type CellColor = string | null;
 export type PlayfieldGrid = CellColor[][];
 
 export type BrickfallAction = 'LEFT' | 'RIGHT' | 'ROTATE' | 'SOFT_DROP' | 'HARD_DROP';
-
-export type KeyScheme = 'arrows' | 'wasd';
-
-export type GamePhase = 'idle' | 'playing' | 'lost';
 
 export type BrickfallGameConfig = {
 	gridCols?: number;
@@ -82,13 +73,6 @@ export type Entities = {
 	nextPiece: NextPieceEntity;
 	playfield: PlayfieldEntity;
 	ghost: GhostEntity;
-};
-
-export type SystemArgs = {
-	input: InputEvent[];
-	events: GameEvent[];
-	dispatch: (event: GameEvent) => void;
-	time: GameTime;
 };
 
 export type System = (entities: Entities, args: SystemArgs) => Entities;

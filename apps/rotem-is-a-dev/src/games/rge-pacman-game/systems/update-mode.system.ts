@@ -1,5 +1,6 @@
 import { GHOST_NAMES, OPPOSITE_DIRECTIONS, SCATTER_CHASE_PATTERN } from '../rge-pacman-game.constants';
-import type { Entities, GhostEntity, SystemArgs } from '../rge-pacman-game.types';
+import type { SystemArgs } from '../../games.types';
+import type { Entities, GhostEntity } from '../rge-pacman-game.types';
 
 const getGhosts = (entities: Entities): GhostEntity[] =>
 	GHOST_NAMES.map((name) => entities[name]);

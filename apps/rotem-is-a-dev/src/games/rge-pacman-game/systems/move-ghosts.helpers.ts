@@ -1,4 +1,4 @@
-import type { Direction } from '@/games/game-controls.types';
+import type { Direction, Position } from '@/games/games.types';
 import {
 	ALL_DIRECTIONS,
 	DIRECTION_DELTAS,
@@ -14,7 +14,7 @@ import {
 	getValidDirections,
 	wrapPosition,
 } from '../rge-pacman-game.helpers';
-import type { BoardEntity, CellType, Entities, GhostEntity, Position } from '../rge-pacman-game.types';
+import type { BoardEntity, CellType, Entities, GhostEntity } from '../rge-pacman-game.types';
 
 export const moveGhostInHouse = (
 	ghost: GhostEntity,

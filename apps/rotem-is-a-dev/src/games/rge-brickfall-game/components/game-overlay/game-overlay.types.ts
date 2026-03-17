@@ -1,7 +1,7 @@
-import type { GamePhase } from '../../rge-brickfall-game.types';
+import type { BrickfallGamePhase } from '../../rge-brickfall-game.types';
 
 export type GameOverlayProps = {
-	phase: GamePhase;
+	phase: BrickfallGamePhase;
 	score: number;
 	level: number;
 	linesCleared: number;
