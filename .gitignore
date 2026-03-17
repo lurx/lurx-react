@@ -65,7 +65,14 @@ apps/story-wise/.env
 apps/story-wise/.env.local
 apps/story-wise/.env*
 
-.cursor/rules/nx-rules.mdc
+# AI tool configs (only using Claude Code)
+.cursor/
+.codex/
+.opencode/
+opencode.json
+.github/agents/
+.github/prompts/
+.github/skills/
 .github/instructions/nx.instructions.md
 
 vite.config.*.timestamp*
@@ -78,3 +85,5 @@ vitest.config.*.timestamp*
 .env.railway
 .env.railway.*
 .env*.local
+
+.nx/polygraph
