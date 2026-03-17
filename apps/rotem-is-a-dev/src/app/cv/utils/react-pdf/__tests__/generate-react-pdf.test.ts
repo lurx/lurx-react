@@ -46,12 +46,11 @@ beforeEach(() => {
 	clickSpy = jest.fn();
 	jest.spyOn(document, 'createElement').mockImplementation((tag: string) => {
 		if (tag === 'a') {
-			return { click: clickSpy, href: '', download: '' } as unknown as HTMLElement;
+			return { click: clickSpy, remove: jest.fn(), href: '', download: '' } as unknown as HTMLElement;
 		}
 		return document.createElement(tag);
 	});
 	jest.spyOn(document.body, 'appendChild').mockImplementation(node => node);
-	jest.spyOn(document.body, 'removeChild').mockImplementation(node => node);
 	createObjectURLMock = jest.fn().mockReturnValue('blob:test-url');
 	revokeObjectURLMock = jest.fn();
 	globalThis.URL.createObjectURL = createObjectURLMock;
