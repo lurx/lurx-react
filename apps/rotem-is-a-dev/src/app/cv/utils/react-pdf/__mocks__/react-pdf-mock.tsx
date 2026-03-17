@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-type MockProps = { children?: ReactNode; style?: unknown; [key: string]: unknown };
+type MockProps = { children?: ReactNode; [key: string]: unknown };
 
 const createMockElement = (tag: string) => {
 	const MockElement = ({ children, ...props }: MockProps) => (
@@ -26,6 +26,7 @@ export const Document = createMockElement('document');
 export const Page = createMockElement('page');
 export const View = createMockElement('view');
 export const Text = ({ children }: MockProps) => <span>{children}</span>;
+export const Link = ({ children, src }: MockProps) => <a href={src as string}>{children}</a>;
 export const StyleSheet = {
 	create: <T extends Record<string, unknown>>(styles: T): T => styles,
 };

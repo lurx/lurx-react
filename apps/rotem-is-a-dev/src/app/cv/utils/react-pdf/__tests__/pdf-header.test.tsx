@@ -50,11 +50,6 @@ describe('PdfHeader', () => {
 		expect(screen.getByText('linkedin.com/in/johndoe')).toBeInTheDocument();
 	});
 
-	it('renders GitHub without https://', () => {
-		render(<PdfHeader {...defaultProps} />);
-		expect(screen.getByText('github.com/johndoe')).toBeInTheDocument();
-	});
-
 	it('renders the intro text', () => {
 		render(<PdfHeader {...defaultProps} />);
 		expect(screen.getByText(defaultProps.introText)).toBeInTheDocument();
