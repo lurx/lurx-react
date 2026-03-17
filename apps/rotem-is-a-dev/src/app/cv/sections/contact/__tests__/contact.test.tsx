@@ -22,6 +22,7 @@ const mockUseCV = jest.mocked(useCV);
 const mockContact = {
 	email: 'test@example.com',
 	phone: '+1234567890',
+	website: 'https://test.com',
 	social: {
 		linkedin: 'https://linkedin.com/in/test',
 		github: 'https://github.com/test',

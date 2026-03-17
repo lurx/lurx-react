@@ -7,7 +7,7 @@ const mockRenderCvOffscreen = jest.fn(() => ({
 	cleanup: mockCleanup,
 }));
 
-const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+const mockGenerateCvPdf = jest.fn((_container: HTMLElement) => Promise.resolve());
 const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 
 jest.mock('@/hooks', () => ({
@@ -15,15 +15,15 @@ jest.mock('@/hooks', () => ({
 }));
 
 jest.mock('@/app/cv/utils/react-pdf', () => ({
-	generateReactPdf: (...args: unknown[]) => mockGenerateReactPdf(...args),
+	generateReactPdf: () => mockGenerateReactPdf(),
 }));
 
 jest.mock('@/app/cv/utils/render-cv-offscreen', () => ({
-	renderCvOffscreen: (...args: unknown[]) => mockRenderCvOffscreen(...args),
+	renderCvOffscreen: () => mockRenderCvOffscreen(),
 }));
 
 jest.mock('@/app/cv/utils/generate-pdf', () => ({
-	generateCvPdf: (...args: unknown[]) => mockGenerateCvPdf(...args),
+	generateCvPdf: (...args: [HTMLElement]) => mockGenerateCvPdf(...args),
 }));
 
 jest.mock('@/app/components', () => ({

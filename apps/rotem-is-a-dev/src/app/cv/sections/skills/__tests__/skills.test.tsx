@@ -50,7 +50,7 @@ const mockUseCV = jest.mocked(useCV);
 const mockSkills: SkillObject[] = [
 	{ name: 'react', level: 9, iconName: 'react', iconGroup: 'fab' },
 	{ name: 'typescript', level: 8, iconName: 'typescript', iconGroup: 'fas' },
-	{ name: 'unknown-skill', level: 5, iconGroup: 'fas' },
+	{ name: 'unknown-skill', level: 5, iconGroup: 'fas' } as SkillObject,
 ];
 
 beforeEach(() => {
@@ -61,6 +61,7 @@ beforeEach(() => {
 		contact: {
 			email: '',
 			phone: '',
+			website: '',
 			social: { linkedin: '', github: '' },
 		},
 		work_experience: [],
@@ -139,6 +140,7 @@ describe('Skills', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: [],

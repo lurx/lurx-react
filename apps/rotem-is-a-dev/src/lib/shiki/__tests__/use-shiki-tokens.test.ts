@@ -106,7 +106,7 @@ describe('useShikiTokens', () => {
 		const { rerender } = renderHook(
 			({ code, language }: { code: string; language: 'typescript' | 'javascript' | 'json' }) =>
 				useShikiTokens({ code, language }),
-			{ initialProps: { code: 'const x = 1;', language: 'typescript' as const } },
+			{ initialProps: { code: 'const x = 1;', language: 'typescript' as 'typescript' | 'javascript' | 'json' } },
 		);
 
 		await act(async () => {
