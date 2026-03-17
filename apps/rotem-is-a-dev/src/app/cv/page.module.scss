@@ -1,6 +1,11 @@
 @use 'mixins/spacing' as *;
 @use 'mixins/media' as *;
 
+.pdfPage {
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+
 .columns {
   display: flex;
   flex-direction: column;
