@@ -1,3 +1,5 @@
+export const PDF_TITLE = 'rotem-horovitz-cv';
+export const PDF_FILE_NAME = `${PDF_TITLE}.pdf`;
 export const PDF_COLORS = {
 	background: '#f8fafc',
 	surface: '#ffffff',

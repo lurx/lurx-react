@@ -1,15 +1,16 @@
-import { Document, Page, View } from '@react-pdf/renderer';
 import cv from '@/data/cv.data';
+import { Document, Page, View } from '@react-pdf/renderer';
+import { PdfExperience, PdfHeader, PdfLanguages, PdfSkills } from './components';
+import { PDF_TITLE } from './cv-document.constants';
 import { resolveIntroText } from './cv-document.helpers';
 import { styles } from './cv-document.styles';
-import { PdfHeader, PdfExperience, PdfSkills, PdfLanguages } from './components';
 import type { CvDocumentProps } from './cv-document.types';
 
 export const CvDocument = ({ data = cv }: CvDocumentProps) => {
 	const introText = resolveIntroText(data.intro, data.work_experience);
 
 	return (
-		<Document>
+		<Document title={PDF_TITLE}>
 			<Page size="A4" style={styles.page}>
 				<View style={styles.columns}>
 					<View style={styles.leftColumn}>

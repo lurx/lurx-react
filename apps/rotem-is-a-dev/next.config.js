@@ -42,7 +42,7 @@ const imgSrc = [
 
 const frameSrc = [
 	'https://*.firebaseapp.com',
-	'blob:', // @react-pdf/renderer PDFViewer iframe
+	"'self'", // PDF preview iframe served from /api/cv-pdf
 	isVercelPreview && 'https://vercel.live',
 ]
 	.filter(Boolean)
@@ -63,7 +63,7 @@ async function headers() {
 						"font-src 'self'",
 						`connect-src ${connectSrc}`,
 						`frame-src ${frameSrc}`,
-						"frame-ancestors 'none'",
+						"frame-ancestors 'self'",
 					].join('; '),
 				},
 				{ key: 'X-Content-Type-Options', value: 'nosniff' },

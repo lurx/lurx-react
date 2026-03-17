@@ -1,15 +1,5 @@
-'use client';
-
-import dynamic from 'next/dynamic';
+import { PdfPreview } from './components/pdf-preview';
 import styles from './page.module.scss';
-
-const PdfPreview = dynamic(
-	() =>
-		import('./components/pdf-preview').then(mod => ({
-			default: mod.PdfPreview,
-		})),
-	{ ssr: false },
-);
 
 export default function CV() {
 	return (
