@@ -7,7 +7,7 @@ jest.mock('@react-pdf/renderer', () => ({
 	View: ({ children }: { children: React.ReactNode }) => children,
 	Text: ({ children }: { children: React.ReactNode }) => children,
 	Link: ({ children }: { children: React.ReactNode }) => children,
-	StyleSheet: { create: <T extends Record<string, unknown>>(s: T): T => s },
+	StyleSheet: { create: <T extends Record<string, unknown>>(styles: T): T => styles },
 }));
 
 jest.mock('@/data/cv.data', () => ({
