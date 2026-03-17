@@ -5,6 +5,7 @@ export type CvContextValue = {
 	contact: {
 		email: string;
 		phone: string;
+		website: string;
 		social: {
 			linkedin: string;
 			github: string;
