@@ -5,11 +5,11 @@ const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 const mockUseSearchParams = jest.fn();
 
 jest.mock('@/app/cv/utils/generate-pdf', () => ({
-	generateCvPdf: (...args: unknown[]) => mockGenerateCvPdf(...args),
+	generateCvPdf: () => mockGenerateCvPdf(),
 }));
 
 jest.mock('@/app/cv/utils/react-pdf', () => ({
-	generateReactPdf: (...args: unknown[]) => mockGenerateReactPdf(...args),
+	generateReactPdf: () => mockGenerateReactPdf(),
 }));
 
 jest.mock('next/navigation', () => ({
