@@ -15,7 +15,7 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 
 	const renderShikiLine = (index: number) => (
 		<span className={styles.codeLine}>
-			{shikiLines![index].tokens.map((token, tokenIndex) => (
+			{shikiLines?.[index].tokens.map((token, tokenIndex) => (
 				<span
 					key={`token-${index}-${tokenIndex}`}
 					style={{ color: token.color }}

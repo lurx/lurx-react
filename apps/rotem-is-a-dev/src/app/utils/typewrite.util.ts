@@ -11,7 +11,7 @@ export const typewrite = (el: HTMLElement, opts?: TypewriteOptions) => {
 	el.style.minHeight = `${height}px`;
 
 	if (setDataFullText) {
-		el.setAttribute('data-full-text', full);
+		el.dataset.fullText = full;
 	}
 
 	el.textContent = '';

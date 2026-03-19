@@ -5,7 +5,7 @@ export const BlueBlur = (props: React.SVGProps<SVGSVGElement>) => (
 		viewBox="0 0 881 783"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		role="presentation"
+		aria-hidden="true"
 		{...props}
 	>
 		<g

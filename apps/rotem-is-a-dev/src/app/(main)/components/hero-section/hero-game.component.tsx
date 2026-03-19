@@ -81,7 +81,7 @@ export const HeroGame = () => {
 										height="21"
 										viewBox="0 0 21 21"
 										fill="none"
-										className={`${styles.foodDot}${index >= foodRemaining ? ` ${styles.eaten}` : ''}`}
+										className={[styles.foodDot, index >= foodRemaining ? styles.eaten : ''].filter(Boolean).join(' ')}
 										aria-hidden="true"
 									>
 										<circle opacity="0.1" cx="10.3456" cy="10.3456" r="10.3456" fill="#46ECD5" />

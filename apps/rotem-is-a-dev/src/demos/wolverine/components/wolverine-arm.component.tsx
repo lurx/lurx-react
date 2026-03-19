@@ -2,14 +2,14 @@ import classNames from 'classnames';
 import styles from '../wolverine.module.scss';
 import type { WolverineSideProp } from '../wolverine.types';
 
-const fingers = Array(4).fill(0);
-const claws = Array(3).fill(0);
+const FINGER_KEYS = ['finger-index', 'finger-middle', 'finger-ring', 'finger-pinky'] as const;
+const CLAW_KEYS = ['claw-top', 'claw-middle', 'claw-bottom'] as const;
 
 const Fingers = () => (
 	<>
-		{fingers.map((_, index) => (
+		{FINGER_KEYS.map((key) => (
 			<div
-				key={index}
+				key={key}
 				className={styles.finger}
 			/>
 		))}
@@ -18,9 +18,9 @@ const Fingers = () => (
 
 const Claws = () => (
 	<div className={styles['wolverine-claws']}>
-		{claws.map((_, index) => (
+		{CLAW_KEYS.map((key) => (
 			<div
-				key={index}
+				key={key}
 				className={styles['wolverine-claw']}
 			/>
 		))}

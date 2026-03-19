@@ -1,8 +1,6 @@
-import { render, getDefaultNormalizer } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import type { ShikiLine } from '@/lib/shiki';
 import { ShikiCode } from '../shiki-code.component';
-
-const noTrimNormalizer = getDefaultNormalizer({ trim: false, collapseWhitespace: false });
 
 describe('ShikiCode', () => {
 	const mockLines: ShikiLine[] = [

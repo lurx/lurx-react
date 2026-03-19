@@ -16,7 +16,7 @@ class MockPointerEvent extends MouseEvent {
 	}
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-(global as any).PointerEvent = MockPointerEvent;
+(globalThis as any).PointerEvent = MockPointerEvent;
 
 const defaultProps = {
 	isOpen: true,
@@ -90,10 +90,10 @@ describe('ResizableDrawer', () => {
 		expect(defaultProps.onClose).not.toHaveBeenCalled();
 	});
 
-	it('renders with role="dialog" and aria-modal="true"', () => {
+	it('renders as a native dialog with aria-modal="true"', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		const drawer = screen.getByTestId('resizable-drawer');
-		expect(drawer).toHaveAttribute('role', 'dialog');
+		expect(drawer.tagName).toBe('DIALOG');
 		expect(drawer).toHaveAttribute('aria-modal', 'true');
 	});
 
@@ -165,8 +165,7 @@ describe('ResizableDrawer', () => {
 	});
 
 	it('does not render the title container when title is not provided', () => {
-		const { container } = render(<ResizableDrawer {...defaultProps} />);
-		const titleElements = portalRoot.querySelectorAll('[class*="title"]');
+		render(<ResizableDrawer {...defaultProps} />);
 		// The close button is always present, but we should not find a title div wrapping content
 		expect(screen.queryByText('My Title')).not.toBeInTheDocument();
 		// Verify the drawer renders without issue
@@ -237,7 +236,7 @@ describe('ResizableDrawer', () => {
 	});
 
 	it('uses default width based on window.innerWidth when initialWidth is not provided', () => {
-		Object.defineProperty(window, 'innerWidth', { value: 1000, writable: true });
+		Object.defineProperty(globalThis, 'innerWidth', { value: 1000, writable: true });
 		render(<ResizableDrawer {...defaultProps} />);
 		const drawer = screen.getByTestId('resizable-drawer');
 		// Default is 50% of window.innerWidth = 500px

@@ -15,7 +15,6 @@ type MockDialogProps = PropsWithChildren<{
 	isOpen: boolean;
 	onClose: () => void;
 	ariaLabel: string;
-	className?: string;
 }>;
 
 jest.mock('../../dialog', () => ({

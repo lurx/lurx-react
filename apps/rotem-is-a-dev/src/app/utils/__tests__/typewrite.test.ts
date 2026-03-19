@@ -69,19 +69,19 @@ describe('typewrite', () => {
 	it('sets data-full-text attribute when setDataFullText is true', () => {
 		const el = makeElement('hello world');
 		typewrite(el, { setDataFullText: true });
-		expect(el.getAttribute('data-full-text')).toBe('hello world');
+		expect(el.dataset.fullText).toBe('hello world');
 	});
 
 	it('does not set data-full-text attribute when setDataFullText is false', () => {
 		const el = makeElement('hello world');
 		typewrite(el, { setDataFullText: false });
-		expect(el.getAttribute('data-full-text')).toBeNull();
+		expect(el.dataset.fullText).toBeUndefined();
 	});
 
 	it('does not set data-full-text attribute by default', () => {
 		const el = makeElement('hello');
 		typewrite(el);
-		expect(el.getAttribute('data-full-text')).toBeNull();
+		expect(el.dataset.fullText).toBeUndefined();
 	});
 
 	it('handles an element with empty text content', () => {

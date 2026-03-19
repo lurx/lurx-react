@@ -22,7 +22,7 @@ export const ResizableDrawer = ({
 	ariaLabel = 'Content drawer',
 	children,
 }: ResizableDrawerComponentProps) => {
-	const drawerRef = useRef<HTMLDivElement>(null);
+	const drawerRef = useRef<HTMLDialogElement>(null);
 	const [width, setWidth] = useState<number>(
 		() =>
 			initialWidth ??
@@ -120,11 +120,11 @@ export const ResizableDrawer = ({
 				data-testid="resizable-drawer-overlay"
 			/>
 
-			<div
+			<dialog
 				ref={drawerRef}
 				className={styles.drawer}
 				style={{ width: `${width}px` }}
-				role="dialog"
+				open
 				aria-modal="true"
 				aria-label={ariaLabel}
 				data-testid="resizable-drawer"
@@ -141,7 +141,7 @@ export const ResizableDrawer = ({
 				<DrawerHeader title={title} onClose={onClose} />
 
 				<div className={styles.content}>{children}</div>
-			</div>
+			</dialog>
 		</div>,
 		portalTarget,
 	);

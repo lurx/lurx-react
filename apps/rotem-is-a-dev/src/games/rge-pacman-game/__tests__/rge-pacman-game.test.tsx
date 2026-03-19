@@ -3,10 +3,11 @@ import { RgePacmanGame } from '../rge-pacman-game.component';
 
 jest.mock('react-game-engine', () => ({
 	GameEngine: jest.fn().mockImplementation(({ children, className, running, onEvent }) => (
-		<div
+		<button
 			data-testid="game-engine"
 			data-running={String(running)}
 			className={className}
+			type="button"
 			onClick={() => onEvent?.({ type: 'score-updated' })}
 			onDoubleClick={() => onEvent?.({ type: 'pacman-died' })}
 			onContextMenu={(event: React.MouseEvent) => {
@@ -15,7 +16,7 @@ jest.mock('react-game-engine', () => ({
 			}}
 		>
 			{children}
-		</div>
+		</button>
 	)),
 }));
 

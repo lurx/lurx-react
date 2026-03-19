@@ -8,7 +8,7 @@ import { INTRO_ORDER } from './use-hero-entry-animation.types';
 import type { IntroKey } from './use-hero-entry-animation.types';
 
 const isReduced = () =>
-	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const useHeroEntryAnimation = () => {
 	const { isShellLoaded } = useEntryAnimation();

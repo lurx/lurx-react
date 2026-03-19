@@ -71,7 +71,7 @@ describe('readStoredLevel', () => {
 
 describe('getBaseFontSize', () => {
 	it('returns MOBILE_BASE_FONT_SIZE_PX when matchMedia matches the mobile breakpoint', () => {
-		Object.defineProperty(window, 'matchMedia', {
+		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
 			value: jest.fn().mockImplementation((query: string) => ({
 				matches: true,
@@ -86,13 +86,13 @@ describe('getBaseFontSize', () => {
 		});
 
 		expect(getBaseFontSize()).toBe(MOBILE_BASE_FONT_SIZE_PX);
-		expect(window.matchMedia).toHaveBeenCalledWith(
+		expect(globalThis.matchMedia).toHaveBeenCalledWith(
 			`(max-width: ${MOBILE_BREAKPOINT_PX}px)`,
 		);
 	});
 
 	it('returns BASE_FONT_SIZE_PX when matchMedia does not match the mobile breakpoint', () => {
-		Object.defineProperty(window, 'matchMedia', {
+		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
 			value: jest.fn().mockImplementation((query: string) => ({
 				matches: false,
@@ -112,7 +112,7 @@ describe('getBaseFontSize', () => {
 
 describe('applyTextScale', () => {
 	beforeEach(() => {
-		Object.defineProperty(window, 'matchMedia', {
+		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
 			value: jest.fn().mockImplementation((query: string) => ({
 				matches: false,

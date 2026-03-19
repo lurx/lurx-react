@@ -9,6 +9,7 @@ jest.mock('@/app/components/fa-icon', () => ({
 jest.mock('next/image', () => ({
 	__esModule: true,
 	default: ({ src, alt, width, height, className }: Record<string, unknown>) => (
+		// eslint-disable-next-line @next/next/no-img-element
 		<img src={src as string} alt={alt as string} width={width as number} height={height as number} className={className as string} />
 	),
 }));

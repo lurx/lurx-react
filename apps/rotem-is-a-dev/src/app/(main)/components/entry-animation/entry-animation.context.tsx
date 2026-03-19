@@ -22,7 +22,7 @@ export const EntryAnimationProvider = ({
 	// the first paint so the hero is never hidden even for one frame.
 	useLayoutEffect(() => {
 		const shouldSkip =
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+			globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches ||
 			Boolean(sessionStorage.getItem(SESSION_KEY));
 
 		if (shouldSkip) {

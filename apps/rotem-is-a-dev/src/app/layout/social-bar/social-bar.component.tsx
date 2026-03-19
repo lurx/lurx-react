@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { AccessibilityWidget } from '../accessibility-widget/accessibility-widget.component';
-import { SocialLink, SocialLinkList } from './components';
+import { SocialLinkList } from './components';
 import { leftSideSocialLinks } from './social-bar.constants';
 import styles from './social-bar.module.scss';
 

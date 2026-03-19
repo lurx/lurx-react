@@ -235,7 +235,7 @@ describe('AccessibilityWidget', () => {
 
 			expect(
 				screen.getByText(
-					String(LINE_HEIGHT_VALUES[LINE_HEIGHT_VALUES.length - 1]),
+					String(LINE_HEIGHT_VALUES.at(-1)),
 				),
 			).toBeInTheDocument();
 			expect(increaseButton).toBeDisabled();
@@ -370,7 +370,7 @@ describe('AccessibilityWidget', () => {
 
 			expect(
 				screen.getByText(
-					`${LETTER_SPACING_VALUES[LETTER_SPACING_VALUES.length - 1]}em`,
+					`${LETTER_SPACING_VALUES.at(-1)}em`,
 				),
 			).toBeInTheDocument();
 			expect(increaseButton).toBeDisabled();
@@ -633,7 +633,7 @@ describe('AccessibilityWidget', () => {
 			fireEvent.click(btn); // click again at max
 			expect(
 				screen.getByText(
-					String(LINE_HEIGHT_VALUES[LINE_HEIGHT_VALUES.length - 1]),
+					String(LINE_HEIGHT_VALUES.at(-1)),
 				),
 			).toBeInTheDocument();
 		});
@@ -657,7 +657,7 @@ describe('AccessibilityWidget', () => {
 			fireEvent.click(btn); // click again at max
 			expect(
 				screen.getByText(
-					`${LETTER_SPACING_VALUES[LETTER_SPACING_VALUES.length - 1]}em`,
+					`${LETTER_SPACING_VALUES.at(-1)}em`,
 				),
 			).toBeInTheDocument();
 		});
@@ -665,8 +665,8 @@ describe('AccessibilityWidget', () => {
 
 	describe('Mobile font size', () => {
 		it('uses MOBILE_BASE_FONT_SIZE_PX when matchMedia matches mobile breakpoint', () => {
-			const originalMatchMedia = window.matchMedia;
-			Object.defineProperty(window, 'matchMedia', {
+			const originalMatchMedia = globalThis.matchMedia;
+			Object.defineProperty(globalThis, 'matchMedia', {
 				writable: true,
 				value: jest.fn().mockImplementation((query: string) => ({
 					matches: true,
@@ -692,7 +692,7 @@ describe('AccessibilityWidget', () => {
 				document.documentElement.style.getPropertyValue('--root-font-size'),
 			).toBe(`${expectedFontSize}px`);
 
-			Object.defineProperty(window, 'matchMedia', {
+			Object.defineProperty(globalThis, 'matchMedia', {
 				writable: true,
 				value: originalMatchMedia,
 			});

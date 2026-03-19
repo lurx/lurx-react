@@ -30,7 +30,7 @@ export async function generateMetadata({
 	};
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function BlogPostPage({ params }: Readonly<BlogPostPageProps>) {
 	const { slug } = await params;
 	const post = getPostBySlug(slug);
 

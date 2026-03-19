@@ -3,16 +3,17 @@ import { RgeBrickfallGame } from '../rge-brickfall-game.component';
 
 jest.mock('react-game-engine', () => ({
 	GameEngine: jest.fn(({ children, className, running, onEvent, style }) => (
-		<div
+		<button
 			data-testid="game-engine"
 			data-running={String(running)}
 			className={className}
 			style={style}
+			type="button"
 			onClick={() => onEvent?.({ type: 'score-updated' })}
 			onDoubleClick={() => onEvent?.({ type: 'game-over' })}
 		>
 			{children}
-		</div>
+		</button>
 	)),
 }));
 

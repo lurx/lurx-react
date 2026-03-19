@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { GreenBlur } from '../green-blur.component';
 
 describe('GreenBlur', () => {
@@ -8,9 +8,10 @@ describe('GreenBlur', () => {
 		expect(svg).toBeInTheDocument();
 	});
 
-	it('has presentation role for accessibility', () => {
-		render(<GreenBlur />);
-		expect(screen.getByRole('presentation')).toBeInTheDocument();
+	it('is hidden from assistive technology', () => {
+		const { container } = render(<GreenBlur />);
+		const svg = container.querySelector('svg');
+		expect(svg).toHaveAttribute('aria-hidden', 'true');
 	});
 
 	it('has correct default dimensions', () => {

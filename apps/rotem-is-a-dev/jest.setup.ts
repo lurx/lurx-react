@@ -23,7 +23,7 @@ jest.mock('next/font/google', () => ({
 }));
 
 // Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(globalThis, 'matchMedia', {
 	writable: true,
 	value: jest.fn().mockImplementation(query => ({
 		matches: false,
@@ -44,19 +44,19 @@ const localStorageMock = {
 	removeItem: jest.fn(),
 	clear: jest.fn(),
 };
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(globalThis, 'localStorage', {
 	value: localStorageMock,
 });
 
 // Mock IntersectionObserver for animation components
-global.IntersectionObserver = jest.fn().mockImplementation(() => ({
+globalThis.IntersectionObserver = jest.fn().mockImplementation(() => ({
 	observe: jest.fn(),
 	unobserve: jest.fn(),
 	disconnect: jest.fn(),
 }));
 
 // Mock ResizeObserver for animation components
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
+globalThis.ResizeObserver = jest.fn().mockImplementation(() => ({
 	observe: jest.fn(),
 	unobserve: jest.fn(),
 	disconnect: jest.fn(),

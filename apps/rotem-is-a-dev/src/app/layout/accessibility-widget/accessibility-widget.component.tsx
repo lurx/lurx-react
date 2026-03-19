@@ -146,8 +146,8 @@ export const AccessibilityWidget = () => {
 			</button>
 
 			{isOpen && (
-				<div
-					role="dialog"
+				<dialog
+					open
 					aria-label="Accessibility settings"
 					className={styles.panel}
 				>
@@ -278,7 +278,7 @@ export const AccessibilityWidget = () => {
 					>
 						Reset all
 					</button>
-				</div>
+				</dialog>
 			)}
 		</div>
 	);

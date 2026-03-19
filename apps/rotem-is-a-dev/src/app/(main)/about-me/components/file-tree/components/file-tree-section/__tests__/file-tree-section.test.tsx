@@ -71,18 +71,18 @@ describe('FileTreeSection', () => {
 	it('calls onFileSelect with the file id when a file is clicked', () => {
 		const onFileSelect = jest.fn();
 		render(<FileTreeSection {...defaultProps} onFileSelect={onFileSelect} />);
-		fireEvent.click(screen.getByText('bio').closest('button')!);
+		fireEvent.click(screen.getByRole('button', { name: /bio/ }));
 		expect(onFileSelect).toHaveBeenCalledWith('bio');
 	});
 
 	it('marks the active file', () => {
-		render(<FileTreeSection {...defaultProps} activeFileId={'bio' as AboutFileId} />);
+		render(<FileTreeSection {...defaultProps} activeFileId="bio" />);
 		const bioButton = screen.getByText('bio').closest('button');
 		expect(bioButton?.className).toContain('activeFile');
 	});
 
 	it('does not mark a non-active file', () => {
-		render(<FileTreeSection {...defaultProps} activeFileId={'interests' as AboutFileId} />);
+		render(<FileTreeSection {...defaultProps} activeFileId="interests" />);
 		const bioButton = screen.getByText('bio').closest('button');
 		expect(bioButton?.className).not.toContain('activeFile');
 	});
