@@ -12,29 +12,10 @@ jest.mock('@react-pdf/renderer', () => ({
 
 jest.mock('@/data/cv.data', () => ({
 	__esModule: true,
-	default: {
-		name: 'Test',
-		titles: [],
-		intro: '',
-		contact: {
-			email: '',
-			phone: '',
-			website: '',
-			social: { linkedin: '', github: '' },
-		},
-		work_experience: [],
-		skills: [],
-		languages: [],
-	},
+	default: require('@/app/cv/utils/react-pdf/__mocks__/cv-data-mock').mockCvData,
 }));
-
-jest.mock('@/app/cv/sections/intro/intro.helpers', () => ({
-	calculateYearsOfExperience: jest.fn(() => 10),
-}));
-
-jest.mock('@/app/cv/sections/experience/experience.helpers', () => ({
-	sortByEndDate: (jobs: unknown[]) => jobs,
-}));
+jest.mock('@/app/cv/sections/intro/intro.helpers', () => ({ calculateYearsOfExperience: jest.fn(() => 10) }));
+jest.mock('@/app/cv/sections/experience/experience.helpers', () => ({ sortByEndDate: (jobs: unknown[]) => jobs }));
 
 import type React from 'react';
 import { renderToBuffer } from '@react-pdf/renderer';

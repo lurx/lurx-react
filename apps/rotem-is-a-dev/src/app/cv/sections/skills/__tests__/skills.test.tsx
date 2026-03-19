@@ -99,14 +99,14 @@ describe('Skills', () => {
 	it('uses the skill iconName when provided', () => {
 		render(<Skills />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const reactIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'react');
+		const reactIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'react');
 		expect(reactIcon).toBeInTheDocument();
 	});
 
 	it('falls back to "code" icon when iconName is not provided', () => {
 		render(<Skills />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const codeIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'code');
+		const codeIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'code');
 		expect(codeIcon).toBeInTheDocument();
 	});
 

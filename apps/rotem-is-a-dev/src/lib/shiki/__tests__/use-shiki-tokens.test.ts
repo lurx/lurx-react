@@ -12,6 +12,8 @@ jest.mock('../get-highlighter', () => ({
 
 import { useShikiTokens } from '../use-shiki-tokens.hook';
 
+type ShikiLanguage = 'typescript' | 'javascript' | 'json';
+
 describe('useShikiTokens', () => {
 	const mockTokenLine1: ThemedToken[] = [
 		{ content: 'const', color: '#C792EA', offset: 0 },
@@ -78,7 +80,7 @@ describe('useShikiTokens', () => {
 
 	it('re-fetches tokens when the code changes', async () => {
 		const { result, rerender } = renderHook(
-			({ code, language }: { code: string; language: 'typescript' | 'javascript' | 'json' }) =>
+			({ code, language }: { code: string; language: ShikiLanguage }) =>
 				useShikiTokens({ code, language }),
 			{ initialProps: { code: 'const x = 1;', language: 'typescript' as const } },
 		);
@@ -104,9 +106,9 @@ describe('useShikiTokens', () => {
 
 	it('re-fetches tokens when the language changes', async () => {
 		const { rerender } = renderHook(
-			({ code, language }: { code: string; language: 'typescript' | 'javascript' | 'json' }) =>
+			({ code, language }: { code: string; language: ShikiLanguage }) =>
 				useShikiTokens({ code, language }),
-			{ initialProps: { code: 'const x = 1;', language: 'typescript' as 'typescript' | 'javascript' | 'json' } },
+			{ initialProps: { code: 'const x = 1;', language: 'typescript' as ShikiLanguage } },
 		);
 
 		await act(async () => {

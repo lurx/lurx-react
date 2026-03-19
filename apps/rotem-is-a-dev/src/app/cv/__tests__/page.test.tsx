@@ -3,11 +3,11 @@ jest.mock('../components/pdf-preview', () => ({
 }));
 
 import { render, screen } from '@testing-library/react';
-import CV from '../page';
+import CvPage from '../page';
 
 describe('CV page', () => {
 	it('renders the PDF preview', () => {
-		render(<CV />);
+		render(<CvPage />);
 
 		expect(screen.getByTestId('pdf-preview')).toBeInTheDocument();
 	});

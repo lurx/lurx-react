@@ -12,7 +12,7 @@ jest.mock('../../status-page/status-page.component', () => ({
 		children: React.ReactNode;
 	}) => (
 		<div>
-			<pre aria-label={asciiArtLabel} aria-hidden={!asciiArtLabel ? true : undefined}>
+			<pre aria-label={asciiArtLabel} aria-hidden={asciiArtLabel ? undefined : true}>
 				{asciiArt}
 			</pre>
 			<div>{children}</div>

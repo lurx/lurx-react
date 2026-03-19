@@ -91,28 +91,28 @@ describe('Contact', () => {
 	it('uses fas icon group for Email', () => {
 		render(<Contact />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const emailIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'at');
-		expect(emailIcon).toHaveAttribute('data-icon-group', 'fas');
+		const emailIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'at');
+		expect((emailIcon as HTMLElement).dataset.iconGroup).toBe('fas');
 	});
 
 	it('uses fas icon group for Phone', () => {
 		render(<Contact />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const phoneIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'phone');
-		expect(phoneIcon).toHaveAttribute('data-icon-group', 'fas');
+		const phoneIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'phone');
+		expect((phoneIcon as HTMLElement).dataset.iconGroup).toBe('fas');
 	});
 
 	it('uses fab icon group for LinkedIn', () => {
 		render(<Contact />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const linkedinIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'linkedin');
-		expect(linkedinIcon).toHaveAttribute('data-icon-group', 'fab');
+		const linkedinIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'linkedin');
+		expect((linkedinIcon as HTMLElement).dataset.iconGroup).toBe('fab');
 	});
 
 	it('uses fab icon group for GitHub', () => {
 		render(<Contact />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const githubIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'github');
-		expect(githubIcon).toHaveAttribute('data-icon-group', 'fab');
+		const githubIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'github');
+		expect((githubIcon as HTMLElement).dataset.iconGroup).toBe('fab');
 	});
 });
