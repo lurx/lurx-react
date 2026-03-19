@@ -13,6 +13,15 @@ jest.mock('../get-highlighter', () => ({
 import { useShikiTokens } from '../use-shiki-tokens.hook';
 
 type ShikiLanguage = 'typescript' | 'javascript' | 'json';
+type ShikiHookProps = { code: string; language: ShikiLanguage };
+
+const flushPromises = () => act(async () => { await Promise.resolve(); });
+
+const renderShikiHook = (props: ShikiHookProps = { code: 'const x = 1;', language: 'typescript' }) =>
+	renderHook(
+		(hookProps: ShikiHookProps) => useShikiTokens(hookProps),
+		{ initialProps: props },
+	);
 
 describe('useShikiTokens', () => {
 	const mockTokenLine1: ThemedToken[] = [
@@ -29,21 +38,13 @@ describe('useShikiTokens', () => {
 	});
 
 	it('returns null initially while loading', () => {
-		const { result } = renderHook(() =>
-			useShikiTokens({ code: 'const x = 1;', language: 'typescript' }),
-		);
-
+		const { result } = renderShikiHook();
 		expect(result.current).toBeNull();
 	});
 
 	it('returns highlighted lines after loading completes', async () => {
-		const { result } = renderHook(() =>
-			useShikiTokens({ code: 'const x = 1;', language: 'typescript' }),
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		const { result } = renderShikiHook();
+		await flushPromises();
 
 		expect(result.current).toEqual([
 			{ tokens: mockTokenLine1 },
@@ -52,25 +53,15 @@ describe('useShikiTokens', () => {
 	});
 
 	it('calls getHighlighter to obtain a highlighter instance', async () => {
-		renderHook(() =>
-			useShikiTokens({ code: 'const x = 1;', language: 'typescript' }),
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		renderShikiHook();
+		await flushPromises();
 
 		expect(mockGetHighlighter).toHaveBeenCalledTimes(1);
 	});
 
 	it('calls codeToTokensBase with code, language, and night-owl theme', async () => {
-		renderHook(() =>
-			useShikiTokens({ code: 'const x = 1;', language: 'typescript' }),
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		renderShikiHook();
+		await flushPromises();
 
 		expect(mockCodeToTokensBase).toHaveBeenCalledWith('const x = 1;', {
 			lang: 'typescript',
@@ -79,15 +70,8 @@ describe('useShikiTokens', () => {
 	});
 
 	it('re-fetches tokens when the code changes', async () => {
-		const { result, rerender } = renderHook(
-			({ code, language }: { code: string; language: ShikiLanguage }) =>
-				useShikiTokens({ code, language }),
-			{ initialProps: { code: 'const x = 1;', language: 'typescript' as const } },
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		const { result, rerender } = renderShikiHook();
+		await flushPromises();
 
 		const updatedTokenLine: ThemedToken[] = [
 			{ content: 'let y', color: '#C792EA', offset: 0 },
@@ -95,31 +79,18 @@ describe('useShikiTokens', () => {
 		mockCodeToTokensBase.mockReturnValue([updatedTokenLine]);
 
 		rerender({ code: 'let y = 2;', language: 'typescript' });
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		await flushPromises();
 
 		expect(result.current).toEqual([{ tokens: updatedTokenLine }]);
 		expect(mockCodeToTokensBase).toHaveBeenCalledTimes(2);
 	});
 
 	it('re-fetches tokens when the language changes', async () => {
-		const { rerender } = renderHook(
-			({ code, language }: { code: string; language: ShikiLanguage }) =>
-				useShikiTokens({ code, language }),
-			{ initialProps: { code: 'const x = 1;', language: 'typescript' as ShikiLanguage } },
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		const { rerender } = renderShikiHook();
+		await flushPromises();
 
 		rerender({ code: 'const x = 1;', language: 'javascript' });
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		await flushPromises();
 
 		expect(mockCodeToTokensBase).toHaveBeenLastCalledWith('const x = 1;', {
 			lang: 'javascript',
@@ -135,10 +106,7 @@ describe('useShikiTokens', () => {
 			}),
 		);
 
-		const { unmount } = renderHook(() =>
-			useShikiTokens({ code: 'const x = 1;', language: 'typescript' }),
-		);
-
+		const { unmount } = renderShikiHook();
 		unmount();
 
 		await act(async () => {
@@ -148,32 +116,21 @@ describe('useShikiTokens', () => {
 			await Promise.resolve();
 		});
 
-		// No error thrown from setting state on unmounted component
 		expect(mockCodeToTokensBase).not.toHaveBeenCalled();
 	});
 
 	it('handles empty code', async () => {
 		mockCodeToTokensBase.mockReturnValue([]);
 
-		const { result } = renderHook(() =>
-			useShikiTokens({ code: '', language: 'typescript' }),
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		const { result } = renderShikiHook({ code: '', language: 'typescript' });
+		await flushPromises();
 
 		expect(result.current).toEqual([]);
 	});
 
 	it('works with json language', async () => {
-		renderHook(() =>
-			useShikiTokens({ code: '{}', language: 'json' }),
-		);
-
-		await act(async () => {
-			await Promise.resolve();
-		});
+		renderShikiHook({ code: '{}', language: 'json' });
+		await flushPromises();
 
 		expect(mockCodeToTokensBase).toHaveBeenCalledWith('{}', {
 			lang: 'json',

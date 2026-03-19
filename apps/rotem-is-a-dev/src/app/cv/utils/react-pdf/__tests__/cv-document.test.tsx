@@ -39,32 +39,33 @@ jest.mock('@/data/cv.data', () => ({
 import { CvDocument } from '../cv-document.component';
 
 describe('CvDocument', () => {
-	it('renders the name from default data', () => {
-		render(<CvDocument />);
-		expect(screen.getByText('Test User')).toBeInTheDocument();
-	});
+	describe('with default data', () => {
+		beforeEach(() => {
+			render(<CvDocument />);
+		});
 
-	it('renders intro with resolved years', () => {
-		render(<CvDocument />);
-		expect(screen.getByText('15 years of experience.')).toBeInTheDocument();
-	});
+		it('renders the name', () => {
+			expect(screen.getByText('Test User')).toBeInTheDocument();
+		});
 
-	it('renders experience section', () => {
-		render(<CvDocument />);
-		expect(screen.getByText('Experience')).toBeInTheDocument();
-		expect(screen.getByText('Engineer')).toBeInTheDocument();
-	});
+		it('renders intro with resolved years', () => {
+			expect(screen.getByText('15 years of experience.')).toBeInTheDocument();
+		});
 
-	it('renders skills section', () => {
-		render(<CvDocument />);
-		expect(screen.getByText('Skills')).toBeInTheDocument();
-		expect(screen.getByText('react')).toBeInTheDocument();
-	});
+		it('renders experience section', () => {
+			expect(screen.getByText('Experience')).toBeInTheDocument();
+			expect(screen.getByText('Engineer')).toBeInTheDocument();
+		});
 
-	it('renders languages section', () => {
-		render(<CvDocument />);
-		expect(screen.getByText('Languages')).toBeInTheDocument();
-		expect(screen.getByText('English')).toBeInTheDocument();
+		it('renders skills section', () => {
+			expect(screen.getByText('Skills')).toBeInTheDocument();
+			expect(screen.getByText('react')).toBeInTheDocument();
+		});
+
+		it('renders languages section', () => {
+			expect(screen.getByText('Languages')).toBeInTheDocument();
+			expect(screen.getByText('English')).toBeInTheDocument();
+		});
 	});
 
 	it('accepts custom data via props', () => {
