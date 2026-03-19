@@ -9,7 +9,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function getAllTags(posts: Post[]): string[] {
-  return [...new Set(posts.flatMap(post => post.tags))].sort();
+  return [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.localeCompare(b));
 }
 
 export function filterPosts(

@@ -49,7 +49,8 @@ export const ArrowKeyGrid = <T extends string>({
 	onPress,
 	bottomAction,
 }: ArrowKeyGridProps<T>) => {
-	const gridClassName = `${styles.grid}${bottomAction ? ` ${styles.gridWithBottom}` : ''}`;
+	const bottomActionClass = bottomAction ? styles.gridWithBottom : '';
+	const gridClassName = [styles.grid, bottomActionClass].filter(Boolean).join(' ');
 
 	return (
 		<div className={gridClassName} data-testid="arrow-key-grid">
