@@ -38,9 +38,8 @@ export const TechnologyFilter = ({
 	};
 
 	return (
-		<div
+		<fieldset
 			className={styles.filter}
-			role="group"
 			aria-label={`Filter by ${sectionLabel}`}
 		>
 			<MobilePageTitle title="_projects" />
@@ -73,6 +72,6 @@ export const TechnologyFilter = ({
 					))}
 				</div>
 			)}
-		</div>
+		</fieldset>
 	);
 };

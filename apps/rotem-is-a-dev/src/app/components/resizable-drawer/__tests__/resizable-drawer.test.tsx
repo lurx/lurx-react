@@ -90,10 +90,10 @@ describe('ResizableDrawer', () => {
 		expect(defaultProps.onClose).not.toHaveBeenCalled();
 	});
 
-	it('renders with role="dialog" and aria-modal="true"', () => {
+	it('renders as a native dialog with aria-modal="true"', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		const drawer = screen.getByTestId('resizable-drawer');
-		expect(drawer).toHaveAttribute('role', 'dialog');
+		expect(drawer.tagName).toBe('DIALOG');
 		expect(drawer).toHaveAttribute('aria-modal', 'true');
 	});
 

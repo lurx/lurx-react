@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { BlueBlur } from '../blue-blur.component';
 
 describe('BlueBlur', () => {
@@ -8,9 +8,10 @@ describe('BlueBlur', () => {
 		expect(svg).toBeInTheDocument();
 	});
 
-	it('has presentation role for accessibility', () => {
-		render(<BlueBlur />);
-		expect(screen.getByRole('presentation')).toBeInTheDocument();
+	it('is hidden from assistive technology', () => {
+		const { container } = render(<BlueBlur />);
+		const svg = container.querySelector('svg');
+		expect(svg).toHaveAttribute('aria-hidden', 'true');
 	});
 
 	it('has correct default dimensions', () => {

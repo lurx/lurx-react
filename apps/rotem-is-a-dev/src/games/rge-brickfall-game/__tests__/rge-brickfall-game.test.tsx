@@ -8,6 +8,8 @@ jest.mock('react-game-engine', () => ({
 			data-running={String(running)}
 			className={className}
 			style={style}
+			role="application"
+			tabIndex={0}
 			onClick={() => onEvent?.({ type: 'score-updated' })}
 			onDoubleClick={() => onEvent?.({ type: 'game-over' })}
 		>

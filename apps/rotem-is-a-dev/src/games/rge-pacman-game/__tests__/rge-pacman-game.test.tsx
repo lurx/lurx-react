@@ -7,6 +7,8 @@ jest.mock('react-game-engine', () => ({
 			data-testid="game-engine"
 			data-running={String(running)}
 			className={className}
+			role="application"
+			tabIndex={0}
 			onClick={() => onEvent?.({ type: 'score-updated' })}
 			onDoubleClick={() => onEvent?.({ type: 'pacman-died' })}
 			onContextMenu={(event: React.MouseEvent) => {

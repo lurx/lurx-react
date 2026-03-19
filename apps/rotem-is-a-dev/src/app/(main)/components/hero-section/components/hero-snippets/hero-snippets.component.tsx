@@ -41,11 +41,13 @@ export const HeroSnippets = () => {
 	if (!gameCompleted) return null;
 
 	return (
-		<div
+		<section
 			className={styles.viewport}
 			ref={emblaRef}
 			onMouseEnter={handlePause}
 			onMouseLeave={handlePlay}
+			onFocus={handlePause}
+			onBlur={handlePlay}
 			aria-label="Code snippets carousel"
 			data-testid="hero-snippets"
 		>
@@ -62,6 +64,6 @@ export const HeroSnippets = () => {
 					);
 				})}
 			</div>
-		</div>
+		</section>
 	);
 };
