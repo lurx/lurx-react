@@ -71,7 +71,7 @@ describe('FileTreeSection', () => {
 	it('calls onFileSelect with the file id when a file is clicked', () => {
 		const onFileSelect = jest.fn();
 		render(<FileTreeSection {...defaultProps} onFileSelect={onFileSelect} />);
-		fireEvent.click(screen.getByText('bio').closest('button')!);
+		fireEvent.click(screen.getByRole('button', { name: /bio/ }));
 		expect(onFileSelect).toHaveBeenCalledWith('bio');
 	});
 

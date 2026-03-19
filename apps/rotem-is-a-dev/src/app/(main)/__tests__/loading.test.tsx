@@ -11,10 +11,12 @@ describe('MainLoading', () => {
 		const loader = getByTestId('animated-loader');
 		expect(loader).toBeInTheDocument();
 
-		const wrapper = loader.parentElement!;
-		expect(wrapper.style.display).toBe('flex');
-		expect(wrapper.style.justifyContent).toBe('center');
-		expect(wrapper.style.alignItems).toBe('center');
-		expect(wrapper.style.height).toBe('100%');
+		expect(loader.parentElement).toBeInTheDocument();
+		expect(loader.parentElement).toHaveStyle({
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '100%',
+		});
 	});
 });
