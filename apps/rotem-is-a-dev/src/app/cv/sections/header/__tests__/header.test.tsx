@@ -39,6 +39,7 @@ beforeEach(() => {
 		contact: {
 			email: '',
 			phone: '',
+			website: '',
 			social: { linkedin: '', github: '' },
 		},
 		work_experience: [],
@@ -68,6 +69,7 @@ describe('Header', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: [],

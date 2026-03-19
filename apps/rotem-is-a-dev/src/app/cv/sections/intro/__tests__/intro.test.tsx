@@ -31,6 +31,7 @@ beforeEach(() => {
 		contact: {
 			email: '',
 			phone: '',
+			website: '',
 			social: { linkedin: '', github: '' },
 		},
 		work_experience: mockWorkExperience,
@@ -71,6 +72,7 @@ describe('Intro', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: mockWorkExperience,

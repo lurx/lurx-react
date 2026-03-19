@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { AboutEditor } from '../about-editor.component';
 import type { AboutFileContent } from '../../../data/about-files.data';
 
-const mockUseShikiTokens = jest.fn(({ code }: { code: string }) =>
+const mockUseShikiTokens = jest.fn(({ code }: { code: string }): { tokens: { content: string; color: string }[] }[] | null =>
 	code.split('\n').map((line: string) => ({
 		tokens: [{ content: line, color: '#90a1b9' }],
 	})),

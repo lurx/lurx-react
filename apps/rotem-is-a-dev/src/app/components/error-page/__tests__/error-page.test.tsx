@@ -12,7 +12,7 @@ jest.mock('../../status-page/status-page.component', () => ({
 		children: React.ReactNode;
 	}) => (
 		<div>
-			<pre aria-label={asciiArtLabel} aria-hidden={!asciiArtLabel ? true : undefined}>
+			<pre aria-label={asciiArtLabel} aria-hidden={asciiArtLabel ? undefined : true}>
 				{asciiArt}
 			</pre>
 			<div>{children}</div>
@@ -22,6 +22,7 @@ jest.mock('../../status-page/status-page.component', () => ({
 
 const defaultProps = {
 	asciiArt: 'ASCII_ART',
+	error: new Error('test'),
 	reset: jest.fn(),
 };
 
@@ -56,7 +57,7 @@ describe('ErrorPage', () => {
 
 	it('calls reset when Try again is clicked', () => {
 		const reset = jest.fn();
-		render(<ErrorPage asciiArt="ART" reset={reset}>Error</ErrorPage>);
+		render(<ErrorPage asciiArt="ART" error={new Error('test')} reset={reset}>Error</ErrorPage>);
 		screen.getByRole('button', { name: 'Try again' }).click();
 		expect(reset).toHaveBeenCalledTimes(1);
 	});

@@ -27,6 +27,7 @@ beforeEach(() => {
 		contact: {
 			email: '',
 			phone: '',
+			website: '',
 			social: { linkedin: '', github: '' },
 		},
 		work_experience: [],
@@ -70,6 +71,7 @@ describe('Languages', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: [],
@@ -89,6 +91,7 @@ describe('Languages', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: [],

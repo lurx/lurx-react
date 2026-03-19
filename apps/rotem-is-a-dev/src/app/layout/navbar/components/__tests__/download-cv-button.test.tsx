@@ -1,24 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useResponsive } from '@/hooks';
 
-const mockCleanup = jest.fn();
-const mockRenderCvOffscreen = jest.fn(() => ({
-	container: document.createElement('div'),
-	cleanup: mockCleanup,
-}));
-
-const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 
 jest.mock('@/hooks', () => ({
 	useResponsive: jest.fn(),
 }));
 
-jest.mock('@/app/cv/utils/render-cv-offscreen', () => ({
-	renderCvOffscreen: (...args: unknown[]) => mockRenderCvOffscreen(...args),
-}));
-
-jest.mock('@/app/cv/utils/generate-pdf', () => ({
-	generateCvPdf: (...args: unknown[]) => mockGenerateCvPdf(...args),
+jest.mock('@/app/cv/utils/react-pdf', () => ({
+	generateReactPdf: () => mockGenerateReactPdf(),
 }));
 
 jest.mock('@/app/components', () => ({
@@ -33,9 +23,7 @@ const mockUseResponsive = jest.mocked(useResponsive);
 import { DownloadCVButton } from '../download-cv-button.component';
 
 beforeEach(() => {
-	mockCleanup.mockClear();
-	mockRenderCvOffscreen.mockClear();
-	mockGenerateCvPdf.mockClear();
+	mockGenerateReactPdf.mockClear();
 	mockUseResponsive.mockReturnValue({
 		isMobile: false,
 		isTablet: false,
@@ -56,7 +44,7 @@ describe('DownloadCVButton', () => {
 
 	it('ignores clicks while already generating', async () => {
 		let resolveGenerate!: () => void;
-		mockGenerateCvPdf.mockReturnValueOnce(
+		mockGenerateReactPdf.mockReturnValueOnce(
 			new Promise<void>(resolve => {
 				resolveGenerate = resolve;
 			}),
@@ -71,7 +59,7 @@ describe('DownloadCVButton', () => {
 		resolveGenerate();
 
 		await waitFor(() => {
-			expect(mockRenderCvOffscreen).toHaveBeenCalledTimes(1);
+			expect(mockGenerateReactPdf).toHaveBeenCalledTimes(1);
 		});
 	});
 
@@ -81,54 +69,18 @@ describe('DownloadCVButton', () => {
 		expect(screen.getByText('_download-cv')).toBeInTheDocument();
 	});
 
-	it('calls renderCvOffscreen and generateCvPdf on click', async () => {
+	it('calls generateReactPdf on click', async () => {
 		render(<DownloadCVButton />);
 		fireEvent.click(screen.getByRole('button'));
 
 		await waitFor(() => {
-			expect(mockRenderCvOffscreen).toHaveBeenCalledTimes(1);
-			expect(mockGenerateCvPdf).toHaveBeenCalledTimes(1);
-		});
-	});
-
-	it('passes the offscreen container to generateCvPdf', async () => {
-		const fakeContainer = document.createElement('div');
-		mockRenderCvOffscreen.mockReturnValueOnce({
-			container: fakeContainer,
-			cleanup: mockCleanup,
-		});
-
-		render(<DownloadCVButton />);
-		fireEvent.click(screen.getByRole('button'));
-
-		await waitFor(() => {
-			expect(mockGenerateCvPdf).toHaveBeenCalledWith(fakeContainer);
-		});
-	});
-
-	it('calls cleanup after PDF generation', async () => {
-		render(<DownloadCVButton />);
-		fireEvent.click(screen.getByRole('button'));
-
-		await waitFor(() => {
-			expect(mockCleanup).toHaveBeenCalledTimes(1);
-		});
-	});
-
-	it('calls cleanup even when generateCvPdf fails', async () => {
-		mockGenerateCvPdf.mockRejectedValueOnce(new Error('pdf error'));
-
-		render(<DownloadCVButton />);
-		fireEvent.click(screen.getByRole('button'));
-
-		await waitFor(() => {
-			expect(mockCleanup).toHaveBeenCalledTimes(1);
+			expect(mockGenerateReactPdf).toHaveBeenCalledTimes(1);
 		});
 	});
 
 	it('shows SimpleLoader while generating', async () => {
 		let resolveGenerate!: () => void;
-		mockGenerateCvPdf.mockReturnValueOnce(
+		mockGenerateReactPdf.mockReturnValueOnce(
 			new Promise<void>(resolve => {
 				resolveGenerate = resolve;
 			}),

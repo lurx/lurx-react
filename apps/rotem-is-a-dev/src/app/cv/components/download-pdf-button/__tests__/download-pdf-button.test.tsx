@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-const mockGenerateCvPdf = jest.fn(() => Promise.resolve());
+const mockGenerateReactPdf = jest.fn(() => Promise.resolve());
 const mockUseSearchParams = jest.fn();
 
-jest.mock('@/app/cv/utils/generate-pdf', () => ({
-	generateCvPdf: (...args: unknown[]) => mockGenerateCvPdf(...args),
+jest.mock('@/app/cv/utils/react-pdf', () => ({
+	generateReactPdf: () => mockGenerateReactPdf(),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -36,7 +36,7 @@ jest.mock('@/app/cv/components/button', () => ({
 import { DownloadPdfButton } from '../download-pdf-button.component';
 
 beforeEach(() => {
-	mockGenerateCvPdf.mockClear();
+	mockGenerateReactPdf.mockClear();
 	mockUseSearchParams.mockReturnValue({ has: () => false });
 });
 
@@ -60,7 +60,7 @@ describe('DownloadPdfButton', () => {
 
 	it('shows the spinner icon while generating', async () => {
 		let resolveGenerate!: () => void;
-		mockGenerateCvPdf.mockReturnValueOnce(
+		mockGenerateReactPdf.mockReturnValueOnce(
 			new Promise<void>(resolve => {
 				resolveGenerate = resolve;
 			}),
@@ -82,7 +82,7 @@ describe('DownloadPdfButton', () => {
 
 	it('disables the button while generating', async () => {
 		let resolveGenerate!: () => void;
-		mockGenerateCvPdf.mockReturnValueOnce(
+		mockGenerateReactPdf.mockReturnValueOnce(
 			new Promise<void>(resolve => {
 				resolveGenerate = resolve;
 			}),
@@ -102,12 +102,12 @@ describe('DownloadPdfButton', () => {
 		});
 	});
 
-	it('calls generateCvPdf when clicked', async () => {
+	it('calls generateReactPdf when clicked', async () => {
 		render(<DownloadPdfButton />);
 		fireEvent.click(screen.getByRole('button'));
 
 		await waitFor(() => {
-			expect(mockGenerateCvPdf).toHaveBeenCalledTimes(1);
+			expect(mockGenerateReactPdf).toHaveBeenCalledTimes(1);
 		});
 	});
 

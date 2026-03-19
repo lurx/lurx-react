@@ -8,6 +8,7 @@ const cv: CvContextValue = {
 	contact: {
 		email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
 		phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? '',
+    website: 'https://rotemhorovitz.com',
 		social: {
 			linkedin: 'https://linkedin.com/in/rotem-horovitz',
 			github: 'https://github.com/lurx',
@@ -68,6 +69,7 @@ const cv: CvContextValue = {
 		{ name: 'html', iconName: 'html5', iconGroup: 'fab', level: 10 },
 		{ name: 'css', iconName: 'css', iconGroup: 'fab', level: 10 },
 		{ name: 'javascript', iconName: 'js', iconGroup: 'fab', level: 10 },
+		{ name: 'typescript', iconName: 'ts', iconGroup: 'fab', level: 9 },
 		{ name: 'react', iconName: 'react', iconGroup: 'fab', level: 10 },
 		{ name: 'css-in-js', iconName: 'css', iconGroup: 'fab', level: 10 },
 		{ name: 'scss', iconName: 'sass', iconGroup: 'fab', level: 10 },

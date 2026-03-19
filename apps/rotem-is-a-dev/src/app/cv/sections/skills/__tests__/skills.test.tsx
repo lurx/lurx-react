@@ -50,7 +50,7 @@ const mockUseCV = jest.mocked(useCV);
 const mockSkills: SkillObject[] = [
 	{ name: 'react', level: 9, iconName: 'react', iconGroup: 'fab' },
 	{ name: 'typescript', level: 8, iconName: 'typescript', iconGroup: 'fas' },
-	{ name: 'unknown-skill', level: 5, iconGroup: 'fas' },
+	{ name: 'unknown-skill', level: 5, iconGroup: 'fas' } as SkillObject,
 ];
 
 beforeEach(() => {
@@ -61,6 +61,7 @@ beforeEach(() => {
 		contact: {
 			email: '',
 			phone: '',
+			website: '',
 			social: { linkedin: '', github: '' },
 		},
 		work_experience: [],
@@ -98,14 +99,14 @@ describe('Skills', () => {
 	it('uses the skill iconName when provided', () => {
 		render(<Skills />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const reactIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'react');
+		const reactIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'react');
 		expect(reactIcon).toBeInTheDocument();
 	});
 
 	it('falls back to "code" icon when iconName is not provided', () => {
 		render(<Skills />);
 		const icons = screen.getAllByTestId('fa-icon');
-		const codeIcon = icons.find(icon => icon.getAttribute('data-icon-name') === 'code');
+		const codeIcon = icons.find(icon => (icon as HTMLElement).dataset.iconName === 'code');
 		expect(codeIcon).toBeInTheDocument();
 	});
 
@@ -139,6 +140,7 @@ describe('Skills', () => {
 			contact: {
 				email: '',
 				phone: '',
+				website: '',
 				social: { linkedin: '', github: '' },
 			},
 			work_experience: [],

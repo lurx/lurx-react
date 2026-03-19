@@ -1,6 +1,5 @@
 'use client';
 
-import { generateCvPdf } from '@/app/cv/utils/generate-pdf';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { FaIcon } from '@/app/components';
@@ -14,7 +13,10 @@ export const DownloadPdfButton = () => {
 
 	const handleClick = async () => {
 		setIsGenerating(true);
-		await generateCvPdf();
+
+		const { generateReactPdf } = await import('@/app/cv/utils/react-pdf');
+		await generateReactPdf();
+
 		setIsGenerating(false);
 	};
 
