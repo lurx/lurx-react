@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"dev": "nx serve-with-remotes rotem-is-a-dev",
+		"dev": "nx serve rotem-is-a-dev",
 		"clean:website:dist": "rm -rf dist/apps/rotem-is-a-dev",
 		"clean:website:next": "rm -rf apps/rotem-is-a-dev/.next",
 		"clean:website": "pnpm run clean:website:dist && pnpm run clean:website:next",
