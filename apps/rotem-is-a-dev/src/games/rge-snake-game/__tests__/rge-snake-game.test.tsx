@@ -3,13 +3,12 @@ import { RgeSnakeGame } from '../rge-snake-game.component';
 
 jest.mock('react-game-engine', () => ({
 	GameEngine: jest.fn(({ children, className, running, onEvent, style }) => (
-		<div
+		<button
 			data-testid="game-engine"
 			data-running={String(running)}
 			className={className}
 			style={style}
-			role="application"
-			tabIndex={0}
+			type="button"
 			onClick={() => onEvent?.({ type: 'food-eaten' })}
 			onDoubleClick={() => onEvent?.({ type: 'game-over' })}
 			onContextMenu={(event: React.MouseEvent) => {
@@ -18,7 +17,7 @@ jest.mock('react-game-engine', () => ({
 			}}
 		>
 			{children}
-		</div>
+		</button>
 	)),
 }));
 
