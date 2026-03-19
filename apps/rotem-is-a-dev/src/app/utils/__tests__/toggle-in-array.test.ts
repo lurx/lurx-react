@@ -32,7 +32,7 @@ describe('toggleInArray', () => {
 
 		it('appends the new item at the end', () => {
 			const result = toggleInArray(['z', 'a'], 'm');
-			expect(result[result.length - 1]).toBe('m');
+			expect(result.at(-1)).toBe('m');
 		});
 	});
 

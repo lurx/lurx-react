@@ -17,7 +17,9 @@ type ShikiHookProps = { code: string; language: ShikiLanguage };
 
 const flushPromises = () => act(async () => { await Promise.resolve(); });
 
-const renderShikiHook = (props: ShikiHookProps = { code: 'const x = 1;', language: 'typescript' }) =>
+const DEFAULT_SHIKI_PROPS: ShikiHookProps = { code: 'const x = 1;', language: 'typescript' };
+
+const renderShikiHook = (props: ShikiHookProps = DEFAULT_SHIKI_PROPS) =>
 	renderHook(
 		(hookProps: ShikiHookProps) => useShikiTokens(hookProps),
 		{ initialProps: props },

@@ -10,7 +10,7 @@ export const EntryAnimation = () => {
 
 	useEffect(() => {
 		const shouldSkip =
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+			globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches ||
 			Boolean(sessionStorage.getItem(SESSION_KEY));
 
 		if (shouldSkip) {

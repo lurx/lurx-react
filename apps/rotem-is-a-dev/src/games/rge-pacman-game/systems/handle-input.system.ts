@@ -8,7 +8,7 @@ export const handleInput = (entities: Entities, _args: SystemArgs): Entities => 
 
 	if (pendingActions.length === 0) return entities;
 
-	const lastAction = pendingActions[pendingActions.length - 1];
+	const lastAction = pendingActions.at(-1)!;
 
 	if (canMove(maze.grid, pacman.position, lastAction, board.width, board.height)) {
 		pacman.direction = lastAction;

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import styles from '../wolverine.module.scss';
 import type { WolverineSideProp } from '../wolverine.types';
 
-const fingers = Array(4).fill(0);
-const claws = Array(3).fill(0);
+const fingers = new Array(4).fill(0);
+const claws = new Array(3).fill(0);
 
 const Fingers = () => (
 	<>

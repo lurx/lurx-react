@@ -25,8 +25,8 @@ const config = {
 		'/node_modules/',
 		'/__tests__/',
 		'/__mocks__/',
-		'/index\\.ts$',
-		'\\.svg$',
+		String.raw`/index\.ts$`,
+		String.raw`\.svg$`,
 	],
 	coverageDirectory: '../../coverage/apps/rotem-is-a-dev',
 };

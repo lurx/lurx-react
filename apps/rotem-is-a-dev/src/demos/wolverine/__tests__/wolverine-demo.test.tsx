@@ -50,7 +50,6 @@ describe('WolverineDemo', () => {
 	});
 
 	it('renders the Snikt! text on both sides', () => {
-		const sniktElements = screen.queryAllByText('Snikt!');
 		render(<WolverineDemo />);
 		const rendered = screen.getAllByText('Snikt!');
 		expect(rendered).toHaveLength(2);

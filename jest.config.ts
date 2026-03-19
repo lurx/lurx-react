@@ -1,5 +1,7 @@
 const { getJestProjectsAsync } = require('@nx/jest');
 
-module.exports = async () => ({
-	projects: await getJestProjectsAsync(),
-});
+module.exports = async function getJestConfig() {
+	return {
+		projects: await getJestProjectsAsync(),
+	};
+};

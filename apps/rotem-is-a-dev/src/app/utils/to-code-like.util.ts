@@ -6,7 +6,7 @@ const TO_CODE_LIKE_DEFAULT_OPTIONS: ToCodeLikeOptions = {
 };
 
 function normalizeString(str: string): string {
-	return str.trim().replace(/\s+/g, ' ');
+	return str.trim().replaceAll(/\s+/g, ' ');
 }
 
 const toComment = (str: string): string => {

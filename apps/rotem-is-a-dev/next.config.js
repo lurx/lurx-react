@@ -90,7 +90,7 @@ const nextConfig = {
 		config.module.rules.push({
 			resourceQuery: /raw/,
 			enforce: 'pre',
-			use: [{ loader: require('path').resolve(__dirname, 'raw-loader.cjs') }],
+			use: [{ loader: require('node:path').resolve(__dirname, 'raw-loader.cjs') }],
 		});
 		return config;
 	},

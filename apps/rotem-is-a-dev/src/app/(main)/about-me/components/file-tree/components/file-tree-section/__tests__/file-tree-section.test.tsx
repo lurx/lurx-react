@@ -76,13 +76,13 @@ describe('FileTreeSection', () => {
 	});
 
 	it('marks the active file', () => {
-		render(<FileTreeSection {...defaultProps} activeFileId={'bio' as AboutFileId} />);
+		render(<FileTreeSection {...defaultProps} activeFileId="bio" />);
 		const bioButton = screen.getByText('bio').closest('button');
 		expect(bioButton?.className).toContain('activeFile');
 	});
 
 	it('does not mark a non-active file', () => {
-		render(<FileTreeSection {...defaultProps} activeFileId={'interests' as AboutFileId} />);
+		render(<FileTreeSection {...defaultProps} activeFileId="interests" />);
 		const bioButton = screen.getByText('bio').closest('button');
 		expect(bioButton?.className).not.toContain('activeFile');
 	});

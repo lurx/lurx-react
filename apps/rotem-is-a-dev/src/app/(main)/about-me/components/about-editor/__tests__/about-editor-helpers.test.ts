@@ -51,8 +51,8 @@ describe('about-editor.helpers', () => {
 			};
 			const lines = toJsdocLines(content);
 			expect(lines[0]).toBe('/**');
-			expect(lines[lines.length - 1]).toBe(' */');
-			expect(lines[lines.length - 2]).toBe(' *');
+			expect(lines.at(-1)).toBe(' */');
+			expect(lines.at(-2)).toBe(' *');
 		});
 
 		it('includes the paragraph text prefixed with " * "', () => {

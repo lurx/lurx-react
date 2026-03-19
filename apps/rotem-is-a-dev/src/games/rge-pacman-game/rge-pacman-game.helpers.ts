@@ -79,7 +79,7 @@ export const euclideanDistance = (pointA: Position, pointB: Position): number =>
 	const deltaX = pointA.x - pointB.x;
 	const deltaY = pointA.y - pointB.y;
 
-	return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+	return Math.hypot(deltaX, deltaY);
 };
 
 export const getGhostTarget = (
