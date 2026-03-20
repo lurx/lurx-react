@@ -2,6 +2,6 @@ import type { Project } from '../../data/projects.data';
 
 export type ProjectCardProps = {
 	project: Project;
-	onViewProject?: (project: Project) => void;
-	onCommentClick?: (project: Project) => void;
+	onViewProjectAction?: (project: Project) => void;
+	onCommentClickAction?: (project: Project) => void;
 }

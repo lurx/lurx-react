@@ -1,9 +1,9 @@
 import cv from '@/data/cv.data';
 import type {
-	AboutFileContent,
-	AboutFileId,
-	SectionConfig,
-	SectionId,
+  AboutFileContent,
+  AboutFileId,
+  SectionConfig,
+  SectionId,
 } from './about-files.types';
 
 export type { AboutFileContent, AboutFileId, JsdocFileContent, JsonFileContent, MarkdownFileContent, SectionConfig, SectionId } from './about-files.types';
@@ -18,7 +18,7 @@ export const SECTION_FILES: Record<SectionId, AboutFileId[]> = {
 	'work-experience': ['payoneer', 'startup-booster', 'investing-com', 'isocia'],
 };
 
-export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
+export const ABOUT_FILES = {
 	bio: {
 		title: 'bio',
 		format: 'jsdoc',
@@ -38,30 +38,32 @@ export const ABOUT_FILES: Record<AboutFileId, AboutFileContent> = {
 	payoneer: {
 		title: 'payoneer',
 		format: 'json',
-		json: cv.work_experience[0] as unknown as Record<string, unknown>,
+		json: cv.work_experience[0],
 	},
 	'startup-booster': {
 		title: 'startup-booster',
 		format: 'json',
-		json: cv.work_experience[1] as unknown as Record<string, unknown>,
+		json: cv.work_experience[1],
 	},
 	'investing-com': {
 		title: 'investing-com',
 		format: 'json',
-		json: cv.work_experience[2] as unknown as Record<string, unknown>,
+		json: cv.work_experience[2],
 	},
 	isocia: {
 		title: 'isocia',
 		format: 'json',
-		json: cv.work_experience[3] as unknown as Record<string, unknown>,
+		json: cv.work_experience[3],
 	},
-};
+} satisfies Record<AboutFileId, AboutFileContent>;
 
 export const DEFAULT_FILE_ID: AboutFileId = 'bio';
 
+const isSectionId = (key: string): key is SectionId => key in SECTION_FILES;
+
 export const getFileSection = (fileId: AboutFileId): Nullable<SectionId> => {
-	for (const [sectionId, fileIds] of Object.entries(SECTION_FILES)) {
-		if (fileIds.includes(fileId)) return sectionId as SectionId;
+	for (const [key, fileIds] of Object.entries(SECTION_FILES)) {
+		if (isSectionId(key) && fileIds.includes(fileId)) return key;
 	}
 	return null;
 };

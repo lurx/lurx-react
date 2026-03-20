@@ -13,8 +13,8 @@ describe('GameOverlay', () => {
 	const defaultProps = {
 		phase: 'idle' as const,
 		score: 0,
-		onStart: jest.fn(),
-		onRestart: jest.fn(),
+		onStartAction: jest.fn(),
+		onRestartAction: jest.fn(),
 	};
 
 	it('renders idle overlay with START GAME button', () => {
@@ -26,7 +26,7 @@ describe('GameOverlay', () => {
 
 	it('calls onStart when START GAME is clicked', () => {
 		const onStart = jest.fn();
-		render(<GameOverlay {...defaultProps} onStart={onStart} />);
+		render(<GameOverlay {...defaultProps} onStartAction={onStart} />);
 		fireEvent.click(screen.getByText('START GAME'));
 		expect(onStart).toHaveBeenCalledTimes(1);
 	});
@@ -46,7 +46,7 @@ describe('GameOverlay', () => {
 
 	it('calls onRestart when TRY AGAIN is clicked', () => {
 		const onRestart = jest.fn();
-		render(<GameOverlay {...defaultProps} phase="lost" onRestart={onRestart} />);
+		render(<GameOverlay {...defaultProps} phase="lost" onRestartAction={onRestart} />);
 		fireEvent.click(screen.getByText('TRY AGAIN'));
 		expect(onRestart).toHaveBeenCalledTimes(1);
 	});
@@ -61,14 +61,14 @@ describe('GameOverlay', () => {
 
 	it('calls onRestart when PLAY AGAIN is clicked', () => {
 		const onRestart = jest.fn();
-		render(<GameOverlay {...defaultProps} phase="won" onRestart={onRestart} />);
+		render(<GameOverlay {...defaultProps} phase="won" onRestartAction={onRestart} />);
 		fireEvent.click(screen.getByText('PLAY AGAIN'));
 		expect(onRestart).toHaveBeenCalledTimes(1);
 	});
 
 	it('renders skip button when onSkip is provided', () => {
 		const onSkip = jest.fn();
-		render(<GameOverlay {...defaultProps} onSkip={onSkip} />);
+		render(<GameOverlay {...defaultProps} onSkipAction={onSkip} />);
 		const skipButton = screen.getByTestId('overlay-skip');
 		expect(skipButton).toBeInTheDocument();
 		fireEvent.click(skipButton);

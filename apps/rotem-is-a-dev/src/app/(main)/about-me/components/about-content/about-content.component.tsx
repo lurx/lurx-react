@@ -6,10 +6,10 @@ import type { AboutContentProps } from './about-content.types';
 export const AboutContent = ({
 	openTabs,
 	activeFileId,
-	onTabSelect,
-	onTabClose,
-	onCloseOthers,
-	onCloseAll,
+	onTabSelectAction,
+	onTabCloseAction,
+	onCloseOthersAction,
+	onCloseAllAction,
 	children,
 }: AboutContentProps) => {
 	const sidePanel = activeFileId ? <GistPanel /> : null;
@@ -19,10 +19,10 @@ export const AboutContent = ({
 			<TabBar
 				openTabs={openTabs}
 				activeFileId={activeFileId}
-				onTabSelect={onTabSelect}
-				onTabClose={onTabClose}
-				onCloseOthers={onCloseOthers}
-				onCloseAll={onCloseAll}
+				onTabSelectAction={onTabSelectAction}
+				onTabCloseAction={onTabCloseAction}
+				onCloseOthersAction={onCloseOthersAction}
+				onCloseAllAction={onCloseAllAction}
 			/>
 
 			<div className={styles.panels}>

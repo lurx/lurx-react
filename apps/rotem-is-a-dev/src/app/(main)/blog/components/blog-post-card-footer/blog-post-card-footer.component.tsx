@@ -10,7 +10,7 @@ import type { BlogPostCardFooterProps } from './blog-post-card-footer.types';
 export const BlogPostCardFooter = ({
 	entityType,
 	entityId,
-	onCommentClick,
+	onCommentClickAction,
 }: BlogPostCardFooterProps) => {
 	const { user } = useAuth();
 	const { starCount, hasUserStarred, toggleStar } = useStars(entityType, entityId);
@@ -29,8 +29,8 @@ export const BlogPostCardFooter = ({
 				commentCount={comments.length}
 				hasUserCommented={hasUserCommented}
 				isAuthenticated={Boolean(user)}
-				onStarClick={toggleStar}
-				onCommentClick={onCommentClick}
+				onStarClickAction={toggleStar}
+				onCommentClickAction={onCommentClickAction}
 			/>
 		</div>
 	);

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 jest.mock('@/app/components', () => ({
+	...jest.requireActual('@/app/components'),
 	FaIcon: ({ iconName }: { iconName: string }) => (
 		<span data-testid="fa-icon" data-icon={iconName} />
 	),
@@ -16,6 +17,8 @@ jest.mock('@/app/layout/accessibility-widget/accessibility-widget.helpers', () =
 	applySpacing: (...args: unknown[]) => mockApplySpacing(...args),
 	readStoredScale: () => mockReadStoredScale(),
 	readStoredLevel: () => mockReadStoredLevel(),
+	incrementSpacingLevel: (level: number) => Math.min(level + 1, 3),
+	decrementSpacingLevel: (level: number) => Math.max(level - 1, 0),
 	formatSpacingValue: (values: ReadonlyArray<'Normal' | number>, level: number, suffix: string) => {
 		const value = values[level];
 		if (value === 'Normal') return 'Normal';

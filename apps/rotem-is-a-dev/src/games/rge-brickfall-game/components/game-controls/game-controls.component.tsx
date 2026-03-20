@@ -49,7 +49,7 @@ export const GameControls = ({
 	activeAction,
 	keyScheme,
 	isPlaying,
-	onToggleKeyScheme,
+	onToggleKeySchemeAction,
 }: GameControlsProps) => {
 	const items = buildItems(keyScheme);
 	const bottomAction = buildBottomAction(keyScheme);
@@ -70,7 +70,7 @@ export const GameControls = ({
 			{!isPlaying && (
 				<button
 					className={styles.schemeToggle}
-					onClick={onToggleKeyScheme}
+					onClick={onToggleKeySchemeAction}
 					type="button"
 					data-testid="key-scheme-toggle"
 				>

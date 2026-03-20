@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 jest.mock('@/app/components/sign-in-dialog', () => ({
-	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+	SignInDialog: ({ isOpen, onCloseAction }: { isOpen: boolean; onCloseAction: () => void }) =>
 		isOpen ? (
 			<div data-testid="sign-in-dialog">
-				<button type="button" onClick={onClose} data-testid="close-dialog">
+				<button type="button" onClick={onCloseAction} data-testid="close-dialog">
 					close
 				</button>
 			</div>

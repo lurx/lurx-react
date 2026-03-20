@@ -18,10 +18,10 @@ const mockUseResponsive = useResponsive as jest.Mock;
 const defaultProps = {
 	openTabs: ['bio', 'interests'] as AboutFileId[],
 	activeFileId: 'bio' as AboutFileId,
-	onTabSelect: jest.fn(),
-	onTabClose: jest.fn(),
-	onCloseOthers: jest.fn(),
-	onCloseAll: jest.fn(),
+	onTabSelectAction: jest.fn(),
+	onTabCloseAction: jest.fn(),
+	onCloseOthersAction: jest.fn(),
+	onCloseAllAction: jest.fn(),
 };
 
 let portalRoot: HTMLDivElement;
@@ -51,16 +51,16 @@ describe('TabBar', () => {
 		expect(bioTab).toHaveAttribute('aria-selected', 'true');
 	});
 
-	it('calls onTabSelect when a tab is clicked', () => {
+	it('calls onTabSelectAction when a tab is clicked', () => {
 		render(<TabBar {...defaultProps} />);
 		fireEvent.click(screen.getByText('interests'));
-		expect(defaultProps.onTabSelect).toHaveBeenCalledWith('interests');
+		expect(defaultProps.onTabSelectAction).toHaveBeenCalledWith('interests');
 	});
 
-	it('calls onTabClose when the close button is clicked', () => {
+	it('calls onTabCloseAction when the close button is clicked', () => {
 		render(<TabBar {...defaultProps} />);
 		fireEvent.click(screen.getByLabelText('Close bio tab'));
-		expect(defaultProps.onTabClose).toHaveBeenCalled();
+		expect(defaultProps.onTabCloseAction).toHaveBeenCalled();
 	});
 
 	it('opens context menu on right-click', () => {
@@ -77,28 +77,28 @@ describe('TabBar', () => {
 		expect(prevented).toBe(true);
 	});
 
-	it('calls onCloseOthers via context menu', () => {
+	it('calls onCloseOthersAction via context menu', () => {
 		render(<TabBar {...defaultProps} />);
 		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close Others'));
-		expect(defaultProps.onCloseOthers).toHaveBeenCalledWith('bio');
+		expect(defaultProps.onCloseOthersAction).toHaveBeenCalledWith('bio');
 	});
 
-	it('calls onCloseAll via context menu', () => {
+	it('calls onCloseAllAction via context menu', () => {
 		render(<TabBar {...defaultProps} />);
 		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close All'));
-		expect(defaultProps.onCloseAll).toHaveBeenCalled();
+		expect(defaultProps.onCloseAllAction).toHaveBeenCalled();
 	});
 
-	it('calls onTabClose via context menu Close', () => {
+	it('calls onTabCloseAction via context menu Close', () => {
 		render(<TabBar {...defaultProps} />);
 		const bioTab = screen.getByRole('tab', { name: /bio/i });
 		fireEvent.contextMenu(bioTab);
 		fireEvent.click(screen.getByText('Close'));
-		expect(defaultProps.onTabClose).toHaveBeenCalled();
+		expect(defaultProps.onTabCloseAction).toHaveBeenCalled();
 	});
 
 	it('dismisses context menu on Escape', () => {
@@ -120,20 +120,20 @@ describe('TabBar', () => {
 		render(<TabBar {...defaultProps} />);
 		const interestsTab = screen.getByRole('tab', { name: /interests/i });
 		fireEvent.keyDown(interestsTab, { key: 'Enter' });
-		expect(defaultProps.onTabSelect).toHaveBeenCalledWith('interests');
+		expect(defaultProps.onTabSelectAction).toHaveBeenCalledWith('interests');
 	});
 
 	it('selects a tab when Space key is pressed', () => {
 		render(<TabBar {...defaultProps} />);
 		const interestsTab = screen.getByRole('tab', { name: /interests/i });
 		fireEvent.keyDown(interestsTab, { key: ' ' });
-		expect(defaultProps.onTabSelect).toHaveBeenCalledWith('interests');
+		expect(defaultProps.onTabSelectAction).toHaveBeenCalledWith('interests');
 	});
 
 	it('does not select a tab for other key presses', () => {
 		render(<TabBar {...defaultProps} />);
 		const interestsTab = screen.getByRole('tab', { name: /interests/i });
 		fireEvent.keyDown(interestsTab, { key: 'Tab' });
-		expect(defaultProps.onTabSelect).not.toHaveBeenCalled();
+		expect(defaultProps.onTabSelectAction).not.toHaveBeenCalled();
 	});
 });

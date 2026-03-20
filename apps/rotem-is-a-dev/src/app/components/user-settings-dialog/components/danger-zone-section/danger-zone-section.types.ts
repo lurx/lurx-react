@@ -1,3 +1,3 @@
 export type DangerZoneSectionProps = {
-	onDeleteAccount: () => Promise<void>;
+	onDeleteAccountAction: () => Promise<void>;
 };

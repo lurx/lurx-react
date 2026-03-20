@@ -1,4 +1,4 @@
 export type UserSettingsDialogProps = {
 	isOpen: boolean;
-	onClose: () => void;
+	onCloseAction: () => void;
 };

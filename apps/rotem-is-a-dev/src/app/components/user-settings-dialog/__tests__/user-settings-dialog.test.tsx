@@ -22,11 +22,11 @@ jest.mock('@/app/context/auth', () => ({
 jest.mock('../components', () => ({
 	GeneralSection: () => <div data-testid="general-section" />,
 	AccessibilitySection: () => <div data-testid="accessibility-section" />,
-	DangerZoneSection: ({ onDeleteAccount }: { onDeleteAccount: () => void }) => (
-		<button data-testid="danger-zone-section" onClick={onDeleteAccount} />
+	DangerZoneSection: ({ onDeleteAccountAction }: { onDeleteAccountAction: () => void }) => (
+		<button data-testid="danger-zone-section" onClick={onDeleteAccountAction} />
 	),
-	LogoutSection: ({ onSignOut }: { onSignOut: () => void }) => (
-		<button data-testid="logout-section" onClick={onSignOut} />
+	LogoutSection: ({ onSignOutAction }: { onSignOutAction: () => void }) => (
+		<button data-testid="logout-section" onClick={onSignOutAction} />
 	),
 }));
 
@@ -53,26 +53,26 @@ beforeEach(() => {
 describe('UserSettingsDialog', () => {
 	it('renders nothing when not open', () => {
 		const { container } = render(
-			<UserSettingsDialog isOpen={false} onClose={mockOnClose} />,
+			<UserSettingsDialog isOpen={false} onCloseAction={mockOnClose} />,
 		);
 		expect(container).toBeEmptyDOMElement();
 	});
 
 	it('renders dialog with title when open', () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByText('Settings')).toBeInTheDocument();
 	});
 
 	it('renders all four sections', () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('general-section')).toBeInTheDocument();
 		expect(screen.getByTestId('accessibility-section')).toBeInTheDocument();
 		expect(screen.getByTestId('danger-zone-section')).toBeInTheDocument();
 		expect(screen.getByTestId('logout-section')).toBeInTheDocument();
 	});
 
-	it('calls signOut and onClose when logout section triggers', async () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+	it('calls signOut and onCloseAction when logout section triggers', async () => {
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		fireEvent.click(screen.getByTestId('logout-section'));
 		await waitFor(() => {
 			expect(mockSignOut).toHaveBeenCalledTimes(1);
@@ -80,8 +80,8 @@ describe('UserSettingsDialog', () => {
 		});
 	});
 
-	it('calls deleteUser and onClose when danger zone section triggers', async () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+	it('calls deleteUser and onCloseAction when danger zone section triggers', async () => {
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		fireEvent.click(screen.getByTestId('danger-zone-section'));
 		await waitFor(() => {
 			expect(mockDeleteUser).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe('UserSettingsDialog', () => {
 	});
 
 	it('renders section titles', () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByText('Profile')).toBeInTheDocument();
 		expect(screen.getByText('Accessibility')).toBeInTheDocument();
 		expect(screen.getByText('Danger zone')).toBeInTheDocument();
@@ -98,7 +98,7 @@ describe('UserSettingsDialog', () => {
 	});
 
 	it('sets correct aria-label on dialog', () => {
-		render(<UserSettingsDialog isOpen={true} onClose={mockOnClose} />);
+		render(<UserSettingsDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('dialog')).toHaveAttribute('aria-label', 'User settings');
 	});
 });

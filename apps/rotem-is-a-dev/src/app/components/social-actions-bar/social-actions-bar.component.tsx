@@ -16,8 +16,8 @@ export const SocialActionsBar = ({
 	commentCount,
 	hasUserCommented,
 	isAuthenticated,
-	onStarClick,
-	onCommentClick,
+	onStarClickAction,
+	onCommentClickAction,
 	className,
 }: SocialActionsBarProps) => {
 	const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -27,8 +27,8 @@ export const SocialActionsBar = ({
 			setIsSignInOpen(true);
 			return;
 		}
-		onStarClick();
-	}, [isAuthenticated, onStarClick]);
+		onStarClickAction();
+	}, [isAuthenticated, onStarClickAction]);
 
 	const handleCloseSignIn = useCallback(() => {
 		setIsSignInOpen(false);
@@ -77,7 +77,7 @@ export const SocialActionsBar = ({
 			<button
 				type="button"
 				className={commentClassName}
-				onClick={onCommentClick}
+				onClick={onCommentClickAction}
 				aria-label={SOCIAL_ACTIONS_BAR_LABELS.COMMENTS}
 				data-testid="comment-button"
 			>
@@ -96,7 +96,7 @@ export const SocialActionsBar = ({
 
 			<SignInDialog
 				isOpen={isSignInOpen}
-				onClose={handleCloseSignIn}
+				onCloseAction={handleCloseSignIn}
 			/>
 		</div>
 	);

@@ -11,23 +11,23 @@ import { USER_SETTINGS_STRINGS } from './user-settings-dialog.constants';
 import styles from './user-settings-dialog.module.scss';
 import type { UserSettingsDialogProps } from './user-settings-dialog.types';
 
-export const UserSettingsDialog = ({ isOpen, onClose }: UserSettingsDialogProps) => {
+export const UserSettingsDialog = ({ isOpen, onCloseAction }: UserSettingsDialogProps) => {
 	const { signOut, deleteUser } = useAuth();
 
 	const handleSignOut = useCallback(async () => {
 		await signOut();
-		onClose();
-	}, [signOut, onClose]);
+		onCloseAction();
+	}, [signOut, onCloseAction]);
 
 	const handleDeleteAccount = useCallback(async () => {
 		await deleteUser();
-		onClose();
-	}, [deleteUser, onClose]);
+		onCloseAction();
+	}, [deleteUser, onCloseAction]);
 
 	return (
 		<Dialog
 			isOpen={isOpen}
-			onClose={onClose}
+			onCloseAction={onCloseAction}
 			ariaLabel={USER_SETTINGS_STRINGS.DIALOG_LABEL}
 			className={styles.settingsDialog}
 		>
@@ -44,12 +44,12 @@ export const UserSettingsDialog = ({ isOpen, onClose }: UserSettingsDialogProps)
 			<div className={styles.divider} />
 			<div className={styles.section}>
 				<span className={styles.sectionTitle} data-name="danger-zone">{USER_SETTINGS_STRINGS.DANGER_ZONE_TITLE}</span>
-				<DangerZoneSection onDeleteAccount={handleDeleteAccount} />
+				<DangerZoneSection onDeleteAccountAction={handleDeleteAccount} />
 			</div>
 			<div className={styles.divider} />
 			<div className={styles.section}>
 				<span className={styles.sectionTitle}>{USER_SETTINGS_STRINGS.LOGOUT_TITLE}</span>
-				<LogoutSection onSignOut={handleSignOut} />
+				<LogoutSection onSignOutAction={handleSignOut} />
 			</div>
 		</Dialog>
 	);

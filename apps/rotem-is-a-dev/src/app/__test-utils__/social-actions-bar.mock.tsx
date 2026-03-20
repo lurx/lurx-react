@@ -4,16 +4,16 @@ export const SocialActionsBar = ({
 	commentCount,
 	hasUserCommented,
 	isAuthenticated,
-	onStarClick,
-	onCommentClick,
+	onStarClickAction,
+	onCommentClickAction,
 }: {
 	starCount: number;
 	hasUserStarred: boolean;
 	commentCount: number;
 	hasUserCommented: boolean;
 	isAuthenticated: boolean;
-	onStarClick: () => void;
-	onCommentClick: () => void;
+	onStarClickAction: () => void;
+	onCommentClickAction: () => void;
 }) => (
 	<button
 		type="button"
@@ -23,7 +23,7 @@ export const SocialActionsBar = ({
 		data-comment-count={commentCount}
 		data-has-user-commented={hasUserCommented}
 		data-is-authenticated={isAuthenticated}
-		onClick={onStarClick}
-		onDoubleClick={onCommentClick}
+		onClick={onStarClickAction}
+		onDoubleClick={onCommentClickAction}
 	/>
 );

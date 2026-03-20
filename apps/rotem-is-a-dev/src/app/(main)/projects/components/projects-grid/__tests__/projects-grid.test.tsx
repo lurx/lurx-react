@@ -5,18 +5,18 @@ import { ProjectsGrid } from '../projects-grid.component';
 jest.mock('../../project-card', () => ({
 	ProjectCard: ({
 		project,
-		onViewProject,
+		onViewProjectAction,
 	}: {
 		project: Project;
-		onViewProject?: (project: Project) => void;
+		onViewProjectAction?: (project: Project) => void;
 	}) => (
 		<div
 			data-testid={`project-card-${project.id}`}
 			data-slug={project.slug}
 		>
 			<span>{project.slug}</span>
-			{onViewProject && (
-				<button onClick={() => onViewProject(project)}>view</button>
+			{onViewProjectAction && (
+				<button onClick={() => onViewProjectAction(project)}>view</button>
 			)}
 		</div>
 	),
@@ -66,14 +66,14 @@ describe('ProjectsGrid', () => {
 
 	it('passes onViewProject to each ProjectCard', () => {
 		const onViewProject = jest.fn();
-		render(<ProjectsGrid projects={mockProjects} onViewProject={onViewProject} />);
+		render(<ProjectsGrid projects={mockProjects} onViewProjectAction={onViewProject} />);
 		fireEvent.click(screen.getAllByText('view')[0]);
 		expect(onViewProject).toHaveBeenCalledWith(mockProjects[0]);
 	});
 
 	it('calls onViewProject with the correct project when clicked', () => {
 		const onViewProject = jest.fn();
-		render(<ProjectsGrid projects={mockProjects} onViewProject={onViewProject} />);
+		render(<ProjectsGrid projects={mockProjects} onViewProjectAction={onViewProject} />);
 		fireEvent.click(screen.getAllByText('view')[1]);
 		expect(onViewProject).toHaveBeenCalledWith(mockProjects[1]);
 	});

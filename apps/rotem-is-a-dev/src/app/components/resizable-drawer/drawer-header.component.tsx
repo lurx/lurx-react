@@ -2,13 +2,13 @@ import { FaIcon } from '../fa-icon';
 import styles from './resizable-drawer.module.scss';
 import type { DrawerHeaderProps } from './resizable-drawer.types';
 
-export const DrawerHeader = ({ title, onClose }: DrawerHeaderProps) => (
+export const DrawerHeader = ({ title, onCloseAction }: DrawerHeaderProps) => (
 	<div className={styles.header}>
 		{title && <div className={styles.title}>{title}</div>}
 		<button
 			type="button"
 			className={styles.closeButton}
-			onClick={onClose}
+			onClick={onCloseAction}
 			aria-label="Close drawer"
 			data-testid="resizable-drawer-close"
 		>

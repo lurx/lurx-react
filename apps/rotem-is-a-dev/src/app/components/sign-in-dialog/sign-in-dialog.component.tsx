@@ -8,22 +8,22 @@ import type { SignInDialogProps } from './sign-in-dialog.types';
 import { AUTH_PROVIDERS } from '@/app/context/auth/auth.constants';
 import { SignInWithProviderButton } from './components/sign-in-with-provider-button.component';
 
-export const SignInDialog = ({ isOpen, onClose }: SignInDialogProps) => {
+export const SignInDialog = ({ isOpen, onCloseAction }: SignInDialogProps) => {
 	const { signInWithGoogle, signInWithGitHub } = useAuth();
 	const authProviders = Object.values(AUTH_PROVIDERS);
 
 	const handleGoogle = useCallback(async () => {
-		onClose();
+		onCloseAction();
 		await signInWithGoogle();
-	}, [onClose, signInWithGoogle]);
+	}, [onCloseAction, signInWithGoogle]);
 
 	const handleGitHub = useCallback(async () => {
-		onClose();
+		onCloseAction();
 		await signInWithGitHub();
-	}, [onClose, signInWithGitHub]);
+	}, [onCloseAction, signInWithGitHub]);
 
 	return (
-		<Dialog isOpen={isOpen} onClose={onClose} ariaLabel={SIGN_IN_DIALOG_STRINGS.DIALOG_LABEL}>
+		<Dialog isOpen={isOpen} onCloseAction={onCloseAction} ariaLabel={SIGN_IN_DIALOG_STRINGS.DIALOG_LABEL}>
 			<span className={styles.title}>{SIGN_IN_DIALOG_STRINGS.TITLE}</span>
 			<p className={styles.whyLogin}>{SIGN_IN_DIALOG_STRINGS.WHY_LOGIN}</p>
 			<div className={styles.providers}>
@@ -40,7 +40,7 @@ export const SignInDialog = ({ isOpen, onClose }: SignInDialogProps) => {
 			</div>
 			<p className={styles.privacyNote}>
 				{SIGN_IN_DIALOG_STRINGS.PRIVACY_NOTE}{' '}
-				<Link href={SIGN_IN_DIALOG_STRINGS.PRIVACY_LINK_HREF} onClick={onClose}>
+				<Link href={SIGN_IN_DIALOG_STRINGS.PRIVACY_LINK_HREF} onClick={onCloseAction}>
 					{SIGN_IN_DIALOG_STRINGS.PRIVACY_LINK_TEXT}
 				</Link>
 			</p>

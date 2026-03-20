@@ -24,12 +24,12 @@ export const POWER_COLOR = '#FFFFFF';
 export const FRIGHTENED_COLOR = '#2121DE';
 export const FRIGHTENED_FLASH_COLOR = '#FFFFFF';
 
-export const GHOST_COLORS: Record<GhostName, string> = {
+export const GHOST_COLORS = {
 	blinky: '#FF0000',
 	pinky: '#FFB8FF',
 	inky: '#00FFFF',
 	clyde: '#FFB852',
-};
+} satisfies Record<GhostName, string>;
 
 export const DOT_SIZE = 4;
 export const POWER_SIZE = 10;
@@ -37,7 +37,7 @@ export const POWER_SIZE = 10;
 export const PACMAN_START: Position = { x: 14, y: 23 };
 export const FRUIT_POSITION: Position = { x: 14, y: 17 };
 
-export const GHOST_CONFIG: Record<GhostName, GhostConfig> = {
+export const GHOST_CONFIG = {
 	blinky: {
 		startPosition: { x: 14, y: 11 },
 		scatterTarget: { x: 25, y: 0 },
@@ -62,7 +62,7 @@ export const GHOST_CONFIG: Record<GhostName, GhostConfig> = {
 		releaseThreshold: 60,
 		startDirection: 'UP',
 	},
-};
+} satisfies Record<GhostName, GhostConfig>;
 
 export const GHOST_HOUSE_CENTER: Position = { x: 14, y: 14 };
 export const GHOST_DOOR_POSITION: Position = { x: 14, y: 12 };
@@ -125,7 +125,7 @@ export const SCATTER_CHASE_PATTERN: ScatterChasePhase[] = [
 
 export const FRUIT_SPAWN_DOT_THRESHOLDS = [70, 170] as const;
 
-export const FRUIT_CONFIG: Record<FruitType, FruitConfig> = {
+export const FRUIT_CONFIG = {
 	cherry: { emoji: '\u{1F352}', score: 100 }, // 🍒
 	strawberry: { emoji: '\u{1F353}', score: 300 }, // 🍓
 	orange: { emoji: '\u{1F34A}', score: 500 }, // 🍊
@@ -134,7 +134,7 @@ export const FRUIT_CONFIG: Record<FruitType, FruitConfig> = {
 	galaxian: { emoji: '\u{1F680}', score: 2000 }, // 🚀
 	bell: { emoji: '\u{1F514}', score: 3000 }, // 🔔
 	key: { emoji: '\u{1F511}', score: 5000 }, // 🔑
-};
+} satisfies Record<FruitType, FruitConfig>;
 export const DOT_SCORE = 10;
 export const POWER_SCORE = 50;
 export const GHOST_BASE_SCORE = 200;

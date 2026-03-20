@@ -28,7 +28,7 @@ export const Contact = () => {
 	);
 };
 
-const brandIcons: string[] = ['LinkedIn', 'GitHub'] as const;
+const brandIcons = new Set(['LinkedIn', 'GitHub']);
 
 const contactIconMaps: Record<string, string> = {
   Email: 'at',
@@ -39,7 +39,7 @@ const contactIconMaps: Record<string, string> = {
 
 const ContactItem = ({ name, href }: { name: string; href: string }) => {
 	let iconGroup: IconGroupName = 'fas';
-	if (brandIcons.includes(name)) {
+	if (brandIcons.has(name)) {
 		iconGroup = 'fab';
 	}
 	return (

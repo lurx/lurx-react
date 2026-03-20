@@ -42,7 +42,7 @@ afterEach(() => {
 describe('Dialog', () => {
 	it('renders nothing when closed', () => {
 		render(
-			<Dialog isOpen={false} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={false} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -51,7 +51,7 @@ describe('Dialog', () => {
 
 	it('renders dialog when open', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -60,16 +60,16 @@ describe('Dialog', () => {
 
 	it('renders children', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Dialog content</p>
 			</Dialog>,
 		);
 		expect(screen.getByText('Dialog content')).toBeInTheDocument();
 	});
 
-	it('calls onClose when overlay is clicked', () => {
+	it('calls onCloseAction when overlay is clicked', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -77,9 +77,9 @@ describe('Dialog', () => {
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls onClose when Escape key is pressed', () => {
+	it('calls onCloseAction when Escape key is pressed', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -87,9 +87,9 @@ describe('Dialog', () => {
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not call onClose for non-Escape keys', () => {
+	it('does not call onCloseAction for non-Escape keys', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -99,7 +99,7 @@ describe('Dialog', () => {
 
 	it('locks body scroll when open', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -108,7 +108,7 @@ describe('Dialog', () => {
 
 	it('restores body scroll on unmount', () => {
 		const { unmount } = render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -119,7 +119,7 @@ describe('Dialog', () => {
 
 	it('uses native dialog element with aria-label', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -131,7 +131,7 @@ describe('Dialog', () => {
 
 	it('portals into portal-root', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -141,9 +141,9 @@ describe('Dialog', () => {
 		).toBeInTheDocument();
 	});
 
-	it('calls onClose when close button is clicked', () => {
+	it('calls onCloseAction when close button is clicked', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -155,7 +155,7 @@ describe('Dialog', () => {
 		render(
 			<Dialog
 				isOpen={true}
-				onClose={mockOnClose}
+				onCloseAction={mockOnClose}
 				ariaLabel="Test dialog"
 				fullScreen
 			>
@@ -168,7 +168,7 @@ describe('Dialog', () => {
 
 	it('does not apply fullScreen class by default', () => {
 		render(
-			<Dialog isOpen={true} onClose={mockOnClose} ariaLabel="Test dialog">
+			<Dialog isOpen={true} onCloseAction={mockOnClose} ariaLabel="Test dialog">
 				<p>Content</p>
 			</Dialog>,
 		);
@@ -180,7 +180,7 @@ describe('Dialog', () => {
 		render(
 			<Dialog
 				isOpen={true}
-				onClose={mockOnClose}
+				onCloseAction={mockOnClose}
 				ariaLabel="Test dialog"
 				className="custom-class"
 			>

@@ -13,7 +13,7 @@ export const PacmanPreview = () => (
 	<div
 		aria-hidden="true"
 		style={{
-			['--board-cell-size' as string]: `${PREVIEW_CELL_SIZE}px`,
+			'--board-cell-size': `${PREVIEW_CELL_SIZE}px`,
 			width: COLS * PREVIEW_CELL_SIZE,
 			height: ROWS * PREVIEW_CELL_SIZE,
 			position: 'relative',

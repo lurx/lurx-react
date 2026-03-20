@@ -1,9 +1,9 @@
 import styles from './game-card.module.scss';
 import type { GameCardProps } from './game-card.types';
 
-export const GameCard = ({ game, onPlay }: GameCardProps) => {
+export const GameCard = ({ game, onPlayAction }: GameCardProps) => {
 	const PreviewComponent = game.preview;
-	const handlePlay = () => onPlay(game);
+	const handlePlay = () => onPlayAction(game);
 
 	return (
 		<article

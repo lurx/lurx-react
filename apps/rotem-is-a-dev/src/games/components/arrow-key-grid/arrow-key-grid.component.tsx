@@ -4,25 +4,25 @@ import styles from './arrow-key-grid.module.scss';
 const renderItem = <T extends string>(
 	item: ArrowKeyGridItem<T>,
 	isActive: boolean,
-	onPress?: (value: T) => void,
+	onPressAction?: (value: T) => void,
 	extraClassName?: string,
 ) => {
 	const className = [
 		styles.key,
-		onPress ? styles.button : '',
+		onPressAction ? styles.button : '',
 		isActive ? styles.active : '',
 		extraClassName ?? '',
 	]
 		.filter(Boolean)
 		.join(' ');
 
-	if (onPress) {
+	if (onPressAction) {
 		return (
 			<button
 				key={item.value}
 				data-testid={item.testId}
 				className={className}
-				onClick={() => onPress(item.value)}
+				onClick={() => onPressAction(item.value)}
 				type="button"
 				aria-label={item.value.toLowerCase().replace('_', ' ')}
 			>
@@ -46,7 +46,7 @@ const renderItem = <T extends string>(
 export const ArrowKeyGrid = <T extends string>({
 	items,
 	activeValue,
-	onPress,
+	onPressAction,
 	bottomAction,
 }: ArrowKeyGridProps<T>) => {
 	const bottomActionClass = bottomAction ? styles.gridWithBottom : '';
@@ -54,8 +54,8 @@ export const ArrowKeyGrid = <T extends string>({
 
 	return (
 		<div className={gridClassName} data-testid="arrow-key-grid">
-			{items.map((item) => renderItem(item, item.value === activeValue, onPress))}
-			{bottomAction && renderItem(bottomAction, bottomAction.value === activeValue, onPress, styles.bottomKey)}
+			{items.map((item) => renderItem(item, item.value === activeValue, onPressAction))}
+			{bottomAction && renderItem(bottomAction, bottomAction.value === activeValue, onPressAction, styles.bottomKey)}
 		</div>
 	);
 };

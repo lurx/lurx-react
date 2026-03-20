@@ -2,10 +2,10 @@ import type { AboutFileId, SectionId } from '../../../../data/about-files.data';
 
 export type FileTreeSectionProps = {
 	id: SectionId;
-	files: string[];
+	files: AboutFileId[];
 	activeFileId: Nullable<AboutFileId>;
 	toggleSection: (sectionId: string) => void;
 	isCollapsed: boolean;
-	onFileSelect: (fileId: AboutFileId) => void;
+	onFileSelectAction: (fileId: AboutFileId) => void;
 	isMobile: boolean;
 }

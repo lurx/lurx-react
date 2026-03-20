@@ -20,7 +20,7 @@ class MockPointerEvent extends MouseEvent {
 
 const defaultProps = {
 	isOpen: true,
-	onClose: jest.fn(),
+	onCloseAction: jest.fn(),
 };
 
 let portalRoot: HTMLDivElement;
@@ -66,28 +66,28 @@ describe('ResizableDrawer', () => {
 		expect(screen.getByTestId('resizable-drawer-overlay')).toBeInTheDocument();
 	});
 
-	it('calls onClose when overlay is clicked', () => {
+	it('calls onCloseAction when overlay is clicked', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		fireEvent.click(screen.getByTestId('resizable-drawer-overlay'));
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAction).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls onClose when close button is clicked', () => {
+	it('calls onCloseAction when close button is clicked', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		fireEvent.click(screen.getByTestId('resizable-drawer-close'));
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAction).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls onClose when Escape is pressed', () => {
+	it('calls onCloseAction when Escape is pressed', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		fireEvent.keyDown(document, { key: 'Escape' });
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAction).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not call onClose when a non-Escape key is pressed', () => {
+	it('does not call onCloseAction when a non-Escape key is pressed', () => {
 		render(<ResizableDrawer {...defaultProps} />);
 		fireEvent.keyDown(document, { key: 'Enter' });
-		expect(defaultProps.onClose).not.toHaveBeenCalled();
+		expect(defaultProps.onCloseAction).not.toHaveBeenCalled();
 	});
 
 	it('renders as a native dialog with aria-modal="true"', () => {
@@ -243,9 +243,9 @@ describe('ResizableDrawer', () => {
 		expect(drawer.style.width).toBe('500px');
 	});
 
-	it('does not call onClose on Escape when drawer is closed', () => {
+	it('does not call onCloseAction on Escape when drawer is closed', () => {
 		render(<ResizableDrawer {...defaultProps} isOpen={false} />);
 		fireEvent.keyDown(document, { key: 'Escape' });
-		expect(defaultProps.onClose).not.toHaveBeenCalled();
+		expect(defaultProps.onCloseAction).not.toHaveBeenCalled();
 	});
 });

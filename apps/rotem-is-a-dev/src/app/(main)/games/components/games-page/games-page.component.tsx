@@ -34,8 +34,8 @@ export const GamesPage = () => {
 
 	return (
 		<div className={styles.page}>
-			<GamesGrid games={GAMES} onPlay={handlePlay} />
-			<GameDialog game={selectedGame} onClose={handleCloseDialog} />
+			<GamesGrid games={GAMES} onPlayAction={handlePlay} />
+			<GameDialog game={selectedGame} onCloseAction={handleCloseDialog} />
 		</div>
 	);
 };

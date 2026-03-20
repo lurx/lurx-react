@@ -1,6 +1,6 @@
 export type DialogProps = {
 	isOpen: boolean;
-	onClose: () => void;
+	onCloseAction: () => void;
 	ariaLabel: string;
 	className?: string;
 	fullScreen?: boolean;

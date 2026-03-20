@@ -5,10 +5,10 @@ import type { TechCheckboxItemProps } from './tech-checkbox-item.types';
 export const TechCheckboxItem = ({
 	tech,
 	isChecked,
-	onToggle,
+	onToggleAction,
 	iconInfo,
 }: TechCheckboxItemProps) => {
-	const handleChange = () => onToggle(tech);
+	const handleChange = () => onToggleAction(tech);
 
 	const checkIcon = isChecked
 		? <FaIcon iconName="check" iconGroup="fas" />

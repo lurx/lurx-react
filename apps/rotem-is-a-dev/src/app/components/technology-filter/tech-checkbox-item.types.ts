@@ -1,6 +1,6 @@
 export type TechCheckboxItemProps = {
-	tech: string;
+	tech: Technology;
 	isChecked: boolean;
-	onToggle: (tech: string) => void;
+	onToggleAction: (tech: Technology) => void;
 	iconInfo?: IconData;
 }

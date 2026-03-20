@@ -13,8 +13,8 @@ describe('GameOverlay', () => {
 		phase: 'idle' as const,
 		score: 0,
 		lives: 3,
-		onStart: jest.fn(),
-		onRestart: jest.fn(),
+		onStartAction: jest.fn(),
+		onRestartAction: jest.fn(),
 	};
 
 	describe('idle phase', () => {
@@ -35,7 +35,7 @@ describe('GameOverlay', () => {
 
 		it('calls onStart when START GAME is clicked', () => {
 			const onStart = jest.fn();
-			render(<GameOverlay {...defaultProps} onStart={onStart} />);
+			render(<GameOverlay {...defaultProps} onStartAction={onStart} />);
 			fireEvent.click(screen.getByText('START GAME'));
 			expect(onStart).toHaveBeenCalledTimes(1);
 		});
@@ -77,7 +77,7 @@ describe('GameOverlay', () => {
 				<GameOverlay
 					{...defaultProps}
 					phase="won"
-					onRestart={onRestart}
+					onRestartAction={onRestart}
 				/>
 			);
 			fireEvent.click(screen.getByText('PLAY AGAIN'));
@@ -145,7 +145,7 @@ describe('GameOverlay', () => {
 				<GameOverlay
 					{...defaultProps}
 					phase="lost"
-					onRestart={onRestart}
+					onRestartAction={onRestart}
 				/>
 			);
 			fireEvent.click(screen.getByText('TRY AGAIN'));

@@ -5,23 +5,23 @@ import type { TabContextMenuProps } from './tab-context-menu.types';
 
 export const TabContextMenu = ({
 	position,
-	onClose,
-	onCloseOthers,
-	onCloseAll,
-	onDismiss,
+	onCloseAction,
+	onCloseOthersAction,
+	onCloseAllAction,
+	onDismissAction,
 }: TabContextMenuProps) => {
 	const menuRef = useRef<HTMLMenuElement>(null);
 
 	useEffect(() => {
 		const handleMouseDown = (event: MouseEvent) => {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-				onDismiss();
+			if (menuRef.current && event.target instanceof Node && !menuRef.current.contains(event.target)) {
+				onDismissAction();
 			}
 		};
 
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') {
-				onDismiss();
+				onDismissAction();
 			}
 		};
 
@@ -31,16 +31,16 @@ export const TabContextMenu = ({
 			document.removeEventListener('mousedown', handleMouseDown);
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [onDismiss]);
+	}, [onDismissAction]);
 
 	const handleAction = (action: () => void) => {
 		action();
-		onDismiss();
+		onDismissAction();
 	};
 
-	const handleCloseClick = () => handleAction(onClose);
-	const handleCloseOthersClick = () => handleAction(onCloseOthers);
-	const handleCloseAllClick = () => handleAction(onCloseAll);
+	const handleCloseClick = () => handleAction(onCloseAction);
+	const handleCloseOthersClick = () => handleAction(onCloseOthersAction);
+	const handleCloseAllClick = () => handleAction(onCloseAllAction);
 
 	return createPortal(
 		<menu

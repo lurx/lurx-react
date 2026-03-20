@@ -13,8 +13,8 @@ const defaultProps = {
 	score: 0,
 	level: 1,
 	linesCleared: 0,
-	onStart: jest.fn(),
-	onRestart: jest.fn(),
+	onStartAction: jest.fn(),
+	onRestartAction: jest.fn(),
 };
 
 describe('GameOverlay', () => {
@@ -31,7 +31,7 @@ describe('GameOverlay', () => {
 
 	it('calls onStart when START GAME is clicked', () => {
 		const onStart = jest.fn();
-		render(<GameOverlay {...defaultProps} onStart={onStart} />);
+		render(<GameOverlay {...defaultProps} onStartAction={onStart} />);
 		fireEvent.click(screen.getByText('START GAME'));
 		expect(onStart).toHaveBeenCalledTimes(1);
 	});
@@ -61,7 +61,7 @@ describe('GameOverlay', () => {
 
 	it('calls onRestart when TRY AGAIN is clicked', () => {
 		const onRestart = jest.fn();
-		render(<GameOverlay {...defaultProps} phase="lost" onRestart={onRestart} />);
+		render(<GameOverlay {...defaultProps} phase="lost" onRestartAction={onRestart} />);
 		fireEvent.click(screen.getByText('TRY AGAIN'));
 		expect(onRestart).toHaveBeenCalledTimes(1);
 	});

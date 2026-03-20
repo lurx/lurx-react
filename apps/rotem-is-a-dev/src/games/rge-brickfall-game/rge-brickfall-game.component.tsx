@@ -194,7 +194,7 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 		'--board-cols': resolved.gridCols,
 		'--board-rows': resolved.gridRows,
 		'--board-cell-size': `${resolved.cellSize}px`,
-	} as React.CSSProperties;
+	};
 
 	return (
 		<div className={styles.wrapper}>
@@ -212,8 +212,8 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 					score={score}
 					level={level}
 					linesCleared={linesCleared}
-					onStart={handleStart}
-					onRestart={handleRestart}
+					onStartAction={handleStart}
+					onRestartAction={handleRestart}
 				/>
 			</div>
 			<GameControls
@@ -224,7 +224,7 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 				activeAction={activeAction}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
-				onToggleKeyScheme={handleToggleKeyScheme}
+				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>
 	);

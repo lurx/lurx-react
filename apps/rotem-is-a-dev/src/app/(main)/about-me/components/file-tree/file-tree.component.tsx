@@ -10,10 +10,10 @@ import styles from './file-tree.module.scss';
 
 export type FileTreeProps = {
 	activeFileId: Nullable<AboutFileId>;
-	onFileSelect: (fileId: AboutFileId) => void;
+	onFileSelectAction: (fileId: AboutFileId) => void;
 }
 
-export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
+export const FileTree = ({ activeFileId, onFileSelectAction }: FileTreeProps) => {
 	const { isMobile } = useResponsive();
 	const [collapsedSections, setCollapsedSections] = useState<Set<string>>(
 		new Set(),
@@ -52,7 +52,7 @@ export const FileTree = ({ activeFileId, onFileSelect }: FileTreeProps) => {
 						activeFileId={activeFileId}
 						toggleSection={toggleSection}
 						isCollapsed={isCollapsed}
-						onFileSelect={onFileSelect}
+						onFileSelectAction={onFileSelectAction}
 						isMobile={isMobile}
 					/>
 				);

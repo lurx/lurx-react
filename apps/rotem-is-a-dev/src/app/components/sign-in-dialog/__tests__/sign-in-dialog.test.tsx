@@ -13,14 +13,14 @@ jest.mock('@/app/context/auth', () => ({
 
 type MockDialogProps = PropsWithChildren<{
 	isOpen: boolean;
-	onClose: () => void;
+	onCloseAction: () => void;
 	ariaLabel: string;
 }>;
 
 jest.mock('../../dialog', () => ({
-	Dialog: ({ isOpen, onClose, ariaLabel, children }: MockDialogProps) =>
+	Dialog: ({ isOpen, onCloseAction, ariaLabel, children }: MockDialogProps) =>
 		isOpen ? (
-			<dialog data-testid="mock-dialog" data-aria-label={ariaLabel} data-on-close={String(!!onClose)}>
+			<dialog data-testid="mock-dialog" data-aria-label={ariaLabel} data-on-close={String(!!onCloseAction)}>
 				{children}
 			</dialog>
 		) : null,
@@ -49,49 +49,49 @@ beforeEach(() => {
 
 describe('SignInDialog', () => {
 	it('renders nothing when closed', () => {
-		render(<SignInDialog isOpen={false} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={false} onCloseAction={mockOnClose} />);
 		expect(screen.queryByTestId('mock-dialog')).not.toBeInTheDocument();
 	});
 
 	it('renders dialog when open', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('mock-dialog')).toBeInTheDocument();
 	});
 
 	it('passes correct ariaLabel to Dialog', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('mock-dialog')).toHaveAttribute('data-aria-label', 'Sign in');
 	});
 
-	it('passes onClose to Dialog', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+	it('passes onCloseAction to Dialog', () => {
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('mock-dialog')).toHaveAttribute('data-on-close', 'true');
 	});
 
 	it('renders title text', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByText('Sign in with')).toBeInTheDocument();
 	});
 
 	it('renders why-login explanation', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByText('The only reason to login is to leave comments on projects and blog posts.')).toBeInTheDocument();
 	});
 
 	it('renders Google sign-in button', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('sign-in-google')).toBeInTheDocument();
 		expect(screen.getByText('Sign in with Google')).toBeInTheDocument();
 	});
 
 	it('renders GitHub sign-in button', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByTestId('sign-in-github')).toBeInTheDocument();
 		expect(screen.getByText('Sign in with GitHub')).toBeInTheDocument();
 	});
 
 	it('renders Google icon with fab group', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		const icons = screen.getAllByTestId('fa-icon');
 		const googleIcon = icons.find(
 			icon => icon.dataset.icon === 'google',
@@ -100,7 +100,7 @@ describe('SignInDialog', () => {
 	});
 
 	it('renders GitHub icon with fab group', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		const icons = screen.getAllByTestId('fa-icon');
 		const githubIcon = icons.find(
 			icon => icon.dataset.icon === 'github',
@@ -108,33 +108,33 @@ describe('SignInDialog', () => {
 		expect(githubIcon).toHaveAttribute('data-group', 'fab');
 	});
 
-	it('calls signInWithGoogle and onClose when Google button is clicked', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+	it('calls signInWithGoogle and onCloseAction when Google button is clicked', () => {
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		fireEvent.click(screen.getByTestId('sign-in-google'));
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 		expect(mockSignInWithGoogle).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls signInWithGitHub and onClose when GitHub button is clicked', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+	it('calls signInWithGitHub and onCloseAction when GitHub button is clicked', () => {
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		fireEvent.click(screen.getByTestId('sign-in-github'));
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 		expect(mockSignInWithGitHub).toHaveBeenCalledTimes(1);
 	});
 
 	it('renders privacy policy note', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		expect(screen.getByText(/By signing in, you agree to my/)).toBeInTheDocument();
 	});
 
 	it('renders privacy policy link with correct href', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		const link = screen.getByRole('link', { name: 'Privacy Policy', hidden: true });
 		expect(link).toHaveAttribute('href', '/privacy-policy');
 	});
 
-	it('calls onClose when privacy policy link is clicked', () => {
-		render(<SignInDialog isOpen={true} onClose={mockOnClose} />);
+	it('calls onCloseAction when privacy policy link is clicked', () => {
+		render(<SignInDialog isOpen={true} onCloseAction={mockOnClose} />);
 		fireEvent.click(screen.getByRole('link', { name: 'Privacy Policy', hidden: true }));
 		expect(mockOnClose).toHaveBeenCalledTimes(1);
 	});

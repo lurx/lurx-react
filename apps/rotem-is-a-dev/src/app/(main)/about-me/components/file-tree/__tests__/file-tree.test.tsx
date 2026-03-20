@@ -18,7 +18,7 @@ const mockUseResponsive = useResponsive as jest.Mock;
 
 const defaultProps = {
 	activeFileId: 'bio' as const,
-	onFileSelect: jest.fn(),
+	onFileSelectAction: jest.fn(),
 };
 
 beforeEach(() => {
@@ -58,22 +58,22 @@ describe('FileTree', () => {
 		expect(screen.getByText('isocia')).toBeInTheDocument();
 	});
 
-	it('calls onFileSelect when a file is clicked', () => {
-		const onFileSelect = jest.fn();
-		render(<FileTree {...defaultProps} onFileSelect={onFileSelect} />);
+	it('calls onFileSelectAction when a file is clicked', () => {
+		const onFileSelectAction = jest.fn();
+		render(<FileTree {...defaultProps} onFileSelectAction={onFileSelectAction} />);
 
 		fireEvent.click(screen.getByText('interests'));
 
-		expect(onFileSelect).toHaveBeenCalledWith('interests');
+		expect(onFileSelectAction).toHaveBeenCalledWith('interests');
 	});
 
-	it('calls onFileSelect when a work-experience file is clicked', () => {
-		const onFileSelect = jest.fn();
-		render(<FileTree {...defaultProps} onFileSelect={onFileSelect} />);
+	it('calls onFileSelectAction when a work-experience file is clicked', () => {
+		const onFileSelectAction = jest.fn();
+		render(<FileTree {...defaultProps} onFileSelectAction={onFileSelectAction} />);
 
 		fireEvent.click(screen.getByText('payoneer'));
 
-		expect(onFileSelect).toHaveBeenCalledWith('payoneer');
+		expect(onFileSelectAction).toHaveBeenCalledWith('payoneer');
 	});
 
 	it('highlights the active file', () => {
@@ -145,11 +145,11 @@ describe('FileTree', () => {
 describe('FileTreeSection', () => {
 	const sectionProps = {
 		id: 'personal-info' as SectionId,
-		files: ['unknown-file-id'],
+		files: ['unknown-file-id' as AboutFileId],
 		activeFileId: null as Nullable<AboutFileId>,
 		toggleSection: jest.fn(),
 		isCollapsed: false,
-		onFileSelect: jest.fn(),
+		onFileSelectAction: jest.fn(),
 		isMobile: false,
 	};
 

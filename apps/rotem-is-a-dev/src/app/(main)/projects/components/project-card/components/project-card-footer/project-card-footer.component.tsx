@@ -10,8 +10,8 @@ import type { ProjectCardFooterProps } from './project-card-footer.types';
 export const ProjectCardFooter = ({
 	entityType,
 	entityId,
-	onCommentClick,
-	onViewClick,
+	onCommentClickAction,
+	onViewClickAction,
 }: ProjectCardFooterProps) => {
 	const { user } = useAuth();
 	const { starCount, hasUserStarred, toggleStar } = useStars(entityType, entityId);
@@ -30,15 +30,15 @@ export const ProjectCardFooter = ({
 				commentCount={comments.length}
 				hasUserCommented={hasUserCommented}
 				isAuthenticated={Boolean(user)}
-				onStarClick={toggleStar}
-				onCommentClick={onCommentClick}
+				onStarClickAction={toggleStar}
+				onCommentClickAction={onCommentClickAction}
 			/>
 
-			{onViewClick && (
+			{onViewClickAction && (
 				<button
 					type="button"
 					className={styles.viewButton}
-					onClick={onViewClick}
+					onClick={onViewClickAction}
 					data-testid="card-view-button"
 				>
 					view-project

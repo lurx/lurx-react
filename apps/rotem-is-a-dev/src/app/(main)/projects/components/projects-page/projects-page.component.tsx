@@ -27,8 +27,8 @@ export const ProjectsPage = () => {
 		[],
 	);
 
-	const toggleTechnology = useCallback((tech: string) => {
-		setSelectedTechnologies(prev => toggleInArray(prev, tech as Technology));
+	const toggleTechnology = useCallback((tech: Technology) => {
+		setSelectedTechnologies(prev => toggleInArray(prev, tech));
 	}, []);
 
 	const handleViewProject = useCallback((project: Project) => {
@@ -62,21 +62,21 @@ export const ProjectsPage = () => {
 				<TechnologyFilter
 					technologies={ALL_TECHNOLOGIES}
 					selected={selectedTechnologies}
-					onToggle={toggleTechnology}
+					onToggleAction={toggleTechnology}
 				/>
 			</FilterPanel>
 
 			<div className={styles.content}>
 				<ProjectsGrid
 					projects={filteredProjects}
-					onViewProject={handleViewProject}
-					onCommentClick={handleCommentClick}
+					onViewProjectAction={handleViewProject}
+					onCommentClickAction={handleCommentClick}
 				/>
 			</div>
 
 			<ProjectDemoDrawer
 				project={selectedProject}
-				onClose={handleCloseDrawer}
+				onCloseAction={handleCloseDrawer}
 				scrollToComments={scrollToComments}
 			>
 				<DemoRenderer demo={DemoComponent} />

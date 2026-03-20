@@ -20,7 +20,7 @@ export const SignInPrompt = () => {
 			>
 				{SIGN_IN_PROMPT_STRINGS.BUTTON}
 			</button>
-			<SignInDialog isOpen={isSignInOpen} onClose={handleClose} />
+			<SignInDialog isOpen={isSignInOpen} onCloseAction={handleClose} />
 		</div>
 	);
 };

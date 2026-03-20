@@ -4,6 +4,6 @@ export type GameOverlayProps = {
 	phase: PacmanGamePhase;
 	score: number;
 	lives: number;
-	onStart: () => void;
-	onRestart: () => void;
+	onStartAction: () => void;
+	onRestartAction: () => void;
 };

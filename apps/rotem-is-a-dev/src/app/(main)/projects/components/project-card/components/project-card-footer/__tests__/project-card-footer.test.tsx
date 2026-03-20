@@ -29,7 +29,7 @@ describe('ProjectCardFooter', () => {
 	const defaultProps = {
 		entityType: 'project' as const,
 		entityId: '1',
-		onCommentClick: jest.fn(),
+		onCommentClickAction: jest.fn(),
 	};
 
 	it('renders the footer', () => {
@@ -133,7 +133,7 @@ describe('ProjectCardFooter', () => {
 
 	it('passes onCommentClick to SocialActionsBar', () => {
 		const onCommentClick = jest.fn();
-		render(<ProjectCardFooter {...defaultProps} onCommentClick={onCommentClick} />);
+		render(<ProjectCardFooter {...defaultProps} onCommentClickAction={onCommentClick} />);
 		const bar = screen.getByTestId('social-actions-bar');
 		bar.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
 		expect(onCommentClick).toHaveBeenCalledTimes(1);
@@ -141,7 +141,7 @@ describe('ProjectCardFooter', () => {
 
 	it('renders view-project button when onViewClick is provided', () => {
 		const onViewClick = jest.fn();
-		render(<ProjectCardFooter {...defaultProps} onViewClick={onViewClick} />);
+		render(<ProjectCardFooter {...defaultProps} onViewClickAction={onViewClick} />);
 		expect(screen.getByTestId('card-view-button')).toBeInTheDocument();
 	});
 
@@ -152,7 +152,7 @@ describe('ProjectCardFooter', () => {
 
 	it('calls onViewClick when view-project button is clicked', () => {
 		const onViewClick = jest.fn();
-		render(<ProjectCardFooter {...defaultProps} onViewClick={onViewClick} />);
+		render(<ProjectCardFooter {...defaultProps} onViewClickAction={onViewClick} />);
 		fireEvent.click(screen.getByTestId('card-view-button'));
 		expect(onViewClick).toHaveBeenCalledTimes(1);
 	});

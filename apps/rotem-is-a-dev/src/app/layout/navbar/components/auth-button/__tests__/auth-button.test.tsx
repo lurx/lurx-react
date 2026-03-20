@@ -33,23 +33,23 @@ jest.mock('../components', () => ({
 		<button data-testid="auth-avatar" onClick={onClick} aria-label="User menu" aria-expanded="false" />
 	),
 	AuthButtonLoading: () => <span data-testid="auth-button-loading" />,
-	AuthDropdown: ({ isOpen, openSettings, onSignOut }: { isOpen: boolean; openSettings: () => void; onSignOut: () => void }) =>
+	AuthDropdown: ({ isOpen, openSettings, onSignOutAction }: { isOpen: boolean; openSettings: () => void; onSignOutAction: () => void }) =>
 		isOpen ? (
 			<div role="menu">
 				<button role="menuitem" onClick={openSettings}>Settings</button>
-				<button role="menuitem" onClick={onSignOut}>Sign out</button>
+				<button role="menuitem" onClick={onSignOutAction}>Sign out</button>
 			</div>
 		) : null,
 }));
 
 jest.mock('@/app/components/sign-in-dialog', () => ({
-	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-		isOpen ? <button data-testid="sign-in-dialog" data-open={isOpen} onClick={onClose} /> : null,
+	SignInDialog: ({ isOpen, onCloseAction }: { isOpen: boolean; onCloseAction: () => void }) =>
+		isOpen ? <button data-testid="sign-in-dialog" data-open={isOpen} onClick={onCloseAction} /> : null,
 }));
 
 jest.mock('@/app/components/user-settings-dialog', () => ({
-	UserSettingsDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-		isOpen ? <button data-testid="user-settings-dialog" onClick={onClose} /> : null,
+	UserSettingsDialog: ({ isOpen, onCloseAction }: { isOpen: boolean; onCloseAction: () => void }) =>
+		isOpen ? <button data-testid="user-settings-dialog" onClick={onCloseAction} /> : null,
 }));
 
 import { AuthButton } from '../auth-button.component';

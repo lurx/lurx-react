@@ -10,12 +10,12 @@ beforeEach(() => {
 
 describe('CommentForm', () => {
 	it('renders the form', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-form')).toBeInTheDocument();
 	});
 
 	it('renders the textarea with placeholder', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-textarea')).toHaveAttribute(
 			'placeholder',
 			'Write a comment...',
@@ -23,17 +23,17 @@ describe('CommentForm', () => {
 	});
 
 	it('renders the submit button', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-submit')).toHaveTextContent('Post');
 	});
 
 	it('renders textarea with name attribute for FormData', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-textarea')).toHaveAttribute('name', 'comment');
 	});
 
-	it('calls onSubmit with trimmed text on form submission', async () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+	it('calls onSubmitAction with trimmed text on form submission', async () => {
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		fireEvent.change(screen.getByTestId('comment-textarea'), {
 			target: { value: '  Hello!  ' },
 		});
@@ -46,7 +46,7 @@ describe('CommentForm', () => {
 	});
 
 	it('resets the form after successful submission', async () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		fireEvent.change(screen.getByTestId('comment-textarea'), {
 			target: { value: 'Hello!' },
 		});
@@ -58,8 +58,8 @@ describe('CommentForm', () => {
 		expect(screen.getByTestId('comment-textarea')).toHaveValue('');
 	});
 
-	it('does not call onSubmit when textarea is empty', async () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+	it('does not call onSubmitAction when textarea is empty', async () => {
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 
 		await act(async () => {
 			fireEvent.submit(screen.getByTestId('comment-form'));
@@ -68,8 +68,8 @@ describe('CommentForm', () => {
 		expect(mockOnSubmit).not.toHaveBeenCalled();
 	});
 
-	it('does not call onSubmit when textarea has only whitespace', async () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+	it('does not call onSubmitAction when textarea has only whitespace', async () => {
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		fireEvent.change(screen.getByTestId('comment-textarea'), {
 			target: { value: '   ' },
 		});
@@ -84,7 +84,7 @@ describe('CommentForm', () => {
 	it('shows error message when submission fails', async () => {
 		mockOnSubmit.mockRejectedValue(new Error('Network error'));
 
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		fireEvent.change(screen.getByTestId('comment-textarea'), {
 			target: { value: 'Hello!' },
 		});
@@ -99,12 +99,12 @@ describe('CommentForm', () => {
 	});
 
 	it('does not show error message initially', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.queryByTestId('comment-form-error')).not.toBeInTheDocument();
 	});
 
 	it('does not show error message after successful submission', async () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		fireEvent.change(screen.getByTestId('comment-textarea'), {
 			target: { value: 'Hello!' },
 		});
@@ -117,12 +117,12 @@ describe('CommentForm', () => {
 	});
 
 	it('sets maxLength on textarea', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-textarea')).toHaveAttribute('maxLength', '2000');
 	});
 
 	it('renders submit button as type submit', () => {
-		render(<CommentForm onSubmit={mockOnSubmit} />);
+		render(<CommentForm onSubmitAction={mockOnSubmit} />);
 		expect(screen.getByTestId('comment-submit')).toHaveAttribute('type', 'submit');
 	});
 });

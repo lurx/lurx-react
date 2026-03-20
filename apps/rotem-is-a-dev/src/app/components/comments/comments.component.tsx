@@ -51,7 +51,7 @@ export const Comments = ({ entityType, entityId, autoScrollToComments }: Comment
 						key={comment.id}
 						comment={comment}
 						isOwn={comment.userId === user?.uid}
-						onDelete={deleteComment}
+						onDeleteAction={deleteComment}
 					/>
 				))}
 			</div>
@@ -66,8 +66,8 @@ export const Comments = ({ entityType, entityId, autoScrollToComments }: Comment
 				commentCount={comments.length}
 				hasUserCommented={hasUserCommented}
 				isAuthenticated={Boolean(user)}
-				onStarClick={toggleStar}
-				onCommentClick={handleCommentClick}
+				onStarClickAction={toggleStar}
+				onCommentClickAction={handleCommentClick}
 			/>
 			<h3 className={styles.heading} ref={headingRef}>
 				{COMMENTS_STRINGS.HEADING}
@@ -77,7 +77,7 @@ export const Comments = ({ entityType, entityId, autoScrollToComments }: Comment
 					</span>
 				)}
 			</h3>
-			{user ? <CommentForm onSubmit={addComment} /> : <SignInPrompt />}
+			{user ? <CommentForm onSubmitAction={addComment} /> : <SignInPrompt />}
 			{renderContent()}
 		</section>
 	);

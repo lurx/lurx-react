@@ -17,7 +17,7 @@ const mockUseResponsive = useResponsive as jest.Mock;
 
 const defaultProps = {
 	activeFileId: 'bio' as Nullable<AboutFileId>,
-	onFileSelect: jest.fn(),
+	onFileSelectAction: jest.fn(),
 };
 
 beforeEach(() => {
@@ -43,11 +43,11 @@ describe('SideBar', () => {
 		expect(screen.getByRole('button', { name: 'Work experience' })).toHaveAttribute('aria-pressed', 'false');
 	});
 
-	it('calls onFileSelect with the default file when a section button is clicked', () => {
-		const onFileSelect = jest.fn();
-		render(<SideBar {...defaultProps} onFileSelect={onFileSelect} />);
+	it('calls onFileSelectAction with the default file when a section button is clicked', () => {
+		const onFileSelectAction = jest.fn();
+		render(<SideBar {...defaultProps} onFileSelectAction={onFileSelectAction} />);
 		fireEvent.click(screen.getByRole('button', { name: 'Work experience' }));
-		expect(onFileSelect).toHaveBeenCalledWith('payoneer');
+		expect(onFileSelectAction).toHaveBeenCalledWith('payoneer');
 	});
 
 	it('renders nothing on mobile', () => {

@@ -9,13 +9,13 @@ jest.mock('@/app/components/comments', () => ({
 jest.mock('@/app/components', () => ({
 	ResizableDrawer: ({
 		isOpen,
-		onClose,
+		onCloseAction,
 		title,
 		ariaLabel,
 		children,
 	}: {
 		isOpen: boolean;
-		onClose: () => void;
+		onCloseAction: () => void;
 		title?: React.ReactNode;
 		ariaLabel?: string;
 		children: React.ReactNode;
@@ -26,7 +26,7 @@ jest.mock('@/app/components', () => ({
 				data-aria-label={ariaLabel}
 			>
 				{title}
-				<button type="button" onClick={onClose} data-testid="close-btn">
+				<button type="button" onClick={onCloseAction} data-testid="close-btn">
 					close
 				</button>
 				{children}
@@ -49,7 +49,7 @@ const mockProject: Project = {
 
 const defaultProps = {
 	project: mockProject as Nullable<Project>,
-	onClose: jest.fn(),
+	onCloseAction: jest.fn(),
 };
 
 beforeEach(() => {
@@ -68,7 +68,7 @@ describe('ProjectDemoDrawer', () => {
 
 	it('renders nothing when project is null', () => {
 		render(
-			<ProjectDemoDrawer project={null} onClose={defaultProps.onClose}>
+			<ProjectDemoDrawer project={null} onCloseAction={defaultProps.onCloseAction}>
 				<p>Demo content</p>
 			</ProjectDemoDrawer>,
 		);
@@ -103,14 +103,14 @@ describe('ProjectDemoDrawer', () => {
 		expect(drawer).toHaveAttribute('data-aria-label', 'Demo: _wolverine-css');
 	});
 
-	it('calls onClose when the drawer close is triggered', () => {
+	it('calls onCloseAction when the drawer close is triggered', () => {
 		render(
 			<ProjectDemoDrawer {...defaultProps}>
 				<p>Demo content</p>
 			</ProjectDemoDrawer>,
 		);
 		screen.getByTestId('close-btn').click();
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAction).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not render the external link section when project has no externalUrl', () => {
@@ -131,7 +131,7 @@ describe('ProjectDemoDrawer', () => {
 			},
 		};
 		render(
-			<ProjectDemoDrawer project={projectWithExternalUrl} onClose={defaultProps.onClose}>
+			<ProjectDemoDrawer project={projectWithExternalUrl} onCloseAction={defaultProps.onCloseAction}>
 				<p>Demo content</p>
 			</ProjectDemoDrawer>,
 		);
@@ -152,7 +152,7 @@ describe('ProjectDemoDrawer', () => {
 			},
 		};
 		render(
-			<ProjectDemoDrawer project={projectWithIcon} onClose={defaultProps.onClose}>
+			<ProjectDemoDrawer project={projectWithIcon} onCloseAction={defaultProps.onCloseAction}>
 				<p>Demo content</p>
 			</ProjectDemoDrawer>,
 		);
@@ -168,7 +168,7 @@ describe('ProjectDemoDrawer', () => {
 			},
 		};
 		render(
-			<ProjectDemoDrawer project={projectWithoutIcon} onClose={defaultProps.onClose}>
+			<ProjectDemoDrawer project={projectWithoutIcon} onCloseAction={defaultProps.onCloseAction}>
 				<p>Demo content</p>
 			</ProjectDemoDrawer>,
 		);

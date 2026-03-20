@@ -50,21 +50,21 @@ jest.mock('../components/game-overlay', () => ({
 		phase,
 		score,
 		lives,
-		onStart,
-		onRestart,
+		onStartAction,
+		onRestartAction,
 	}: {
 		phase: string;
 		score: number;
 		lives: number;
-		onStart: () => void;
-		onRestart: () => void;
+		onStartAction: () => void;
+		onRestartAction: () => void;
 	}) => {
 		if (phase === 'playing') return null;
 
 		return (
 			<div data-testid={`overlay-${phase}`}>
 				{phase === 'idle' && (
-					<button onClick={onStart} type="button">
+					<button onClick={onStartAction} type="button">
 						START GAME
 					</button>
 				)}
@@ -72,7 +72,7 @@ jest.mock('../components/game-overlay', () => ({
 					<>
 						<span>SCORE: {score}</span>
 						<span>LIVES: {lives}</span>
-						<button onClick={onRestart} type="button">
+						<button onClick={onRestartAction} type="button">
 							{phase === 'won' ? 'PLAY AGAIN' : 'TRY AGAIN'}
 						</button>
 					</>

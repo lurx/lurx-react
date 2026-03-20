@@ -5,7 +5,7 @@ import type { DangerZoneSectionProps } from './danger-zone-section.types';
 
 const REQUIRES_RECENT_LOGIN_CODE = 'auth/requires-recent-login';
 
-export const DangerZoneSection = ({ onDeleteAccount }: DangerZoneSectionProps) => {
+export const DangerZoneSection = ({ onDeleteAccountAction }: DangerZoneSectionProps) => {
 	const [isConfirming, setIsConfirming] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -24,18 +24,18 @@ export const DangerZoneSection = ({ onDeleteAccount }: DangerZoneSectionProps) =
 		setIsDeleting(true);
 		setError(null);
 		try {
-			await onDeleteAccount();
+			await onDeleteAccountAction();
 		} catch (err: unknown) {
-			const firebaseError = err as { code?: string };
-			if (firebaseError.code === REQUIRES_RECENT_LOGIN_CODE) {
-				setError(USER_SETTINGS_STRINGS.DELETE_REQUIRES_REAUTH);
-			} else {
-				setError(USER_SETTINGS_STRINGS.DELETE_GENERIC_ERROR);
-			}
+			const hasReauthCode = typeof err === 'object' && err !== null
+				&& 'code' in err && err.code === REQUIRES_RECENT_LOGIN_CODE;
+			setError(hasReauthCode
+				? USER_SETTINGS_STRINGS.DELETE_REQUIRES_REAUTH
+				: USER_SETTINGS_STRINGS.DELETE_GENERIC_ERROR,
+			);
 		} finally {
 			setIsDeleting(false);
 		}
-	}, [onDeleteAccount]);
+	}, [onDeleteAccountAction]);
 
 	const renderInitialButton = () => (
 		<button

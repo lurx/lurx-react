@@ -3,10 +3,10 @@ import { TabContextMenu } from '../tab-context-menu.component';
 
 const defaultProps = {
 	position: { x: 100, y: 200 },
-	onClose: jest.fn(),
-	onCloseOthers: jest.fn(),
-	onCloseAll: jest.fn(),
-	onDismiss: jest.fn(),
+	onCloseAction: jest.fn(),
+	onCloseOthersAction: jest.fn(),
+	onCloseAllAction: jest.fn(),
+	onDismissAction: jest.fn(),
 };
 
 let portalRoot: HTMLDivElement;
@@ -38,43 +38,43 @@ describe('TabContextMenu', () => {
 		expect(screen.getByText('Close All')).toBeInTheDocument();
 	});
 
-	it('calls onClose and onDismiss when Close is clicked', () => {
+	it('calls onCloseAction and onDismissAction when Close is clicked', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.click(screen.getByText('Close'));
-		expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
-		expect(defaultProps.onDismiss).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAction).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onDismissAction).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls onCloseOthers and onDismiss when Close Others is clicked', () => {
+	it('calls onCloseOthersAction and onDismissAction when Close Others is clicked', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.click(screen.getByText('Close Others'));
-		expect(defaultProps.onCloseOthers).toHaveBeenCalledTimes(1);
-		expect(defaultProps.onDismiss).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseOthersAction).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onDismissAction).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls onCloseAll and onDismiss when Close All is clicked', () => {
+	it('calls onCloseAllAction and onDismissAction when Close All is clicked', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.click(screen.getByText('Close All'));
-		expect(defaultProps.onCloseAll).toHaveBeenCalledTimes(1);
-		expect(defaultProps.onDismiss).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onCloseAllAction).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onDismissAction).toHaveBeenCalledTimes(1);
 	});
 
 	it('dismisses on Escape key', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.keyDown(document, { key: 'Escape' });
-		expect(defaultProps.onDismiss).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onDismissAction).toHaveBeenCalledTimes(1);
 	});
 
 	it('dismisses on outside click', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.mouseDown(document.body);
-		expect(defaultProps.onDismiss).toHaveBeenCalledTimes(1);
+		expect(defaultProps.onDismissAction).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not dismiss when clicking inside the menu', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.mouseDown(screen.getByTestId('tab-context-menu'));
-		expect(defaultProps.onDismiss).not.toHaveBeenCalled();
+		expect(defaultProps.onDismissAction).not.toHaveBeenCalled();
 	});
 
 	it('renders into document.body when portal-root element does not exist', () => {
@@ -88,6 +88,6 @@ describe('TabContextMenu', () => {
 	it('does not dismiss when a non-Escape key is pressed', () => {
 		render(<TabContextMenu {...defaultProps} />);
 		fireEvent.keyDown(document, { key: 'Enter' });
-		expect(defaultProps.onDismiss).not.toHaveBeenCalled();
+		expect(defaultProps.onDismissAction).not.toHaveBeenCalled();
 	});
 });

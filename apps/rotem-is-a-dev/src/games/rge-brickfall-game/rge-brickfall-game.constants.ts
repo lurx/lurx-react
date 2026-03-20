@@ -14,7 +14,7 @@ export const DEFAULT_BRICKFALL_CONFIG = {
 };
 
 /* eslint-disable id-length */
-export const TETROMINO_COLORS: Record<TetrominoType, string> = {
+export const TETROMINO_COLORS = {
 	I: '#00e5ff', // --cyan
 	O: '#ffea00', // --yellow
 	T: '#c792ea',
@@ -22,9 +22,9 @@ export const TETROMINO_COLORS: Record<TetrominoType, string> = {
 	Z: '#ff5370', // alert
 	L: '#ffb86a', // orange
 	J: '#82aaff',
-};
+} satisfies Record<TetrominoType, string>;
 
-export const GLOW_COLORS: Record<TetrominoType, string> = {
+export const GLOW_COLORS = {
 	I: 'rgba(0, 229, 255, 0.4)',
 	O: 'rgba(255, 234, 0, 0.4)',
 	T: 'rgba(199, 146, 234, 0.4)',
@@ -32,9 +32,9 @@ export const GLOW_COLORS: Record<TetrominoType, string> = {
 	Z: 'rgba(255, 83, 112, 0.4)',
 	L: 'rgba(255, 184, 106, 0.4)',
 	J: 'rgba(130, 170, 255, 0.4)',
-};
+} satisfies Record<TetrominoType, string>;
 
-export const TETROMINO_SHAPES: Record<TetrominoType, Record<RotationState, Position[]>> = {
+export const TETROMINO_SHAPES = {
 	I: {
 		0: [{ x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }],
 		1: [{ x: 2, y: 0 }, { x: 2, y: 1 }, { x: 2, y: 2 }, { x: 2, y: 3 }],
@@ -77,7 +77,7 @@ export const TETROMINO_SHAPES: Record<TetrominoType, Record<RotationState, Posit
 		2: [{ x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 2, y: 2 }],
 		3: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }],
 	},
-};
+} satisfies Record<TetrominoType, Record<RotationState, Position[]>>;
 /* eslint-enable id-length */
 
 export const SPAWN_POSITION: Position = { x: 3, y: 0 };

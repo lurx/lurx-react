@@ -31,10 +31,10 @@ afterEach(() => {
 const defaultProps = {
 	openTabs: ['bio'] as AboutFileId[],
 	activeFileId: 'bio' as Nullable<AboutFileId>,
-	onTabSelect: jest.fn(),
-	onTabClose: jest.fn(),
-	onCloseOthers: jest.fn(),
-	onCloseAll: jest.fn(),
+	onTabSelectAction: jest.fn(),
+	onTabCloseAction: jest.fn(),
+	onCloseOthersAction: jest.fn(),
+	onCloseAllAction: jest.fn(),
 };
 
 describe('AboutContent', () => {

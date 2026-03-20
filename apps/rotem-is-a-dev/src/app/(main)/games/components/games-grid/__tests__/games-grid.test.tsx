@@ -23,19 +23,19 @@ const mockGames: Game[] = [
 
 describe('GamesGrid', () => {
 	it('renders a card for each game', () => {
-		render(<GamesGrid games={mockGames} onPlay={jest.fn()} />);
+		render(<GamesGrid games={mockGames} onPlayAction={jest.fn()} />);
 		expect(screen.getByText('_snake')).toBeInTheDocument();
 		expect(screen.getByText('_brickfall')).toBeInTheDocument();
 	});
 
 	it('renders correct number of game cards', () => {
-		render(<GamesGrid games={mockGames} onPlay={jest.fn()} />);
+		render(<GamesGrid games={mockGames} onPlayAction={jest.fn()} />);
 		const articles = screen.getAllByRole('article');
 		expect(articles).toHaveLength(2);
 	});
 
 	it('renders game descriptions', () => {
-		render(<GamesGrid games={mockGames} onPlay={jest.fn()} />);
+		render(<GamesGrid games={mockGames} onPlayAction={jest.fn()} />);
 		expect(screen.getByText('Snake game.')).toBeInTheDocument();
 		expect(screen.getByText('Brickfall game.')).toBeInTheDocument();
 	});

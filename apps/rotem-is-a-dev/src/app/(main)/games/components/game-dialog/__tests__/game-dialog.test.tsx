@@ -25,23 +25,23 @@ const mockGame: Game = {
 
 describe('GameDialog', () => {
 	it('renders the game component when a game is selected', () => {
-		render(<GameDialog game={mockGame} onClose={jest.fn()} />);
+		render(<GameDialog game={mockGame} onCloseAction={jest.fn()} />);
 		expect(screen.getByTestId('game-component')).toBeInTheDocument();
 	});
 
 	it('does not render when game is null', () => {
-		render(<GameDialog game={null} onClose={jest.fn()} />);
+		render(<GameDialog game={null} onCloseAction={jest.fn()} />);
 		expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
 	});
 
 	it('renders the dialog with correct aria-label', () => {
-		render(<GameDialog game={mockGame} onClose={jest.fn()} />);
+		render(<GameDialog game={mockGame} onCloseAction={jest.fn()} />);
 		expect(screen.getByRole('dialog', { name: 'Play _snake' })).toBeInTheDocument();
 	});
 
 	it('calls onClose when the close button is clicked', () => {
 		const onClose = jest.fn();
-		render(<GameDialog game={mockGame} onClose={onClose} />);
+		render(<GameDialog game={mockGame} onCloseAction={onClose} />);
 
 		fireEvent.click(screen.getByLabelText('Close dialog'));
 
@@ -50,7 +50,7 @@ describe('GameDialog', () => {
 
 	it('calls onClose when overlay is clicked', () => {
 		const onClose = jest.fn();
-		render(<GameDialog game={mockGame} onClose={onClose} />);
+		render(<GameDialog game={mockGame} onCloseAction={onClose} />);
 
 		fireEvent.click(screen.getByTestId('dialog-overlay'));
 
@@ -59,7 +59,7 @@ describe('GameDialog', () => {
 
 	it('calls onClose when Escape key is pressed', () => {
 		const onClose = jest.fn();
-		render(<GameDialog game={mockGame} onClose={onClose} />);
+		render(<GameDialog game={mockGame} onCloseAction={onClose} />);
 
 		fireEvent.keyDown(document, { key: 'Escape' });
 

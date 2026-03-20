@@ -4,7 +4,7 @@ const TWITTER_URL = 'https://x.com/lurx';
 const LINKEDIN_URL = 'https://linkedin.com/in/rotem-horovitz';
 const GITHUB_URL = 'https://github.com/lurx';
 
-export const leftSideSocialLinks: SocialLinks = {
+export const leftSideSocialLinks = {
   github: {
 		url: GITHUB_URL,
 		label: 'GitHub',
@@ -33,4 +33,4 @@ export const leftSideSocialLinks: SocialLinks = {
 			iconGroup: 'fab',
 		},
 	},
-};
+} satisfies SocialLinks;
