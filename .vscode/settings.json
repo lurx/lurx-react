@@ -7,5 +7,11 @@
 	"sonarlint.connectedMode.project": {
 		"connectionId": "lurx",
 		"projectKey": "lurx_lurx-react"
-	}
+	},
+	"cSpell.words": [
+    "isodate",
+    "Playfield",
+    "shikijs",
+    "velite"
+  ]
 }

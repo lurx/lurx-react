@@ -81,6 +81,7 @@ npx nx g @nx/next:app demo
 - **Strict mode enabled**: No `any` types allowed
 - **Import types**: Use `import type` for type-only imports
 - **Global types**: Ambient declarations in `src/@types/*.d.ts` (e.g. `site-general.d.ts`, `error-page.d.ts`)
+- **Prefer `satisfies` over type annotations for object literals**: When declaring lookup tables, config objects, maps, or dictionaries, use `satisfies` instead of a type annotation (e.g. `const x = { ... } satisfies MyType` instead of `const x: MyType = { ... }`). This validates the shape while preserving narrow inferred types (literal keys, specific union members). Use plain type annotations only when you intentionally want the widened type (e.g. for reassignable variables or when the inferred and annotated types are identical).
 
 ### Type File Conventions
 
@@ -121,6 +122,7 @@ npx nx g @nx/next:app demo
 - **Functional Components**: Use hooks, proper TypeScript typing for refs and state
 - **File Structure**: Component folder with .tsx, .types.ts, .module.scss, **tests**/
 - **100% Test Coverage**: Comprehensive unit tests required
+- **Callback prop naming**: Function props passed to client components must end with `Action` (e.g. `onCloseAction`, `onToggleAction`). This satisfies Next.js's "use client" serialization requirement. Native DOM event handlers (e.g. `onClick` on `<button>`) are exempt.
 
 ### Component Internal Structure (The "React Sandwich")
 
