@@ -1,7 +1,7 @@
 export type TabContextMenuProps = {
 	position: { x: number; y: number };
-	onClose: () => void;
-	onCloseOthers: () => void;
-	onCloseAll: () => void;
-	onDismiss: () => void;
+	onCloseAction: () => void;
+	onCloseOthersAction: () => void;
+	onCloseAllAction: () => void;
+	onDismissAction: () => void;
 }

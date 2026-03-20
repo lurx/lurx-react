@@ -1,13 +1,13 @@
 import type { GameOverlayProps } from './game-overlay.types';
 import styles from '../../rge-brickfall-game.module.scss';
 
-export const GameOverlay = ({ phase, score, level, linesCleared, onStart, onRestart }: GameOverlayProps) => {
+export const GameOverlay = ({ phase, score, level, linesCleared, onStartAction, onRestartAction }: GameOverlayProps) => {
 	if (phase === 'playing') return null;
 
 	const renderIdleOverlay = () => (
 		<div className={styles.overlay} data-testid="overlay-idle">
 			<div className={styles.overlayTitle}>BRICKFALL</div>
-			<button className={styles.overlayButton} onClick={onStart} type="button">
+			<button className={styles.overlayButton} onClick={onStartAction} type="button">
 				START GAME
 			</button>
 		</div>
@@ -19,7 +19,7 @@ export const GameOverlay = ({ phase, score, level, linesCleared, onStart, onRest
 			<div className={styles.overlayScore}>SCORE: {score}</div>
 			<div className={styles.overlayScore}>LEVEL: {level}</div>
 			<div className={styles.overlayScore}>LINES: {linesCleared}</div>
-			<button className={styles.overlayButton} onClick={onRestart} type="button">
+			<button className={styles.overlayButton} onClick={onRestartAction} type="button">
 				TRY AGAIN
 			</button>
 		</div>

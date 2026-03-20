@@ -32,7 +32,7 @@ const defaultProps = {
 	activeAction: null,
 	keyScheme: 'arrows' as const,
 	isPlaying: false,
-	onToggleKeyScheme: jest.fn(),
+	onToggleKeySchemeAction: jest.fn(),
 };
 
 describe('GameControls', () => {
@@ -78,7 +78,7 @@ describe('GameControls', () => {
 
 	it('calls onToggleKeyScheme when toggle is clicked', () => {
 		const onToggle = jest.fn();
-		render(<GameControls {...defaultProps} onToggleKeyScheme={onToggle} />);
+		render(<GameControls {...defaultProps} onToggleKeySchemeAction={onToggle} />);
 		fireEvent.click(screen.getByTestId('key-scheme-toggle'));
 		expect(onToggle).toHaveBeenCalledTimes(1);
 	});

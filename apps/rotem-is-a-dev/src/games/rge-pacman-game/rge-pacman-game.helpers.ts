@@ -3,10 +3,11 @@ import {
 	ALL_DIRECTIONS,
 	DIRECTION_DELTAS,
 	GHOST_CONFIG,
+	GHOST_NAMES,
 	OPPOSITE_DIRECTIONS,
 	PACMAN_START,
 } from './rge-pacman-game.constants';
-import type { BoardEntity, CellType, Entities, GhostName } from './rge-pacman-game.types';
+import type { CellType, Entities, GhostMode, GhostName } from './rge-pacman-game.types';
 
 const CELL_TYPE_MAP: Record<number, CellType> = {
 	0: 'wall',
@@ -89,7 +90,7 @@ export const getGhostTarget = (
 	pacmanDir: Direction,
 	blinkyPos: Position,
 	scatterTarget: Position,
-	mode: BoardEntity['currentGhostMode'],
+	mode: GhostMode,
 ): Position => {
 	if (mode === 'scatter') return scatterTarget;
 
@@ -172,21 +173,22 @@ export const createMazeGrid = (
 	return { grid, totalDots };
 };
 
+export const getInitialGhostMode = (name: GhostName): GhostMode =>
+	name === 'blinky' ? 'scatter' : 'house';
+
 export const resetPositions = (entities: Entities): void => {
-	const { pacman, blinky, pinky, inky, clyde } = entities;
+	const { pacman } = entities;
 
 	pacman.position = { ...PACMAN_START };
 	pacman.direction = 'LEFT';
 	pacman.nextDirection = null;
 
-	const ghostEntities = { blinky, pinky, inky, clyde };
-
-	for (const name of Object.keys(ghostEntities) as GhostName[]) {
-		const ghost = ghostEntities[name];
+	for (const name of GHOST_NAMES) {
+		const ghost = entities[name];
 		const config = GHOST_CONFIG[name];
 		ghost.position = { ...config.startPosition };
 		ghost.direction = config.startDirection;
-		ghost.mode = name === 'blinky' ? 'scatter' : 'house';
+		ghost.mode = getInitialGhostMode(name);
 	}
 
 	entities.board.lastPacmanTick = 0;

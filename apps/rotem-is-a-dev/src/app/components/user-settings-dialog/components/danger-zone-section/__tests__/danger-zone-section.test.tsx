@@ -10,12 +10,12 @@ beforeEach(() => {
 
 describe('DangerZoneSection', () => {
 	it('renders delete account button', () => {
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		expect(screen.getByText('Delete my account')).toBeInTheDocument();
 	});
 
 	it('shows confirmation when delete button is clicked', () => {
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		expect(screen.getByText(/This action is permanent/)).toBeInTheDocument();
 		expect(screen.getByText('Cancel')).toBeInTheDocument();
@@ -23,15 +23,15 @@ describe('DangerZoneSection', () => {
 	});
 
 	it('hides confirmation when cancel is clicked', () => {
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Cancel'));
 		expect(screen.queryByText(/This action is permanent/)).not.toBeInTheDocument();
 		expect(screen.getByText('Delete my account')).toBeInTheDocument();
 	});
 
-	it('calls onDeleteAccount when confirm is clicked', async () => {
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+	it('calls onDeleteAccountAction when confirm is clicked', async () => {
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Yes, delete my account'));
 		await waitFor(() => {
@@ -41,7 +41,7 @@ describe('DangerZoneSection', () => {
 
 	it('shows reauth error when auth/requires-recent-login is thrown', async () => {
 		mockOnDeleteAccount.mockRejectedValue({ code: 'auth/requires-recent-login' });
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Yes, delete my account'));
 		await waitFor(() => {
@@ -53,7 +53,7 @@ describe('DangerZoneSection', () => {
 		const genericError = new Error('Network error');
 		mockOnDeleteAccount.mockRejectedValue(genericError);
 
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Yes, delete my account'));
 
@@ -70,7 +70,7 @@ describe('DangerZoneSection', () => {
 			() => new Promise<void>(resolve => { resolveDelete = resolve; }),
 		);
 
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Yes, delete my account'));
 
@@ -85,7 +85,7 @@ describe('DangerZoneSection', () => {
 
 	it('clears error when starting new confirmation', async () => {
 		mockOnDeleteAccount.mockRejectedValue({ code: 'auth/requires-recent-login' });
-		render(<DangerZoneSection onDeleteAccount={mockOnDeleteAccount} />);
+		render(<DangerZoneSection onDeleteAccountAction={mockOnDeleteAccount} />);
 
 		fireEvent.click(screen.getByText('Delete my account'));
 		fireEvent.click(screen.getByText('Yes, delete my account'));

@@ -1,6 +1,6 @@
 export type TechnologyFilterProps = {
-	technologies: string[];
-	selected: string[];
-	onToggle: (tech: string) => void;
+	technologies: Technology[];
+	selected: Technology[];
+	onToggleAction: (tech: Technology) => void;
 	sectionLabel?: string;
 }

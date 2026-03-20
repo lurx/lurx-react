@@ -8,7 +8,7 @@ import { SideBarButton } from '../sidebar-button';
 import styles from './sidebar.module.scss';
 import type { SideBarProps } from './sidebar.types';
 
-export const SideBar = ({ activeFileId, onFileSelect }: SideBarProps) => {
+export const SideBar = ({ activeFileId, onFileSelectAction }: SideBarProps) => {
 	const { isMobile } = useResponsive();
 
 	const activeSection = activeFileId ? getFileSection(activeFileId) : null;
@@ -32,7 +32,7 @@ export const SideBar = ({ activeFileId, onFileSelect }: SideBarProps) => {
 						ariaLabel={label}
 						iconName={icon}
 						isActive={activeSection === id}
-						onClick={() => onFileSelect(defaultFile)}
+						onClick={() => onFileSelectAction(defaultFile)}
 					/>
 				);
 			})}

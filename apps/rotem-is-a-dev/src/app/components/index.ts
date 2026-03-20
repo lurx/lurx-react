@@ -1,3 +1,4 @@
+export * from './accessibility-controls';
 export * from './ascii-art-renderer';
 export * from './code-block';
 export * from './dialog';

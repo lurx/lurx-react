@@ -1,3 +1,3 @@
 export type CommentFormProps = {
-	onSubmit: (text: string) => Promise<void>;
+	onSubmitAction: (text: string) => Promise<void>;
 };

@@ -145,5 +145,5 @@ export const getTargetForGhost = (
 		entities.pacman.direction,
 		entities.blinky.position,
 		ghost.scatterTarget,
-		ghost.mode as BoardEntity['currentGhostMode'],
+		ghost.mode,
 	);

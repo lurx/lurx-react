@@ -5,7 +5,7 @@ import type { ProjectDemoDrawerProps } from './project-demo-drawer.types';
 
 export const ProjectDemoDrawer = ({
 	project,
-	onClose,
+	onCloseAction,
 	scrollToComments,
 	children,
 }: ProjectDemoDrawerProps) => {
@@ -22,7 +22,7 @@ export const ProjectDemoDrawer = ({
 	return (
 		<ResizableDrawer
 			isOpen={isOpen}
-			onClose={onClose}
+			onCloseAction={onCloseAction}
 			title={titleContent}
 			ariaLabel={project ? `Demo: ${project.slug}` : undefined}
 		>

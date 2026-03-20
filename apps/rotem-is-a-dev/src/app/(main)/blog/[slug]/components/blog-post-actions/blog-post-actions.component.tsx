@@ -30,8 +30,8 @@ export const BlogPostActions = ({ entityType, entityId }: BlogPostActionsProps) 
 				commentCount={comments.length}
 				hasUserCommented={hasUserCommented}
 				isAuthenticated={Boolean(user)}
-				onStarClick={toggleStar}
-				onCommentClick={handleCommentClick}
+				onStarClickAction={toggleStar}
+				onCommentClickAction={handleCommentClick}
 			/>
 		</div>
 	);

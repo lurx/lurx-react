@@ -29,7 +29,7 @@ describe('BlogPostCardFooter', () => {
 	const defaultProps = {
 		entityType: 'blog' as const,
 		entityId: 'my-post',
-		onCommentClick: jest.fn(),
+		onCommentClickAction: jest.fn(),
 	};
 
 	it('renders the footer', () => {
@@ -133,7 +133,7 @@ describe('BlogPostCardFooter', () => {
 
 	it('passes onCommentClick to SocialActionsBar', () => {
 		const onCommentClick = jest.fn();
-		render(<BlogPostCardFooter {...defaultProps} onCommentClick={onCommentClick} />);
+		render(<BlogPostCardFooter {...defaultProps} onCommentClickAction={onCommentClick} />);
 		const bar = screen.getByTestId('social-actions-bar');
 		bar.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
 		expect(onCommentClick).toHaveBeenCalledTimes(1);

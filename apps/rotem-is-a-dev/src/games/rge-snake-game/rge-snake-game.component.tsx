@@ -46,7 +46,7 @@ const createEntities = ({ gridCols, gridRows, cellSize, tickMs, winLength }: Res
 	return {
 		snake: {
 			body: [...initialBody.map((pos) => ({ ...pos }))],
-			direction: 'UP' as Direction,
+			direction: 'UP',
 			growing: false,
 			cellSize,
 			renderer: <SnakeRenderer body={initialBody} cellSize={cellSize} />,
@@ -144,7 +144,7 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 		'--board-cols': resolved.gridCols,
 		'--board-rows': resolved.gridRows,
 		'--board-cell-size': `${resolved.cellSize}px`,
-	} as React.CSSProperties;
+	};
 
 	const boardElement = (
 		<div
@@ -162,9 +162,9 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 			<GameOverlay
 				phase={phase}
 				score={score}
-				onStart={handleStart}
-				onRestart={handleRestart}
-				onSkip={onSkip}
+				onStartAction={handleStart}
+				onRestartAction={handleRestart}
+				onSkipAction={onSkip}
 			/>
 		</div>
 	);
@@ -176,11 +176,11 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 			{boardElement}
 			<GameControls
 				score={score}
-				onDirectionPress={handleDirectionPress}
+				onDirectionPressAction={handleDirectionPress}
 				activeDirection={activeDirection}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
-				onToggleKeyScheme={handleToggleKeyScheme}
+				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>
 	);

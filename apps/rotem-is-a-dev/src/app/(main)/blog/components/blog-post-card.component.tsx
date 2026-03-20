@@ -5,8 +5,8 @@ import { BlogPostCardFooter } from './blog-post-card-footer';
 import type { BlogPostCardProps } from './blog-post-card.types';
 import { BlogTagsList } from './blog-tags';
 
-export const BlogPostCard = ({ post, onCommentClick }: BlogPostCardProps) => {
-	const handleCommentClick = onCommentClick ? () => onCommentClick(post) : undefined;
+export const BlogPostCard = ({ post, onCommentClickAction }: BlogPostCardProps) => {
+	const handleCommentClick = onCommentClickAction ? () => onCommentClickAction(post) : undefined;
 
 	return (
 		<li className={styles.card}>
@@ -34,7 +34,7 @@ export const BlogPostCard = ({ post, onCommentClick }: BlogPostCardProps) => {
 				<BlogPostCardFooter
 					entityType="blog"
 					entityId={post.slug}
-					onCommentClick={handleCommentClick}
+					onCommentClickAction={handleCommentClick}
 				/>
 			)}
 		</li>

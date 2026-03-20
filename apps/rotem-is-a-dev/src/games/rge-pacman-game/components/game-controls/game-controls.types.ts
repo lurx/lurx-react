@@ -6,5 +6,5 @@ export type GameControlsProps = {
 	activeAction: Direction | null;
 	keyScheme: KeyScheme;
 	isPlaying: boolean;
-	onToggleKeyScheme: () => void;
+	onToggleKeySchemeAction: () => void;
 };

@@ -13,9 +13,9 @@ export function useOnClickOutside<T extends AllowedElements = AllowedElements>(
 
 	useEffect(() => {
 		const listener = (event: Event) => {
-			const target = event.target as Node;
+			const { target } = event;
 
-			if (!target?.isConnected) {
+			if (!(target instanceof Node) || !target.isConnected) {
 				return;
 			}
 

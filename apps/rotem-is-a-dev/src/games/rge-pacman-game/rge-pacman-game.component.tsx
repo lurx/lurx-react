@@ -27,7 +27,7 @@ import {
 	PACMAN_TICK_MS,
 	SCORE_SYNC_INTERVAL_MS,
 } from './rge-pacman-game.constants';
-import { createMazeGrid, resetPositions } from './rge-pacman-game.helpers';
+import { createMazeGrid, getInitialGhostMode, resetPositions } from './rge-pacman-game.helpers';
 import styles from './rge-pacman-game.module.scss';
 import type { Direction, GameEvent, KeyScheme } from '../games.types';
 import type {
@@ -131,7 +131,7 @@ const createGhostEntity = (name: GhostName) => {
 		name,
 		position: { ...config.startPosition },
 		direction: config.startDirection,
-		mode: name === 'blinky' ? ('scatter' as const) : ('house' as const),
+		mode: getInitialGhostMode(name),
 		scatterTarget: { ...config.scatterTarget },
 		releaseThreshold: config.releaseThreshold,
 		cellSize: CELL_SIZE,
@@ -140,7 +140,7 @@ const createGhostEntity = (name: GhostName) => {
 				name={name}
 				position={{ ...config.startPosition }}
 				direction={config.startDirection}
-				mode={name === 'blinky' ? 'scatter' : 'house'}
+				mode={getInitialGhostMode(name)}
 				frightenedTimer={0}
 				cellSize={CELL_SIZE}
 			/>
@@ -263,7 +263,7 @@ export const RgePacmanGame = () => {
 				'--board-cols': DEFAULT_PACMAN_CONFIG.gridCols,
 				'--board-rows': DEFAULT_PACMAN_CONFIG.gridRows,
 				'--board-cell-size': `${DEFAULT_PACMAN_CONFIG.cellSize}px`,
-			} as React.CSSProperties),
+			}),
 		[],
 	);
 
@@ -285,8 +285,8 @@ export const RgePacmanGame = () => {
 					phase={phase}
 					score={score}
 					lives={lives}
-					onStart={handleStart}
-					onRestart={handleRestart}
+					onStartAction={handleStart}
+					onRestartAction={handleRestart}
 				/>
 			</div>
 			<GameControls
@@ -295,7 +295,7 @@ export const RgePacmanGame = () => {
 				activeAction={activeAction}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
-				onToggleKeyScheme={handleToggleKeyScheme}
+				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>
 	);

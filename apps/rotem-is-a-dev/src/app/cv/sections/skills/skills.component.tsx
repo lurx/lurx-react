@@ -41,7 +41,7 @@ const SkillTag = ({ skill }: SkillTagProps) => {
 
 	const style = {
 		'--skill-progress-color': brandColor,
-	} as React.CSSProperties;
+	};
 
 	return (
 		<div

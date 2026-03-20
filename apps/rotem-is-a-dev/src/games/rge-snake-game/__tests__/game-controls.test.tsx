@@ -25,11 +25,11 @@ jest.mock('../../../components/arrow-key-grid/arrow-key-grid.module.scss', () =>
 describe('GameControls', () => {
 	const defaultProps = {
 		score: 5,
-		onDirectionPress: jest.fn(),
+		onDirectionPressAction: jest.fn(),
 		activeDirection: null as 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null,
 		keyScheme: 'arrows' as const,
 		isPlaying: false,
-		onToggleKeyScheme: jest.fn(),
+		onToggleKeySchemeAction: jest.fn(),
 	};
 
 	it('renders the score', () => {
@@ -47,7 +47,7 @@ describe('GameControls', () => {
 
 	it('calls onDirectionPress when arrow button is clicked', () => {
 		const onDirectionPress = jest.fn();
-		render(<GameControls {...defaultProps} onDirectionPress={onDirectionPress} />);
+		render(<GameControls {...defaultProps} onDirectionPressAction={onDirectionPress} />);
 		fireEvent.click(screen.getByTestId('arrow-up'));
 		expect(onDirectionPress).toHaveBeenCalledWith('UP');
 	});
@@ -100,7 +100,7 @@ describe('GameControls', () => {
 
 	it('calls onToggleKeyScheme when toggle button is clicked', () => {
 		const onToggleKeyScheme = jest.fn();
-		render(<GameControls {...defaultProps} onToggleKeyScheme={onToggleKeyScheme} />);
+		render(<GameControls {...defaultProps} onToggleKeySchemeAction={onToggleKeyScheme} />);
 		fireEvent.click(screen.getByTestId('key-scheme-toggle'));
 		expect(onToggleKeyScheme).toHaveBeenCalledTimes(1);
 	});

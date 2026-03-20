@@ -1,3 +1,3 @@
 export type LogoutSectionProps = {
-	onSignOut: () => Promise<void>;
+	onSignOutAction: () => Promise<void>;
 };

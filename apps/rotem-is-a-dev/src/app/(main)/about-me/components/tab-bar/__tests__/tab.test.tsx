@@ -11,9 +11,9 @@ jest.mock('@/app/components', () => ({
 const defaultProps = {
 	tabId: 'bio' as AboutFileId,
 	isActive: false,
-	onSelect: jest.fn(),
-	onClose: jest.fn(),
-	onContextMenu: jest.fn(),
+	onSelectAction: jest.fn(),
+	onCloseAction: jest.fn(),
+	onContextMenuAction: jest.fn(),
 };
 
 beforeEach(() => {
@@ -61,53 +61,53 @@ describe('Tab', () => {
 		expect(screen.getByRole('tab')).toHaveAttribute('tabindex', '-1');
 	});
 
-	it('calls onSelect with tabId when tab is clicked', () => {
-		const onSelect = jest.fn();
-		render(<Tab {...defaultProps} onSelect={onSelect} />);
+	it('calls onSelectAction with tabId when tab is clicked', () => {
+		const onSelectAction = jest.fn();
+		render(<Tab {...defaultProps} onSelectAction={onSelectAction} />);
 		fireEvent.click(screen.getByRole('tab'));
-		expect(onSelect).toHaveBeenCalledWith('bio');
+		expect(onSelectAction).toHaveBeenCalledWith('bio');
 	});
 
-	it('calls onSelect with tabId when Enter key is pressed', () => {
-		const onSelect = jest.fn();
-		render(<Tab {...defaultProps} onSelect={onSelect} />);
+	it('calls onSelectAction with tabId when Enter key is pressed', () => {
+		const onSelectAction = jest.fn();
+		render(<Tab {...defaultProps} onSelectAction={onSelectAction} />);
 		fireEvent.keyDown(screen.getByRole('tab'), { key: 'Enter' });
-		expect(onSelect).toHaveBeenCalledWith('bio');
+		expect(onSelectAction).toHaveBeenCalledWith('bio');
 	});
 
-	it('calls onSelect with tabId when Space key is pressed', () => {
-		const onSelect = jest.fn();
-		render(<Tab {...defaultProps} onSelect={onSelect} />);
+	it('calls onSelectAction with tabId when Space key is pressed', () => {
+		const onSelectAction = jest.fn();
+		render(<Tab {...defaultProps} onSelectAction={onSelectAction} />);
 		fireEvent.keyDown(screen.getByRole('tab'), { key: ' ' });
-		expect(onSelect).toHaveBeenCalledWith('bio');
+		expect(onSelectAction).toHaveBeenCalledWith('bio');
 	});
 
-	it('does not call onSelect for other key presses', () => {
-		const onSelect = jest.fn();
-		render(<Tab {...defaultProps} onSelect={onSelect} />);
+	it('does not call onSelectAction for other key presses', () => {
+		const onSelectAction = jest.fn();
+		render(<Tab {...defaultProps} onSelectAction={onSelectAction} />);
 		fireEvent.keyDown(screen.getByRole('tab'), { key: 'ArrowRight' });
-		expect(onSelect).not.toHaveBeenCalled();
+		expect(onSelectAction).not.toHaveBeenCalled();
 	});
 
-	it('calls onClose with tabId when close button is clicked', () => {
-		const onClose = jest.fn();
-		render(<Tab {...defaultProps} onClose={onClose} />);
+	it('calls onCloseAction with tabId when close button is clicked', () => {
+		const onCloseAction = jest.fn();
+		render(<Tab {...defaultProps} onCloseAction={onCloseAction} />);
 		fireEvent.click(screen.getByLabelText('Close bio tab'));
-		expect(onClose).toHaveBeenCalledWith('bio');
+		expect(onCloseAction).toHaveBeenCalledWith('bio');
 	});
 
-	it('does not call onSelect when close button is clicked', () => {
-		const onSelect = jest.fn();
-		render(<Tab {...defaultProps} onSelect={onSelect} />);
+	it('does not call onSelectAction when close button is clicked', () => {
+		const onSelectAction = jest.fn();
+		render(<Tab {...defaultProps} onSelectAction={onSelectAction} />);
 		fireEvent.click(screen.getByLabelText('Close bio tab'));
-		expect(onSelect).not.toHaveBeenCalled();
+		expect(onSelectAction).not.toHaveBeenCalled();
 	});
 
-	it('calls onContextMenu with tabId and event on right-click', () => {
-		const onContextMenu = jest.fn();
-		render(<Tab {...defaultProps} onContextMenu={onContextMenu} />);
+	it('calls onContextMenuAction with tabId and event on right-click', () => {
+		const onContextMenuAction = jest.fn();
+		render(<Tab {...defaultProps} onContextMenuAction={onContextMenuAction} />);
 		fireEvent.contextMenu(screen.getByRole('tab'));
-		expect(onContextMenu).toHaveBeenCalledWith('bio', expect.any(Object));
+		expect(onContextMenuAction).toHaveBeenCalledWith('bio', expect.any(Object));
 	});
 
 	it('renders a close button with correct aria-label', () => {

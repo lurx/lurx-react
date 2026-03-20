@@ -3,6 +3,6 @@ import type { Project } from '../../data/projects.data';
 
 export type ProjectDemoDrawerProps = PropsWithChildren & {
 	project: Nullable<Project>;
-	onClose: () => void;
+	onCloseAction: () => void;
 	scrollToComments?: boolean;
 }

@@ -27,18 +27,18 @@ jest.mock('@/app/components', () => ({
 	TechnologyFilter: ({
 		technologies,
 		selected,
-		onToggle,
+		onToggleAction,
 		sectionLabel,
 	}: {
 		technologies: string[];
 		selected: string[];
-		onToggle: (tag: string) => void;
+		onToggleAction: (tag: string) => void;
 		sectionLabel: string;
 	}) => (
 		<div data-testid="technology-filter">
 			<span>{sectionLabel}</span>
 			{technologies.map((tech: string) => (
-				<button key={tech} onClick={() => onToggle(tech)} aria-pressed={selected.includes(tech)}>
+				<button key={tech} onClick={() => onToggleAction(tech)} aria-pressed={selected.includes(tech)}>
 					{tech}
 				</button>
 			))}
@@ -65,11 +65,11 @@ jest.mock('@/app/components', () => ({
 }));
 
 jest.mock('../components/blog-post-card.component', () => ({
-	BlogPostCard: ({ post, onCommentClick }: { post: Post; onCommentClick?: (post: Post) => void }) => (
+	BlogPostCard: ({ post, onCommentClickAction }: { post: Post; onCommentClickAction?: (post: Post) => void }) => (
 		<li data-testid={`post-card-${post.slug}`}>
 			{post.title}
-			{onCommentClick && (
-				<button data-testid={`comment-click-${post.slug}`} onClick={() => onCommentClick(post)}>
+			{onCommentClickAction && (
+				<button data-testid={`comment-click-${post.slug}`} onClick={() => onCommentClickAction(post)}>
 					comment
 				</button>
 			)}

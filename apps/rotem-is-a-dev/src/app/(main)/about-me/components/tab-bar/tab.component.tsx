@@ -6,26 +6,26 @@ import type { TabProps } from './tab.types';
 export const Tab = ({
 	tabId,
 	isActive,
-	onSelect,
-	onClose,
-	onContextMenu,
+	onSelectAction,
+	onCloseAction,
+	onContextMenuAction,
 }: TabProps) => {
-	const handleClick = () => onSelect(tabId);
+	const handleClick = () => onSelectAction(tabId);
 
 	const handleKeyDown = (event: React.KeyboardEvent) => {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
-			onSelect(tabId);
+			onSelectAction(tabId);
 		}
 	};
 
 	const handleContextMenu = (event: React.MouseEvent) => {
-		onContextMenu(tabId, event);
+		onContextMenuAction(tabId, event);
 	};
 
 	const handleCloseClick = (event: React.MouseEvent) => {
 		event.stopPropagation();
-		onClose(tabId);
+		onCloseAction(tabId);
 	};
 
 	return (

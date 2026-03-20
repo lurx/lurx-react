@@ -6,7 +6,7 @@ import type { AuthDropdownProps } from './auth-dropdown.types';
 export const AuthDropdown = ({
 	isOpen,
 	openSettings,
-	onSignOut,
+	onSignOutAction,
 }: AuthDropdownProps) => {
 	if (!isOpen) return null;
 
@@ -31,7 +31,7 @@ export const AuthDropdown = ({
 			<button
 				type="button"
 				className={styles.menuItem}
-				onClick={onSignOut}
+				onClick={onSignOutAction}
 				role="menuitem"
 			>
 				<FaIcon

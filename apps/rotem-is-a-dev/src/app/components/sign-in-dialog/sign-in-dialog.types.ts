@@ -1,4 +1,4 @@
 export type SignInDialogProps = {
 	isOpen: boolean;
-	onClose: () => void;
+	onCloseAction: () => void;
 };

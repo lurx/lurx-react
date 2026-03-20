@@ -21,7 +21,7 @@ export const UserAvatar = ({
 	}
 
 	const containerStyle = size !== DEFAULT_AVATAR_SIZE
-		? { '--avatar-size': `${size}px` } as React.CSSProperties
+		? { '--avatar-size': `${size}px` }
 		: undefined;
 
 	return (

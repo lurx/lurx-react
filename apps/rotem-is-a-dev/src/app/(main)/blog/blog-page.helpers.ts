@@ -8,8 +8,8 @@ export function formatDate(dateString: string): string {
 	});
 }
 
-export function getAllTags(posts: Post[]): string[] {
-  return [...new Set(posts.flatMap(post => post.tags))].sort((tagA, tagB) => tagA.localeCompare(tagB));
+export function getAllTags(posts: Post[]): Technology[] {
+  return [...new Set(posts.flatMap(post => post.tags))].sort((tagA, tagB) => tagA.localeCompare(tagB)) as Technology[];
 }
 
 export function filterPosts(

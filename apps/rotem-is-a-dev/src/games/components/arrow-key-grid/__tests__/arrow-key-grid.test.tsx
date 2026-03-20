@@ -36,7 +36,7 @@ describe('ArrowKeyGrid', () => {
 	});
 
 	it('renders items as buttons when onPress is provided', () => {
-		render(<ArrowKeyGrid items={ITEMS} activeValue={null} onPress={jest.fn()} />);
+		render(<ArrowKeyGrid items={ITEMS} activeValue={null} onPressAction={jest.fn()} />);
 		const element = screen.getByTestId('key-up');
 		expect(element.tagName).toBe('BUTTON');
 	});
@@ -53,7 +53,7 @@ describe('ArrowKeyGrid', () => {
 
 	it('calls onPress with the item value when clicked', () => {
 		const onPress = jest.fn();
-		render(<ArrowKeyGrid items={ITEMS} activeValue={null} onPress={onPress} />);
+		render(<ArrowKeyGrid items={ITEMS} activeValue={null} onPressAction={onPress} />);
 		fireEvent.click(screen.getByTestId('key-left'));
 		expect(onPress).toHaveBeenCalledWith('LEFT');
 	});

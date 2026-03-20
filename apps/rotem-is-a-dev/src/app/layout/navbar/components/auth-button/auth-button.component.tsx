@@ -79,7 +79,7 @@ export const AuthButton = () => {
 				/>
 				<SignInDialog
 					isOpen={isSignInOpen}
-					onClose={closeSignIn}
+					onCloseAction={closeSignIn}
 				/>
 			</>
 		);
@@ -97,11 +97,11 @@ export const AuthButton = () => {
 			<AuthDropdown
 				isOpen={isDropdownOpen}
 				openSettings={openSettings}
-				onSignOut={handleSignOut}
+				onSignOutAction={handleSignOut}
 			/>
 			<UserSettingsDialog
 				isOpen={isSettingsOpen}
-				onClose={closeSettings}
+				onCloseAction={closeSettings}
 			/>
 		</div>
 	);

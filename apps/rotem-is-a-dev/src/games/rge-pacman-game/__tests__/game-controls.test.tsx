@@ -24,7 +24,7 @@ describe('GameControls', () => {
 		activeAction: null as 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null,
 		keyScheme: 'arrows' as const,
 		isPlaying: false,
-		onToggleKeyScheme: jest.fn(),
+		onToggleKeySchemeAction: jest.fn(),
 	};
 
 	it('renders the game-controls container', () => {
@@ -81,7 +81,7 @@ describe('GameControls', () => {
 			render(
 				<GameControls
 					{...defaultProps}
-					onToggleKeyScheme={onToggleKeyScheme}
+					onToggleKeySchemeAction={onToggleKeyScheme}
 				/>
 			);
 			fireEvent.click(screen.getByTestId('key-scheme-toggle'));

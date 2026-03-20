@@ -34,11 +34,11 @@ const buildItems = (keyScheme: KeyScheme): ArrowKeyGridItem<Direction>[] => {
 
 export const GameControls = ({
 	score,
-	onDirectionPress,
+	onDirectionPressAction,
 	activeDirection,
 	keyScheme,
 	isPlaying,
-	onToggleKeyScheme,
+	onToggleKeySchemeAction,
 }: GameControlsProps) => {
 	const items = buildItems(keyScheme);
 
@@ -50,12 +50,12 @@ export const GameControls = ({
 			<ArrowKeyGrid
 				items={items}
 				activeValue={activeDirection}
-				onPress={onDirectionPress}
+				onPressAction={onDirectionPressAction}
 			/>
 			{!isPlaying && (
 				<button
 					className={styles.schemeToggle}
-					onClick={onToggleKeyScheme}
+					onClick={onToggleKeySchemeAction}
 					type="button"
 					data-testid="key-scheme-toggle"
 				>

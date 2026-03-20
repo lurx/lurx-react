@@ -14,7 +14,7 @@ const defaultProps = {
 	activeFileId: null as Nullable<AboutFileId>,
 	toggleSection: jest.fn(),
 	isCollapsed: false,
-	onFileSelect: jest.fn(),
+	onFileSelectAction: jest.fn(),
 	isMobile: false,
 };
 
@@ -68,11 +68,11 @@ describe('FileTreeSection', () => {
 		expect(toggleSection).toHaveBeenCalledWith('personal-info');
 	});
 
-	it('calls onFileSelect with the file id when a file is clicked', () => {
-		const onFileSelect = jest.fn();
-		render(<FileTreeSection {...defaultProps} onFileSelect={onFileSelect} />);
+	it('calls onFileSelectAction with the file id when a file is clicked', () => {
+		const onFileSelectAction = jest.fn();
+		render(<FileTreeSection {...defaultProps} onFileSelectAction={onFileSelectAction} />);
 		fireEvent.click(screen.getByRole('button', { name: /bio/ }));
-		expect(onFileSelect).toHaveBeenCalledWith('bio');
+		expect(onFileSelectAction).toHaveBeenCalledWith('bio');
 	});
 
 	it('marks the active file', () => {
@@ -129,7 +129,7 @@ describe('FileTreeSection', () => {
 		render(
 			<FileTreeSection
 				{...defaultProps}
-				files={['unknown-file-id']}
+				files={['unknown-file-id' as AboutFileId]}
 			/>,
 		);
 		expect(screen.getByText('unknown-file-id')).toBeInTheDocument();

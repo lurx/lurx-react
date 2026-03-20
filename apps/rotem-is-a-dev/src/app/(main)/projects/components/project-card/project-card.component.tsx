@@ -3,19 +3,19 @@ import { ProjectCardFooter } from './components';
 import styles from './project-card.module.scss';
 import type { ProjectCardProps } from './project-card.types';
 
-const TECH_ICON_MAP: Record<string, { iconName: string; iconGroup: string }> = {
+const TECH_ICON_MAP: Record<string, IconData> = {
 	react: { iconName: 'react', iconGroup: 'fab' },
 	typescript: { iconName: 'js', iconGroup: 'fab' },
 	html: { iconName: 'html5', iconGroup: 'fab' },
 	css: { iconName: 'css', iconGroup: 'fab' },
 };
 
-export const ProjectCard = ({ project, onViewProject, onCommentClick }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onViewProjectAction, onCommentClickAction }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 	const DemoComponent = project.demo;
-	const handleViewProject = onViewProject ? () => onViewProject(project) : undefined;
-	const handleCommentClick = onCommentClick ? () => onCommentClick(project) : undefined;
+	const handleViewProject = onViewProjectAction ? () => onViewProjectAction(project) : undefined;
+	const handleCommentClick = onCommentClickAction ? () => onCommentClickAction(project) : undefined;
 
 	const previewContent = DemoComponent
 		? <div className={styles.demoPreview} aria-hidden="true">
@@ -29,7 +29,7 @@ export const ProjectCard = ({ project, onViewProject, onCommentClick }: ProjectC
 		? <div className={styles.techBadge} aria-label={primaryTech}>
 				<FaIcon
 					iconName={techIcon.iconName}
-					iconGroup={techIcon.iconGroup as 'fab' | 'fas'}
+					iconGroup={techIcon.iconGroup}
 				/>
 			</div>
 		: null;
@@ -59,8 +59,8 @@ export const ProjectCard = ({ project, onViewProject, onCommentClick }: ProjectC
 					<ProjectCardFooter
 						entityType="project"
 						entityId={String(project.id)}
-						onCommentClick={handleCommentClick}
-						onViewClick={handleViewProject}
+						onCommentClickAction={handleCommentClick}
+						onViewClickAction={handleViewProject}
 					/>
 				)}
 			</div>

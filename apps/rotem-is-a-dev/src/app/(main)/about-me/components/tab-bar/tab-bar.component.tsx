@@ -11,10 +11,10 @@ import { TabContextMenu } from './tab-context-menu.component';
 export const TabBar = ({
 	openTabs,
 	activeFileId,
-	onTabSelect,
-	onTabClose,
-	onCloseOthers,
-	onCloseAll,
+	onTabSelectAction,
+	onTabCloseAction,
+	onCloseOthersAction,
+	onCloseAllAction,
 }: TabBarProps) => {
 	const { isMobile } = useResponsive();
 	const [contextMenu, setContextMenu] = useState<Nullable<ContextMenuState>>(null);
@@ -29,10 +29,10 @@ export const TabBar = ({
 	const dismissMenu = () => setContextMenu(null);
 
 	const handleContextMenuClose = () => {
-		if (contextMenu) onTabClose(contextMenu.tabId);
+		if (contextMenu) onTabCloseAction(contextMenu.tabId);
 	};
 	const handleContextMenuCloseOthers = () => {
-		if (contextMenu) onCloseOthers(contextMenu.tabId);
+		if (contextMenu) onCloseOthersAction(contextMenu.tabId);
 	};
 
 	return (
@@ -45,19 +45,19 @@ export const TabBar = ({
 					key={tabId}
 					tabId={tabId}
 					isActive={tabId === activeFileId}
-					onSelect={onTabSelect}
-					onClose={onTabClose}
-					onContextMenu={handleContextMenu}
+					onSelectAction={onTabSelectAction}
+					onCloseAction={onTabCloseAction}
+					onContextMenuAction={handleContextMenu}
 				/>
 			))}
 
 			{contextMenu && (
 				<TabContextMenu
 					position={{ x: contextMenu.x, y: contextMenu.y }}
-					onClose={handleContextMenuClose}
-					onCloseOthers={handleContextMenuCloseOthers}
-					onCloseAll={onCloseAll}
-					onDismiss={dismissMenu}
+					onCloseAction={handleContextMenuClose}
+					onCloseOthersAction={handleContextMenuCloseOthers}
+					onCloseAllAction={onCloseAllAction}
+					onDismissAction={dismissMenu}
 				/>
 			)}
 		</div>

@@ -45,7 +45,7 @@ import { Contact } from '../contact.component';
 
 const findIconByName = (name: string) => {
 	const icons = screen.getAllByTestId('fa-icon');
-	return icons.find(icon => (icon as HTMLElement).dataset.iconName === name) as HTMLElement;
+	return icons.find(icon => (icon).dataset.iconName === name) as HTMLElement;
 };
 
 describe('Contact', () => {

@@ -8,9 +8,9 @@ jest.mock('@/app/components', () => ({
 }));
 
 const defaultProps = {
-	tech: 'React',
+	tech: 'React' as Technology,
 	isChecked: false,
-	onToggle: jest.fn(),
+	onToggleAction: jest.fn<void, [Technology]>(),
 };
 
 beforeEach(() => {
@@ -38,9 +38,9 @@ describe('TechCheckboxItem', () => {
 		expect(screen.getByRole('checkbox')).toBeChecked();
 	});
 
-	it('calls onToggle with the tech name when checkbox changes', () => {
+	it('calls onToggleAction with the tech name when checkbox changes', () => {
 		const onToggle = jest.fn();
-		render(<TechCheckboxItem {...defaultProps} onToggle={onToggle} />);
+		render(<TechCheckboxItem {...defaultProps} onToggleAction={onToggle} />);
 		fireEvent.click(screen.getByRole('checkbox'));
 		expect(onToggle).toHaveBeenCalledWith('React');
 	});

@@ -7,7 +7,7 @@ jest.mock('@/hooks', () => ({
 	useResponsive: () => mockUseResponsive(),
 }));
 
-const TECHNOLOGIES = ['react', 'html', 'css', 'scss'];
+const TECHNOLOGIES = ['react', 'html', 'css', 'scss'] as Technology[];
 
 beforeEach(() => {
 	mockUseResponsive.mockReturnValue({ isMobile: false, isTablet: false, isDesktop: true });
@@ -19,7 +19,7 @@ describe('TechnologyFilter', () => {
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
 				selected={[]}
-				onToggle={() => undefined}
+				onToggleAction={() => undefined}
 			/>,
 		);
 		expect(screen.getByText('projects')).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('TechnologyFilter', () => {
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
 				selected={[]}
-				onToggle={() => undefined}
+				onToggleAction={() => undefined}
 			/>,
 		);
 		expect(screen.getByText('react')).toBeInTheDocument();
@@ -39,13 +39,13 @@ describe('TechnologyFilter', () => {
 		expect(screen.getByText('scss')).toBeInTheDocument();
 	});
 
-	it('calls onToggle with the technology when a checkbox is clicked', () => {
+	it('calls onToggleAction with the technology when a checkbox is clicked', () => {
 		const onToggle = jest.fn();
 		render(
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
 				selected={[]}
-				onToggle={onToggle}
+				onToggleAction={onToggle}
 			/>,
 		);
 		fireEvent.click(screen.getByRole('checkbox', { name: /react/ }));
@@ -56,8 +56,8 @@ describe('TechnologyFilter', () => {
 		render(
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
-				selected={['react']}
-				onToggle={() => undefined}
+				selected={['react' as Technology]}
+				onToggleAction={() => undefined}
 			/>,
 		);
 		const reactCheckbox = screen.getByRole('checkbox', { name: /react/ });
@@ -68,8 +68,8 @@ describe('TechnologyFilter', () => {
 		render(
 			<TechnologyFilter
 				technologies={TECHNOLOGIES}
-				selected={['react']}
-				onToggle={() => undefined}
+				selected={['react' as Technology]}
+				onToggleAction={() => undefined}
 			/>,
 		);
 		const htmlCheckbox = screen.getByRole('checkbox', { name: /html/ });
@@ -86,7 +86,7 @@ describe('TechnologyFilter', () => {
 				<TechnologyFilter
 					technologies={TECHNOLOGIES}
 					selected={[]}
-					onToggle={() => undefined}
+					onToggleAction={() => undefined}
 				/>,
 			);
 			expect(screen.getByText('react')).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('TechnologyFilter', () => {
 				<TechnologyFilter
 					technologies={TECHNOLOGIES}
 					selected={[]}
-					onToggle={() => undefined}
+					onToggleAction={() => undefined}
 				/>,
 			);
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
@@ -111,7 +111,7 @@ describe('TechnologyFilter', () => {
 				<TechnologyFilter
 					technologies={TECHNOLOGIES}
 					selected={[]}
-					onToggle={() => undefined}
+					onToggleAction={() => undefined}
 				/>,
 			);
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
@@ -127,7 +127,7 @@ describe('TechnologyFilter', () => {
 				<TechnologyFilter
 					technologies={TECHNOLOGIES}
 					selected={[]}
-					onToggle={() => undefined}
+					onToggleAction={() => undefined}
 				/>,
 			);
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });
@@ -144,7 +144,7 @@ describe('TechnologyFilter', () => {
 				<TechnologyFilter
 					technologies={TECHNOLOGIES}
 					selected={[]}
-					onToggle={() => undefined}
+					onToggleAction={() => undefined}
 				/>,
 			);
 			const sectionHeader = screen.getByRole('button', { name: /projects/i });

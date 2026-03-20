@@ -54,19 +54,19 @@ jest.mock('../hooks', () => ({
 }));
 
 jest.mock('../components', () => ({
-	CommentForm: ({ onSubmit }: { onSubmit: (text: string) => Promise<void> }) => (
-		<button data-testid="comment-form" onClick={() => onSubmit('test')} />
+	CommentForm: ({ onSubmitAction }: { onSubmitAction: (text: string) => Promise<void> }) => (
+		<button data-testid="comment-form" onClick={() => onSubmitAction('test')} />
 	),
-	CommentItem: ({ comment, isOwn, onDelete }: {
+	CommentItem: ({ comment, isOwn, onDeleteAction }: {
 		comment: Comment;
 		isOwn: boolean;
-		onDelete: (id: string) => void;
+		onDeleteAction: (id: string) => void;
 	}) => (
 		<button
 			data-testid="comment-item"
 			data-comment-id={comment.id}
 			data-is-own={isOwn}
-			onClick={() => onDelete(comment.id)}
+			onClick={() => onDeleteAction(comment.id)}
 		>
 			{comment.text}
 		</button>

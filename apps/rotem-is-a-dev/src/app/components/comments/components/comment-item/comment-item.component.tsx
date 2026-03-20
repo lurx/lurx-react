@@ -4,7 +4,7 @@ import { COMMENT_AVATAR_SIZE, COMMENT_ITEM_STRINGS } from './comment-item.consta
 import styles from './comment-item.module.scss';
 import type { CommentItemProps } from './comment-item.types';
 
-export const CommentItem = ({ comment, isOwn, onDelete }: CommentItemProps) => {
+export const CommentItem = ({ comment, isOwn, onDeleteAction }: CommentItemProps) => {
 	const relativeTime = comment.createdAt
 		? formatRelativeTime(comment.createdAt)
 		: '';
@@ -26,7 +26,7 @@ export const CommentItem = ({ comment, isOwn, onDelete }: CommentItemProps) => {
 					<button
 						type="button"
 						className={styles.deleteButton}
-						onClick={() => onDelete(comment.id)}
+						onClick={() => onDeleteAction(comment.id)}
 						aria-label={COMMENT_ITEM_STRINGS.DELETE_LABEL}
 						data-testid="comment-delete"
 					>

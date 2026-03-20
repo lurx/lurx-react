@@ -27,17 +27,17 @@ jest.mock('@/app/components', () => ({
 	TechnologyFilter: ({
 		technologies,
 		selected,
-		onToggle,
+		onToggleAction,
 	}: {
 		technologies: string[];
 		selected: string[];
-		onToggle: (tech: string) => void;
+		onToggleAction: (tech: string) => void;
 	}) => (
 		<div data-testid="technology-filter">
 			{technologies.map(tech => (
 				<button
 					key={tech}
-					onClick={() => onToggle(tech)}
+					onClick={() => onToggleAction(tech)}
 					data-selected={selected.includes(tech)}
 				>
 					{tech}
@@ -50,22 +50,22 @@ jest.mock('@/app/components', () => ({
 jest.mock('../../projects-grid', () => ({
 	ProjectsGrid: ({
 		projects,
-		onViewProject,
-		onCommentClick,
+		onViewProjectAction,
+		onCommentClickAction,
 	}: {
 		projects: Project[];
-		onViewProject?: (project: Project) => void;
-		onCommentClick?: (project: Project) => void;
+		onViewProjectAction?: (project: Project) => void;
+		onCommentClickAction?: (project: Project) => void;
 	}) => (
 		<div data-testid="projects-grid">
 			{projects.map(project => (
 				<div key={project.id} data-testid={`project-${project.id}`}>
 					<span>{project.slug}</span>
-					{onViewProject && (
-						<button onClick={() => onViewProject(project)}>view {project.slug}</button>
+					{onViewProjectAction && (
+						<button onClick={() => onViewProjectAction(project)}>view {project.slug}</button>
 					)}
-					{onCommentClick && (
-						<button onClick={() => onCommentClick(project)}>comment {project.slug}</button>
+					{onCommentClickAction && (
+						<button onClick={() => onCommentClickAction(project)}>comment {project.slug}</button>
 					)}
 				</div>
 			))}
@@ -81,18 +81,18 @@ jest.mock('../../demo-renderer', () => ({
 jest.mock('../../project-demo-drawer', () => ({
 	ProjectDemoDrawer: ({
 		project,
-		onClose,
+		onCloseAction,
 		scrollToComments,
 		children,
 	}: {
 		project: Project | null;
-		onClose: () => void;
+		onCloseAction: () => void;
 		scrollToComments?: boolean;
 		children: React.ReactNode;
 	}) =>
 		project ? (
 			<div data-testid="project-demo-drawer" data-scroll-to-comments={scrollToComments}>
-				<button onClick={onClose}>close</button>
+				<button onClick={onCloseAction}>close</button>
 				{children}
 			</div>
 		) : null,

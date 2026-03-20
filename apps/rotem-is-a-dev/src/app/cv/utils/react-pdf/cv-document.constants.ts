@@ -21,7 +21,7 @@ export const SKILL_BRAND_COLORS: Record<string, string> = {
 	scss: '#cc6699',
 	git: '#f05032',
 	'vue js': '#4fc08d',
-} as const;
+};
 
 export const PDF_LAYOUT = {
 	pageMargin: 20,

@@ -3,10 +3,10 @@ import type { AboutFileId } from '../../data/about-files.data';
 export type TabBarProps = {
 	openTabs: AboutFileId[];
 	activeFileId: Nullable<AboutFileId>;
-	onTabSelect: (fileId: AboutFileId) => void;
-	onTabClose: (fileId: AboutFileId) => void;
-	onCloseOthers: (fileId: AboutFileId) => void;
-	onCloseAll: () => void;
+	onTabSelectAction: (fileId: AboutFileId) => void;
+	onTabCloseAction: (fileId: AboutFileId) => void;
+	onCloseOthersAction: (fileId: AboutFileId) => void;
+	onCloseAllAction: () => void;
 }
 
 export type ContextMenuState = {

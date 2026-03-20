@@ -14,7 +14,7 @@ import { BlogPostCard } from './components/blog-post-card.component';
 export const BlogPage = ({ posts }: BlogPageProps) => {
 	const router = useRouter();
 	const [search, setSearch] = useState('');
-	const [selectedTags, setSelectedTags] = useState<string[]>([]);
+	const [selectedTags, setSelectedTags] = useState<Technology[]>([]);
 
 	const handleSearchChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		[posts],
 	);
 
-	const toggleTag = useCallback((tag: string) => {
+	const toggleTag = useCallback((tag: Technology) => {
 		setSelectedTags(prev => toggleInArray(prev, tag));
 	}, []);
 
@@ -42,7 +42,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		? <EmptyState variant={EMPTY_STATE_VARIANTS.NO_POSTS}>No posts match the current filters.</EmptyState>
 		: <ul className={styles.list}>
 				{filteredPosts.map(post => (
-					<BlogPostCard key={post.slug} post={post} onCommentClick={handleCommentClick} />
+					<BlogPostCard key={post.slug} post={post} onCommentClickAction={handleCommentClick} />
 				))}
 			</ul>;
 
@@ -58,7 +58,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 				<TechnologyFilter
 					technologies={allTags}
 					selected={selectedTags}
-					onToggle={toggleTag}
+					onToggleAction={toggleTag}
 					sectionLabel="tags"
 				/>
 			</FilterPanel>

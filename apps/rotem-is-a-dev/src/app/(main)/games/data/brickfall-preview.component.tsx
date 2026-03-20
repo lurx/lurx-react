@@ -52,9 +52,9 @@ export const BrickfallPreview = () => (
 	<div
 		aria-hidden="true"
 		style={{
-			['--board-rows' as string]: GRID_ROWS,
-			['--board-cols' as string]: GRID_COLS,
-			['--board-cell-size' as string]: `${CELL_SIZE}px`,
+			'--board-rows': GRID_ROWS,
+			'--board-cols': GRID_COLS,
+			'--board-cell-size': `${CELL_SIZE}px`,
 			width: GRID_COLS * CELL_SIZE,
 			height: GRID_ROWS * CELL_SIZE,
 			position: 'relative',

@@ -1,13 +1,13 @@
 import type { AUTH_PROVIDERS } from './auth.constants';
 
-type AuthProviders = ExtractObjectValues<typeof AUTH_PROVIDERS>;
+export type AuthProvider = ExtractObjectValues<typeof AUTH_PROVIDERS>;
 
 export type AuthUser = {
 	uid: string;
 	displayName: Nullable<string>;
 	email: Nullable<string>;
 	photoURL: Nullable<string>;
-	provider: AuthProviders;
+	provider: AuthProvider;
 };
 
 export type AuthContextValue = {

@@ -3,16 +3,21 @@ import { MAX_COMMENT_LENGTH } from '../../comments.constants';
 import { COMMENT_FORM_STRINGS } from './comment-form.constants';
 import styles from './comment-form.module.scss';
 import type { CommentFormProps } from './comment-form.types';
+import { isString } from 'es-toolkit';
 
-export const CommentForm = ({ onSubmit }: CommentFormProps) => {
+export const CommentForm = ({ onSubmitAction }: CommentFormProps) => {
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const submitAction = async (_previousState: Nullable<string>, formData: FormData) => {
-		const text = (formData.get('comment') as string).trim();
+    const comment = formData.get('comment');
+    if (!isString(comment)) {
+      return COMMENT_FORM_STRINGS.ERROR;
+    }
+		const text = (comment).trim();
 		if (text.length === 0) return null;
 
 		try {
-			await onSubmit(text);
+			await onSubmitAction(text);
 			formRef.current?.reset();
 			return null;
 		} catch {

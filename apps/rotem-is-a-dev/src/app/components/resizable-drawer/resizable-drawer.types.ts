@@ -2,14 +2,14 @@ import type { PropsWithChildren, ReactNode } from 'react';
 
 export type DrawerHeaderProps = {
 	title?: ReactNode;
-	onClose: () => void;
+	onCloseAction: () => void;
 }
 
 export type ResizableDrawerProps = {
 	/** Whether the drawer is currently visible */
 	isOpen: boolean;
 	/** Callback when the drawer requests to close (overlay click, Escape, close button) */
-	onClose: () => void;
+	onCloseAction: () => void;
 	/** Optional content rendered in the header next to the close button */
 	title?: ReactNode;
 	/** Initial width of the drawer in pixels. Defaults to 50% of viewport. */

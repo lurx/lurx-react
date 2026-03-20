@@ -7,10 +7,10 @@ jest.mock('@/app/components/fa-icon', () => ({
 }));
 
 jest.mock('@/app/components/sign-in-dialog', () => ({
-	SignInDialog: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+	SignInDialog: ({ isOpen, onCloseAction }: { isOpen: boolean; onCloseAction: () => void }) =>
 		isOpen ? (
 			<div data-testid="sign-in-dialog">
-				<button type="button" onClick={onClose} data-testid="close-dialog">
+				<button type="button" onClick={onCloseAction} data-testid="close-dialog">
 					close
 				</button>
 			</div>
@@ -26,8 +26,8 @@ const defaultProps: SocialActionsBarProps = {
 	commentCount: 0,
 	hasUserCommented: false,
 	isAuthenticated: true,
-	onStarClick: jest.fn(),
-	onCommentClick: jest.fn(),
+	onStarClickAction: jest.fn(),
+	onCommentClickAction: jest.fn(),
 };
 
 const renderBar = (overrides: Partial<SocialActionsBarProps> = {}) =>
@@ -79,16 +79,16 @@ describe('SocialActionsBar', () => {
 		expect(screen.getByTestId('fa-icon-comment')).toHaveAttribute('data-icon-group', 'fas');
 	});
 
-	it('calls onStarClick when authenticated user clicks star', () => {
+	it('calls onStarClickAction when authenticated user clicks star', () => {
 		const onStarClick = jest.fn();
-		renderBar({ isAuthenticated: true, onStarClick });
+		renderBar({ isAuthenticated: true, onStarClickAction: onStarClick });
 		fireEvent.click(screen.getByTestId('star-button'));
 		expect(onStarClick).toHaveBeenCalledTimes(1);
 	});
 
 	it('opens sign-in dialog when unauthenticated user clicks star', () => {
 		const onStarClick = jest.fn();
-		renderBar({ isAuthenticated: false, onStarClick });
+		renderBar({ isAuthenticated: false, onStarClickAction: onStarClick });
 		fireEvent.click(screen.getByTestId('star-button'));
 		expect(onStarClick).not.toHaveBeenCalled();
 		expect(screen.getByTestId('sign-in-dialog')).toBeInTheDocument();
@@ -103,9 +103,9 @@ describe('SocialActionsBar', () => {
 		expect(screen.queryByTestId('sign-in-dialog')).not.toBeInTheDocument();
 	});
 
-	it('calls onCommentClick when comment button is clicked', () => {
+	it('calls onCommentClickAction when comment button is clicked', () => {
 		const onCommentClick = jest.fn();
-		renderBar({ onCommentClick });
+		renderBar({ onCommentClickAction: onCommentClick });
 		fireEvent.click(screen.getByTestId('comment-button'));
 		expect(onCommentClick).toHaveBeenCalledTimes(1);
 	});

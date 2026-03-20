@@ -82,6 +82,14 @@ export function applySpacing(
 	}
 }
 
+export function incrementSpacingLevel(level: SpacingLevel): SpacingLevel {
+	return Math.min(level + 1, 3) as SpacingLevel;
+}
+
+export function decrementSpacingLevel(level: SpacingLevel): SpacingLevel {
+	return Math.max(level - 1, 0) as SpacingLevel;
+}
+
 export function formatSpacingValue(
 	values: ReadonlyArray<'Normal' | number>,
 	level: SpacingLevel,

@@ -25,7 +25,7 @@ const TECH_ICON_MAP: Partial<Record<string, IconData>> = {
 export const TechnologyFilter = ({
 	technologies,
 	selected,
-	onToggle,
+	onToggleAction,
 	sectionLabel = 'projects',
 }: TechnologyFilterProps) => {
 	const { isMobile } = useResponsive();
@@ -66,7 +66,7 @@ export const TechnologyFilter = ({
 							key={tech}
 							tech={tech}
 							isChecked={selected.includes(tech)}
-							onToggle={onToggle}
+							onToggleAction={onToggleAction}
 							iconInfo={TECH_ICON_MAP[tech]}
 						/>
 					))}

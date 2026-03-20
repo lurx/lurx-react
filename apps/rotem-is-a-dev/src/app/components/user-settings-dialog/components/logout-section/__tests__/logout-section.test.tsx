@@ -16,19 +16,19 @@ beforeEach(() => {
 
 describe('LogoutSection', () => {
 	it('renders sign out button', () => {
-		render(<LogoutSection onSignOut={mockOnSignOut} />);
+		render(<LogoutSection onSignOutAction={mockOnSignOut} />);
 		expect(screen.getByText('Sign out')).toBeInTheDocument();
 	});
 
 	it('renders sign out icon', () => {
-		render(<LogoutSection onSignOut={mockOnSignOut} />);
+		render(<LogoutSection onSignOutAction={mockOnSignOut} />);
 		const icon = screen.getByTestId('fa-icon');
 		expect(icon).toHaveAttribute('data-icon', 'right-from-bracket');
 		expect(icon).toHaveAttribute('data-group', 'fal');
 	});
 
-	it('calls onSignOut when button is clicked', () => {
-		render(<LogoutSection onSignOut={mockOnSignOut} />);
+	it('calls onSignOutAction when button is clicked', () => {
+		render(<LogoutSection onSignOutAction={mockOnSignOut} />);
 		fireEvent.click(screen.getByText('Sign out'));
 		expect(mockOnSignOut).toHaveBeenCalledTimes(1);
 	});

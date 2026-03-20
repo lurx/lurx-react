@@ -1,6 +1,6 @@
 import { Flex } from '@/app/components';
 import classNames from 'classnames';
-import { type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import styles from './demo-container.module.scss';
 import type { DemoContainerProps } from './demo-container.types';
 
@@ -13,7 +13,7 @@ export const DemoContainer = ({
 	const cssVariables = {
 		'--demo-container-width': width,
 		'--demo-container-height': height,
-	} as React.CSSProperties;
+	};
 
 	return (
 		<Flex

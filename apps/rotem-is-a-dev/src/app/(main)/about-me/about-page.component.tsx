@@ -60,21 +60,21 @@ export const AboutPage = () => {
 		<div className={styles.page}>
 			<SideBar
 				activeFileId={activeFileId}
-				onFileSelect={handleFileSelect}
+				onFileSelectAction={handleFileSelect}
 			/>
 
 			<FileTree
 				activeFileId={activeFileId}
-				onFileSelect={handleFileSelect}
+				onFileSelectAction={handleFileSelect}
 			/>
 
 			<AboutContent
 				openTabs={openTabs}
 				activeFileId={activeFileId}
-				onTabSelect={handleTabSelect}
-				onTabClose={handleTabClose}
-				onCloseOthers={handleCloseOthers}
-				onCloseAll={handleCloseAll}
+				onTabSelectAction={handleTabSelect}
+				onTabCloseAction={handleTabClose}
+				onCloseOthersAction={handleCloseOthers}
+				onCloseAllAction={handleCloseAll}
 			>
 				{editorContent}
 			</AboutContent>

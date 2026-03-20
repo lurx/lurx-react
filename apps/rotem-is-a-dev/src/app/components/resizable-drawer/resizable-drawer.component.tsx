@@ -14,7 +14,7 @@ const INITIAL_WIDTH_FALLBACK = 600;
 
 export const ResizableDrawer = ({
 	isOpen,
-	onClose,
+	onCloseAction,
 	title,
 	initialWidth,
 	minWidth = DEFAULT_MIN_WIDTH,
@@ -46,10 +46,10 @@ export const ResizableDrawer = ({
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
 			if (event.key === 'Escape' && isOpen) {
-				onClose();
+				onCloseAction();
 			}
 		},
-		[isOpen, onClose],
+		[isOpen, onCloseAction],
 	);
 	useEventListener('keydown', handleKeyDown);
 
@@ -115,7 +115,7 @@ export const ResizableDrawer = ({
 		>
 			<div
 				className={styles.overlay}
-				onClick={onClose}
+				onClick={onCloseAction}
 				aria-hidden="true"
 				data-testid="resizable-drawer-overlay"
 			/>
@@ -138,7 +138,7 @@ export const ResizableDrawer = ({
 					aria-hidden="true"
 				/>
 
-				<DrawerHeader title={title} onClose={onClose} />
+				<DrawerHeader title={title} onCloseAction={onCloseAction} />
 
 				<div className={styles.content}>{children}</div>
 			</dialog>

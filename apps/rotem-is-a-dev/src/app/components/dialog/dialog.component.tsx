@@ -11,7 +11,7 @@ import type { DialogProps } from './dialog.types';
 
 export const Dialog = ({
 	isOpen,
-	onClose,
+	onCloseAction,
 	ariaLabel,
 	className,
 	fullScreen = false,
@@ -20,10 +20,10 @@ export const Dialog = ({
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
 			if (event.key === 'Escape' && isOpen) {
-				onClose();
+				onCloseAction();
 			}
 		},
-		[isOpen, onClose],
+		[isOpen, onCloseAction],
 	);
 
 	useEventListener('keydown', handleKeyDown);
@@ -55,7 +55,7 @@ export const Dialog = ({
 		>
 			<div
 				className={styles.overlay}
-				onClick={onClose}
+				onClick={onCloseAction}
 				aria-hidden="true"
 				data-testid="dialog-overlay"
 			/>
@@ -69,7 +69,7 @@ export const Dialog = ({
 				<button
 					type="button"
 					className={styles.closeButton}
-					onClick={onClose}
+					onClick={onCloseAction}
 					aria-label="Close dialog"
 				>
 					<FaIcon iconName="xmark" iconGroup="fal" />

@@ -6,8 +6,8 @@ import type { ProjectsGridProps } from './projects-grid.types';
 
 export const ProjectsGrid = ({
 	projects,
-	onViewProject,
-	onCommentClick,
+	onViewProjectAction,
+	onCommentClickAction,
 }: ProjectsGridProps) => {
 	const gridContent = projects.length > 0
 		? <div className={styles.grid}>
@@ -15,8 +15,8 @@ export const ProjectsGrid = ({
 					<ProjectCard
 						key={project.id}
 						project={project}
-						onViewProject={onViewProject}
-						onCommentClick={onCommentClick}
+						onViewProjectAction={onViewProjectAction}
+						onCommentClickAction={onCommentClickAction}
 					/>
 				))}
 			</div>

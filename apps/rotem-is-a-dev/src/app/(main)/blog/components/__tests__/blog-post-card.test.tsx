@@ -15,18 +15,18 @@ jest.mock('@/app/(main)/blog/components/blog-post-card-footer', () => ({
 	BlogPostCardFooter: ({
 		entityType,
 		entityId,
-		onCommentClick,
+		onCommentClickAction,
 	}: {
 		entityType: string;
 		entityId: string;
-		onCommentClick: () => void;
+		onCommentClickAction: () => void;
 	}) => (
 		<button
 			type="button"
 			data-testid="blog-card-footer"
 			data-entity-type={entityType}
 			data-entity-id={entityId}
-			onClick={onCommentClick}
+			onClick={onCommentClickAction}
 		/>
 	),
 }));
@@ -100,7 +100,7 @@ describe('BlogPostCard', () => {
 	describe('with onCommentClick', () => {
 		it('renders the footer when onCommentClick is provided', () => {
 			const onCommentClick = jest.fn();
-			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			render(<BlogPostCard post={mockPost} onCommentClickAction={onCommentClick} />);
 			expect(screen.getByTestId('blog-card-footer')).toBeInTheDocument();
 		});
 
@@ -111,7 +111,7 @@ describe('BlogPostCard', () => {
 
 		it('passes correct entityType and entityId to footer', () => {
 			const onCommentClick = jest.fn();
-			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			render(<BlogPostCard post={mockPost} onCommentClickAction={onCommentClick} />);
 			const footer = screen.getByTestId('blog-card-footer');
 			expect(footer).toHaveAttribute('data-entity-type', 'blog');
 			expect(footer).toHaveAttribute('data-entity-id', 'test-post');
@@ -119,7 +119,7 @@ describe('BlogPostCard', () => {
 
 		it('calls onCommentClick with the post when footer comment is clicked', () => {
 			const onCommentClick = jest.fn();
-			render(<BlogPostCard post={mockPost} onCommentClick={onCommentClick} />);
+			render(<BlogPostCard post={mockPost} onCommentClickAction={onCommentClick} />);
 			fireEvent.click(screen.getByTestId('blog-card-footer'));
 			expect(onCommentClick).toHaveBeenCalledWith(mockPost);
 		});
