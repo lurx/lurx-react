@@ -5,6 +5,7 @@ const renderItem = <T extends string>(
 	item: ArrowKeyGridItem<T>,
 	isActive: boolean,
 	onPressAction?: (value: T) => void,
+	onReleaseAction?: (value: T) => void,
 	extraClassName?: string,
 ) => {
 	const className = [
@@ -22,7 +23,9 @@ const renderItem = <T extends string>(
 				key={item.value}
 				data-testid={item.testId}
 				className={className}
-				onClick={() => onPressAction(item.value)}
+				onPointerDown={() => onPressAction(item.value)}
+				onPointerUp={onReleaseAction ? () => onReleaseAction(item.value) : undefined}
+				onPointerLeave={onReleaseAction ? () => onReleaseAction(item.value) : undefined}
 				type="button"
 				aria-label={item.value.toLowerCase().replace('_', ' ')}
 			>
@@ -47,6 +50,7 @@ export const ArrowKeyGrid = <T extends string>({
 	items,
 	activeValue,
 	onPressAction,
+	onReleaseAction,
 	bottomAction,
 }: ArrowKeyGridProps<T>) => {
 	const bottomActionClass = bottomAction ? styles.gridWithBottom : '';
@@ -54,8 +58,8 @@ export const ArrowKeyGrid = <T extends string>({
 
 	return (
 		<div className={gridClassName} data-testid="arrow-key-grid">
-			{items.map((item) => renderItem(item, item.value === activeValue, onPressAction))}
-			{bottomAction && renderItem(bottomAction, bottomAction.value === activeValue, onPressAction, styles.bottomKey)}
+			{items.map((item) => renderItem(item, item.value === activeValue, onPressAction, onReleaseAction))}
+			{bottomAction && renderItem(bottomAction, bottomAction.value === activeValue, onPressAction, onReleaseAction, styles.bottomKey)}
 		</div>
 	);
 };

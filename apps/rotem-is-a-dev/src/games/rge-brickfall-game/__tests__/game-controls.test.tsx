@@ -33,6 +33,7 @@ const defaultProps = {
 	keyScheme: 'arrows' as const,
 	isPlaying: false,
 	onActionPressAction: jest.fn(),
+	onActionReleaseAction: jest.fn(),
 	onToggleKeySchemeAction: jest.fn(),
 };
 
