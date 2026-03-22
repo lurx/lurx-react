@@ -49,6 +49,8 @@ export const GameControls = ({
 	activeAction,
 	keyScheme,
 	isPlaying,
+	onActionPressAction,
+	onActionReleaseAction,
 	onToggleKeySchemeAction,
 }: GameControlsProps) => {
 	const items = buildItems(keyScheme);
@@ -66,6 +68,8 @@ export const GameControls = ({
 				items={items}
 				activeValue={activeAction}
 				bottomAction={bottomAction}
+				onPressAction={onActionPressAction}
+				onReleaseAction={onActionReleaseAction}
 			/>
 			{!isPlaying && (
 				<button

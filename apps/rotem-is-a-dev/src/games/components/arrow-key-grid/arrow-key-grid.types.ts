@@ -10,5 +10,6 @@ export type ArrowKeyGridProps<T extends string> = {
 	items: ArrowKeyGridItem<T>[];
 	activeValue: T | null;
 	onPressAction?: (value: T) => void;
+	onReleaseAction?: (value: T) => void;
 	bottomAction?: ArrowKeyGridItem<T>;
 };

@@ -45,10 +45,10 @@ describe('GameControls', () => {
 		expect(screen.getByTestId('arrow-right')).toBeInTheDocument();
 	});
 
-	it('calls onDirectionPress when arrow button is clicked', () => {
+	it('calls onDirectionPress when arrow button is pressed', () => {
 		const onDirectionPress = jest.fn();
 		render(<GameControls {...defaultProps} onDirectionPressAction={onDirectionPress} />);
-		fireEvent.click(screen.getByTestId('arrow-up'));
+		fireEvent.pointerDown(screen.getByTestId('arrow-up'));
 		expect(onDirectionPress).toHaveBeenCalledWith('UP');
 	});
 
