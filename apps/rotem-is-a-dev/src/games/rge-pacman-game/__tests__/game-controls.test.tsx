@@ -24,6 +24,7 @@ describe('GameControls', () => {
 		activeAction: null as 'UP' | 'DOWN' | 'LEFT' | 'RIGHT' | null,
 		keyScheme: 'arrows' as const,
 		isPlaying: false,
+		onDirectionPressAction: jest.fn(),
 		onToggleKeySchemeAction: jest.fn(),
 	};
 

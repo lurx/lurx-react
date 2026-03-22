@@ -141,6 +141,10 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 		handleStart();
 	}, [handleStart]);
 
+	const handleActionPress = useCallback((action: BrickfallAction) => {
+		entities.board.pendingActions.push(action);
+	}, [entities]);
+
 	const handleToggleKeyScheme = useCallback(() => {
 		setKeyScheme((prev) => {
 			const next = prev === 'arrows' ? 'wasd' : 'arrows';
@@ -224,6 +228,7 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 				activeAction={activeAction}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
+				onActionPressAction={handleActionPress}
 				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>

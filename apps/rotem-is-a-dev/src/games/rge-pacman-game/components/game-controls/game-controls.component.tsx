@@ -44,6 +44,7 @@ export const GameControls = ({
 	activeAction,
 	keyScheme,
 	isPlaying,
+	onDirectionPressAction,
 	onToggleKeySchemeAction,
 }: GameControlsProps) => {
 	const items = buildItems(keyScheme);
@@ -56,7 +57,7 @@ export const GameControls = ({
 					LIVES: {LIFE_EMOJI.repeat(lives)}
 				</div>
 			</div>
-			<ArrowKeyGrid items={items} activeValue={activeAction} />
+			<ArrowKeyGrid items={items} activeValue={activeAction} onPressAction={onDirectionPressAction} />
 			{!isPlaying && (
 				<button
 					className={styles.schemeToggle}

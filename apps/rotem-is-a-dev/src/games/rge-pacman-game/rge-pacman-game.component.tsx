@@ -229,6 +229,10 @@ export const RgePacmanGame = () => {
 		});
 	}, [entities]);
 
+	const handleDirectionPress = useCallback((direction: Direction) => {
+		entities.board.pendingActions.push(direction);
+	}, [entities]);
+
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			const action = ACTION_MAPS[keyScheme][event.key];
@@ -295,6 +299,7 @@ export const RgePacmanGame = () => {
 				activeAction={activeAction}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
+				onDirectionPressAction={handleDirectionPress}
 				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>
