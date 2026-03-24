@@ -9,5 +9,7 @@ export type GameControlsProps = {
 	activeAction: BrickfallAction | null;
 	keyScheme: KeyScheme;
 	isPlaying: boolean;
+	onActionPressAction: (action: BrickfallAction) => void;
+	onActionReleaseAction: (action: BrickfallAction) => void;
 	onToggleKeySchemeAction: () => void;
 };

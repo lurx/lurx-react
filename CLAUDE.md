@@ -22,6 +22,14 @@ This is Rotem's personal portfolio website built with Next.js 14, React 18, and 
 - **Testing**: Jest with React Testing Library, Playwright for E2E
 - **Linting**: ESLint with Next.js configuration
 
+## Branching Workflow
+
+Before starting any task, always ensure you're on a fresh branch from the latest `main`:
+
+```bash
+git checkout main && git pull && git checkout -b <branch-name>
+```
+
 ## Common Development Commands
 
 ### Development Server

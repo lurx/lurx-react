@@ -51,10 +51,10 @@ describe('ArrowKeyGrid', () => {
 		expect(screen.getByTestId('key-down').className).not.toContain('active');
 	});
 
-	it('calls onPress with the item value when clicked', () => {
+	it('calls onPress with the item value when pressed', () => {
 		const onPress = jest.fn();
 		render(<ArrowKeyGrid items={ITEMS} activeValue={null} onPressAction={onPress} />);
-		fireEvent.click(screen.getByTestId('key-left'));
+		fireEvent.pointerDown(screen.getByTestId('key-left'));
 		expect(onPress).toHaveBeenCalledWith('LEFT');
 	});
 

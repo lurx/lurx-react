@@ -7,7 +7,7 @@ import { GameControls } from './components/game-controls';
 import { GameOverlay } from './components/game-overlay';
 import { FoodRenderer } from './renderers/food-renderer.component';
 import { SnakeRenderer } from './renderers/snake-renderer.component';
-import { DEFAULT_SNAKE_CONFIG, DIRECTION_MAPS } from './rge-snake-game.constants';
+import { DEFAULT_SNAKE_CONFIG, DIRECTION_MAPS, OPPOSITE_DIRECTIONS } from './rge-snake-game.constants';
 import styles from './rge-snake-game.module.scss';
 import type { Direction, GameEvent, KeyScheme } from '../games.types';
 import type { Entities, SnakeGameConfig, SnakeGamePhase } from './rge-snake-game.types';
@@ -116,9 +116,12 @@ export const RgeSnakeGame = ({ config, onWin, onSkip, onScoreChange, hideControl
 		handleStart();
 	}, [handleStart]);
 
-	const handleDirectionPress = useCallback((_direction: Direction) => {
-		/* no-op: direction presses are handled by useActiveKey */
-	}, []);
+	const handleDirectionPress = useCallback((direction: Direction) => {
+		const isReversal = OPPOSITE_DIRECTIONS[direction] === entities.snake.direction;
+		if (!isReversal) {
+			entities.snake.direction = direction;
+		}
+	}, [entities]);
 
 	const handleToggleKeyScheme = useCallback(() => {
 		setKeyScheme((prev) => {

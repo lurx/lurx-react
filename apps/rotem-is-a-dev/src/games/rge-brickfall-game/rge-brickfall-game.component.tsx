@@ -141,6 +141,19 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 		handleStart();
 	}, [handleStart]);
 
+	const handleActionPress = useCallback((action: BrickfallAction) => {
+		entities.board.pendingActions.push(action);
+		if (action === 'SOFT_DROP') {
+			entities.board.softDropping = true;
+		}
+	}, [entities]);
+
+	const handleActionRelease = useCallback((action: BrickfallAction) => {
+		if (action === 'SOFT_DROP') {
+			entities.board.softDropping = false;
+		}
+	}, [entities]);
+
 	const handleToggleKeyScheme = useCallback(() => {
 		setKeyScheme((prev) => {
 			const next = prev === 'arrows' ? 'wasd' : 'arrows';
@@ -224,6 +237,8 @@ export const RgeBrickfallGame = ({ config }: RgeBrickfallGameProps) => {
 				activeAction={activeAction}
 				keyScheme={keyScheme}
 				isPlaying={isRunning}
+				onActionPressAction={handleActionPress}
+				onActionReleaseAction={handleActionRelease}
 				onToggleKeySchemeAction={handleToggleKeyScheme}
 			/>
 		</div>
