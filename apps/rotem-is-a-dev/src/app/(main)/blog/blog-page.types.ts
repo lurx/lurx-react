@@ -2,10 +2,12 @@ import type { Post } from "@/.velite";
 
 export type BlogTagProps = {
   tag: string;
+  draft?: boolean;
 };
 
 export type BlogTagsListProps = {
   tags: string[];
+  draft?: boolean;
 };
 
 export type BlogPostHeaderProps = {

@@ -83,10 +83,16 @@
 }
 
 .tag {
+  --tag-color: var(--teal);
+  --tag-bg-color: rgba(67, 217, 173, 0.1);
 	font-size: 0.6875rem;
-	color: var(--teal);
-	background-color: rgba(67, 217, 173, 0.1);
+	color: var(--tag-color);
+	background-color: var(--tag-bg-color);
 	padding: 2px spacing(1);
 	border-radius: var(--radius-sm);
+  &[data-draft] {
+    --tag-color: var(--purple);
+    --tag-bg-color: rgba(199, 146, 234, 0.1);
+  }
 }
 
