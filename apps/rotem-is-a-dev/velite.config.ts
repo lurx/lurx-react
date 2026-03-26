@@ -1,6 +1,7 @@
 import rehypeShiki from '@shikijs/rehype';
 import rehypeMermaid from 'rehype-mermaid';
 import { defineCollection, defineConfig, s } from 'velite';
+import { rehypeExternalLinks } from './src/app/content/plugins/rehype-external-links';
 
 const posts = defineCollection({
 	name: 'Post',
@@ -40,6 +41,7 @@ export default defineConfig({
 	collections: { posts, pages },
 	markdown: {
 		rehypePlugins: [
+			rehypeExternalLinks,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			[rehypeMermaid as any, {
 				strategy: 'img-svg',

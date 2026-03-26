@@ -28,7 +28,7 @@ export const BlogPostCard = ({ post, onCommentClickAction }: BlogPostCardProps) 
 				<p className={styles.cardDescription}>
 					{post.description}
 				</p>
-				<BlogTagsList tags={post.tags} />
+				<BlogTagsList tags={post.tags} draft={post.draft} />
 			</Link>
 			{handleCommentClick && (
 				<BlogPostCardFooter

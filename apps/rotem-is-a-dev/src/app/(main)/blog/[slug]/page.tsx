@@ -1,4 +1,5 @@
 import { Comments } from '@/app/components/comments';
+import { IS_PREVIEW_ENV } from '@/app/utils/is-preview-env.util';
 import { posts } from '#velite';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -7,12 +8,12 @@ import styles from './blog-post.module.scss';
 import { BackToBlogLink, BlogPostActions, BlogPostHeader } from './components';
 
 function getPostBySlug(slug: string) {
-	return posts.find(post => post.slug === slug && !post.draft);
+	return posts.find(post => post.slug === slug && (IS_PREVIEW_ENV || !post.draft));
 }
 
 export function generateStaticParams() {
 	return posts
-		.filter(post => !post.draft)
+		.filter(post => IS_PREVIEW_ENV || !post.draft)
 		.map(post => ({ slug: post.slug }));
 }
 
