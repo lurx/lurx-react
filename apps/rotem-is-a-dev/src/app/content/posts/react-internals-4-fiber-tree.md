@@ -252,30 +252,16 @@ Flags bubble up through `completeWork` — if a deeply nested fiber has a `Place
 Here's how everything connects across the series so far:
 
 ```mermaid
-graph TD
-  subgraph Fiber["Fiber Node"]
-    direction TB
-    T["type: MyComponent"]
-    MS["memoizedState →"]
-    MP["memoizedProps"]
-    FL["flags: Update"]
-    ALT["alternate →"]
-  end
+graph LR
+  Fiber["Fiber Node\n─────────────\ntype: MyComponent\nmemoizedProps\nflags: Update\nalternate →"]
 
-  subgraph Hooks["Hook Linked List (Part 1)"]
-    direction LR
-    H1["useState\ncount: 0"] --> H2["useRef\n{ current: null }"] --> H3["useEffect\ndeps: [count]"]
-  end
+  Fiber -->|"memoizedState"| H1
 
-  subgraph Tree["Tree Pointers"]
-    direction TB
-    C["child →"]
-    S["sibling →"]
-    R["return →"]
-  end
+  H1["useState\ncount: 0"] --> H2["useRef\n{ current: null }"] --> H3["useEffect\ndeps: [count]"]
 
-  MS --> H1
-  Fiber --> Tree
+  Fiber -->|"child"| Child["Child Fiber"]
+  Fiber -->|"sibling"| Sibling["Sibling Fiber"]
+  Fiber -->|"return"| Parent["Parent Fiber"]
 ```
 
 The fiber is the hub. Hooks live on it (Part 1). Effects synchronize from it (Part 2). The render phase calls functions through it (Part 3). The tree structure lets React traverse iteratively, pause anywhere, and resume later.

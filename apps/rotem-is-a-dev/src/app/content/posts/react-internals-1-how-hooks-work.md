@@ -1,7 +1,7 @@
 ---
 title: "How Hooks Really Work — React Internals, Part 1"
 slug: react-internals-1-how-hooks-work
-date: 2026-03-25
+date: 2026-03-26
 description: "Most React developers follow the rules of hooks. Fewer understand why they exist. Dive into the linked list that powers useState, useEffect, and the rules of hooks."
 tags: [react, hooks, internals]
 draft: true
