@@ -22,6 +22,12 @@
 	z-index: 1;
 }
 
+.backLinkRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .backLinkText {
 	display: inline-flex;
 	align-items: center;
@@ -29,6 +35,23 @@
 	color: var(--muted);
 	font-size: 0.8125rem;
 	text-decoration: none;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
+.fullscreenToggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	background: transparent;
+	color: var(--muted);
+	font-size: 1rem;
+	cursor: pointer;
 	transition: color 0.2s;
 
 	&:hover {
@@ -109,7 +132,7 @@
 
 // Markdown content styles
 .content {
-  --blog-content-max-width: 82ch;
+  --blog-content-max-width: 120ch;
   --blog-content-line-height: 1.75;
 	line-height: 1.75;
 	color: var(--text);
@@ -157,6 +180,19 @@
 
 		&:hover {
 			text-decoration: underline;
+		}
+
+		:global(.external-link-icon) {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 16px;
+			height: 16px;
+			margin-left: 3px;
+			vertical-align: middle;
+			border-radius: 50%;
+			background-color: var(--border);
+			color: var(--text);
 		}
 	}
 
