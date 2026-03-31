@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.38
-        version: 1.0.38
+        specifier: ^1.0.41
+        version: 1.0.41
       '@fortawesome/fontawesome-svg-core':
         specifier: ^7.2.0
         version: 7.2.0
@@ -217,8 +217,8 @@ importers:
   apps/rotem-is-a-dev:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.38
-        version: 1.0.38
+        specifier: ^1.0.41
+        version: 1.0.41
       '@chenglou/pretext':
         specifier: ^0.0.3
         version: 0.0.3
@@ -300,8 +300,8 @@ packages:
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
 
-  '@awesome.me/kit-1d40de302b@1.0.38':
-    resolution: {integrity: sha512-8taCXxKwPzFEXGaPKx1sNVD4sFtz0XxAvFv8lhQjHINyM9mMXdQfZBpl1OKttS/dTKJbYvIjbRpdYbiRE+5cjA==}
+  '@awesome.me/kit-1d40de302b@1.0.41':
+    resolution: {integrity: sha512-BO8sgFkFE7ZDZKcDsYeUyn2yojJVBZIKTMHUzD68BeIggWCJ0DnVM70kFwF9Wn+Djg2aUX4JDd+yf3DwPs7gAA==}
     engines: {node: '>=16'}
 
   '@babel/code-frame@7.27.1':
@@ -9269,7 +9269,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
-  '@awesome.me/kit-1d40de302b@1.0.38':
+  '@awesome.me/kit-1d40de302b@1.0.41':
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
 

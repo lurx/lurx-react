@@ -10,6 +10,10 @@ jest.mock('@/app/components', () => ({
 	),
 }));
 
+jest.mock('@/app/components/fa-icon', () => ({
+	FaIcon: (props: Record<string, unknown>) => <span data-testid={`fa-icon-${props.iconName}`} />,
+}));
+
 jest.mock('../../verdict-box', () => ({
 	VerdictBox: ({ title, children }: { title: string; children: React.ReactNode }) => (
 		<div data-testid="verdict-box">
@@ -96,7 +100,7 @@ describe('ImpossibleThingsGrid', () => {
 	it('renders all impossible thing icons', () => {
 		render(<ImpossibleThingsGrid />);
 		for (const thing of IMPOSSIBLE_THINGS) {
-			expect(screen.getByText(thing.icon)).toBeInTheDocument();
+			expect(screen.getByTestId(`fa-icon-${thing.icon.iconName}`)).toBeInTheDocument();
 		}
 	});
 });

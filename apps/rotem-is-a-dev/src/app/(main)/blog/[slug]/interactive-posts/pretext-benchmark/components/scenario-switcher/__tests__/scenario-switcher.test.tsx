@@ -1,11 +1,15 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 
+jest.mock('@/app/components/fa-icon', () => ({
+	FaIcon: (props: Record<string, unknown>) => <span data-testid={`fa-icon-${props.iconName}`} />,
+}));
+
 jest.mock('../../../pretext-benchmark.constants', () => ({
 	SCENARIOS: [
-		{ id: 'virtual', icon: '\u{1F4DC}', title: 'Virtualised Lists', description: 'Variable-height rows' },
-		{ id: 'shrinkwrap', icon: '\u{1F4AC}', title: 'Chat Bubbles', description: 'Exact shrinkwrap' },
-		{ id: 'masonry', icon: '\u{1F9F1}', title: 'Masonry Layout', description: 'Assign cards to columns' },
-		{ id: 'justification', icon: '\u2302', title: 'Typography', description: 'Balanced justification' },
+		{ id: 'virtual', icon: { iconName: 'scroll', iconGroup: 'fal' }, title: 'Virtualised Lists', description: 'Variable-height rows' },
+		{ id: 'shrinkwrap', icon: { iconName: 'messages', iconGroup: 'fal' }, title: 'Chat Bubbles', description: 'Exact shrinkwrap' },
+		{ id: 'masonry', icon: { iconName: 'objects-column', iconGroup: 'fal' }, title: 'Masonry Layout', description: 'Assign cards to columns' },
+		{ id: 'justification', icon: { iconName: 'text', iconGroup: 'fal' }, title: 'Typography', description: 'Balanced justification' },
 	],
 }));
 
@@ -55,13 +59,13 @@ describe('ScenarioSwitcher', () => {
 		expect(screen.getByText('Balanced justification')).toBeInTheDocument();
 	});
 
-	it('renders scenario icons', () => {
+	it('renders scenario icons as FaIcon components', () => {
 		render(<ScenarioSwitcher {...defaultProps} />);
 
-		expect(screen.getByText('\u{1F4DC}')).toBeInTheDocument();
-		expect(screen.getByText('\u{1F4AC}')).toBeInTheDocument();
-		expect(screen.getByText('\u{1F9F1}')).toBeInTheDocument();
-		expect(screen.getByText('\u2302')).toBeInTheDocument();
+		expect(screen.getByTestId('fa-icon-scroll')).toBeInTheDocument();
+		expect(screen.getByTestId('fa-icon-messages')).toBeInTheDocument();
+		expect(screen.getByTestId('fa-icon-objects-column')).toBeInTheDocument();
+		expect(screen.getByTestId('fa-icon-text')).toBeInTheDocument();
 	});
 
 	it('highlights the active scenario card', () => {

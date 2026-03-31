@@ -8,7 +8,7 @@ export type ScenarioId = 'virtual' | 'shrinkwrap' | 'masonry' | 'justification';
 
 export type ScenarioCard = {
 	id: ScenarioId;
-	icon: string;
+	icon: IconData;
 	title: string;
 	description: string;
 };
@@ -17,4 +17,10 @@ export type DecisionRow = {
 	scenario: string;
 	verdict: 'yes' | 'no' | 'maybe';
 	notes: string;
+};
+
+export type ImpossibleThing = {
+	icon: IconData;
+	label: string;
+	description: string;
 };

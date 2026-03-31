@@ -1,4 +1,5 @@
 import { CodeBlock } from '@/app/components';
+import { FaIcon } from '@/app/components/fa-icon';
 import { IMPOSSIBLE_THINGS } from '../../pretext-benchmark.constants';
 import { VerdictBox } from '../verdict-box';
 import styles from '../../pretext-benchmark.module.scss';
@@ -58,7 +59,9 @@ export function ImpossibleThingsGrid() {
 		<div className={styles.impossibleGrid}>
 			{IMPOSSIBLE_THINGS.map(thing => (
 				<div key={thing.label} className={styles.impossibleCard}>
-					<div className={styles.impossibleCardIcon}>{thing.icon}</div>
+					<div className={styles.impossibleCardIcon}>
+						<FaIcon iconName={thing.icon.iconName} iconGroup={thing.icon.iconGroup} size="1x" />
+					</div>
 					<div className={styles.impossibleCardLabel}>{thing.label}</div>
 					<div className={styles.impossibleCardDesc}>{thing.description}</div>
 				</div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { FaIcon } from '@/app/components/fa-icon';
 import { SCENARIOS } from '../../pretext-benchmark.constants';
 import type { ScenarioId } from '../../pretext-benchmark.types';
 import type { ScenarioSwitcherProps } from './scenario-switcher.types';
@@ -32,7 +33,9 @@ export function ScenarioSwitcher({ activeScenario, onSelectAction }: Readonly<Sc
 							onClick={() => onSelectAction(scenario.id)}
 							type="button"
 						>
-							<div className={styles.cardIcon}>{scenario.icon}</div>
+							<div className={styles.cardIcon}>
+								<FaIcon iconName={scenario.icon.iconName} iconGroup={scenario.icon.iconGroup} size="1x" />
+							</div>
 							<div className={styles.cardTitle}>{scenario.title}</div>
 							<div className={styles.cardDesc}>{scenario.description}</div>
 						</button>
