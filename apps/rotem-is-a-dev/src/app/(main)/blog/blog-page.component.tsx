@@ -3,12 +3,11 @@
 import { FilterPanel, TechnologyFilter, TextInput } from '@/app/components';
 import { EMPTY_STATE_VARIANTS, EmptyState } from '@/app/components/empty-state';
 import { toggleInArray } from '@/app/utils/toggle-in-array.util';
-import type { Post } from '#velite';
+import type { AnyPost, BlogPageProps } from './blog-page.types';
 import { useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { filterPosts, getAllTags } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
-import type { BlogPageProps } from './blog-page.types';
 import { BlogPostCard } from './components/blog-post-card.component';
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
@@ -32,7 +31,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		setSelectedTags(prev => toggleInArray(prev, tag));
 	}, []);
 
-	const handleCommentClick = useCallback((post: Post) => {
+	const handleCommentClick = useCallback((post: AnyPost) => {
 		router.push(`/blog/${post.slug}`);
 	}, [router]);
 

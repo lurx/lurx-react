@@ -1,0 +1,177 @@
+@use 'mixins/spacing' as *;
+
+.widget {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	margin-block: spacing(3);
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: spacing(1.5) spacing(2);
+	border-block-end: 1px solid var(--border);
+	background-color: var(--surface-alt);
+}
+
+.title {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--text);
+}
+
+.body {
+	padding: spacing(2);
+}
+
+.setup {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--muted-dim);
+	margin-block-end: spacing(1.5);
+}
+
+.headerActions {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+}
+
+.sourceBtn {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	letter-spacing: 0.06em;
+	background: none;
+	color: var(--muted-dim);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	padding: spacing(0.75) spacing(1.5);
+	cursor: pointer;
+	transition: color 0.2s, border-color 0.2s;
+
+	&:hover {
+		color: var(--text);
+		border-color: var(--muted);
+	}
+}
+
+.countSelect {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	background-color: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	padding: spacing(0.75) spacing(1.5);
+	cursor: pointer;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2390a1b9' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right spacing(1) center;
+	padding-inline-end: spacing(3.5);
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+}
+
+.sourceBlock {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	line-height: 1.6;
+	background-color: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: spacing(2);
+	margin-block-end: spacing(2);
+	overflow-x: auto;
+	color: var(--muted);
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.runBtn {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	letter-spacing: 0.08em;
+	background-color: var(--orange);
+	color: var(--bg);
+	border: none;
+	border-radius: var(--radius-sm);
+	padding: spacing(0.75) spacing(2);
+	cursor: pointer;
+	font-weight: 600;
+	transition: opacity 0.2s, transform 0.1s;
+
+	&:hover {
+		opacity: 0.88;
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+}
+
+.rows {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(1);
+	margin-block-start: spacing(1.5);
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	padding-inline-end: spacing(10);
+}
+
+.rowLabel {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--muted-dim);
+	min-width: 260px;
+}
+
+.barWrap {
+	flex: 1;
+	height: 32px;
+	background-color: rgba(255, 255, 255, 0.04);
+	border-radius: var(--radius-sm);
+	position: relative;
+	overflow: visible;
+}
+
+.bar {
+	height: 100%;
+	border-radius: var(--radius-sm);
+	transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+	max-width: 100%;
+}
+
+.barValue {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.875rem;
+	color: var(--text);
+	font-weight: 600;
+	white-space: nowrap;
+	position: absolute;
+	inset-block-start: 50%;
+	transform: translateY(-50%);
+}
+
+.status {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--muted-dim);
+	margin-block-start: spacing(1);
+}

@@ -1,4 +1,4 @@
-import type { Post } from "@/.velite";
+import type { AnyPost } from './blog-page.types';
 
 export function formatDate(dateString: string): string {
 	return new Date(dateString).toLocaleDateString('en-US', {
@@ -8,15 +8,15 @@ export function formatDate(dateString: string): string {
 	});
 }
 
-export function getAllTags(posts: Post[]): Technology[] {
+export function getAllTags(posts: AnyPost[]): Technology[] {
   return [...new Set(posts.flatMap(post => post.tags))].sort((tagA, tagB) => tagA.localeCompare(tagB)) as Technology[];
 }
 
 export function filterPosts(
-	posts: Post[],
+	posts: AnyPost[],
 	selectedTags: string[],
 	search: string,
-): Post[] {
+): AnyPost[] {
 	const searchLower = search.toLowerCase();
 
 	return posts.filter(post => {

@@ -1,4 +1,6 @@
-import type { Post } from "@/.velite";
+import type { Post, MdxPost } from "@/.velite";
+
+export type AnyPost = Post | MdxPost;
 
 export type BlogTagProps = {
   tag: string;
@@ -9,10 +11,10 @@ export type BlogTagsListProps = {
 };
 
 export type BlogPostHeaderProps = {
-  post: Post;
+  post: AnyPost;
   actions?: React.ReactNode;
 }
 
 export type BlogPageProps = {
-  posts: Post[];
+  posts: AnyPost[];
 }

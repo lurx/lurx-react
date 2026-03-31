@@ -1,0 +1,185 @@
+---
+title: "Can pretext Replace DOM Text Measurement — and Should It?"
+slug: pretext-benchmark
+date: 2026-03-31
+description: "I went in skeptical. A JS library that claims to beat the browser at text layout? Here's what I found: live benchmarks, real demos, and an honest verdict."
+tags: [performance, javascript, typography]
+draft: false
+component: pretext-benchmark
+---
+
+I'll be honest — when I first saw pretext making the rounds, my reaction was skepticism. Another library claiming CSS is obsolete? Another "revolutionary" approach that turns out to be a solution looking for a problem? I've seen enough of those.
+
+But the stars kept climbing, the README was unusually transparent about limitations, and the author — Cheng Lou, who built React Motion — has a track record of shipping things that actually matter. So I decided to do what I always do when the hype outpaces my understanding: dig in, benchmark it myself, and figure out where (if anywhere) this thing actually earns its keep.
+
+What follows is that investigation. Every benchmark runs live in your browser. Every demo uses the real library. And the verdict is more nuanced than "use it" or "don't."
+
+---
+
+## 01 — The Problem
+
+### Why measuring text height is surprisingly hard
+
+Here's something most developers don't think about until it bites them: asking the browser "how tall is this text?" is one of the most expensive things you can do.
+
+The moment you ask, the browser has to stop what it's doing, recalculate the size and position of elements on the page — a process called **layout reflow** — and only then can it give you an answer. For one element, you'll never notice. But when you need heights for hundreds of elements at once — say, a scrolling feed, a chat window, or a Pinterest-style grid — those tiny pauses add up fast.
+
+### The interleaving trap
+
+It gets worse if you're not careful. The classic mistake is alternating between changing the DOM and reading measurements in a loop. Each read forces the browser to recalculate everything you just changed before it can answer — then you change something again, and the cycle repeats.
+
+<ReflowViz />
+
+Even the "smart" approach — saving all your changes first, then reading all your measurements in one batch — still triggers a full recalculation. For 500 items on a resize event, that's about 0.18ms in Chrome. Not catastrophic, but it happens on *every* resize, and it means your layout code is always tied to the browser's rendering schedule.
+
+> **The real issue isn't speed — it's dependency.** To measure text with the DOM, the element has to exist on the page first. You can't measure in a background thread. You can't measure on the server. You can't measure before the component mounts. That coupling is the constraint.
+
+### What developers do instead
+
+Most teams just... work around it. They use average row heights (close enough), estimate based on character count (not great), create hidden elements to measure against (expensive), or simply accept the jank. Some libraries get clever — canvas-hypertxt (by the Glide team) trains a model to estimate string widths, while uWrap uses character-pair kerning tables for Latin text.
+
+These all share one thing: they're approximations. **Pretext claims to be exact.** Bold claim. Let's find out.
+
+---
+
+## 02 — How It Works
+
+### The big idea: skip the DOM entirely
+
+Pretext's core insight is surprisingly straightforward. Instead of putting text in the DOM and asking the browser to lay it out, it uses the browser's **canvas text API** (`measureText()`) to get word widths directly from the font engine — no layout, no reflow, no DOM needed. It measures everything once, caches the results, and from then on can calculate text height with pure math.
+
+<CodeCompare />
+
+### Phase 1: prepare() — measure once
+
+This is the setup step. Pretext takes your text, breaks it into words and segments (using `Intl.Segmenter` for proper Unicode support — so Chinese, Arabic, emoji, and everything else works correctly), and measures each piece with `canvas.measureText()`. The results get cached by font. Processing 500 paragraphs takes about 19ms — and you only pay that cost once.
+
+### Phase 2: layout() — math, not measurement
+
+This is the fast part. Given the cached word widths, a container width, and a line height, pretext just... does arithmetic. It walks through the widths, figures out how many lines the text wraps to, and returns the height. No canvas calls. No DOM. No string processing. Just addition and comparison. All 500 items in **0.09ms**.
+
+<StatsRow />
+
+> The 100% accuracy figure covers named fonts with standard CSS wrapping on the library's curated test corpus. There are edge cases in Arabic, Thai, and Myanmar — see Caveats below. One gotcha: **don't use `system-ui`** on macOS. Canvas and DOM resolve it to different SF Pro variants at certain sizes, which breaks the measurements. Stick with named fonts like Inter or Helvetica Neue.
+
+---
+
+## 03 — Live Benchmark
+
+### See for yourself
+
+This is where I stopped being skeptical. The numbers below aren't cherry-picked from a README — they're running live in your browser right now, using the real DOM APIs and pretext's actual code. Hit Run and see what happens on your machine.
+
+<MainBenchmark />
+
+*"DOM batched" is the best-case DOM strategy: all writes first, then all reads in one pass. "DOM interleaved" is the common mistake of reading after each write. "Pretext layout()" is the hot-path cost after the one-time prepare() step.*
+
+### What happens when the window resizes?
+
+A single measurement pass is one thing. But in practice, the number that matters most is the **resize cost** — what happens every time the user drags their browser window. With the DOM, you have to re-measure everything from scratch. With pretext, you just call `layout()` again with the new width. Same cached data, different arithmetic. The gap gets wider with every resize event.
+
+<ResizeBenchmark />
+
+---
+
+## 04 — Real-World Scenarios
+
+### Beyond synthetic benchmarks
+
+Numbers in a chart are nice, but I wanted to see pretext solve the kind of problems that have actually caused me pain in production — not toy demos, but real layout challenges where the DOM falls short. Here are four scenarios I tested, each with a live demo.
+
+<ScenarioSwitcher />
+
+---
+
+## 05 — Impossible Things
+
+### Things pretext can do that CSS literally cannot
+
+This is the section that changed my thinking. Pretext isn't just a faster way to do what CSS already does — it enables things that have *no CSS equivalent at all*. The browser's layout engine is powerful, but you can't program it. Pretext turns text layout into a function call, which opens some genuinely new doors.
+
+<ImpossibleThingsGrid />
+
+---
+
+## 06 — Caveats
+
+### The honest trade-offs
+
+Time to put the skeptic hat back on. Every tool has limits, and you should know these before you adopt pretext.
+
+#### It only models one CSS mode
+
+Pretext currently assumes `white-space: normal`, `word-break: normal`, `overflow-wrap: break-word`, and `line-break: auto`. If your text uses `nowrap`, `break-all`, custom tab sizes, or CSS columns, the predictions will be wrong.
+
+> **Your CSS font must match exactly.** Pass the same font string to `prepare()` that you use in CSS: `"600 16px/1 Inter"`, not just `"Inter"`. Weight, size, and line height all affect character widths. A mismatch produces silently wrong results — the worst kind of bug.
+
+#### system-ui is broken on macOS
+
+Canvas and DOM resolve `system-ui` to different SF Pro variants (Text vs Display) at certain sizes on macOS. The mismatch can reach 14.5%. Just use a named font and you're fine.
+
+#### Multilingual accuracy has gaps
+
+The 100% accuracy claim (7,680 tests across 4 fonts, 8 sizes, 8 widths, 30 texts) is real — but the corpus is curated. Some known edge cases:
+
+- **Arabic:** Clean on coarse tests, ~7 out of 601 edge cases remain in fine sweeps
+- **Japanese:** Narrow-width font compression; not a segmentation bug
+- **Myanmar:** Chrome and Safari disagree on closing-quote + follower cluster behavior
+- **Thai:** 59/61 on coarse sweep; two tiny misses remain
+- **Hebrew:** Not covered in the accuracy sweeps at all. The library has BiDi support with heuristic direction detection, but mixed Hebrew/English text — extremely common in Israeli tech — is uncharted territory. Test thoroughly if this applies to you.
+
+#### Rich text takes more work
+
+Out of the box, pretext measures a single run of text in a single font. Mixed formatting — bold words, links, inline code — isn't built in. It *is* possible though: the official [rich-note demo](https://chenglou.me/pretext/rich-note/) shows how to prepare each styled span with its own font and flow them together using `layoutNextLine()`. It works, but you're managing per-span preparation and fragment assembly yourself. Doable, not trivial.
+
+#### Canvas rendering hurts accessibility
+
+This is the caveat that deserves more attention. When pretext is used for **measurement only** — predicting heights for virtual scrolling, masonry layouts, shrinkwrap — your text still lives in the DOM as regular HTML. Screen readers, text selection, find-in-page, user font preferences: all fine. Zero accessibility cost.
+
+But the moment you **render text to Canvas** — as the typography demo does — all of that disappears. Canvas text is invisible to assistive technology. It can't be selected, searched, copied, or read aloud. For a screen reader, that paragraph simply doesn't exist.
+
+You can mitigate this (hidden DOM text, `aria-label`, transparent overlays like PDF.js), but none of it is free. For measurement use cases, pretext is accessibility-neutral. For canvas rendering, you're building a custom rendering engine — with all the a11y obligations that entails.
+
+#### It's brand new
+
+As of March 2026, pretext is published on npm as `@chenglou/pretext` (v0.0.3), but it's days old — the first release landed March 26. The API looks stable, but it hasn't seen the volume of production usage that uncovers the weird edge cases.
+
+---
+
+## 07 — When to Use It
+
+### A practical cheat sheet
+
+After all the testing, here's my honest take on when pretext justifies the added complexity — and when CSS is the right call.
+
+<DecisionTable />
+
+#### How to think about it
+
+Pretext is a companion to your render cycle, not a replacement for CSS. Reach for it when you need to know text dimensions *before* mounting, or when you're rendering outside the DOM entirely. For everything else, the browser's layout engine is still the best tool for the job.
+
+<IntegrationCode />
+
+---
+
+## 08 — Verdict
+
+### So... should you use it?
+
+<VerdictBox />
+
+#### What changed my mind
+
+I came into this expecting to write a "CSS is fine, you don't need this" article. And for most use cases, that's still true — CSS *is* fine, and you *don't* need this.
+
+But pretext isn't trying to replace CSS. It solves the specific problems where the browser's layout engine can't help — because the elements don't exist yet, because you're off the main thread, because you need the answer before the DOM is ready. I've hit those problems in production, and I've always solved them with hacks. Pretext replaces the hacks with math.
+
+The library's real contribution isn't speed. It's *decoupling text measurement from the DOM lifecycle*. That's what makes the "impossible things" possible: worker-side layout, build-time overflow checks, canvas text routing, multiline shrinkwrap.
+
+#### What to watch
+
+It needs a stable 1.0 release, framework adapters, and more production mileage before it's an obvious default. The multilingual accuracy frontier will improve as more real-world text gets thrown at it.
+
+#### Credits
+
+Pretext is created by [Cheng Lou](https://chenglou.me), creator of React Motion and long-time contributor to the React ecosystem. The interactive demos in this article are inspired by the [official pretext demos](https://chenglou.me/pretext/).

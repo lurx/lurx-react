@@ -1,0 +1,56 @@
+@use 'mixins/spacing' as *;
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-block: spacing(2);
+	font-size: 1rem;
+}
+
+.table th,
+.table td {
+	padding: spacing(1) spacing(1.5);
+	border: 1px solid var(--border);
+	text-align: start;
+}
+
+.table th {
+	background-color: var(--surface-alt);
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--muted-dim);
+}
+
+.table tr:hover td {
+	background-color: rgba(255, 255, 255, 0.02);
+}
+
+.badge {
+	display: inline-block;
+	padding: 2px spacing(1);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-mono), monospace;
+	font-size: 0.875rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+}
+
+.yes {
+	background-color: rgba(74, 222, 128, 0.15);
+	color: #4ade80;
+	border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.no {
+	background-color: rgba(248, 113, 113, 0.12);
+	color: #f87171;
+	border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.maybe {
+	background-color: rgba(251, 146, 60, 0.12);
+	color: var(--orange);
+	border: 1px solid rgba(251, 146, 60, 0.3);
+}

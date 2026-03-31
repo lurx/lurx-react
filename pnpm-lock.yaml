@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.38
-        version: 1.0.38
+        specifier: ^1.0.41
+        version: 1.0.41
       '@fortawesome/fontawesome-svg-core':
         specifier: ^7.2.0
         version: 7.2.0
@@ -217,8 +217,11 @@ importers:
   apps/rotem-is-a-dev:
     dependencies:
       '@awesome.me/kit-1d40de302b':
-        specifier: ^1.0.38
-        version: 1.0.38
+        specifier: ^1.0.41
+        version: 1.0.41
+      '@chenglou/pretext':
+        specifier: ^0.0.3
+        version: 0.0.3
       '@eslint/eslintrc':
         specifier: 3.2.0
         version: 3.2.0
@@ -228,6 +231,12 @@ importers:
       '@fortawesome/react-fontawesome':
         specifier: 3.2.0
         version: 3.2.0(@fortawesome/fontawesome-svg-core@7.2.0)(react@19.2.4)
+      '@mdx-js/mdx':
+        specifier: ^3.1.1
+        version: 3.1.1
+      '@mdx-js/react':
+        specifier: ^3.1.1
+        version: 3.1.1(@types/react@19.2.14)(react@19.2.4)
       '@react-pdf/renderer':
         specifier: 4.3.2
         version: 4.3.2(react@19.2.4)
@@ -291,8 +300,8 @@ packages:
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
 
-  '@awesome.me/kit-1d40de302b@1.0.38':
-    resolution: {integrity: sha512-8taCXxKwPzFEXGaPKx1sNVD4sFtz0XxAvFv8lhQjHINyM9mMXdQfZBpl1OKttS/dTKJbYvIjbRpdYbiRE+5cjA==}
+  '@awesome.me/kit-1d40de302b@1.0.41':
+    resolution: {integrity: sha512-BO8sgFkFE7ZDZKcDsYeUyn2yojJVBZIKTMHUzD68BeIggWCJ0DnVM70kFwF9Wn+Djg2aUX4JDd+yf3DwPs7gAA==}
     engines: {node: '>=16'}
 
   '@babel/code-frame@7.27.1':
@@ -947,6 +956,9 @@ packages:
 
   '@bufbuild/protobuf@2.11.0':
     resolution: {integrity: sha512-sBXGT13cpmPR5BMgHE6UEEfEaShh5Ror6rfN3yEK5si7QVrtZg8LEPQb0VVhiLRUslD2yLnXtnRzG035J/mZXQ==}
+
+  '@chenglou/pretext@0.0.3':
+    resolution: {integrity: sha512-RQmqMqUAPRCyv4R3LlRi/ao6KbNWYclqLA+V1HS7sWgyUUbjn3JmmlfXZSY/BjM4rbmIaMSyIVisYocYGYftiQ==}
 
   '@chevrotain/cst-dts-gen@11.1.2':
     resolution: {integrity: sha512-XTsjvDVB5nDZBQB8o0o/0ozNelQtn2KrUVteIHSlPd2VAV2utEb6JzyCJaJ8tGxACR4RiBNWy5uYUHX2eji88Q==}
@@ -1966,6 +1978,12 @@ packages:
 
   '@mdx-js/mdx@3.1.1':
     resolution: {integrity: sha512-f6ZO2ifpwAQIpzGWaBQT2TXxPv6z3RBzQKpVftEWN78Vl/YweF1uwussDx8ECAXVtr3Rs89fKyG9YlzUs9DyGQ==}
+
+  '@mdx-js/react@3.1.1':
+    resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
+    peerDependencies:
+      '@types/react': '>=16'
+      react: '>=16'
 
   '@mermaid-js/parser@1.0.1':
     resolution: {integrity: sha512-opmV19kN1JsK0T6HhhokHpcVkqKpF+x2pPDKKM2ThHtZAB5F4PROopk0amuVYK5qMrIA4erzpNm8gmPNJgMDxQ==}
@@ -9251,7 +9269,7 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
-  '@awesome.me/kit-1d40de302b@1.0.38':
+  '@awesome.me/kit-1d40de302b@1.0.41':
     dependencies:
       '@fortawesome/fontawesome-common-types': 7.2.0
 
@@ -10075,6 +10093,8 @@ snapshots:
   '@braintree/sanitize-url@7.1.2': {}
 
   '@bufbuild/protobuf@2.11.0': {}
+
+  '@chenglou/pretext@0.0.3': {}
 
   '@chevrotain/cst-dts-gen@11.1.2':
     dependencies:
@@ -11213,6 +11233,12 @@ snapshots:
       vfile: 6.0.3
     transitivePeerDependencies:
       - supports-color
+
+  '@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.2.4)':
+    dependencies:
+      '@types/mdx': 2.0.13
+      '@types/react': 19.2.14
+      react: 19.2.4
 
   '@mermaid-js/parser@1.0.1':
     dependencies:

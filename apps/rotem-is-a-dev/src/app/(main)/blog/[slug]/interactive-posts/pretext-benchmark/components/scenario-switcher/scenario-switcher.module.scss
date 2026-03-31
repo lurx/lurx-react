@@ -1,0 +1,49 @@
+@use 'mixins/spacing' as *;
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: spacing(1.5);
+	margin-block: spacing(2);
+}
+
+.card {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: spacing(1.5);
+	cursor: pointer;
+	transition: border-color 0.2s, background-color 0.2s;
+	text-align: start;
+
+	&:hover,
+	&.active {
+		border-color: var(--orange);
+		background-color: rgba(255, 184, 106, 0.06);
+	}
+}
+
+.cardIcon {
+	font-size: 1rem;
+	margin-block-end: spacing(0.5);
+}
+
+.cardTitle {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--text);
+	font-weight: 600;
+	margin-block-end: spacing(0.25);
+}
+
+.cardDesc {
+	font-size: 1rem;
+	color: var(--muted-dim);
+	line-height: 1.5;
+}
+
+// ─── Scenario Detail Panels ──────────────────────────────────────────────────
+
+.detail {
+	margin-block-start: spacing(2);
+}

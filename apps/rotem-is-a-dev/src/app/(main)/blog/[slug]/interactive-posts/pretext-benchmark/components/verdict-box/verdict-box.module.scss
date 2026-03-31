@@ -1,0 +1,27 @@
+@use 'mixins/spacing' as *;
+
+.box {
+	background-color: var(--surface);
+	border: 1px solid var(--orange);
+	border-radius: var(--radius-lg);
+	padding: spacing(3);
+	margin-block: spacing(3);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline: 0;
+		height: 2px;
+		background: linear-gradient(90deg, var(--orange), var(--cyan));
+	}
+}
+
+.title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--orange);
+	margin-block-end: spacing(1.5);
+}

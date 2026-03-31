@@ -52,6 +52,7 @@ next-env.d.ts
 
 # Velite (generated at build time)
 .velite
+**/velite-hmr-trigger.ts
 
 # APPS
 

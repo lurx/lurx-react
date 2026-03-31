@@ -25,4 +25,9 @@ module.exports = [
 			'@typescript-eslint/triple-slash-reference': 'off',
 		},
 	},
+	{
+		rules: {
+			'@next/next/no-html-link-for-pages': 'off',
+		},
+	},
 ];
