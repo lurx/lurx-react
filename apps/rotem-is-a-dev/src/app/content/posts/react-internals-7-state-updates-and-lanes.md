@@ -1,7 +1,7 @@
 ---
-title: "State Updates, Batching, and the Lane Model — React Internals, Part 6"
-slug: react-internals-6-state-updates-and-lanes
-date: 2026-03-26
+title: "State Updates, Batching, and the Lane Model — React Internals, Part 7"
+slug: react-internals-7-state-updates-and-lanes
+date: 2026-03-30
 description: "setState doesn't set state. It enqueues an update. What happens between that call and the re-render is one of the most misunderstood parts of React."
 tags: [react, state, batching, scheduler, lanes, internals]
 draft: true
@@ -116,6 +116,8 @@ function processUpdateQueue(queue, initialState) {
 
 This is why three calls to `setCount` produce one render: all three updates are collected in the queue, then processed together in a single pass. The final state is `3` — the last direct value wins. If you'd used functional updaters (`setCount(c => c + 1)` three times), you'd get `3` as well, but through incremental application.
 
+A circular linked list and a do-while loop. That's the entirety of React's "batching magic."
+
 ---
 
 ## Batching: React 17 vs React 18
@@ -147,44 +149,25 @@ fetch('/api').then(() => {
 
 How? React 18 wraps all work inside a microtask boundary. When you call `setState`, React schedules the render via `ensureRootIsScheduled`, which uses a microtask (via `queueMicrotask` or `MessageChannel`). All `setState` calls in the same synchronous execution context finish before the microtask fires, so they're all collected before the render begins.
 
-This is why `console.log(count)` still prints the old value — the render hasn't happened yet. The state update is enqueued, not applied.
+This is why `console.log(count)` still prints the old value — the render hasn't happened yet. The state update is enqueued, not applied. If you've ever wondered "is setState asynchronous?" — now you have the real answer. It's not async (no promises, no event loop delay). It's *deferred*. Synchronously enqueued, render scheduled for later.
 
 ---
 
 ## flushSync: The Escape Hatch
 
-Sometimes you *need* a synchronous update — for example, to read the DOM immediately after a state change:
+What if you *need* the state change to apply immediately — say, to read the DOM right after updating? That's what `flushSync` from `react-dom` is for. Wrap your `setState` call in `flushSync(() => { ... })` and React processes it synchronously — render and commit before returning.
 
-```jsx
-import { flushSync } from 'react-dom';
-
-function handleClick() {
-  flushSync(() => {
-    setCount(1);
-  });
-  // DOM is updated here — count is 1
-  console.log(inputRef.current.value); // reads the updated DOM
-
-  flushSync(() => {
-    setFlag(true);
-  });
-  // DOM is updated again — flag is true
-}
-```
-
-`flushSync` forces React to process the enclosed updates synchronously — schedule, render, and commit before returning. It opts out of batching for that specific update.
-
-Use it sparingly. It forces a synchronous render, which blocks the main thread. But for cases where you need the DOM to reflect a state change before the next line of code runs, it's the correct tool.
+You'll rarely need it. But knowing it exists helps you understand that batching is a *default*, not an absolute — React gives you an opt-out when the situation demands it.
 
 ---
 
 ## The Lane Model: Priority for Updates
 
-Not all updates are equally urgent. A user typing into an input should feel instant. A chart re-rendering with new data can wait a frame or two. React needs a way to express this difference.
+So React batches updates and processes them later. But "later" isn't one-size-fits-all. A user typing into a search field needs instant feedback. A chart re-rendering in the sidebar can wait a beat. React needs a way to say "this update is urgent, that one can wait."
 
-Before React 18, priorities were expressed as **expiration times** — each update had a timestamp, and React processed whatever was "due." This worked but was rigid: you couldn't easily merge, split, or reorder priorities.
+Think of it like a hospital triage board. Everyone gets treated — but the person with chest pain goes before the sprained ankle.
 
-React 18 replaced expiration times with **lanes** — a system based on bitmasks. Each lane is a single bit in a 31-bit integer, defined in [`ReactFiberLane.js`](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberLane.js):
+React 18 implements this with **lanes** — a priority system based on bitmasks. Each lane is a single bit in a 31-bit integer, defined in [`ReactFiberLane.js`](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberLane.js):
 
 ```js
 // Simplified from ReactFiberLane.js
@@ -197,7 +180,7 @@ const TransitionLane2 = 0b0000000000000000000010000000000;
 const IdleLane       = 0b0100000000000000000000000000000;
 ```
 
-Why bitmasks? Because you can combine lanes with bitwise OR, check membership with bitwise AND, and merge or split priority sets in O(1). A fiber's `lanes` field is just a number where each set bit represents a pending update at that priority.
+If you're thinking "this looks like it came from a systems programming textbook" — you're right. Bitmasks show up in operating system schedulers, network protocols, and file permission systems. React borrowed the idea because it works: you can combine lanes with bitwise OR, check membership with bitwise AND, and merge or split priority sets in O(1). A fiber's `lanes` field is just a number where each set bit represents a pending update at that priority.
 
 ---
 
@@ -214,7 +197,7 @@ When you call `setState`, React assigns a lane based on context:
 | Inside `startTransition` | `TransitionLane` | Low — interruptible |
 | Offscreen / idle work | `IdleLane` | Lowest |
 
-The function `requestUpdateLane()` reads the current execution context to determine which lane to assign. Inside a `startTransition` callback, it returns a transition lane. Inside a click handler, it returns `SyncLane`.
+You don't set these lanes yourself — React does it automatically based on *where* your `setState` was called. Click handler? `SyncLane`. Inside `startTransition`? `TransitionLane`. This connects directly to the event priorities from [Part 4](/blog/react-internals-4-event-system) — the event system tags your handler with a priority before it even runs.
 
 ---
 
@@ -234,9 +217,9 @@ function startTransition(callback) {
 }
 ```
 
-It sets a global flag. While that flag is set, any `setState` call inside the callback gets assigned a `TransitionLane` instead of the default lane. That's it.
+It sets a global flag. While that flag is set, any `setState` call inside the callback gets assigned a `TransitionLane` instead of the default lane. That's it. No fibers. No scheduling. No magic. Just a variable that changes what `requestUpdateLane()` returns.
 
-The magic happens later, during scheduling. When React processes the fiber tree, it looks at which lanes have pending work:
+The *real* magic happens later, during scheduling. When React processes the fiber tree, it looks at which lanes have pending work:
 
 ```jsx
 function SearchResults({ query }) {
@@ -285,7 +268,7 @@ function ensureRootIsScheduled(root) {
 }
 ```
 
-`getNextLanes` looks at all pending lanes on the root fiber and picks the highest-priority batch. Sync lanes are processed on the microtask queue (before the browser yields). Transition and default lanes are processed through the scheduler, which can yield to the browser between work units — the interruptible render from [Part 4](/blog/react-internals-4-fiber-tree).
+`getNextLanes` looks at all pending lanes on the root fiber and picks the highest-priority batch. Sync lanes are processed on the microtask queue (before the browser yields). Transition and default lanes are processed through the scheduler, which can yield to the browser between work units — the interruptible render from [Part 5](/blog/react-internals-5-fiber-tree).
 
 During the render, React only processes fibers whose `lanes` overlap with the lanes being rendered. A fiber with only a `TransitionLane` update is skipped during a `SyncLane` render. This is how React keeps urgent updates fast — it doesn't waste time on lower-priority work.
 
@@ -322,8 +305,17 @@ We've now traced an update from `setState` through the lane model and into the r
 
 How? React is single-threaded. It can't actually do two things at once. Yet `startTransition` keeps inputs responsive while rendering expensive lists.
 
-That's **Part 7 — Concurrent React**, the final article in the series. We'll see how the scheduler cooperatively yields to the browser, how Suspense pauses rendering by throwing a promise, and how everything we've covered — fibers, lanes, the interruptible work loop — comes together to make React feel concurrent on a single thread.
+That's **Part 8 — Concurrent React**, the final article in the series. We'll see how the scheduler cooperatively yields to the browser, how Suspense pauses rendering by throwing a promise, and how everything we've covered — fibers, lanes, the interruptible work loop — comes together to make React feel concurrent on a single thread.
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. **State Updates, Batching, and the Lane Model**
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)

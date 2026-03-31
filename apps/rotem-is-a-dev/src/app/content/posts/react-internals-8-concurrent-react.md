@@ -1,7 +1,7 @@
 ---
-title: "Concurrent React — React Internals, Part 7"
-slug: react-internals-7-concurrent-react
-date: 2026-03-26
+title: "Concurrent React — React Internals, Part 8"
+slug: react-internals-8-concurrent-react
+date: 2026-03-30
 description: "React is single-threaded. Yet startTransition keeps your input responsive while rendering an expensive list. Here's how — and why it's not multithreading."
 tags: [react, concurrent, suspense, transitions, scheduler, internals]
 draft: true
@@ -42,7 +42,7 @@ But JavaScript is single-threaded. React can't render the list in the background
 
 So how?
 
-The answer has been building across the entire series. The fiber tree ([Part 4](/blog/react-internals-4-fiber-tree)) made rendering interruptible. The lane model ([Part 6](/blog/react-internals-6-state-updates-and-lanes)) made updates prioritizable. Now the scheduler ties them together — React voluntarily pauses its own work to let the browser breathe, then picks up exactly where it left off.
+The answer has been building across the entire series. The fiber tree ([Part 5](/blog/react-internals-5-fiber-tree)) made rendering interruptible. The lane model ([Part 7](/blog/react-internals-7-state-updates-and-lanes)) made updates prioritizable. Now the scheduler ties them together — React voluntarily pauses its own work to let the browser breathe, then picks up exactly where it left off.
 
 ---
 
@@ -86,11 +86,13 @@ function requestHostCallback() {
 
 `postMessage` schedules a macrotask with near-zero delay. This lets the browser process any pending input events, run microtasks, paint, and *then* come back to React's work. It's the fastest way to yield without wasting time.
 
+Five lines of code. That's how React implements "cooperative multitasking" — a concept that sounds like it belongs in an operating systems textbook, built on top of a browser API designed for iframe communication. Sometimes the cleverest solutions are the most unexpected.
+
 ---
 
 ## The Work Loop: shouldYield
 
-In [Part 4](/blog/react-internals-4-fiber-tree), we saw the work loop that processes fibers one at a time. In concurrent mode, that loop has a crucial addition:
+In [Part 5](/blog/react-internals-5-fiber-tree), we saw the work loop that processes fibers one at a time. In concurrent mode, that loop has a crucial addition:
 
 ```js
 // Simplified from renderRootConcurrent
@@ -112,7 +114,7 @@ function workLoopSync() {
 }
 ```
 
-The only difference: `&& !shouldYield()`. That single check is what makes concurrent React possible.
+The only difference: `&& !shouldYield()`. Six characters. That's the entire difference between synchronous React and concurrent React. Every other piece — fibers, lanes, the scheduler — exists to make those six characters work.
 
 [`shouldYieldToHost`](https://github.com/facebook/react/blob/main/packages/scheduler/src/forks/Scheduler.js) checks how much time has elapsed since React started its current work slice:
 
@@ -163,32 +165,11 @@ The user sees the input update instantly. The list renders in the background, sp
 
 ## Interruption and Restart
 
-This is a critical point: when a higher-priority update arrives during a lower-priority render, React doesn't try to merge the results. It **discards the in-progress workInProgress tree** and starts a new render that includes both the high-priority and low-priority updates.
+What happens when you type while React is mid-render on a transition? React doesn't try to salvage the half-finished work. It **throws it away** and starts fresh with the new input value included.
 
-```js
-// Simplified from performConcurrentWorkOnRoot
-function performConcurrentWorkOnRoot(root) {
-  const lanes = getNextLanes(root);
+This sounds wasteful — but it's safe, because the render phase is pure. It hasn't touched the DOM. It hasn't fired any effects. There's nothing to undo. The discarded work is just JavaScript objects that get garbage collected. All that "render phase must be pure" talk from [Part 3](/blog/react-internals-3-jsx-to-pixels)? This is the payoff. Purity isn't a style preference — it's what makes interruption possible.
 
-  // Did higher-priority work arrive while we were rendering?
-  if (lanes !== workInProgressRootRenderLanes) {
-    // Yes — discard current work, start fresh with new lanes
-    prepareFreshStack(root, lanes);
-  }
-
-  renderRootConcurrent(root, lanes);
-
-  if (workInProgress === null) {
-    // Render complete — commit
-    commitRoot(root);
-  } else {
-    // Interrupted — schedule continuation
-    scheduleCallback(priority, performConcurrentWorkOnRoot);
-  }
-}
-```
-
-This is safe because the render phase is pure — it has no side effects. Discarding an incomplete render wastes some CPU time but never produces visible artifacts. The DOM is only touched in the commit phase, which runs synchronously after a complete render.
+And from the user's perspective? They typed a character, the input updated instantly, and the list will catch up in a moment. They never saw anything stale or broken.
 
 ---
 
@@ -202,9 +183,9 @@ Suspense looks like a simple component:
 </Suspense>
 ```
 
-But its internal mechanism is unlike anything else in React. When a component inside a Suspense boundary needs data that isn't available yet, it **throws a promise**.
+But its internal mechanism is unlike anything else in React — or, honestly, anything else in mainstream JavaScript. When a component inside a Suspense boundary needs data that isn't available yet, it **throws a promise**.
 
-Yes, literally throws it. Not returns. Not calls a callback. Throws.
+Yes, literally `throw`s it. As in the keyword. Not returns. Not calls a callback. Throws. If your reaction to that is "wait, that's insane" — you're in good company. But it works beautifully.
 
 ```js
 // Simplified — this is what a Suspense-compatible data library does
@@ -246,11 +227,13 @@ When the promise is caught:
 
 Suspense doesn't destroy the suspended subtree. It renders it into an **Offscreen fiber** — a special fiber type that keeps the work around but doesn't commit it to the DOM. When the data arrives, React can resume from the offscreen work rather than starting from scratch.
 
-This is why Suspense feels fast even for complex subtrees — React may have already done most of the render work before the data arrived.
+This is why Suspense feels fast even for complex subtrees — React may have already done most of the render work before the data arrived. It's pre-rendering, hidden behind a loading spinner.
 
 ---
 
 ## useDeferredValue: Suspense Meets Transitions
+
+One more piece of the puzzle. If `startTransition` lets you *schedule* work at lower priority, `useDeferredValue` lets you *keep showing old content* while that work happens.
 
 `useDeferredValue` creates a value that lags behind the current one, rendered in a transition lane:
 
@@ -273,16 +256,7 @@ When `query` changes, React renders the component twice:
 
 This is the key difference between `useDeferredValue` and a bare `startTransition`: the deferred value lets you keep showing stale content while fresh content loads, instead of showing a spinner.
 
-Internally, `useDeferredValue` is roughly equivalent to:
-
-```jsx
-const [deferredQuery, setDeferredQuery] = useState(query);
-useEffect(() => {
-  startTransition(() => setDeferredQuery(query));
-}, [query]);
-```
-
-But the actual implementation is more efficient — it's built into the reconciler and avoids the extra state and effect overhead.
+You can think of it as `startTransition` but with a built-in "keep showing the old version while the new one loads" behavior. Under the hood, it's wired into the reconciler directly — no extra state or effects needed.
 
 ---
 
@@ -295,9 +269,10 @@ This is the payoff of the series. Every concept we've covered was a building blo
 | Hook linked list | [Part 1](/blog/react-internals-1-how-hooks-work) | State lives on fibers, survives interrupted renders |
 | Effect synchronization | [Part 2](/blog/react-internals-2-useeffect-is-not-a-lifecycle) | Effects run *after* commit — never during interruptible render |
 | Render vs. commit | [Part 3](/blog/react-internals-3-jsx-to-pixels) | Render is pure and discardable; commit is synchronous |
-| Fiber tree | [Part 4](/blog/react-internals-4-fiber-tree) | Iterative traversal allows pause/resume via `workInProgress` |
-| Reconciliation | [Part 5](/blog/react-internals-5-reconciliation) | Flags accumulate during render, applied atomically in commit |
-| Lanes | [Part 6](/blog/react-internals-6-state-updates-and-lanes) | Bitmask priorities let React choose what to render first |
+| Event system | [Part 4](/blog/react-internals-4-event-system) | Events assign lanes — clicks get SyncLane, transitions get TransitionLane |
+| Fiber tree | [Part 5](/blog/react-internals-5-fiber-tree) | Iterative traversal allows pause/resume via `workInProgress` |
+| Reconciliation | [Part 6](/blog/react-internals-6-reconciliation) | Flags accumulate during render, applied atomically in commit |
+| Lanes | [Part 7](/blog/react-internals-7-state-updates-and-lanes) | Bitmask priorities let React choose what to render first |
 | Scheduler | This article | Cooperative yielding keeps the main thread responsive |
 
 Concurrent React isn't a feature bolted onto the existing system. It's the reason the existing system was built the way it was. Fibers exist so rendering can be interrupted. Lanes exist so updates can be prioritized. The scheduler exists so React can share the thread with the browser. Remove any one piece and the whole thing collapses back into synchronous, blocking rendering.
@@ -332,12 +307,23 @@ graph TD
 
 We started this series by asking why you can't call hooks in a conditional. We end by understanding how React renders a 10,000-item list without freezing your input field.
 
-The thread that runs through all seven articles is this: **React doesn't do what you think it does.** Hooks aren't magic — they're a linked list. Effects aren't lifecycle methods — they're synchronization. Rendering doesn't touch the DOM — it produces a description. The virtual DOM isn't a copy of the real DOM — it's a work scheduler. And setState doesn't set state — it enqueues a prioritized update.
+The thread that runs through all eight articles is this: **React doesn't do what you think it does.** Hooks aren't magic — they're a linked list. Effects aren't lifecycle methods — they're synchronization. Rendering doesn't touch the DOM — it produces a description. The virtual DOM isn't a copy of the real DOM — it's a work scheduler. And setState doesn't set state — it enqueues a prioritized update.
 
 Every abstraction React gives you — `useState`, `useEffect`, `Suspense`, `startTransition` — is a thin layer over a surprisingly mechanical system of linked lists, bitmasks, and iterative tree traversal. Once you see the machinery, the behavior stops being surprising.
 
-I hope this series has replaced some mental hand-waving with concrete understanding. If you want to go deeper, the source code is all [on GitHub](https://github.com/facebook/react) — and now you know where to look.
+I hope this series has replaced some mental hand-waving with concrete understanding. The next time React does something unexpected, you won't just Google the error message — you'll know which part of the machinery to look at.
+
+And if you want to go even deeper, the source code is all [on GitHub](https://github.com/facebook/react). Eight articles ago, that codebase was impenetrable. Now you know where to look — and more importantly, you know what you're looking *at*.
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. **Concurrent React**

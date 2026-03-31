@@ -1,13 +1,13 @@
 ---
 title: "How Hooks Really Work — React Internals, Part 1"
 slug: react-internals-1-how-hooks-work
-date: 2026-03-26
+date: 2026-03-30
 description: "Most React developers follow the rules of hooks. Fewer understand why they exist. Dive into the linked list that powers useState, useEffect, and the rules of hooks."
 tags: [react, hooks, internals]
 draft: true
 ---
 
-*Most React developers follow the rules of hooks. Fewer understand why they exist. This article changes that.*
+*Most React developers follow the rules of hooks. Fewer understand why they exist. This article changes that — and the answer turns out to be less magic than you'd expect.*
 
 ---
 
@@ -71,7 +71,7 @@ On **every re-render**, React doesn't build a new list. It walks back to the hea
 
 React has no idea that Node 1 is called `count`. It just knows it's first.
 
-Where does this notepad live? On an internal object called a **fiber** — React's representation of your component instance. We'll explore fibers in depth in Part 4. For now, just know that every component has one, and the hook linked list hangs off its `memoizedState` property.
+Where does this notepad live? On an internal object called a **fiber** — React's representation of your component instance. We'll explore fibers in depth in Part 5. For now, just know that every component has one, and the hook linked list hangs off its `memoizedState` property.
 
 ---
 
@@ -95,7 +95,7 @@ function mountState(initialState) {
 }
 ```
 
-React creates a new node, stores your initial value, and creates a `dispatch` function — your setter — permanently bound to this node's update queue.
+React creates a new node, stores your initial value, and creates a `dispatch` function — your setter — permanently bound to this node's update queue. That `bind` on line 7 is the reason `setCount` is a stable reference. One line. That's the whole trick.
 
 **On every re-render (update):**
 
@@ -145,7 +145,7 @@ This is also why calling a hook outside a component — in a utility function, a
 
 ## Every Hook Is a Node
 
-The linked list isn't just for `useState`. Every hook — `useRef`, `useMemo`, `useCallback`, `useEffect` — gets a node. They just store different things in `memoizedState`.
+So far we've only looked at `useState`. But here's the satisfying part: *every* hook — `useRef`, `useMemo`, `useCallback`, `useEffect` — is the same linked list mechanism with a different payload. Once you see one, you've seen them all.
 
 **useRef** is the simplest hook of all:
 
@@ -165,7 +165,7 @@ function updateRef() {
 }
 ```
 
-That's it. No queue. No dispatch. Just an object with a `current` property, stored in the linked list. This is why `useRef` persists across renders — it returns the same object every time, and mutations to `.current` survive because React never replaces the container.
+That's it. No queue. No dispatch. Just an object with a `current` property, sitting in the linked list. If `useState` is a filing cabinet, `useRef` is a sticky note on the wall — React puts it there once and never touches it again. This is why mutations to `.current` survive re-renders. React isn't watching. It's not re-creating the object. It just hands you back the same one.
 
 **useMemo** stores the computed value *and* the dependencies:
 
@@ -189,7 +189,7 @@ function updateMemo(create, deps) {
 }
 ```
 
-Same linked list. Same positional indexing. Different payload.
+Same linked list. Same positional indexing. Different payload. Are you starting to see the pattern? Node shape changes, mechanism doesn't.
 
 **useEffect** carries a bit more luggage:
 
@@ -208,15 +208,15 @@ On re-render, React compares old and new deps using `Object.is`. If everything m
 
 This is why `[]` means "run once" — there's nothing to compare against that could ever change, so the check always passes.
 
-It's also why `[{}]` is a trap — `Object.is({}, {})` is `false` because it's a new object reference every render. Your effect runs every time, and you stare at it wondering what you did wrong.
+It's also why `[{}]` is a trap — `Object.is({}, {})` is `false` because it's a new object reference every render. Your effect runs every time, and you stare at the screen wondering what you did wrong. (We've all been there.)
 
 ---
 
 ## What About Custom Hooks?
 
-A question that comes up naturally: does `useMyCustomHook()` get its own node?
+A question that comes up naturally: does `useMyCustomHook()` get its own node in the list?
 
-No. Custom hooks are just functions. They have no special relationship with React. When you call a custom hook, the `useState`, `useRef`, and `useEffect` calls *inside* it each get their own node — exactly as if you'd written them directly in the component.
+No. And this is one of my favorite parts. Custom hooks are just functions. They have no special relationship with React. When you call a custom hook, the `useState`, `useRef`, and `useEffect` calls *inside* it each get their own node — exactly as if you'd written them directly in the component.
 
 ```js
 function useCounter(initial) {
@@ -233,13 +233,13 @@ function MyComponent() {
 }
 ```
 
-React doesn't see `useCounter`. It sees `useState`, then `useCallback`, then `useState` — three nodes in the list. Custom hooks are an organizational abstraction, not a React primitive.
+React doesn't see `useCounter`. It sees `useState`, then `useCallback`, then `useState` — three nodes in the list. Custom hooks are an organizational abstraction, not a React primitive. They're for *you*, not for React.
 
 ---
 
 ## Why Conditions Break Everything
 
-Now the opening example makes sense. Let's walk through it with what we know:
+Now we've earned the right to revisit the opening example. Let's walk through it with what we know:
 
 ```js
 function MyComponent({ showExtra }) {
@@ -267,7 +267,7 @@ Re-render, `showExtra = false`. The `if` block is skipped — but the linked lis
 
 Your `name` just inherited someone else's value. React didn't get confused — it marched through the list exactly as designed. *You* shifted the mapping by removing a hook call from the middle.
 
-This isn't a design flaw. It's a deliberate tradeoff. React could attach a label to each hook call — a name, a key, a symbol. But that would add overhead to every hook call, in every component, on every render. Instead, React keeps the mechanism lean and trusts you to keep the call order stable.
+This isn't a design flaw. It's a deliberate tradeoff — and a surprisingly pragmatic one. React could attach a label to each hook call — a name, a key, a symbol. But that would add overhead to every hook call, in every component, on every render. Instead, React keeps the mechanism lean and trusts you to keep the call order stable.
 
 The ESLint plugin [`eslint-plugin-react-hooks`](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks) exists to enforce that trust programmatically — because React knows we can't always be trusted.
 
@@ -302,6 +302,8 @@ React doesn't know your variable names. It knows where things live — in a link
 
 No magic. Just a linked list and a contract.
 
+The next time a junior developer asks you "why can't I put a hook in an if statement?" — you won't say "because the docs say so." You'll draw a linked list on a whiteboard and watch it click.
+
 ---
 
 ## What's Next
@@ -312,4 +314,13 @@ You probably learned it as "componentDidMount but in hooks." That analogy is wro
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. **How Hooks Really Work**
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)

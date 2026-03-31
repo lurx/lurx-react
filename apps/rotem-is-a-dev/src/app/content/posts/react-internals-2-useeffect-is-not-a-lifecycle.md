@@ -1,7 +1,7 @@
 ---
 title: "useEffect Is Not a Lifecycle Method — React Internals, Part 2"
 slug: react-internals-2-useeffect-is-not-a-lifecycle
-date: 2026-03-26
+date: 2026-03-30
 description: "You were told useEffect with an empty dependency array is componentDidMount. That mental model is wrong — and it's the reason effects feel unpredictable."
 tags: [react, hooks, useEffect, internals]
 draft: true
@@ -27,7 +27,7 @@ The class lifecycle model asks: *"What phase of the component's life are we in?"
 
 `useEffect` asks something entirely different: *"What state did I just synchronize with, and has it changed?"*
 
-That distinction sounds academic until your cleanup runs when nothing unmounted, your effect fires twice on mount, and your event listener captures a value from three renders ago.
+That distinction sounds academic. It isn't. It's the reason your cleanup runs when nothing unmounted, your effect fires twice on mount, and your event listener captures a value from three renders ago. If you've ever stared at a `useEffect` and muttered "why is this running?" — the lifecycle analogy is what misled you.
 
 ---
 
@@ -45,7 +45,7 @@ useEffect(() => {
 
 This doesn't mean "when count updates, change the title." It means: **keep the document title in sync with `count`.** The distinction matters because React decides *when* and *whether* to run the effect — you just declare what should be true.
 
-If `count` didn't change between renders, the effect doesn't run. Not because React is optimizing — because there's nothing to synchronize.
+If `count` didn't change between renders, the effect doesn't run. Not because React is optimizing — because there's nothing to synchronize. The title is already correct. Why would React touch it?
 
 ---
 
@@ -72,6 +72,8 @@ graph LR
 ```
 
 This timing is why `useEffect(() => {}, [])` is *not* `componentDidMount`. `componentDidMount` runs before the browser paints — it can block rendering. `useEffect` runs after the paint. The user already sees the initial render before your effect fires. For most effects that's fine. For a flicker-sensitive DOM measurement, it's a bug — and that's what `useLayoutEffect` is for.
+
+OK, deep breath. We've covered what effects *are* and *when* they run. Now for the part that trips up everyone — including, honestly, experienced React developers.
 
 ---
 
@@ -108,6 +110,8 @@ When `count` changes from `3` to `4`:
 
 The cleanup doesn't see `4`. It sees `3` — because it closed over the values from the render that created it. This is not a bug. This is the design. Each render's effect is a self-contained unit: it sets something up, and its cleanup tears *that specific thing* down.
 
+Read that again if you need to. It's the single most important idea in this article.
+
 If you think in class lifecycle terms — "cleanup is `componentWillUnmount`" — you'll expect it to run once, at the end. In reality, it runs *between every re-execution of the effect*. Unmount is just the final cleanup, with no new effect following it.
 
 ---
@@ -143,7 +147,7 @@ function updateEffect(create, deps) {
 }
 ```
 
-The `areDepsEqual` function iterates the arrays and compares each element with `Object.is`. This is strict reference equality — no deep comparison, no serialization.
+The `areDepsEqual` function iterates the arrays and compares each element with `Object.is`. This is strict reference equality — no deep comparison, no serialization. If you remember one thing from this section, make it this: **React compares deps by reference, not by value.**
 
 With that in mind, the three dependency patterns make sense mechanically:
 
@@ -169,7 +173,7 @@ useEffect(() => {
 }, [channels]); // if channels is ['general'] created inline
 ```
 
-This is the most common source of "why does my effect keep firing?" bugs. The fix is to stabilize the reference — with `useMemo`, by destructuring to primitives, or by moving the object creation outside the render.
+This is the single most common source of "why does my effect keep firing?" bugs. If you've ever rage-added `// eslint-disable-next-line` to a deps array — this is probably what was actually going on. The fix is to stabilize the reference — with `useMemo`, by destructuring to primitives, or by moving the object creation outside the render.
 
 ```js
 // Option 1: depend on primitives
@@ -187,6 +191,8 @@ useEffect(() => {
 ---
 
 ## Why Strict Mode Fires Effects Twice
+
+This is the one that makes developers open a GitHub issue titled "React bug: useEffect called twice."
 
 In development with Strict Mode enabled, React deliberately mounts your component, unmounts it, and mounts it again. Your effects run, clean up, and run again — all before the user sees anything.
 
@@ -212,7 +218,7 @@ This behavior only happens in development. In production, effects mount once and
 
 ## Stale Closures: The Bug That Strict Mode Can't Catch
 
-There's one class of effect bugs that no amount of double-mounting will reveal: stale closures.
+We've covered the mechanical bugs — wrong timing, wrong deps, missing cleanup. Now for the subtle one. The one that passes every test, survives Strict Mode, and only shows up when a real user is chatting in your app at 2 AM.
 
 Every effect callback is a closure. It captures the state and props from the render in which it was created. If your deps are wrong — if you reference a value without including it in the dependency array — the effect keeps seeing the value from the render when it was last created.
 
@@ -244,11 +250,13 @@ connection.on('message', (msg) => {
 
 Now `messages` isn't needed in the closure at all, and the deps are honest.
 
-The `eslint-plugin-react-hooks` exhaustive-deps rule catches most of these. When it tells you a dependency is missing, it's almost always right. Fighting the linter is fighting the model.
+The `eslint-plugin-react-hooks` exhaustive-deps rule catches most of these. When it tells you a dependency is missing, it's almost always right. Fighting the linter is fighting the model — and the model will win.
 
 ---
 
 ## The Mental Model, Distilled
+
+If nothing else sticks from this article, let it be this:
 
 Forget mount. Forget update. Forget unmount.
 
@@ -271,7 +279,13 @@ Each render's effect is self-contained. The cleanup undoes *that render's* work.
 
 This is why the lifecycle analogy fails. `componentDidMount` and `componentWillUnmount` are bookends — one pair per component life. Effects are a *repeating cycle* — one pair per dependency change, with the previous cleanup always running before the next setup.
 
-Once you stop mapping effects onto class lifecycles and start seeing them as synchronization, the behavior becomes predictable. Cleanup runs when deps change because there's new state to sync with. Strict Mode double-fires because it's testing your sync/unsync symmetry. Stale closures happen because you told React the wrong dependencies, so it didn't re-sync when it should have.
+Once you stop mapping effects onto class lifecycles and start seeing them as synchronization, the behavior becomes predictable:
+
+- Cleanup runs when deps change — because there's new state to sync with.
+- Strict Mode double-fires — because it's testing your sync/unsync symmetry.
+- Stale closures happen — because you told React the wrong dependencies, so it didn't re-sync when it should have.
+
+Three common bugs. One mental model. All predictable.
 
 ---
 
@@ -285,4 +299,13 @@ That's **Part 3 — From JSX to Pixels**, where we'll trace a render from `jsx()
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. **useEffect Is Not a Lifecycle Method**
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)

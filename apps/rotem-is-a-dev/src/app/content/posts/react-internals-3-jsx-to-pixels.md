@@ -1,7 +1,7 @@
 ---
 title: "From JSX to Pixels — React Internals, Part 3"
 slug: react-internals-3-jsx-to-pixels
-date: 2026-03-26
+date: 2026-03-30
 description: "You call it rendering. React calls it calling your function. The DOM update happens later — in a phase most developers don't know exists."
 tags: [react, rendering, jsx, internals]
 draft: true
@@ -13,7 +13,7 @@ draft: true
 
 ## The Console Log That Printed Twice
 
-Here's a scene that plays out in every React developer's career:
+You've seen this in every React tutorial and course — it's practically the "Hello World" of React:
 
 ```jsx
 function Counter() {
@@ -28,7 +28,7 @@ You click the button once. The console prints `rendered!` twice. You stare at it
 
 The anxiety behind this question comes from a fundamental misunderstanding: the belief that "rendering" means "updating the DOM." If that were true, two renders would mean two DOM updates, and two DOM updates for one click would be a performance problem.
 
-But that's not what rendering means in React. Not even close.
+But that's not what rendering means in React. Not even close. And once you see the distinction, a lot of "weird React behavior" stops being weird.
 
 ---
 
@@ -63,7 +63,9 @@ This comes from [`react/jsx-runtime`](https://github.com/facebook/react/blob/mai
 }
 ```
 
-That's it. No `document.createElement`. No `appendChild`. Just a lightweight description of what *should* exist in the DOM. A blueprint, not a building.
+That's it. No `document.createElement`. No `appendChild`. Just a plain object describing what *should* exist in the DOM. A blueprint, not a building.
+
+If that feels anticlimactic — good. The most important data structure in React is a JavaScript object with four properties. Everything else is machinery for comparing these objects efficiently.
 
 When your component returns JSX, it returns a tree of these objects. React collects the tree, compares it to what was there before, and decides what (if anything) needs to change.
 
@@ -108,13 +110,13 @@ graph TD
   B --> D["h1\nchildren: 'Hello, React'"]
 ```
 
-React now has two descriptions: what the UI *was* and what it *should be*. The question becomes: what's different?
+React now has two descriptions: what the UI *was* and what it *should be*. The question becomes: what's different? And more importantly — who does the work of figuring that out?
 
 ---
 
 ## Two Phases, One Render
 
-This is where most developers' mental model breaks down. "Rendering" in React is not a single operation. It's two distinct phases with very different rules:
+This is where most developers' mental model breaks down, and honestly, it's where mine broke down too when I first dug into the source. "Rendering" in React is not a single operation. It's two distinct phases with very different rules:
 
 ### Phase 1: Render (the "thinking" phase)
 
@@ -122,7 +124,7 @@ React calls your component functions, starting from the component that triggered
 
 This phase is:
 - **Pure** — no side effects, no DOM mutations, no writing to external state
-- **Interruptible** — React can pause, discard, or restart this work (more on this in Part 7)
+- **Interruptible** — React can pause, discard, or restart this work (more on this in Part 8)
 - **Invisible** — nothing the user can see changes during this phase
 
 The render phase is where `beginWork` runs — the internal function that processes each component in the tree. For function components, "processing" means calling your function. For host elements (`div`, `span`), it means comparing the old and new props.
@@ -145,6 +147,8 @@ graph LR
 ```
 
 The key insight: **the render phase doesn't touch the DOM**. Your component function can run ten times, and if nothing in the output changed, the commit phase has zero DOM operations to perform.
+
+Let that sink in. The part of React that most developers obsess over — "my component re-rendered!" — is the cheap part. The DOM work is the expensive part, and React goes to extraordinary lengths to minimize it.
 
 ---
 
@@ -170,11 +174,13 @@ graph TD
 
 Every component with ⚡ had its function called (the render phase). But only the one with ✏️ produced different output. The commit phase touches one text node. Everything else is skipped.
 
+So the next time someone on your team says "this component re-renders too much" — ask them: does it re-render, or does it cause DOM mutations? Those are very different problems with very different solutions.
+
 ---
 
 ## When React Skips Work: Bailouts
 
-React doesn't *always* call every component in the subtree. It has several bailout mechanisms — ways to skip rendering a component entirely.
+Of course, even calling functions has a cost. For most components it's negligible — microseconds. But if your component does heavy computation on every render, or sits at the root of a massive subtree, you might want React to skip it entirely. That's what bailouts are for.
 
 **`React.memo`** wraps a component and tells React: "Don't even call this function if the props haven't changed."
 
@@ -204,7 +210,7 @@ function App() {
 
 When `count` changes, `App` re-renders. But `items` is memoized — same reference — so `ExpensiveList` bails out entirely. React never calls its function. The render phase skips that entire branch.
 
-Without `useMemo`, `items` would be a new array on every render (even with the same contents), and `React.memo` would see a new reference and render anyway — defeating the whole point.
+Without `useMemo`, `items` would be a new array on every render (even with the same contents), and `React.memo` would see a new reference and render anyway — defeating the whole point. If you've ever added `React.memo` and wondered why it didn't help, this is almost certainly why. (See the `Object.is` discussion in [Part 2](/blog/react-internals-2-useeffect-is-not-a-lifecycle) — same principle, different context.)
 
 **Internal bailouts** also happen without `React.memo`. If a component receives the same props *and* its state hasn't changed *and* its context hasn't changed, React may skip it. But this heuristic is an implementation detail you shouldn't rely on — `React.memo` makes the contract explicit.
 
@@ -227,13 +233,13 @@ function Counter() {
 
 With Strict Mode, `renderCount` increments twice per render. The displayed number jumps by two instead of one. Without Strict Mode, this bug hides until React's concurrent features kick in and discard a render — at which point your counter is wrong and you have no idea why.
 
-This is the same principle as the effect double-fire, applied to the render phase: if running your code twice breaks things, your code has a bug that will surface in production under concurrent rendering.
+This is the same principle as the effect double-fire, applied to the render phase: if running your code twice breaks things, your code has a bug that will surface in production under concurrent rendering. Strict Mode is React being a good friend — the kind who tells you about the spinach in your teeth before the meeting.
 
 ---
 
 ## Putting It All Together
 
-Let's trace a full update from click to pixels:
+We've covered a lot of ground. Let's tie it together by tracing a single update from click to pixels — the full journey:
 
 1. **User clicks a button.** The event handler calls `setCount(1)`.
 2. **React schedules an update.** It knows the `Counter` component's state changed.
@@ -247,7 +253,7 @@ Let's trace a full update from click to pixels:
 
 Steps 3–5 are the render phase — pure computation, no DOM. Step 6 is the commit phase — synchronous DOM mutation. Everything after is post-commit work.
 
-The entire render phase is a function call that returns data. The commit phase is a loop that writes to the DOM. Effects are deferred cleanup. Three distinct stages, each with different rules and timing.
+Nine steps. Three phases. One click. And when it's all working well, the user just sees a number change from `0` to `1` and never thinks about any of it. That's the whole point.
 
 ---
 
@@ -261,14 +267,25 @@ Most renders produce zero DOM mutations. The ones that do touch the minimum numb
 
 When your `console.log` fires twice, React isn't doing twice the work. It's doing twice the *thinking* — and thinking is free.
 
+Now you can go back to that anxious moment from the opening and shrug. Two logs? So what. The DOM was only touched once.
+
 ---
 
 ## What's Next
 
-We've now traced the path from JSX to pixels — but we've glossed over a crucial question. The render phase "walks the tree" and "diffs elements." But what tree? React elements are recreated every render — they're ephemeral. React needs a persistent structure to track components, store hook state, and accumulate changes.
+We've now traced the path from JSX to pixels. But there's a part of the pipeline we haven't looked at yet — the one that *starts* the whole process. When a user clicks a button, how does React know which component handler to call? Why isn't your `onClick` actually on the DOM node?
 
-That structure is the **fiber tree** — React's internal skeleton. In **Part 4 — The Fiber Tree**, we'll see what a fiber node actually looks like, how the child/sibling/return pointers form a traversable tree, and why React rebuilt its entire architecture around this data structure.
+That's **Part 4 — The Event System**, where we'll see how React intercepts every event in your app with a single listener, routes it through the fiber tree instead of the DOM tree, and ties event types to the priority system that powers batching and concurrent rendering.
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. **From JSX to Pixels**
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)

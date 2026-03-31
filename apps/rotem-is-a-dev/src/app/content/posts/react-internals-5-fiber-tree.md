@@ -1,13 +1,13 @@
 ---
-title: "The Fiber Tree — React Internals, Part 4"
-slug: react-internals-4-fiber-tree
-date: 2026-03-26
-description: "React DevTools shows something called a 'Fiber' next to every component. It's the data structure that makes everything else in React possible."
+title: "The Fiber Tree — React Internals, Part 5"
+slug: react-internals-5-fiber-tree
+date: 2026-03-30
+description: "Behind every component in your tree, there's an object React never shows you. It's called a fiber — and it's the data structure that makes everything else in React possible."
 tags: [react, fiber, architecture, internals]
 draft: true
 ---
 
-*React DevTools shows something called a "Fiber" next to every component. It's the data structure that makes everything else in React possible.*
+*Behind every component in your tree, there's an object React never shows you. It's called a fiber — and it's the data structure that makes everything else in React possible.*
 
 ---
 
@@ -24,7 +24,7 @@ The React team needed to solve two problems:
 
 Recursion can't do either of these things. When you're halfway through a recursive call stack, you can't pause — the state lives on the call stack, and yielding means losing it all. You also can't reorder work, because the call stack dictates the execution order.
 
-The solution was to replace the call stack with a data structure. That data structure is the **fiber tree**.
+The solution was to replace the call stack with a data structure — to take the information that normally lives in stack frames and put it into objects that React controls. That data structure is the **fiber tree**. And if it sounds like overengineering, keep reading. By the end of this article you'll see why it had to be this way.
 
 ---
 
@@ -59,7 +59,7 @@ The [`FiberNode` constructor](https://github.com/facebook/react/blob/main/packag
 }
 ```
 
-If you've read [Part 1](/blog/react-internals-1-how-hooks-work), you already know `memoizedState` — it's where the hooks linked list lives. Now you can see the full picture: every hook call writes to a node in a linked list, and that list hangs off a fiber. The fiber is the persistent identity of your component across renders.
+That's a lot of fields. Don't memorize them — we'll revisit the important ones as we go. The one to notice right now is `memoizedState`. If you've read [Part 1](/blog/react-internals-1-how-hooks-work), you already know what lives there: the hooks linked list. Every `useState`, `useRef`, and `useEffect` call writes to a node in that list, and the list hangs off this fiber. The fiber is the persistent identity of your component across renders. It's what makes hooks *work*.
 
 ---
 
@@ -104,7 +104,7 @@ graph TD
 
 Children are linked as a singly-linked list: `main.child → Header`, `Header.sibling → Content`. To get from a parent to its second child, React goes through the first child, then follows siblings.
 
-This structure has a crucial property: it can be traversed iteratively with a simple loop. No recursion, no call stack, no state to lose if you pause.
+It looks weird if you're used to `children: []` arrays. But this structure has a crucial property: it can be traversed iteratively with a simple loop. No recursion, no call stack, no state to lose if you pause. Three pointers. That's the entire trick that makes concurrent React possible.
 
 ---
 
@@ -144,9 +144,9 @@ completeWork(Sidebar) → beginWork(Article) → completeWork(Article) →
 completeWork(Content) → completeWork(main) → completeWork(App)
 ```
 
-Every fiber gets a `beginWork` (entering) and a `completeWork` (leaving). The whole tree is processed in a single flat loop — no recursion.
+Every fiber gets a `beginWork` (entering) and a `completeWork` (leaving). The whole tree is processed in a single flat loop — no recursion. If you've ever implemented a tree traversal without recursion in an interview, this is the same idea. Except it runs on every React app in the world.
 
-And here's the payoff: because the current position is stored in the `workInProgress` variable (not on the call stack), React can stop the loop at *any* fiber, yield to the browser, and later resume exactly where it left off. The fiber tree is its own bookmark.
+And here's the payoff — the reason the React team rebuilt the entire renderer around this structure: because the current position is stored in the `workInProgress` variable (not on the call stack), React can stop the loop at *any* fiber, yield to the browser, and later resume exactly where it left off. The fiber tree is its own bookmark.
 
 ---
 
@@ -168,13 +168,13 @@ This is where your component function gets called. It's also where [Part 3's](/b
 - Bubbles flags up — if a child needs a DOM update, the parent's flags are marked too, so the commit phase knows to walk into this subtree
 - Builds the effect list used by the commit phase
 
-The separation is clean: `beginWork` goes top-down (processing components), `completeWork` goes bottom-up (preparing DOM nodes and collecting effects).
+The separation is clean: `beginWork` goes top-down (processing components), `completeWork` goes bottom-up (preparing DOM nodes and collecting effects). Think of it like exploring a cave system — `beginWork` is going deeper, `completeWork` is marking the walls on your way back out.
 
 ---
 
 ## Two Trees: Current and WorkInProgress
 
-React doesn't modify fibers in place during rendering. Instead, it maintains **two versions** of the tree:
+Here's where things get clever. React doesn't modify fibers in place during rendering. Instead, it maintains **two versions** of the tree:
 
 - **`current`** — the tree that's currently displayed on screen. The committed state.
 - **`workInProgress`** — the tree being built during the current render. A draft.
@@ -204,46 +204,31 @@ When you call `setState`, React creates (or reuses) the `workInProgress` tree by
 
 When the render phase finishes and the commit phase applies all DOM changes, React swaps: the `workInProgress` tree *becomes* the new `current` tree. The old `current` becomes the next render's `workInProgress` (it gets reused, not discarded).
 
-This is **double buffering** — the same technique used in game rendering and video playback. You build the next frame offscreen, then swap it in all at once. The user never sees a half-built state.
+This is **double buffering** — the same technique used in game rendering and video playback. You build the next frame offscreen, then swap it in all at once. The user never sees a half-built state. And if something goes wrong during the render? React just throws away the draft. The current tree — the one the user is looking at — is untouched.
 
 ---
 
-## Fiber Tags: What Kind of Work?
+## Not Every Fiber Is a Component
 
-Not all fibers represent components. The `tag` field tells React what a fiber is:
+One thing that trips people up: fibers don't just represent your components. There's also a fiber for every `<div>`, every `<span>`, every text node, every `<Fragment>`, every `<Suspense>` boundary. The `tag` field on each fiber tells React what kind of thing it is.
 
-| Tag | What it represents |
-|---|---|
-| `FunctionComponent` | A function component (`function App()`) |
-| `ClassComponent` | A class component (`class App extends React.Component`) |
-| `HostComponent` | A DOM element (`div`, `span`, `button`) |
-| `HostText` | A text node (`"Hello"`) |
-| `Fragment` | A `<React.Fragment>` or `<>` |
-| `ContextProvider` | A context `<Provider>` |
-| `SuspenseComponent` | A `<Suspense>` boundary |
-| `OffscreenComponent` | Used by Suspense and concurrent features |
+The important distinction: only fibers for DOM elements (`div`, `span`, `button`) have a `stateNode` pointing to an actual DOM node. Your `FunctionComponent` fibers? No DOM node — they're organizational. They exist for React's bookkeeping, not for the browser.
 
-Only `HostComponent` and `HostText` fibers have a `stateNode` pointing to an actual DOM node. Component fibers (`FunctionComponent`, `ClassComponent`) have no DOM node — they're organizational. This is why the "virtual DOM is a copy of the real DOM" analogy breaks down: most fibers in your tree don't correspond to DOM nodes at all.
+This is why "virtual DOM is a copy of the real DOM" is misleading. Open React DevTools on any app and count the components vs. the actual DOM elements. The fiber tree is much bigger — and most of it has nothing to do with the DOM.
 
 ---
 
-## Flags: Marking Work for the Commit Phase
+## Flags: How React Remembers What Changed
 
-During the render phase, `beginWork` and `completeWork` mark fibers with **flags** that tell the commit phase what to do:
+As the render phase walks the tree, it doesn't modify the DOM directly. Instead, it leaves sticky notes on fibers: "this one needs to be inserted," "this one's props changed," "this one was deleted."
 
-```js
-fiber.flags |= Placement;  // this fiber needs to be inserted into the DOM
-fiber.flags |= Update;     // this fiber's DOM node needs its attributes updated
-fiber.flags |= ChildDeletion; // a child of this fiber was removed
-```
+These sticky notes are called **flags**:
 
-The commit phase walks the tree and acts on these flags:
+- `Placement` — "insert this node into the DOM"
+- `Update` — "update this node's attributes or text"
+- `ChildDeletion` — "remove a child, run its cleanup effects"
 
-- `Placement` → `parentNode.appendChild(fiber.stateNode)` or `insertBefore`
-- `Update` → `node.setAttribute(...)`, update `textContent`, etc.
-- `ChildDeletion` → `parentNode.removeChild(...)`, run cleanup effects, call unmount
-
-Flags bubble up through `completeWork` — if a deeply nested fiber has a `Placement` flag, every ancestor gets a `Subtree` flag so the commit phase knows to walk into that branch. Subtrees with no flags are skipped entirely.
+The clever part: flags bubble up. If a deeply nested fiber needs work, every ancestor gets a `Subtree` flag — a signal that says "something down here changed, walk into this branch." Subtrees with no flags? The commit phase skips them entirely. A tree of 10,000 fibers where only one leaf changed? React walks straight to it.
 
 ---
 
@@ -266,7 +251,7 @@ graph LR
 
 The fiber is the hub. Hooks live on it (Part 1). Effects synchronize from it (Part 2). The render phase calls functions through it (Part 3). The tree structure lets React traverse iteratively, pause anywhere, and resume later.
 
-Everything you've learned in the series so far has been building toward this structure. And everything that follows — reconciliation, state updates, concurrent rendering — is operations *on* this structure.
+Everything you've learned in the series so far has been building toward this structure. And everything that follows — reconciliation, state updates, concurrent rendering — is operations *on* this structure. The fiber tree is the backbone. Everything else is muscles.
 
 ---
 
@@ -274,7 +259,9 @@ Everything you've learned in the series so far has been building toward this str
 
 A fiber is a unit of work. The fiber tree is a to-do list that React can walk, pause, resume, and reprioritize.
 
-It's not a copy of the DOM. It's not a virtual DOM (though that term has stuck). It's a persistent data structure that tracks what your components are, what state they hold, and what work they need done — organized so that React can process it one piece at a time, without ever holding the main thread hostage.
+It's not a copy of the DOM. It's not a virtual DOM (though that term has stuck and probably always will). It's a persistent data structure that tracks what your components are, what state they hold, and what work they need done — organized so that React can process it one piece at a time, without ever holding the main thread hostage.
+
+If someone asks you "what's the virtual DOM?" — you now have a better answer than most React developers.
 
 ---
 
@@ -282,8 +269,17 @@ It's not a copy of the DOM. It's not a virtual DOM (though that term has stuck).
 
 We've seen the tree. We know how React walks it. But what happens when `beginWork` finds that a component's children have changed — when elements were added, removed, or reordered?
 
-That's **reconciliation** — React's diffing algorithm. In **Part 5 — Reconciliation**, we'll see how React decides which fibers to create, update, or delete, why keys exist (and what happens when you get them wrong), and why the algorithm is O(n) instead of O(n³).
+That's **reconciliation** — React's diffing algorithm. In **Part 6 — Reconciliation**, we'll see how React decides which fibers to create, update, or delete, why keys exist (and what happens when you get them wrong), and why the algorithm is O(n) instead of O(n³).
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. **The Fiber Tree**
+6. [Reconciliation](/blog/react-internals-6-reconciliation)
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)

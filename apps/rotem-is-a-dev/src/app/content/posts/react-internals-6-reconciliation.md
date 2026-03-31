@@ -1,7 +1,7 @@
 ---
-title: "Reconciliation — React Internals, Part 5"
-slug: react-internals-5-reconciliation
-date: 2026-03-26
+title: "Reconciliation — React Internals, Part 6"
+slug: react-internals-6-reconciliation
+date: 2026-03-30
 description: "You were told to always use unique keys. But why? The answer lives inside React's diffing algorithm — and it's simpler than you think."
 tags: [react, reconciliation, diffing, keys, internals]
 draft: true
@@ -47,7 +47,7 @@ React solves this with two heuristics that reduce the problem to O(n):
 
 2. **Keys identify siblings across renders.** When React sees a list of children, it uses `key` props to match old children to new children. Same key = same element, possibly moved. Missing key = removed. New key = inserted.
 
-These heuristics mean React never compares elements across different levels of the tree, and never tries to "match" elements of different types. It trades theoretical optimality for practical speed.
+These heuristics mean React never compares elements across different levels of the tree, and never tries to "match" elements of different types. It trades theoretical optimality for practical speed. And honestly? It works shockingly well. The cases where the optimal diff would have been better are so rare that you'll probably never encounter one.
 
 ---
 
@@ -102,13 +102,13 @@ function App() {
 }
 ```
 
-`Wrapped` is a new function reference every render. React sees a new type, tears down the old `MyComponent` (losing all state), and mounts a fresh one. The fix: define `Wrapped` outside the component.
+`Wrapped` is a new function reference every render. React sees a new type, tears down the old `MyComponent` (losing all state), and mounts a fresh one. The fix: define `Wrapped` outside the component. This is a surprisingly common bug in codebases that use HOCs heavily — and now you know exactly why it happens.
 
 ---
 
 ## List Reconciliation: Where Keys Come In
 
-Single elements are straightforward. Lists are where things get interesting. When a component returns multiple children, React needs to match old children to new children — and it uses keys to do it.
+Single elements are straightforward. Lists are where things get interesting — and where most developers' understanding gets fuzzy. If you take away one thing from this article, make it this section. When a component returns multiple children, React needs to match old children to new children — and it uses keys to do it.
 
 The algorithm lives in [`reconcileChildrenArray`](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactChildFiber.js) and works in two passes:
 
@@ -161,13 +161,13 @@ for (const leftover of existingChildren.values()) {
 }
 ```
 
-The Map lookup is O(1) per child, making the whole algorithm O(n).
+The Map lookup is O(1) per child, making the whole algorithm O(n). Two passes, a Map, and some bitwise flags. That's React's famously sophisticated diffing algorithm. Underwhelming? Maybe. But it processes thousands of elements in under a millisecond.
 
 ---
 
 ## What Keys Actually Do
 
-Now the opening example makes sense. When you use `key={index}`:
+Now we can come back to the scrambled inputs from the opening and see exactly what went wrong. When you use `key={index}`:
 
 ```text
 Before delete:        After delete:
@@ -206,13 +206,15 @@ function ChatRoom({ roomId }) {
 
 When `roomId` changes from `"general"` to `"random"`, React sees a different key. It unmounts the old `MessageList` (running all cleanup effects, destroying all state) and mounts a fresh one. This is cleaner than trying to reset state manually with `useEffect`.
 
-This pattern works because of how reconciliation handles keys — it's not a special API, it's just a consequence of the diffing algorithm.
+This pattern works because of how reconciliation handles keys — it's not a special API, it's just a consequence of the diffing algorithm. Once you understand reconciliation, you stop seeing `key` as a lint warning to silence and start seeing it as a tool to wield.
 
 ---
 
 ## Effect Flags: Reconciliation's Output
 
-Reconciliation doesn't modify the DOM. It marks fibers with **flags** that tell the commit phase what to do. We saw these briefly in [Part 4](/blog/react-internals-4-fiber-tree); here's how they're produced:
+We're in the home stretch. Reconciliation is done thinking — now it needs to communicate what it found to the commit phase.
+
+Reconciliation doesn't modify the DOM. It marks fibers with **flags** that tell the commit phase what to do. We saw these briefly in [Part 5](/blog/react-internals-5-fiber-tree); here's how they're produced:
 
 | Situation | Flag | Commit phase action |
 | --- | --- | --- |
@@ -229,27 +231,11 @@ These flags bubble up through `completeWork` — if any descendant has work to d
 
 ## The Commit Phase: Applying the Diff
 
-After the render phase has walked the entire tree and marked all the flags, the commit phase runs. This happens in [`commitRoot`](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberCommitWork.js), and it's divided into three sub-phases:
+After the render phase has marked all the flags, the commit phase applies them to the actual DOM. This is the synchronous part — once it starts, it runs to completion. No pausing, no yielding. The DOM is briefly inconsistent during this phase, so it *must* finish before the browser paints.
 
-### 1. Before Mutation
+The commit phase inserts new nodes (`Placement`), updates attributes and text (`Update`), removes deleted nodes (`ChildDeletion`), fires `useLayoutEffect` callbacks, and updates refs. After all that, the `workInProgress` tree becomes the new `current` tree (the swap from [Part 5](/blog/react-internals-5-fiber-tree)), the browser paints, and then `useEffect` callbacks run.
 
-Reads from the DOM before anything changes. This is where `getSnapshotBeforeUpdate` runs (class components) and where React captures scroll positions.
-
-### 2. Mutation
-
-The actual DOM changes happen here. React walks the fiber tree and acts on flags:
-
-- `Placement` → insert the node into the DOM
-- `Update` → modify attributes, text content, styles
-- `ChildDeletion` → remove nodes, call `componentWillUnmount` / cleanup effects
-
-This is synchronous. Once it starts, it runs to completion — no yielding, no interruption. The DOM is in an inconsistent state during this phase, so it must finish before the browser can paint.
-
-### 3. Layout
-
-Runs after the DOM has been mutated but before the browser paints. This is where `useLayoutEffect` callbacks fire, and where React updates refs (`ref.current = node`). It's the last chance to read or adjust the DOM before the user sees it.
-
-After the layout phase, the `workInProgress` tree becomes the new `current` tree (the swap from [Part 4](/blog/react-internals-4-fiber-tree)), the browser paints, and then `useEffect` callbacks run.
+If you remember the timeline from [Part 2](/blog/react-internals-2-useeffect-is-not-a-lifecycle) — component runs → DOM updates → `useLayoutEffect` → paint → `useEffect` — this is where each of those steps actually happens.
 
 ---
 
@@ -257,7 +243,7 @@ After the layout phase, the `workInProgress` tree becomes the new `current` tree
 
 A common misconception: "React diffs the entire virtual DOM on every render." It doesn't. React only reconciles children of components that actually re-rendered. If a parent re-renders but a child bails out (via `React.memo` or unchanged props/state), that child's entire subtree is skipped — no diffing, no flag marking, nothing.
 
-This is why `React.memo` works: it prevents `beginWork` from being called on the child, which means reconciliation never runs for that subtree. The optimization isn't about making diffing faster — it's about not diffing at all.
+This is why `React.memo` works: it prevents `beginWork` from being called on the child, which means reconciliation never runs for that subtree. The optimization isn't about making diffing faster — it's about not diffing at all. The fastest code is the code that never runs.
 
 ```mermaid
 graph TD
@@ -291,8 +277,17 @@ We've seen how React decides what changed. But we've been assuming that when you
 
 How does React decide when to process updates? Why did `setState` in a `setTimeout` behave differently before React 18? And what are "lanes"?
 
-That's **Part 6 — State Updates, Batching, and the Lane Model**, where we'll trace the journey from `setState` call to scheduled render, and discover the priority system that powers concurrent React.
+That's **Part 7 — State Updates, Batching, and the Lane Model**, where we'll trace the journey from `setState` call to scheduled render, and discover the priority system that powers concurrent React.
 
 ---
 
-*Part of the "React Internals — Under the Hood" series.*
+### React Internals — Under the Hood
+
+1. [How Hooks Really Work](/blog/react-internals-1-how-hooks-work)
+2. [useEffect Is Not a Lifecycle Method](/blog/react-internals-2-useeffect-is-not-a-lifecycle)
+3. [From JSX to Pixels](/blog/react-internals-3-jsx-to-pixels)
+4. [The Event System](/blog/react-internals-4-event-system)
+5. [The Fiber Tree](/blog/react-internals-5-fiber-tree)
+6. **Reconciliation**
+7. [State Updates, Batching, and the Lane Model](/blog/react-internals-7-state-updates-and-lanes)
+8. [Concurrent React](/blog/react-internals-8-concurrent-react)
