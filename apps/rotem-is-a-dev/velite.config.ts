@@ -1,3 +1,5 @@
+import { writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import rehypeShiki from '@shikijs/rehype';
 import rehypeMermaid from 'rehype-mermaid';
 import { defineCollection, defineConfig, s } from 'velite';
@@ -12,7 +14,25 @@ const posts = defineCollection({
 		description: s.string(),
 		tags: s.array(s.string()),
 		draft: s.boolean().default(false),
+		component: s.string().optional(),
 		content: s.markdown(),
+		metadata: s.metadata(),
+	}),
+});
+
+const mdxPosts = defineCollection({
+	name: 'MdxPost',
+	pattern: 'posts/**/*.mdx',
+	schema: s.object({
+		title: s.string(),
+		slug: s.slug('posts'),
+		date: s.isodate(),
+		description: s.string(),
+		tags: s.array(s.string()),
+		draft: s.boolean().default(false),
+		component: s.string().optional(),
+		content: s.markdown(),
+		code: s.mdx(),
 		metadata: s.metadata(),
 	}),
 });
@@ -37,7 +57,11 @@ export default defineConfig({
 		base: '/static/',
 		clean: true,
 	},
-	collections: { posts, pages },
+	collections: { posts, mdxPosts, pages },
+	complete: (_data, context) => {
+		const trigger = resolve(dirname(context.config.configPath), 'src/lib/mdx/velite-hmr-trigger.ts');
+		writeFileSync(trigger, `// Auto-touched by Velite on each rebuild to trigger Next.js HMR\nconst veliteHmrTrigger = ${Date.now()};\n\nexport default veliteHmrTrigger;\n`);
+	},
 	markdown: {
 		rehypePlugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any

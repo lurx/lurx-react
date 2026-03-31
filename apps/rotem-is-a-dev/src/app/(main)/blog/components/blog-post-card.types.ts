@@ -1,6 +1,6 @@
-import type { Post } from '#velite';
+import type { AnyPost } from '../blog-page.types';
 
 export type BlogPostCardProps = {
-	post: Post;
-	onCommentClickAction?: (post: Post) => void;
+	post: AnyPost;
+	onCommentClickAction?: (post: AnyPost) => void;
 };

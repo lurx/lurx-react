@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { posts } from '#velite';
+import { posts, mdxPosts } from '#velite';
 import { BlogPage } from './blog-page.component';
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogServerPage() {
-	const publishedPosts = posts
+	const publishedPosts = [...posts, ...mdxPosts]
 		.filter(post => !post.draft)
 		.sort(
 			(postA, postB) =>

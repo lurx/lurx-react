@@ -1,0 +1,180 @@
+@use 'mixins/spacing' as *;
+@use 'mixins/media' as *;
+
+// ─── Chat Bubble Demo ────────────────────────────────────────────────────────
+
+.bubbleDemo {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(1);
+	padding: spacing(2) 0;
+}
+
+.bubble {
+	display: inline-block;
+	max-width: 80%;
+	padding: spacing(1) spacing(1.5);
+	border-radius: 14px;
+	font-size: 1rem;
+	line-height: 1.5;
+	position: relative;
+}
+
+.bubbleRight {
+	align-self: flex-end;
+	background-color: #1a3a5c;
+	color: #c8e0f5;
+	border-end-end-radius: 4px;
+}
+
+.bubbleLeft {
+	align-self: flex-start;
+	background-color: var(--surface-alt);
+	color: var(--text);
+	border-end-start-radius: 4px;
+}
+
+.bubbleFitContent {
+	width: fit-content;
+}
+
+.bubbleTight {
+	// Simulates pretext shrinkwrap — manually narrowed to tightest width
+	width: fit-content;
+	max-width: 260px;
+}
+
+.wasteMarker {
+	position: absolute;
+	inset-inline-end: 0;
+	inset-block: 0;
+	background-color: rgba(248, 113, 113, 0.25);
+	border-inline-end: 2px dashed rgba(248, 113, 113, 0.7);
+	pointer-events: none;
+}
+
+.wasteLabel {
+	font-family: var(--font-mono), monospace;
+	font-size: 0.875rem;
+	color: #f87171;
+	margin-block-start: spacing(0.5);
+}
+
+// ─── Masonry Demo ────────────────────────────────────────────────────────────
+
+.masonryWrapper {
+	margin-block: spacing(2);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	position: relative;
+}
+
+.masonryResizeHandle {
+	position: absolute;
+	inset-inline-end: 0;
+	inset-block: 0;
+	width: 12px;
+	cursor: ew-resize;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06));
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&::after {
+		content: '';
+		width: 3px;
+		height: 32px;
+		border-radius: 2px;
+		background-color: var(--muted-dim);
+		transition: background-color 0.2s;
+	}
+
+	&:hover::after {
+		background-color: var(--orange);
+	}
+}
+
+.masonryContainer {
+	position: relative;
+	overflow: hidden;
+	background-color: var(--surface);
+}
+
+.masonryCard {
+	position: absolute;
+	border-radius: var(--radius-md);
+	padding: spacing(2);
+	font-size: 0.9375rem;
+	line-height: 1.47;
+	color: var(--text);
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+		width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+		height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	overflow: hidden;
+}
+
+.masonryMeta {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	color: var(--muted);
+	margin-block-start: spacing(1);
+	display: flex;
+	justify-content: space-between;
+	gap: spacing(2);
+}
+
+// ─── Typography Demo ─────────────────────────────────────────────────────────
+
+.typographyCompare {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: spacing(2);
+	margin-block: spacing(2);
+
+	@include media-below('tablet') {
+		grid-template-columns: 1fr;
+	}
+}
+
+.typographyPane {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: spacing(2);
+}
+
+.typographyLabel {
+	font-family: var(--font-mono), monospace;
+	font-size: 1rem;
+	margin-block-end: spacing(1);
+}
+
+.typographyLabelBad {
+	color: #f87171;
+}
+
+.typographyLabelGood {
+	color: var(--teal);
+}
+
+.typographyText {
+	font-size: 1rem;
+	line-height: 1.7;
+	color: var(--text);
+}
+
+.typographyGreedy {
+	text-align: justify;
+}
+
+.typographyBalanced {
+	text-align: justify;
+	text-wrap: balance;
+}
+
+.riverHighlight {
+	background-color: rgba(248, 113, 113, 0.15);
+	padding-inline: 1px;
+}
