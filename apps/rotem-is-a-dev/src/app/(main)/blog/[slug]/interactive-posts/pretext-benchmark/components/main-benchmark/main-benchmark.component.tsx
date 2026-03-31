@@ -55,7 +55,7 @@ export function MainBenchmark() {
 	return (
 		<BenchmarkWidget
 			title="Text Height Prediction"
-			description="Mixed paragraphs, 2\u20138 sentences each. Resize simulation: layout computed at 5 different widths (280\u2013700px)."
+			description="Mixed paragraphs, 2–8 sentences each. Resize simulation: layout computed at 5 different widths (280–700px)."
 			rows={rows}
 			status={status}
 			onRunAction={handleRun}

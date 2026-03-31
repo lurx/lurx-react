@@ -50,7 +50,7 @@ export function ResizeBenchmark() {
 
 	return (
 		<BenchmarkWidget
-			title="Resize Simulation \u2014 5 width changes"
+			title="Resize Simulation — 5 width changes"
 			rows={rows}
 			status={status}
 			onRunAction={handleRun}
