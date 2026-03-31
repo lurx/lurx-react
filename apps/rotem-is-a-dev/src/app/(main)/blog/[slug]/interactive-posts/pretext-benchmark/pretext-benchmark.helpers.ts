@@ -19,15 +19,32 @@ const BENCH_COUNT = 500;
 const BENCH_WIDTH = 500;
 const RESIZE_WIDTHS = [280, 400, 500, 600, 700];
 
+/**
+ * Deterministic seeded PRNG (mulberry32).
+ * Produces reproducible benchmarks and avoids SonarQube Math.random() hotspots.
+ */
+function mulberry32(seed: number): () => number {
+	let state = seed | 0;
+
+	return () => {
+		state = (state + 0x6D2B79F5) | 0;
+		let hash = Math.imul(state ^ (state >>> 15), 1 | state);
+		hash = (hash + Math.imul(hash ^ (hash >>> 7), 61 | hash)) ^ hash;
+
+		return ((hash ^ (hash >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
 function generateTexts(count: number): string[] {
+	const rand = mulberry32(42);
 	const texts: string[] = [];
 
 	for (let idx = 0; idx < count; idx++) {
-		const numSentences = 2 + Math.floor(Math.random() * 6);
+		const numSentences = 2 + Math.floor(rand() * 6);
 		let text = '';
 
 		for (let si = 0; si < numSentences; si++) {
-			text += SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)] + ' ';
+			text += SAMPLE_TEXTS[Math.floor(rand() * SAMPLE_TEXTS.length)] + ' ';
 		}
 
 		texts.push(text.trim());

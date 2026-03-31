@@ -14,7 +14,9 @@ type MDXContentProps = {
  */
 export function useMDXComponent(code: string): ComponentType<MDXContentProps> {
 	return useMemo(() => {
-		const fn = new Function(code);
+		// Safe: `code` is a build-time artifact from Velite's s.mdx() compiler,
+		// never from user input. This is the standard MDX runtime evaluation pattern.
+		const fn = new Function(code); // NOSONAR
 		const result = fn(runtime);
 
 		return result.default as ComponentType<MDXContentProps>;
