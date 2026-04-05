@@ -37,4 +37,17 @@ describe('BlogTagsList', () => {
 		render(<BlogTagsList tags={['gsap']} />);
 		expect(screen.getByText('gsap')).toBeInTheDocument();
 	});
+
+	it('renders a draft tag before regular tags when draft is true', () => {
+		const { container } = render(<BlogTagsList tags={['react']} draft />);
+		const wrapper = container.firstChild as HTMLElement;
+		expect(wrapper.children).toHaveLength(2);
+		expect(wrapper.children[0]).toHaveTextContent('draft');
+		expect(wrapper.children[1]).toHaveTextContent('react');
+	});
+
+	it('does not render a draft tag when draft is false', () => {
+		render(<BlogTagsList tags={['react']} />);
+		expect(screen.queryByText('draft')).not.toBeInTheDocument();
+	});
 });

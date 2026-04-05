@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path';
 import rehypeShiki from '@shikijs/rehype';
 import rehypeMermaid from 'rehype-mermaid';
 import { defineCollection, defineConfig, s } from 'velite';
+import { rehypeExternalLinks } from './src/app/content/plugins/rehype-external-links';
 
 const posts = defineCollection({
 	name: 'Post',
@@ -15,6 +16,8 @@ const posts = defineCollection({
 		tags: s.array(s.string()),
 		draft: s.boolean().default(false),
 		component: s.string().optional(),
+		series: s.string().optional(),
+		seriesOrder: s.number().optional(),
 		content: s.markdown(),
 		metadata: s.metadata(),
 	}),
@@ -31,6 +34,8 @@ const mdxPosts = defineCollection({
 		tags: s.array(s.string()),
 		draft: s.boolean().default(false),
 		component: s.string().optional(),
+		series: s.string().optional(),
+		seriesOrder: s.number().optional(),
 		content: s.markdown(),
 		code: s.mdx(),
 		metadata: s.metadata(),
@@ -64,6 +69,7 @@ export default defineConfig({
 	},
 	markdown: {
 		rehypePlugins: [
+			rehypeExternalLinks,
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			[rehypeMermaid as any, {
 				strategy: 'img-svg',

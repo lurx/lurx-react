@@ -1,5 +1,6 @@
 import '@/lib/mdx/velite-hmr-trigger';
 import { Comments } from '@/app/components/comments';
+import { IS_PREVIEW_ENV } from '@/app/utils/is-preview-env.util';
 import { posts, mdxPosts } from '#velite';
 import type { ComponentType } from 'react';
 import type { Metadata } from 'next';
@@ -17,11 +18,11 @@ const interactivePostRegistry: Record<string, () => Promise<{ default: Component
 };
 
 function getPostBySlug(slug: string) {
-	const mdPost = posts.find(post => post.slug === slug && !post.draft);
+	const mdPost = posts.find(post => post.slug === slug && (IS_PREVIEW_ENV || !post.draft));
 
 	if (mdPost) return mdPost;
 
-	const mdxPost = mdxPosts.find(post => post.slug === slug && !post.draft);
+	const mdxPost = mdxPosts.find(post => post.slug === slug && (IS_PREVIEW_ENV || !post.draft));
 
 	if (mdxPost) return mdxPost;
 
@@ -29,17 +30,17 @@ function getPostBySlug(slug: string) {
 }
 
 function getMdxCode(slug: string): string | undefined {
-	const mdxPost = mdxPosts.find(post => post.slug === slug && !post.draft);
+	const mdxPost = mdxPosts.find(post => post.slug === slug && (IS_PREVIEW_ENV || !post.draft));
 
 	return mdxPost?.code;
 }
 
 export function generateStaticParams() {
 	const mdParams = posts
-		.filter(post => !post.draft)
+		.filter(post => IS_PREVIEW_ENV || !post.draft)
 		.map(post => ({ slug: post.slug }));
 	const mdxParams = mdxPosts
-		.filter(post => !post.draft)
+		.filter(post => IS_PREVIEW_ENV || !post.draft)
 		.map(post => ({ slug: post.slug }));
 
 	return [...mdParams, ...mdxParams];

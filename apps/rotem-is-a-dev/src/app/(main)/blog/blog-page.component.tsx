@@ -1,14 +1,16 @@
 'use client';
 
-import { FilterPanel, TechnologyFilter, TextInput } from '@/app/components';
+import { FilterPanel, TextInput } from '@/app/components';
 import { EMPTY_STATE_VARIANTS, EmptyState } from '@/app/components/empty-state';
 import { toggleInArray } from '@/app/utils/toggle-in-array.util';
-import type { AnyPost, BlogPageProps } from './blog-page.types';
+import type { AnyPost, BlogListItem, BlogPageProps } from './blog-page.types';
 import { useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { filterPosts, getAllTags } from './blog-page.helpers';
+import { filterPosts, getAllTags, groupPostsIntoListItems } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
 import { BlogPostCard } from './components/blog-post-card.component';
+import { BlogTagFilter } from './components/blog-tag-filter';
+import { BlogSeriesCard } from './components/blog-series-card';
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
 	const router = useRouter();
@@ -36,13 +38,20 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 	}, [router]);
 
 	const filteredPosts = filterPosts(posts, selectedTags, search);
+	const listItems = groupPostsIntoListItems(filteredPosts);
 
-	const postListContent = filteredPosts.length === 0
+	const renderListItem = (item: BlogListItem) => {
+		if (item.type === 'series') {
+			return <BlogSeriesCard key={item.meta.slug} meta={item.meta} posts={item.posts} />;
+		}
+
+		return <BlogPostCard key={item.post.slug} post={item.post} onCommentClickAction={handleCommentClick} />;
+	};
+
+	const postListContent = listItems.length === 0
 		? <EmptyState variant={EMPTY_STATE_VARIANTS.NO_POSTS}>No posts match the current filters.</EmptyState>
 		: <ul className={styles.list}>
-				{filteredPosts.map(post => (
-					<BlogPostCard key={post.slug} post={post} onCommentClickAction={handleCommentClick} />
-				))}
+				{listItems.map(renderListItem)}
 			</ul>;
 
 	return (
@@ -54,11 +63,10 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 					onChange={handleSearchChange}
 					placeholder="Search posts..."
 				/>
-				<TechnologyFilter
-					technologies={allTags}
+				<BlogTagFilter
+					tags={allTags}
 					selected={selectedTags}
 					onToggleAction={toggleTag}
-					sectionLabel="tags"
 				/>
 			</FilterPanel>
 
