@@ -9,13 +9,15 @@ draft: true
 
 A couple of years ago, if you'd told me I'd be having a conversation with my code editor — not typing into it, but *talking to it* — I'd have assumed you were describing science fiction or a very optimistic VC pitch deck. I'd watch it reason through a problem, push a fix, run the tests, and come back with a summary. But here we are. The tools exist, the workflows are real, and teams are already shipping with them. The question is no longer *"will AI change how we build software?"* — that ship has sailed. The question is *"do you understand it well enough to use it well?"* That's what this series is about.
 
+There's a framing I like from [Alex Azimbaev](https://medium.com/@alex-azimbaev/building-ai-agents-that-actually-ship-a-practical-guide-for-2025-0c84e2233218): 2024 was the year of prototypes and proof-of-concepts — everyone was experimenting, few were shipping. 2025 is when the infrastructure caught up with the ambition. The models got better, the tooling matured, and the patterns solidified enough that teams could actually build on them. That's the moment we're in now, and it's worth understanding properly.
+
 We're starting at the foundation. Not because you're not smart, but because a lot of the confusion I see in teams — developers included — comes from shaky mental models at the base level. So before we talk about agents, workflows, and team structure, let's make sure we're speaking the same language.
 
 ---
 
 ## What Generative AI Actually Is (and Isn't)
 
-![A developer sitting at a desk at night, monitor glow on their face, code on screen and a chat interface beside it](/static/blog/agentic-ai/part-1-hero.png)
+<!-- ![A developer sitting at a desk at night, monitor glow on their face, code on screen and a chat interface beside it](/static/blog/agentic-ai/part-1-hero.png) -->
 
 <!-- IMAGE: Hero image — wide, editorial style. A developer sitting at a desk at night, monitor glow on their face, code on screen but also a chat interface open beside it. Cinematic, photorealistic, slightly warm lighting. Mood: curious, focused, not overwhelming. -->
 
