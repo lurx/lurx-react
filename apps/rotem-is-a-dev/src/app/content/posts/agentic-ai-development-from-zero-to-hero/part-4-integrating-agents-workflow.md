@@ -1,9 +1,11 @@
 ---
 title: "Integrating Agents into Your Development Workflow"
 slug: agentic-ai-4-integrating-agents-workflow
-date: 2026-03-31
+date: 2026-04-21
 description: "Where agents genuinely fit in the development cycle and where they don't. A realistic look at planning, coding, testing, and reviewing with agents — and what a typical day actually looks like."
 tags: [ai, agentic-development, llm, workflow]
+series: agentic-ai-development
+seriesOrder: 4
 draft: true
 ---
 
@@ -53,7 +55,7 @@ Before you open a PR, run your diff through an agent with a prompt like: "Review
 
 What agents aren't good at: reviewing for architectural intent. They can tell you *what* the code does. They can't always tell you whether it's the *right* approach given where the system is going. That judgment still lives with you.
 
-<!-- IMAGE: A split screen illustration. LEFT: a developer looking stressed at a wall of code in a PR. RIGHT: the same developer relaxed, reading a clean summary of issues flagged by an agent, with color-coded severity labels. Flat design, slightly editorial, consistent with series style. -->
+<!-- IMAGE: Diagram — "Agent-assisted code review output." A mock review summary card: PR title at top, then a checklist of flagged items grouped by severity — 🔴 Security (1 item: "unsanitized user input at line 43"), 🟡 Logic (2 items), 🟢 Style (3 items). Below: "No issues found: error handling, test coverage, type safety." Clean, structured, looks like a real tool output rather than an illustration. -->
 
 ### Testing
 
@@ -85,7 +87,22 @@ Rather than listing principles, let me walk through what a realistic agent-augme
 
 **Before I open a PR.** I run the diff through a review prompt. Not because I don't trust my own code, but because it catches the things you stop seeing when you've been staring at something for three hours.
 
-<!-- IMAGE: A day-in-the-life timeline illustration. Horizontal axis showing morning to evening. Labeled nodes along the timeline: "CI triage (agent)", "Feature spec (agent-assisted)", "Architecture decision (human)", "Implementation (co-pilot)", "Tests (agent)", "PR review (agent + human)". Human nodes in warm amber, agent nodes in cool blue. Clean, readable, horizontal layout. -->
+```mermaid
+flowchart LR
+    subgraph morning["Morning"]
+        CI["CI triage\n(agent)"] --> Spec["Feature spec\n(agent-assisted)"]
+    end
+
+    subgraph midday["Midday"]
+        Arch["Architecture decision\n(human)"] --> Impl["Implementation\n(co-pilot)"]
+    end
+
+    subgraph afternoon["Afternoon"]
+        Tests["Tests\n(agent)"] --> PR["PR review\n(agent + human)"]
+    end
+
+    morning --> midday --> afternoon
+```
 
 The honest version: on a good day with well-defined work, I ship roughly twice what I'd ship solo. On a day with ambiguous problems, messy legacy code, or decisions that require real judgment, the agent is more of a sounding board than a force multiplier. The variance is real. Managing it is part of the skill.
 
@@ -101,7 +118,18 @@ A few patterns I see teams fall into that undercut the value. There's a line fro
 
 **Prompting once and hoping.** One prompt, one shot, no iteration. This is how you get mediocre output and conclude agents aren't useful. The best workflows are conversational — you prompt, review, redirect, and iterate. The agent is a collaborator, not a vending machine.
 
-**Ignoring the context setup.** As we covered in Article 3, context is everything. Teams that drop agents into new tasks cold — no codebase context, no conventions, no constraints — get generic output. Teams that invest thirty seconds in setup get output that fits.
+**Ignoring the context setup.** As we covered in [Article 3](/blog/agentic-ai-3-prompting-context-control), context is everything. Teams that drop agents into new tasks cold — no codebase context, no conventions, no constraints — get generic output. Teams that invest thirty seconds in setup get output that fits.
+
+```mermaid
+flowchart TD
+    subgraph traps["Common Workflow Traps"]
+        direction TB
+        T1["Treating output as final\n→ Always review before merging"]
+        T2["Wrong tasks for agents\n→ Skip trivial, familiar work"]
+        T3["One prompt, no iteration\n→ Collaborate, don't vend"]
+        T4["No context setup\n→ 30 seconds of setup pays dividends"]
+    end
+```
 
 Brian Jenney's [account of building agents in production](https://brianjenney.medium.com/a-practical-guide-on-building-ai-agents-30efce169473) illustrates this cycle well — the plan-execute-review loop works beautifully when the setup is right, and breaks in instructive ways when it isn't. His experience mirrors what I've seen: the teams that struggle aren't the ones with weak models, they're the ones with weak context.
 
@@ -123,8 +151,8 @@ The compounding effect is where the real story is. Teams that adopt agents early
 
 ## What's Coming Next
 
-We've been looking at agents from the individual developer perspective. Article 5 zooms out to the team level: how organizations are restructuring around AI agents, which roles are shifting, how to make toolchain decisions, and what governance looks like when agents have access to your systems.
+We've been looking at agents from the individual developer perspective. [Article 5](/blog/agentic-ai-5-agentic-development-at-team-scale) zooms out to the team level: how organizations are restructuring around AI agents, which roles are shifting, how to make toolchain decisions, and what governance looks like when agents have access to your systems.
 
-If you're a team lead, an engineering manager, or a PM — Article 5 is written for you.
+If you're a team lead, an engineering manager, or a PM — [Article 5](/blog/agentic-ai-5-agentic-development-at-team-scale) is written for you.
 
-*See you in Part 5.*
+*See you in [Part 5](/blog/agentic-ai-5-agentic-development-at-team-scale).*

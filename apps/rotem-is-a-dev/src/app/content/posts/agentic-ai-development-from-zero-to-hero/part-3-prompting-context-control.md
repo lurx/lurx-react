@@ -1,9 +1,11 @@
 ---
 title: "Prompting, Context & Control: How to Actually Work with Agents"
 slug: agentic-ai-3-prompting-context-control
-date: 2026-03-31
+date: 2026-04-14
 description: "Close the gap between installing an agent and getting real value from it. How to prompt effectively, provide the right context, and stay in control without micromanaging."
 tags: [ai, agentic-development, llm, prompting]
+series: agentic-ai-development
+seriesOrder: 3
 draft: true
 ---
 
@@ -49,7 +51,15 @@ What's the broader system this fits into? Are there related files it should chec
 
 For anything non-trivial, tell the agent where to stop and check in before proceeding. "Plan the approach first and wait for my approval before making changes" is a legitimate and useful instruction. It costs you a few seconds and saves you from a rabbit hole.
 
-<!-- IMAGE: A stylized "prompt anatomy" diagram. A code-editor-style text box broken into four color-coded sections from top to bottom: Goal (blue), Constraints (red), Context (yellow), Checkpoint (green). Each section has a short example line of text. Clean, minimal, dark background with subtle section dividers. -->
+```mermaid
+flowchart TD
+    Goal["🎯 Goal\nFix the 401 on /refresh\nwithout changing the public API"]
+    Constraints["🚫 Constraints\nDon't modify auth.middleware.ts\nor add new dependencies"]
+    Context["📂 Context\nThe refresh flow uses auth.service.ts\nand integrates with billing.config.json"]
+    Checkpoint["⏸ Checkpoint\nPlan the approach first and wait\nfor approval before making changes"]
+
+    Goal --> Constraints --> Context --> Checkpoint
+```
 
 Put together, a well-structured agent prompt looks less like a search query and more like a ticket in a well-run engineering team. Specific outcome, clear boundaries, relevant background, agreed stopping points.
 
@@ -73,7 +83,14 @@ A few specific things worth doing:
 
 **Use system prompts for standing context.** Most agents support a system prompt — a set of instructions that persist across all tasks in a session. This is the right place for project-level conventions, team preferences, things the agent should always or never do. Think of it as the onboarding doc you'd give a new hire on day one.
 
-<!-- IMAGE: An illustration of a funnel. At the wide top: several inputs flowing in — a code file icon, a stack trace, a config file, a sticky note with "conventions." At the narrow bottom: a single focused agent output. Label above funnel: "Context In." Label below: "Better Decisions Out." Flat design, clean lines, dark background. -->
+```mermaid
+flowchart TD
+    F1["Source files"] --> CTX["Agent Context Window"]
+    F2["Stack traces & errors"] --> CTX
+    F3["Config files"] --> CTX
+    F4["Conventions & constraints"] --> CTX
+    CTX --> OUT["Better decisions,\nmore accurate output"]
+```
 
 One pattern I've found particularly effective: start every new project session with a brief context-setting message before giving the first task. Something like: "We're working in a Next.js 14 app with a PostgreSQL backend. We follow the repository pattern for data access. All new endpoints need input validation with Zod. Don't install new dependencies without checking with me first." Thirty seconds of setup that pays dividends across every subsequent task in the session.
 
@@ -111,7 +128,7 @@ They will. Here's how to handle it without losing your mind.
 
 **Agents can go too far.** If you didn't set clear stopping conditions, an agent will sometimes keep "improving" things beyond the scope you intended. This is why constraints matter — not just what to do, but what to leave alone.
 
-**Agents can be confidently wrong.** As we covered in Part 1, hallucination is a real phenomenon. Agents can produce code that looks correct and isn't. This is where your review process matters. Agent output should be read like a pull request from a fast, capable engineer who you don't fully trust yet — which is to say, it gets reviewed before it ships.
+**Agents can be confidently wrong.** As we covered in [Part 1](/blog/agentic-ai-1-the-new-stack), hallucination is a real phenomenon. Agents can produce code that looks correct and isn't. This is where your review process matters. Agent output should be read like a pull request from a fast, capable engineer who you don't fully trust yet — which is to say, it gets reviewed before it ships.
 
 Brian Jenney, [writing about building agents in production](https://brianjenney.medium.com/a-practical-guide-on-building-ai-agents-30efce169473), makes a point that stuck with me: tests become even more critical in an agentic workflow because a model update or a prompt tweak can break things spectacularly with no obvious cause. The code didn't change. The tests still pass — until they don't. Your test suite isn't just validating your code anymore; it's validating the agent's judgment, and that judgment can shift under your feet.
 
@@ -120,6 +137,15 @@ Brian Jenney, [writing about building agents in production](https://brianjenney.
 Around the same time, [Anthropic accidentally shipped 500,000 lines of Claude Code's own source code](https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/) in a public npm package — a source map file that should never have been bundled made it into a routine release. It was the company's second exposure in five days. If the team building one of the most prominent coding agents can make a packaging mistake that leaks their entire codebase, the rest of us should be very honest about the kind of errors that automated workflows can amplify. Human error doesn't disappear when you add agents. It scales.
 
 The good news is that these failure modes are predictable, which means they're manageable. You don't need to distrust the agent — you need to design your workflow so that mistakes are catchable.
+
+```mermaid
+flowchart LR
+    Fail["Something\ngoes wrong"] --> Diagnose{"What kind\nof failure?"}
+    Diagnose -- "Stuck in loop" --> Fix1["Add context,\nreset the task"]
+    Diagnose -- "Went too far" --> Fix2["Set constraints,\nadd checkpoints"]
+    Diagnose -- "Confidently wrong" --> Fix3["Review like a PR,\ntrust your tests"]
+    Diagnose -- "Supply chain risk" --> Fix4["Audit deps,\nsandbox the agent"]
+```
 
 ---
 
@@ -137,6 +163,6 @@ In other words: the habits that make you a good engineering team make you a bett
 
 We've covered how agents think, and how to communicate with them. The next article zooms out: where do agents actually fit in a real development workflow? Planning, coding, review, testing, documentation — what should you delegate, what should you keep, and how does the day-to-day actually change?
 
-Article 4 is the most practical piece in the series. It's where the theory becomes a workflow.
+[Article 4](/blog/agentic-ai-4-integrating-agents-workflow) is the most practical piece in the series. It's where the theory becomes a workflow.
 
-*See you in Part 4.*
+*See you in [Part 4](/blog/agentic-ai-4-integrating-agents-workflow).*

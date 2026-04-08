@@ -1,9 +1,11 @@
 ---
 title: "Agentic Development at Team Scale"
 slug: agentic-ai-5-agentic-development-at-team-scale
-date: 2026-03-31
+date: 2026-04-28
 description: "What changes when it's not just you and an agent, but a whole team. How roles shift, what standards to set, and how to adopt agentic tools without introducing new risks."
 tags: [ai, agentic-development, llm, team-workflow]
+series: agentic-ai-development
+seriesOrder: 5
 draft: true
 ---
 
@@ -25,7 +27,23 @@ In other words: the leverage point moves upstream. The most valuable thing a sen
 
 For junior developers, the picture is more nuanced. Agents are exceptional at the kind of boilerplate-heavy, pattern-following work that used to be a learning environment for new engineers. That's worth taking seriously. The "implement this CRUD endpoint" task that used to teach a junior dev how the codebase works is now often done by an agent. Teams that care about developing junior talent need to be intentional about preserving learning opportunities — or creating new ones.
 
-<!-- IMAGE: An org chart illustration, but reimagined. Traditional hierarchy at the top (lead, senior, junior). Below it, a new version showing the same people connected not just to each other but also to agent nodes. The connections are different — seniors connect to agents for review and specification; agents connect to juniors for output and collaboration. Arrows show different kinds of work flowing in different directions. Clean, editorial, not clinical. -->
+```mermaid
+flowchart TD
+    Lead["Engineering Lead\n\nSets standards, reviews architecture,\nconfigures agent defaults"]
+
+    Senior["Senior Dev\n\nWrites specs & constraints,\nreviews agent output"]
+
+    Junior["Junior Dev\n\nValidates & integrates\nagent output, learns patterns"]
+
+    Agent["Agent\n\nImplements, tests,\ndocuments, refactors"]
+
+    Lead -- "defines conventions" --> Agent
+    Lead -- "mentors" --> Junior
+    Senior -- "specs & constraints" --> Agent
+    Agent -- "output for review" --> Senior
+    Agent -- "drafts & scaffolding" --> Junior
+    Junior -- "questions & context" --> Senior
+```
 
 ---
 
@@ -59,7 +77,13 @@ This is a decision that's easy to under-invest in — people try something, it w
 
 **Don't forget the total cost.** Seat licenses, API usage, the time to configure and maintain — all of it adds up. For a team of ten, agent tooling can easily run $500-1000 per month or more depending on usage. That's easy to justify, but it should be a conscious decision, not an invisible line item that grows unnoticed.
 
-<!-- IMAGE: A decision matrix illustration styled as a physical scorecard or evaluation rubric. Rows represent criteria: Workflow fit, Integration depth, Autonomy model, Cost, Output quality. Columns represent two unnamed agent options (Agent A, Agent B). Cells contain simple rating indicators (filled/partial/empty circles). Not a real comparison — a stylized template. Clean, structured, almost like a product comparison table brought to life. -->
+| Criteria | Agent A | Agent B |
+|---|---|---|
+| Workflow fit | ● ● ● ○ | ● ● ○ ○ |
+| Integration depth | ● ● ○ ○ | ● ● ● ● |
+| Autonomy model | ● ● ● ● | ● ● ○ ○ |
+| Cost | ● ● ● ○ | ● ● ● ● |
+| Output quality | ● ● ● ○ | ● ● ● ○ |
 
 ---
 
@@ -95,7 +119,17 @@ The fix is a lightweight shared standard. It doesn't need to be a 40-page docume
 
 **A feedback loop.** When agent output is consistently wrong about something — a pattern it misunderstands, a convention it keeps violating — there should be a way to capture that and update the system prompt. Treat the agent configuration as a living artifact, not a one-time setup.
 
-<!-- IMAGE: A stylized repository file tree. At the root: README.md, package.json, and a highlighted file — AGENTS.md — with a small star or glow to draw attention. Next to it, a preview panel showing the first few lines of AGENTS.md: project conventions, shared constraints, a link to prompt templates. Developer-aesthetic, dark terminal style, warm accent color on the highlighted file. -->
+```text
+my-project/
+├── README.md
+├── package.json
+├── tsconfig.json
+├── AGENTS.md          ← shared agent context
+└── src/
+    └── ...
+```
+
+> **AGENTS.md** — project conventions, shared constraints, coding standards, and links to prompt templates. Versioned alongside the code, updated when standards change. Think of it as the onboarding doc you'd give a new hire — except the new hire is an agent.
 
 ---
 
@@ -121,6 +155,6 @@ Better signals to watch:
 
 We've covered the full journey — from what agents are to how to use them to how teams restructure around them. The final article brings it all together with a practical decision framework: how to evaluate agents against each other, how to run a meaningful pilot, and where the technology is heading next.
 
-Article 6 is the one to bookmark when someone asks you "so which agent should we use?"
+[Article 6](/blog/agentic-ai-6-choosing-your-agent-stack) is the one to bookmark when someone asks you "so which agent should we use?"
 
-*See you in Part 6.*
+*See you in [Part 6](/blog/agentic-ai-6-choosing-your-agent-stack).*

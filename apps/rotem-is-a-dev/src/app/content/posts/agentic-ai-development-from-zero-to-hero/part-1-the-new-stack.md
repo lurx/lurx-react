@@ -4,8 +4,12 @@ slug: agentic-ai-1-the-new-stack
 date: 2026-03-31
 description: "Before we talk about agents, workflows, and team structure, let's make sure we're speaking the same language. A practical introduction to generative AI, LLMs, and why this moment matters."
 tags: [ai, agentic-development, llm]
+series: agentic-ai-development
+seriesOrder: 1
 draft: true
 ---
+
+*Already comfortable with LLMs, tokens, and context windows? [Skip to Part 2](/blog/agentic-ai-2-what-is-a-coding-agent) where we get into how coding agents actually work.*
 
 A couple of years ago, if you'd told me I'd be having a conversation with my code editor — not typing into it, but *talking to it* — I'd have assumed you were describing science fiction or a very optimistic VC pitch deck. I'd watch it reason through a problem, push a fix, run the tests, and come back with a summary. But here we are. The tools exist, the workflows are real, and teams are already shipping with them. The question is no longer *"will AI change how we build software?"* — that ship has sailed. The question is *"do you understand it well enough to use it well?"* That's what this series is about.
 
@@ -17,9 +21,7 @@ We're starting at the foundation. Not because you're not smart, but because a lo
 
 ## What Generative AI Actually Is (and Isn't)
 
-<!-- ![A developer sitting at a desk at night, monitor glow on their face, code on screen and a chat interface beside it](/static/blog/agentic-ai/part-1-hero.png) -->
-
-<!-- IMAGE: Hero image — wide, editorial style. A developer sitting at a desk at night, monitor glow on their face, code on screen but also a chat interface open beside it. Cinematic, photorealistic, slightly warm lighting. Mood: curious, focused, not overwhelming. -->
+<!-- IMAGE: Diagram — three columns showing the evolution of AI-assisted development. LEFT: "Chatbot" — a simple text-in, text-out box. MIDDLE: "Copilot" — a code editor with inline suggestions highlighted. RIGHT: "Agent" — a goal at the top branching into multiple tool calls (read file, run tests, edit code, repeat). Each column slightly larger and more complex than the last. Clean, flat design, minimal color palette. -->
 
 You've heard the term a thousand times. Let me give you the version that actually sticks.
 
@@ -31,7 +33,7 @@ What it's doing is, in a very real sense, sophisticated pattern completion — t
 
 A useful (if imperfect) analogy: imagine someone who has read virtually everything ever written on the internet, absorbed the patterns of how ideas connect, how arguments are structured, how code is written — and can now produce fluent, contextually appropriate responses at the drop of a hat. They're not retrieving a memorized answer. They're constructing one, on the fly, based on everything they've absorbed.
 
-<!-- IMAGE: Inline illustration — a stylized human silhouette sitting inside a vast library, surrounded by towering bookshelves spiraling upward into infinity, books flying open around them. Flat design or editorial illustration style, blue and warm gold tones. -->
+<!-- IMAGE: Diagram — "How an LLM generates a response." A horizontal pipeline: Training Data (books, code, web) → Pattern Learning → Prompt In → Token-by-token generation → Response Out. Below the pipeline, a callout: "Not retrieval. Not reasoning. Pattern completion." Clean, technical, flat design. -->
 
 That's generative AI. Impressive? Yes. Magic? No. And understanding that distinction matters a lot for using it well.
 
@@ -45,7 +47,15 @@ An LLM is a neural network trained to predict what comes next in a sequence of t
 
 Let's pause on one term here, because it comes up constantly: a **token**. Tokens are roughly words or word fragments — the atomic unit an LLM actually works with. When you type a message, the model doesn't see letters or sentences — it sees tokens, processes them through layers of the neural network, and produces the most probable continuation. Why does this matter? Because tokens are the unit of context, cost, and rate limits throughout this entire space. The more you understand them, the less mysterious pricing, context windows, and latency will feel later in this series.
 
-<!-- IMAGE: Diagram-style illustration — a horizontal flow showing: "Your text" → broken into small labeled chunks (tokens) → passing through a glowing neural network (abstract layered nodes) → output text emerging on the other side. Clean, minimal, infographic style with a dark background and neon blue/purple accent colors. -->
+```mermaid
+flowchart LR
+    A["Your text"] --> B["Tokenizer"]
+    B --> C["'Hello'"]
+    B --> D["' world'"]
+    B --> E["'!'"]
+    C & D & E --> F["Neural Network\n(billions of parameters)"]
+    F --> G["Output text"]
+```
 
 A few things worth internalizing:
 
@@ -67,7 +77,21 @@ The shift happened when developers started giving models access to **tools**.
 
 Instead of just generating text, a model could now call a function, read a file, search the web, run a terminal command, and act on the result. Suddenly it wasn't just answering questions — it was *doing* things. And when you chain those actions together — plan, act, observe, plan again — you get what we now call an **agent**.
 
-<!-- IMAGE: Side-by-side illustration — LEFT: a simple chat bubble exchange between a person and a bot, labeled "Chatbot." RIGHT: a circular loop diagram showing: Prompt → Reason → Act (with small icons: file, terminal, browser) → Observe → back to Reason, labeled "Agent." Clean flat design, same dark background, the agent side noticeably more dynamic and interconnected. -->
+```mermaid
+flowchart LR
+    subgraph Chatbot
+        direction TB
+        U1["You ask"] --> B1["Bot answers"]
+    end
+
+    subgraph Agent
+        direction TB
+        P["Prompt"] --> R["Reason"]
+        R --> Act["Act\n(files, terminal, web)"]
+        Act --> O["Observe result"]
+        O --> R
+    end
+```
 
 Think of the difference this way. A chatbot is like calling a consultant and asking for advice. An agent is like hiring that consultant, giving them access to your systems, and having them actually do the work — file the report, send the email, run the build.
 
@@ -83,7 +107,7 @@ For both of you: this is not a marginal productivity improvement. It's a shift i
 
 Developers are spending less time on implementation boilerplate and more time on architecture, judgment, and review. Team leads are managing outputs from humans *and* agents. PMs are scoping work differently because the cost of certain tasks has dropped dramatically. The org chart hasn't changed yet — but the workflows already have.
 
-<!-- IMAGE: Editorial illustration — a bird's-eye view of a modern open-plan office, but half the "desks" are occupied by glowing AI terminals rather than people, while humans cluster around whiteboards and review screens together. Slightly stylized, warm and optimistic in mood — not dystopian. Isometric illustration style. -->
+<!-- IMAGE: Diagram — "Where the work is shifting." Two side-by-side pie charts or stacked bars. LEFT labeled "Before agents": large slice for Implementation, smaller slices for Architecture, Review, Context Setup. RIGHT labeled "With agents": Implementation shrinks dramatically, Architecture/Review/Context Setup grow. Simple, data-visualization style, no decorative elements. -->
 
 None of that means jobs are disappearing tomorrow. But it does mean that the teams who understand this technology — really understand it, not just have a vague sense that "AI is a thing" — will make meaningfully better decisions than those who don't.
 

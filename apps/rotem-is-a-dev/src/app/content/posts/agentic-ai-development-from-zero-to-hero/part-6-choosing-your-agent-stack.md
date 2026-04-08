@@ -1,9 +1,11 @@
 ---
 title: "Choosing Your Agent Stack: A Practical Comparison"
 slug: agentic-ai-6-choosing-your-agent-stack
-date: 2026-03-31
+date: 2026-05-05
 description: "An honest framework for choosing the right agent tool — comparing the main players, running a meaningful pilot, and making a confident decision based on your actual situation."
 tags: [ai, agentic-development, llm, tooling]
+series: agentic-ai-development
+seriesOrder: 6
 draft: true
 ---
 
@@ -33,6 +35,20 @@ Here are the dimensions that actually determine fit:
 
 **Ecosystem fit.** Does it integrate with your version control, your CI system, your issue tracker? An agent that lives inside your existing tools creates less friction than one that lives outside them. Friction compounds at team scale.
 
+```mermaid
+flowchart LR
+    subgraph criteria["Evaluation Criteria"]
+        direction TB
+        A["Autonomy level"] ~~~ B["IDE integration"]
+        B ~~~ C["Context sources"]
+        C ~~~ D["Model quality"]
+        D ~~~ E["Cost structure"]
+        E ~~~ F["Ecosystem fit"]
+    end
+
+    criteria --> Q{"Which agent is best\nfor us, for this work,\nin this environment?"}
+```
+
 ---
 
 ## The Main Players, Honestly Assessed
@@ -43,7 +59,7 @@ Claude Code is Anthropic's CLI-first agent. It runs in your terminal, operates d
 
 Its strengths are reasoning quality and instruction following. For complex, multi-step tasks — debugging a subtle interaction between systems, refactoring a large module consistently, implementing a feature across a full stack — it tends to produce coherent, high-quality work. It's also notably good at reading existing codebases and matching their conventions, which matters enormously in practice.
 
-The tradeoffs: it's terminal-based, which some developers find less natural than inline IDE integration. And because it's designed for meaningful autonomy, it works best when you've invested in the context setup we covered in Article 3 — it rewards good prompting more than some alternatives.
+The tradeoffs: it's terminal-based, which some developers find less natural than inline IDE integration. And because it's designed for meaningful autonomy, it works best when you've invested in the context setup we covered in [Article 3](/blog/agentic-ai-3-prompting-context-control) — it rewards good prompting more than some alternatives.
 
 Best fit for: developers and teams who work on complex, well-specified tasks and want an agent they can genuinely delegate to. Also a strong choice if you want to integrate agents into CI pipelines or automated workflows.
 
@@ -85,7 +101,13 @@ The tradeoffs are real: it takes engineering time to build and maintain, and you
 
 Best fit for: engineering teams with the capacity to build and maintain tooling, where the specific requirements of the org make custom the right call.
 
-<!-- IMAGE: A visual comparison card layout — five cards side by side, one per tool. Each card has: tool name at top, a one-line tagline, three simple icons representing its strengths, and a "best for" label at the bottom. Cards are styled consistently — dark background, clean typography, color-coded accent per tool. Not a feature table — a visual summary designed to be readable at a glance. -->
+| Tool | Tagline | Strengths | Best for |
+| --- | --- | --- | --- |
+| **Claude Code** | CLI-first autonomous agent | Reasoning quality, instruction following, CI integration | Complex multi-step tasks, teams that delegate |
+| **Cursor** | AI-native code editor | Inline collaboration, low friction, tight control | Individual devs who want a co-pilot in the editor |
+| **GitHub Copilot** | Agent mode in your IDE | GitHub context, ecosystem breadth, enterprise-ready | Teams deep in the GitHub ecosystem |
+| **Devin** | High-autonomy agent | Long-horizon tasks, sandboxed execution | Frontier autonomy experiments |
+| **Custom (API)** | Build your own | Full control, deep internal integration | Orgs with specific requirements |
 
 ---
 
@@ -105,7 +127,20 @@ Here's a more structured approach.
 
 **Run it for at least two weeks.** First impressions with agents are unreliable. The first few days are dominated by the novelty effect — everything seems impressive. The second week is when the real patterns emerge: where it's consistently useful, where it keeps failing, what the friction points are.
 
-<!-- IMAGE: A timeline illustration styled like a project plan or sprint board. Two rows: "Week 1" and "Week 2." Week 1 nodes: Setup & context, Task benchmark, First impressions. Week 2 nodes: Pattern identification, Blind code review, Decision. Clean horizontal layout, minimal icons at each node, progress arrow running left to right. -->
+```mermaid
+flowchart TD
+    subgraph week1["Week 1"]
+        direction LR
+        S["Setup &\ncontext"] --> B["Task\nbenchmark"] --> FI["First\nimpressions"]
+    end
+
+    subgraph week2["Week 2"]
+        direction LR
+        P["Pattern\nidentification"] --> R["Blind code\nreview"] --> D["Decision"]
+    end
+
+    week1 --> week2
+```
 
 ---
 
@@ -120,6 +155,17 @@ One framework that helps clarify the decision:
 **Build** (custom agent from scratch via API): Maximum control, maximum maintenance cost. Right for organizations with very specific requirements or where the agent is itself a product or core capability.
 
 Most teams should start with Buy, learn what doesn't fit, and move toward Compose for the gaps. Full Build is a deliberate choice for specific situations, not a default.
+
+```mermaid
+flowchart TD
+    Start["Starting out?"] --> Buy["Buy\n\nOff-the-shelf tools\nFast to start, low maintenance"]
+    Buy --> Gaps{"Gaps in\ncoverage?"}
+    Gaps -- "No" --> Stay["Stay with Buy"]
+    Gaps -- "Yes" --> Compose["Compose\n\nFrameworks + APIs\nFlexible, moderate effort"]
+    Compose --> Specific{"Very specific\nrequirements?"}
+    Specific -- "No" --> Stay2["Stay with Compose"]
+    Specific -- "Yes" --> Build["Build\n\nCustom from scratch\nMax control, max cost"]
+```
 
 One piece of guidance worth internalizing here: Anthropic's own [guide to building effective agents](https://www.anthropic.com/research/building-effective-agents) spends a surprising amount of time explaining when *not* to build an agent — when a simpler chain of prompts, or even a single well-crafted API call, is the right answer. The instinct to reach for the most powerful pattern is strong, but the best teams match the tool to the task. Sometimes Buy is right not because you can't Build, but because you shouldn't.
 
@@ -155,8 +201,8 @@ That's the shift. And it's worth making.
 
 ---
 
-*This is the final article in the "Building with AI Agents: From Zero to Production" series. If you found it useful, the earlier pieces are worth reading in order — each one builds on the last. And if something here is wrong, outdated, or missing — I'd genuinely like to know.*
+*This is the final article in the "Agentic AI Development: From Zero to Hero" series. If you found it useful, the earlier pieces are worth reading in order — each one builds on the last. And if something here is wrong, outdated, or missing — I'd genuinely like to know.*
 
 ---
 
-**Resources worth bookmarking:** Two references that go deeper than this series could. The [Anthropic Cookbook's agent patterns](https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents) section has working implementations of the orchestration patterns we discussed in Part 2 — routing, handoffs, tool use, memory. And [21 Agentic Design Patterns](https://github.com/CarlBarl/agentic-design-patterns) is a well-organized catalog of the architectural patterns emerging across the field. Both are living documents that get updated as the space moves. Good starting points for going from "I understand this" to "I'm building with this."
+**Resources worth bookmarking:** Two references that go deeper than this series could. The [Anthropic Cookbook's agent patterns](https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents) section has working implementations of the orchestration patterns we discussed in [Part 2](/blog/agentic-ai-2-what-is-a-coding-agent) — routing, handoffs, tool use, memory. And [21 Agentic Design Patterns](https://github.com/CarlBarl/agentic-design-patterns) is a well-organized catalog of the architectural patterns emerging across the field. Both are living documents that get updated as the space moves. Good starting points for going from "I understand this" to "I'm building with this."

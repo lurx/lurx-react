@@ -1,9 +1,17 @@
+import rehypeShiki from '@shikijs/rehype';
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import rehypeShiki from '@shikijs/rehype';
 import rehypeMermaid from 'rehype-mermaid';
-import { defineCollection, defineConfig, s } from 'velite';
+import {
+  defineCollection,
+  defineConfig,
+  s,
+  type MarkdownOptions,
+  type MdxOptions,
+} from 'velite';
+import { mermaidConfig } from './src/app/content/plugins/mermaid.config';
 import { rehypeExternalLinks } from './src/app/content/plugins/rehype-external-links';
+import { rehypeMermaidBrFix } from './src/app/content/plugins/rehype-mermaid-br-fix';
 
 const posts = defineCollection({
 	name: 'Post',
@@ -54,6 +62,17 @@ const pages = defineCollection({
 	}),
 });
 
+function createContentPlugins(): MarkdownOptions & MdxOptions {
+	return {
+		rehypePlugins: [
+			rehypeExternalLinks,
+			[rehypeMermaid, mermaidConfig],
+			rehypeMermaidBrFix,
+			[rehypeShiki, { theme: 'night-owl' }],
+		],
+	};
+}
+
 export default defineConfig({
 	root: 'src/app/content',
 	output: {
@@ -64,43 +83,15 @@ export default defineConfig({
 	},
 	collections: { posts, mdxPosts, pages },
 	complete: (_data, context) => {
-		const trigger = resolve(dirname(context.config.configPath), 'src/lib/mdx/velite-hmr-trigger.ts');
-		writeFileSync(trigger, `// Auto-touched by Velite on each rebuild to trigger Next.js HMR\nconst veliteHmrTrigger = ${Date.now()};\n\nexport default veliteHmrTrigger;\n`);
+		const trigger = resolve(
+			dirname(context.config.configPath),
+			'src/lib/mdx/velite-hmr-trigger.ts',
+		);
+		writeFileSync(
+			trigger,
+			`// Auto-touched by Velite on each rebuild to trigger Next.js HMR\nconst veliteHmrTrigger = ${Date.now()};\n\nexport default veliteHmrTrigger;\n`,
+		);
 	},
-	markdown: {
-		rehypePlugins: [
-			rehypeExternalLinks,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			[rehypeMermaid as any, {
-				strategy: 'img-svg',
-				colorScheme: 'dark',
-				mermaidConfig: {
-					theme: 'base',
-					themeVariables: {
-						background: '#1d293d',
-						primaryColor: '#1d293d',
-						primaryTextColor: '#f8fafc',
-						primaryBorderColor: '#314158',
-						secondaryColor: '#0f172b',
-						secondaryTextColor: '#f8fafc',
-						secondaryBorderColor: '#314158',
-						tertiaryColor: '#0f172b',
-						tertiaryTextColor: '#f8fafc',
-						tertiaryBorderColor: '#314158',
-						lineColor: '#43d9ad',
-						textColor: '#f8fafc',
-						mainBkg: '#1d293d',
-						nodeBorder: '#314158',
-						clusterBkg: '#0f172b',
-						clusterBorder: '#314158',
-						titleColor: '#f8fafc',
-						edgeLabelBackground: '#0f172b',
-						nodeTextColor: '#f8fafc',
-					},
-				},
-			}],
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			[rehypeShiki as any, { theme: 'night-owl' }],
-		],
-	},
+	markdown: createContentPlugins(),
+	mdx: createContentPlugins(),
 });
