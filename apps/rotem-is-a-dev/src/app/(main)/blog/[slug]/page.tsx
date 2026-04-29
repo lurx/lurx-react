@@ -38,7 +38,7 @@ function getSeriesContext(post: AnyPost) {
 
 	const allPosts = [...posts, ...mdxPosts] as AnyPost[];
 	const seriesPosts = allPosts
-		.filter(p => p.series === seriesSlug && (IS_PREVIEW_ENV || !p.draft))
+		.filter(candidate => candidate.series === seriesSlug && (IS_PREVIEW_ENV || !candidate.draft))
 		.sort((postA, postB) => (postA.seriesOrder ?? 0) - (postB.seriesOrder ?? 0));
 
 	return {
