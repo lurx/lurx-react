@@ -1,7 +1,7 @@
 ---
 title: "The New Stack: Understanding Gen AI, LLMs, and Why They Matter"
 slug: agentic-ai-1-the-new-stack
-date: 2026-03-31
+date: 2026-04-29
 description: "Before we talk about agents, workflows, and team structure, let's make sure we're speaking the same language. A practical introduction to generative AI, LLMs, and why this moment matters."
 tags: [ai, agentic-development, llm]
 series: agentic-ai-development
@@ -13,15 +13,43 @@ draft: true
 
 A couple of years ago, if you'd told me I'd be having a conversation with my code editor — not typing into it, but *talking to it* — I'd have assumed you were describing science fiction or a very optimistic VC pitch deck. I'd watch it reason through a problem, push a fix, run the tests, and come back with a summary. But here we are. The tools exist, the workflows are real, and teams are already shipping with them. The question is no longer *"will AI change how we build software?"* — that ship has sailed. The question is *"do you understand it well enough to use it well?"* That's what this series is about.
 
+A note on where I'm writing from: I'm a frontend engineer (previously at Payoneer) who's been building with coding agents daily for the past year — Claude Code, Cursor, and most of what's adjacent. This series is the field guide I wish someone had handed me at the start.
+
+One insight runs through the whole series, so I'll state it up front: **agents amplify clarity and amplify ambiguity equally.** Vague intent gets you confidently wrong output. Sharp specification gets you serious leverage. The rest is mechanics.
+
 There's a framing I like from [Alex Azimbaev](https://medium.com/@alex-azimbaev/building-ai-agents-that-actually-ship-a-practical-guide-for-2025-0c84e2233218): 2024 was the year of prototypes and proof-of-concepts — everyone was experimenting, few were shipping. 2025 is when the infrastructure caught up with the ambition. The models got better, the tooling matured, and the patterns solidified enough that teams could actually build on them. That's the moment we're in now, and it's worth understanding properly.
 
 We're starting at the foundation. Not because you're not smart, but because a lot of the confusion I see in teams — developers included — comes from shaky mental models at the base level. So before we talk about agents, workflows, and team structure, let's make sure we're speaking the same language.
+
+> **Two tracks for this series.** Developers should read all six parts in order. If you're an engineering lead, PM, or founder less interested in the day-to-day mechanics, you can read Parts 1, 5, and 6 — that path covers the fundamentals, team-level adoption, and tooling decisions without the implementation detail in between.
 
 ---
 
 ## What Generative AI Actually Is (and Isn't)
 
-<!-- IMAGE: Diagram — three columns showing the evolution of AI-assisted development. LEFT: "Chatbot" — a simple text-in, text-out box. MIDDLE: "Copilot" — a code editor with inline suggestions highlighted. RIGHT: "Agent" — a goal at the top branching into multiple tool calls (read file, run tests, edit code, repeat). Each column slightly larger and more complex than the last. Clean, flat design, minimal color palette. -->
+```mermaid
+flowchart LR
+    subgraph chatbot["Chatbot"]
+        direction TB
+        Q["You ask"] --> A["Bot answers"]
+    end
+
+    subgraph copilot["Copilot"]
+        direction TB
+        T["You type"] --> S["Inline suggestion"]
+        S --> Y["You accept\nor edit"]
+    end
+
+    subgraph agent["Agent"]
+        direction TB
+        G["Goal"] --> Tools["Read files\nRun tests\nEdit code"]
+        Tools --> Obs["Observe result"]
+        Obs --> Tools
+        Obs --> Done["Done"]
+    end
+
+    chatbot --> copilot --> agent
+```
 
 You've heard the term a thousand times. Let me give you the version that actually sticks.
 
@@ -33,7 +61,15 @@ What it's doing is, in a very real sense, sophisticated pattern completion — t
 
 A useful (if imperfect) analogy: imagine someone who has read virtually everything ever written on the internet, absorbed the patterns of how ideas connect, how arguments are structured, how code is written — and can now produce fluent, contextually appropriate responses at the drop of a hat. They're not retrieving a memorized answer. They're constructing one, on the fly, based on everything they've absorbed.
 
-<!-- IMAGE: Diagram — "How an LLM generates a response." A horizontal pipeline: Training Data (books, code, web) → Pattern Learning → Prompt In → Token-by-token generation → Response Out. Below the pipeline, a callout: "Not retrieval. Not reasoning. Pattern completion." Clean, technical, flat design. -->
+```mermaid
+flowchart LR
+    TD["Training data\n(books, code, web)"] --> PL["Pattern learning"]
+    PL --> PI["Prompt in"]
+    PI --> TG["Token-by-token\ngeneration"]
+    TG --> RO["Response out"]
+```
+
+> Not retrieval. Not reasoning. Pattern completion.
 
 That's generative AI. Impressive? Yes. Magic? No. And understanding that distinction matters a lot for using it well.
 
@@ -46,6 +82,15 @@ The dominant technology powering generative AI right now is the **Large Language
 An LLM is a neural network trained to predict what comes next in a sequence of text. That's it. The trick is that when you train a model that's large enough, on data that's diverse enough, something remarkable happens: it starts to generalize. It doesn't just learn to complete sentences. It learns grammar, reasoning, code syntax, tone, domain knowledge, logical structure — all as emergent properties of trying to predict the next token really, really well.
 
 Let's pause on one term here, because it comes up constantly: a **token**. Tokens are roughly words or word fragments — the atomic unit an LLM actually works with. When you type a message, the model doesn't see letters or sentences — it sees tokens, processes them through layers of the neural network, and produces the most probable continuation. Why does this matter? Because tokens are the unit of context, cost, and rate limits throughout this entire space. The more you understand them, the less mysterious pricing, context windows, and latency will feel later in this series.
+
+<details>
+<summary>Plain-English version</summary>
+
+Imagine the model can only read in puzzle pieces, not letters. A "token" is one puzzle piece — sometimes a whole word, sometimes just part of one. Everything you type gets chopped into pieces before the model sees it.
+
+The "context window" is just the maximum number of pieces it can hold in its head at once. When the conversation gets too long, the oldest pieces fall out.
+
+</details>
 
 ```mermaid
 flowchart LR
@@ -107,7 +152,21 @@ For both of you: this is not a marginal productivity improvement. It's a shift i
 
 Developers are spending less time on implementation boilerplate and more time on architecture, judgment, and review. Team leads are managing outputs from humans *and* agents. PMs are scoping work differently because the cost of certain tasks has dropped dramatically. The org chart hasn't changed yet — but the workflows already have.
 
-<!-- IMAGE: Diagram — "Where the work is shifting." Two side-by-side pie charts or stacked bars. LEFT labeled "Before agents": large slice for Implementation, smaller slices for Architecture, Review, Context Setup. RIGHT labeled "With agents": Implementation shrinks dramatically, Architecture/Review/Context Setup grow. Simple, data-visualization style, no decorative elements. -->
+```mermaid
+pie title Before agents
+    "Implementation" : 60
+    "Architecture" : 15
+    "Review" : 15
+    "Context setup" : 10
+```
+
+```mermaid
+pie title With agents
+    "Implementation" : 25
+    "Architecture" : 25
+    "Review" : 25
+    "Context setup" : 25
+```
 
 None of that means jobs are disappearing tomorrow. But it does mean that the teams who understand this technology — really understand it, not just have a vague sense that "AI is a thing" — will make meaningfully better decisions than those who don't.
 
@@ -117,7 +176,7 @@ That's the gap this series is trying to close.
 
 ## What's Coming Next
 
-In the next article, we go hands-on. We'll break down what a coding agent actually is — not the marketing version, but the mechanical reality: what it does, how it reasons, where it gets things wrong, and what working with one actually looks like day-to-day.
+In the next part, we go hands-on. We'll break down what a coding agent actually is — not the marketing version, but the mechanical reality: what it does, how it reasons, where it gets things wrong, and what working with one actually looks like day-to-day.
 
 We'll use Claude Code as our primary example, but the patterns apply broadly. If you've used Cursor, GitHub Copilot, or any of the other agents emerging in the space, you'll recognize the architecture.
 

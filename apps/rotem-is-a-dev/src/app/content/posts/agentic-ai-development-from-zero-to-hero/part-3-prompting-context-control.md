@@ -1,7 +1,7 @@
 ---
 title: "Prompting, Context & Control: How to Actually Work with Agents"
 slug: agentic-ai-3-prompting-context-control
-date: 2026-04-14
+date: 2026-04-29
 description: "Close the gap between installing an agent and getting real value from it. How to prompt effectively, provide the right context, and stay in control without micromanaging."
 tags: [ai, agentic-development, llm, prompting]
 series: agentic-ai-development
@@ -63,6 +63,20 @@ flowchart TD
 
 Put together, a well-structured agent prompt looks less like a search query and more like a ticket in a well-run engineering team. Specific outcome, clear boundaries, relevant background, agreed stopping points.
 
+Concrete is better than abstract. Here's the same task framed both ways.
+
+**Bad:**
+
+> Fix the auth tests.
+
+**Good:**
+
+> The auth tests in `apps/api/__tests__/auth.test.ts` are failing — three cases on the `/refresh` endpoint return 401 instead of 200. Investigate the failure and fix it without changing the public API surface or adding new dependencies. The refresh flow lives in `auth.service.ts` and uses config from `billing.config.json`. Plan the approach first, then wait for my approval before making changes.
+
+The first will get you something. The second will get you the right thing — usually on the first attempt.
+
+Here's roughly what happens after the good prompt: the agent reads the failing tests, traces the call into `auth.service.ts`, surfaces a hypothesis (*"the token validation is rejecting refresh tokens because the issuer claim changed in last week's update — here's the diff"*), proposes a fix, waits. You approve. It applies the fix, runs the tests, all pass, summarizes what changed and where. The same task framed badly would have produced a confident edit to the wrong file and twenty minutes of cleanup. The difference isn't the agent. It's the setup.
+
 ---
 
 ## Context: The Lever Most People Under-Use
@@ -81,7 +95,7 @@ A few specific things worth doing:
 
 **Describe the conventions.** If your codebase uses a particular pattern for error handling, or has a strong preference for functional over class-based approaches, say so. The agent will default to whatever it's seen most in training, which may not match your standards.
 
-**Use system prompts for standing context.** Most agents support a system prompt — a set of instructions that persist across all tasks in a session. This is the right place for project-level conventions, team preferences, things the agent should always or never do. Think of it as the onboarding doc you'd give a new hire on day one.
+**Use system prompts for standing context.** Most agents support a system prompt — a set of instructions that persist across all tasks in a session. This is the right place for project-level conventions, team preferences, things the agent should always or never do.
 
 ```mermaid
 flowchart TD
@@ -110,11 +124,9 @@ A few practical ways to stay in control:
 
 **Ask for a plan before execution.** For any task that touches more than a couple of files, instruct the agent to outline its approach first. Review the plan. Then give it the go-ahead. Claude Code does this naturally for complex tasks — you can also prompt it explicitly: "Before making any changes, describe what you're going to do."
 
-**Use version control as your safety net.** This feels obvious, but it's worth stating: commit before you run an agent on anything you care about. A clean git state means any agent-introduced changes are trivially reversible.
+**Use version control as your safety net.** This feels obvious, but it's worth stating: commit before you run an agent on anything you care about. A clean git state (no uncommitted work) means any agent-introduced changes are trivially reversible.
 
 **Watch the tool calls, not just the output.** Most agents will show you what tools they're invoking as they go. Get in the habit of skimming these. It's much faster than reading every line of generated code, and it'll catch wrong turns early.
-
-<!-- IMAGE: A split illustration. LEFT side: an agent going off a cliff, labeled "No Guardrails — Full Autonomy." RIGHT side: an agent on a road with clear lane markings and a checkpoint gate ahead, labeled "Guided Autonomy — Reversible Steps." Slightly playful, not alarming. Flat design, consistent with series style. -->
 
 The developers I've seen get the most out of agents aren't the ones who trust them blindly and aren't the ones who hover over every keystroke. They've found a working rhythm — hand off the well-defined work, stay close on the judgment calls, and review at the seams.
 
@@ -134,7 +146,16 @@ Brian Jenney, [writing about building agents in production](https://brianjenney.
 
 **Agents can make your supply chain their attack surface.** This one is newer and worth taking seriously. In March 2026, [North Korean state actors compromised the axios npm package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — 300 million weekly downloads — by hijacking the maintainer's npm account and publishing versions laced with a remote access trojan. No GitHub PR, no CI pipeline — just a direct publish to the registry. Now imagine an agent running `npm install` or adding a dependency on your behalf. It's doing exactly what you asked, and it has no way to know that the package it just pulled is compromised. The agent isn't the vulnerability — but it's a new, fast-moving vector through which existing vulnerabilities can reach your system.
 
-Around the same time, [Anthropic accidentally shipped 500,000 lines of Claude Code's own source code](https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/) in a public npm package — a source map file that should never have been bundled made it into a routine release. It was the company's second exposure in five days. If the team building one of the most prominent coding agents can make a packaging mistake that leaks their entire codebase, the rest of us should be very honest about the kind of errors that automated workflows can amplify. Human error doesn't disappear when you add agents. It scales.
+<details>
+<summary>Plain-English version</summary>
+
+The agent isn't the bad guy here — it just installed a library someone else had already poisoned. Imagine asking a robot to grab flour from the pantry: the robot does the job perfectly, but if a stranger swapped the flour for something nasty, the robot has no way to know.
+
+Agents pulling packages on your behalf can't sniff out compromise either. The risk isn't new — it's just faster and more frequent now.
+
+</details>
+
+Around the same time, [Anthropic accidentally shipped 500,000 lines of Claude Code's own source code](https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/) in a public npm package — a source map file (an internal build artifact that exposes the original source code) that should never have been bundled made it into a routine release. It was the company's second exposure in five days. If the team building one of the most prominent coding agents can make a packaging mistake that leaks their entire codebase, the rest of us should be very honest about the kind of errors that automated workflows can amplify. Human error doesn't disappear when you add agents. It scales.
 
 The good news is that these failure modes are predictable, which means they're manageable. You don't need to distrust the agent — you need to design your workflow so that mistakes are catchable.
 
@@ -149,20 +170,10 @@ flowchart LR
 
 ---
 
-## A Note for Team Leads and PMs
-
-If you're reading this from a management or product perspective, here's the practical translation:
-
-The quality of output from an AI agent is heavily dependent on how well the task is specified. Which means that teams who invest in clear tickets, well-documented conventions, and structured handoffs will get dramatically more out of these tools than teams who don't.
-
-In other words: the habits that make you a good engineering team make you a better AI-augmented engineering team. The agent amplifies what's already there — good process and bad process alike.
-
----
-
 ## What's Coming Next
 
-We've covered how agents think, and how to communicate with them. The next article zooms out: where do agents actually fit in a real development workflow? Planning, coding, review, testing, documentation — what should you delegate, what should you keep, and how does the day-to-day actually change?
+We've covered how agents think, and how to communicate with them. The next part zooms out: where do agents actually fit in a real development workflow? Planning, coding, review, testing, documentation — what should you delegate, what should you keep, and how does the day-to-day actually change?
 
-[Article 4](/blog/agentic-ai-4-integrating-agents-workflow) is the most practical piece in the series. It's where the theory becomes a workflow.
+[Part 4](/blog/agentic-ai-4-integrating-agents-workflow) is the most practical piece in the series. It's where the theory becomes a workflow.
 
 *See you in [Part 4](/blog/agentic-ai-4-integrating-agents-workflow).*

@@ -53,6 +53,17 @@ export const mermaidConfig = {
 			textColor: '#f8fafc',
 			titleColor: '#f8fafc',
 			nodeTextColor: '#f8fafc',
+
+			// ─── Pie chart slices ─────────────────────────────────────────
+			pie1: '#43d9ad',
+			pie2: '#ffb86a',
+			pie3: '#c792ea',
+			pie4: '#89ddff',
+			pieTitleTextColor: '#f8fafc',
+			pieSectionTextColor: '#0f172b',
+			pieLegendTextColor: '#f8fafc',
+			pieStrokeColor: '#314158',
+			pieOuterStrokeColor: '#314158',
 		},
 	},
 };

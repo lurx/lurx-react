@@ -1,7 +1,7 @@
 ---
 title: "Agentic Development at Team Scale"
 slug: agentic-ai-5-agentic-development-at-team-scale
-date: 2026-04-28
+date: 2026-04-29
 description: "What changes when it's not just you and an agent, but a whole team. How roles shift, what standards to set, and how to adopt agentic tools without introducing new risks."
 tags: [ai, agentic-development, llm, team-workflow]
 series: agentic-ai-development
@@ -14,6 +14,8 @@ Everything we've covered so far has been about one developer and one agent.
 That's where most people start, and it's the right place to start. But the moment you zoom out to a team — five engineers, a lead, a PM, a backlog, a set of shared standards — the dynamics change. The questions change too. It's no longer just "how do I use this thing?" It's "how do we use this thing, together, without stepping on each other, without introducing new risks, and without the tool becoming a liability instead of an asset?"
 
 Those are harder questions. This article is an attempt to answer them honestly.
+
+> **For readers on the manager track:** if you came here directly from Part 1 and skipped Parts 2–4, you have what you need. The mechanics in those parts are useful if you're hands-on, but everything in this article and Part 6 stands on its own.
 
 ---
 
@@ -93,7 +95,7 @@ This is the section that gets skipped in most agent adoption conversations. It's
 
 **Code and data leaving the building.** When a developer pastes code into an agent, that code leaves your environment and hits an external API. For most commercial code, this is a tolerable risk. For code that touches sensitive data, proprietary algorithms, or regulated systems, it may not be. Know your data classification policy before you deploy agents broadly. If you don't have one, write one.
 
-This isn't theoretical. In March 2026, [Anthropic accidentally exposed the full source code of Claude Code](https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/) — roughly 500,000 lines — through a source map file bundled into a public npm release. A packaging error, not a breach, but the effect was the same: proprietary code in the open. If the company building the agent can ship its own source code by accident, the risk of your team's code ending up somewhere it shouldn't is real enough to plan for.
+This isn't theoretical. The packaging and supply-chain incidents covered in [Part 3](/blog/agentic-ai-3-prompting-context-control) — including Anthropic accidentally publishing 500,000 lines of Claude Code's source via a public npm release — show that even the company building the agent can ship its own source code by accident. The risk of your team's code ending up somewhere it shouldn't is real enough to plan for.
 
 **Credentials in context.** Agents that have terminal access can see environment variables, config files, and credentials. This is usually fine in practice, but it needs to be a conscious choice — not an accident. Establish clear guidelines about what agents can and can't see.
 
@@ -131,6 +133,30 @@ my-project/
 
 > **AGENTS.md** — project conventions, shared constraints, coding standards, and links to prompt templates. Versioned alongside the code, updated when standards change. Think of it as the onboarding doc you'd give a new hire — except the new hire is an agent.
 
+A skeleton looks something like this:
+
+```markdown
+# AGENTS.md
+
+## Stack
+- TypeScript strict mode. No `any` types.
+- React 18, Next.js 14, SCSS modules.
+- Prefer `es-toolkit` for utilities and `usehooks-ts` for hook patterns. Ask before adding new dependencies.
+
+## Conventions
+- File naming: kebab-case with dot-suffixes (`my-thing.component.tsx`, `my-thing.helpers.ts`).
+- Co-locate types in sibling `*.types.ts` files. No inline type definitions in component files.
+- Functional components only. Internal order: state → refs → context → hooks → memos → callbacks → effects → guards → render.
+- Callback props passed to client components end with `Action` (e.g. `onCloseAction`).
+
+## Workflow
+- Plan before executing on multi-file changes. Wait for approval before applying.
+- Run tests after every meaningful change. Don't mark a task done if tests fail.
+- When context is missing, ask. Don't guess.
+```
+
+Keep it tight. Five lines per section beats forty — agents read it on every task, and a bloated AGENTS.md eats your context budget for no benefit.
+
 ---
 
 ## Measuring Impact
@@ -153,8 +179,8 @@ Better signals to watch:
 
 ## What's Coming Next
 
-We've covered the full journey — from what agents are to how to use them to how teams restructure around them. The final article brings it all together with a practical decision framework: how to evaluate agents against each other, how to run a meaningful pilot, and where the technology is heading next.
+We've covered the full journey — from what agents are to how to use them to how teams restructure around them. The final part brings it all together with a practical decision framework: how to evaluate agents against each other, how to run a meaningful pilot, and where the technology is heading next.
 
-[Article 6](/blog/agentic-ai-6-choosing-your-agent-stack) is the one to bookmark when someone asks you "so which agent should we use?"
+[Part 6](/blog/agentic-ai-6-choosing-your-agent-stack) is the one to bookmark when someone asks you "so which agent should we use?"
 
 *See you in [Part 6](/blog/agentic-ai-6-choosing-your-agent-stack).*

@@ -1,7 +1,7 @@
 ---
 title: "What is an AI Coding Agent? A Practical Breakdown"
 slug: agentic-ai-2-what-is-a-coding-agent
-date: 2026-04-07
+date: 2026-04-29
 description: "Open the hood on coding agents — how they actually work, what makes them different from copilots, and where they break down. A practical anatomy using Claude Code as the worked example."
 tags: [ai, agentic-development, llm, coding-agents]
 series: agentic-ai-development
@@ -9,7 +9,7 @@ seriesOrder: 2
 draft: true
 ---
 
-If [Article 1](/blog/agentic-ai-1-the-new-stack) was about understanding the engine, this one is about opening the hood.
+If [Part 1](/blog/agentic-ai-1-the-new-stack) was about understanding the engine, this one is about opening the hood.
 
 By the end of this piece you'll know exactly what a coding agent is, how it actually works under the surface, and — just as importantly — where it breaks down. We'll use Claude Code as our main worked example, but the architecture we're describing applies to Cursor, GitHub Copilot, and the rest of the field. The names differ. The bones are mostly the same.
 
@@ -62,6 +62,13 @@ At the heart of every agent is a loop. It goes something like this:
 4. **Observe again** — did it work? what changed?
 5. **Repeat** until the goal is met or the agent gets stuck
 
+<details>
+<summary>Plain-English version</summary>
+
+Think of a fast helper following a recipe. You hand them a goal. They look at the kitchen (observe), decide what to do first (plan), do it (act), check whether it worked (observe again), and repeat. The loop is just that cycle running over and over until the goal's done or they get stuck and need help.
+
+</details>
+
 This is sometimes called a ReAct loop (Reason + Act), and it's the pattern underneath virtually every serious agent system today. The LLM isn't just generating text — it's deciding what to do next based on live feedback from the environment.
 
 What's telling is how much the industry has converged on this. Anthropic's [guide to building effective agents](https://www.anthropic.com/research/building-effective-agents) lays out the core orchestration patterns — routing, parallelization, orchestrator-workers — and it reads like a blueprint for how every serious agent works under the hood. OpenAI published [their own practical guide](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) around the same time, and the overlap is striking. When competing companies independently converge on the same architecture, that's a strong signal you're looking at something durable, not a trend.
@@ -90,6 +97,8 @@ In most coding agents, the tool set includes some combination of:
 
 Each tool call is explicit — the model decides to use a tool, specifies the inputs, gets back a result, and reasons about what to do next. It's structured, traceable, and — crucially — auditable. You can see exactly what the agent did and why.
 
+Worth knowing: in late 2024 Anthropic introduced the **Model Context Protocol (MCP)** — an open standard for how agents connect to external tools and data sources. Instead of every agent re-inventing custom integrations for GitHub, Jira, your filesystem, or your internal docs, MCP lets a tool be exposed once and consumed by any MCP-aware agent. By 2026 it's become the dominant connective tissue in the ecosystem, and *"does it support MCP?"* is a meaningful question when evaluating any agent. We'll come back to it in [Part 6](/blog/agentic-ai-6-choosing-your-agent-stack).
+
 ### Memory
 
 This is where things get nuanced. As we covered in [Part 1](/blog/agentic-ai-1-the-new-stack), LLMs don't have persistent memory by default. Agents work around this in a few ways:
@@ -102,11 +111,40 @@ This is where things get nuanced. As we covered in [Part 1](/blog/agentic-ai-1-t
 
 Most production agents use all three in combination. The skill is in knowing which to lean on when.
 
+<details>
+<summary>Plain-English version</summary>
+
+Three shelves, three kinds of memory:
+
+- **In-context** — the desk you're working on right now. Everything in the current conversation.
+- **External** — the filing cabinet across the room. Databases, summaries, notes from past sessions.
+- **Procedural** — the standing instructions taped to the wall. "We do it this way here. Don't do that."
+
+Good agents use all three, knowing which one fits the moment.
+
+</details>
+
 ---
 
 ## Claude Code: A Case Study
 
-<!-- IMAGE: Stylized terminal screenshot — dark background, monospace font. Shows a Claude Code session: user prompt "Fix the failing auth tests" at top, then the agent's interleaved reasoning and tool calls: "Reading auth.test.ts… Found assertion failure on line 42. The test expects a 401 but the handler returns 403. Reading auth.ts… Editing auth.ts:87 — changing status code. Running tests… All 12 tests passing." Each tool call visually distinct (dimmer/different color) from the reasoning text. Authentic terminal aesthetic, not decorative. -->
+```text
+> Fix the failing auth tests
+
+● Read(auth.test.ts)
+  ⎿  Assertion failure on line 42. Test expects 401, handler returns 403.
+
+● Read(auth.ts)
+  ⎿  Read 89 lines
+
+The handler on line 87 is returning the wrong status code. Updating it.
+
+● Edit(auth.ts)
+  ⎿  Updated line 87: 403 → 401
+
+● Bash(npm test)
+  ⎿  PASS  auth.test.ts — all 12 tests passing
+```
 
 Claude Code is Anthropic's CLI-based coding agent. Rather than living inside an IDE, it runs in your terminal and operates directly on your local filesystem. That architectural choice is deliberate — it gives it broader access and makes it easier to integrate into existing workflows and CI pipelines.
 
@@ -140,7 +178,7 @@ Claude Code isn't alone. A few other agents worth understanding:
 
 **Devin** (from Cognition) sits at the more autonomous end of the spectrum — designed for longer-horizon tasks with less human checkpointing. It made a lot of noise at launch and is a useful north-star for where the category is heading, even if the day-to-day reality is more nuanced.
 
-The honest summary: they all implement the same core loop we described above. Where they differ is in autonomy level, IDE integration, context sources, and how much they keep you in the loop. Picking the right one is less about which model is "smarter" and more about how it fits into your workflow — which we'll cover properly in [Article 6](/blog/agentic-ai-6-choosing-your-agent-stack).
+The honest summary: they all implement the same core loop we described above. Where they differ is in autonomy level, IDE integration, context sources, and how much they keep you in the loop. Picking the right one is less about which model is "smarter" and more about how it fits into your workflow — which we'll cover properly in [Part 6](/blog/agentic-ai-6-choosing-your-agent-stack).
 
 ---
 
@@ -151,7 +189,7 @@ This is the section that's going to save you some frustration.
 **Agents are genuinely great at:**
 - Boilerplate and scaffolding — spinning up new features, writing tests for existing code, generating migrations
 - Refactoring with clear patterns — "update all API calls to use the new client interface"
-- Debugging with reproducible errors — give it a failing test and a stack trace and it will usually find the fix
+- Debugging with reproducible errors — give it a failing test and a stack trace (the error trail showing where the code crashed) and it will usually find the fix
 - Documentation — reading code and producing accurate descriptions of what it does
 - Cross-file edits — tasks that require touching multiple files in a consistent way
 
@@ -161,26 +199,6 @@ This is the section that's going to save you some frustration.
 - Long-horizon tasks without checkpoints — the longer the task, the more error accumulates
 - Anything requiring real-world context you haven't provided — business logic, stakeholder preferences, unwritten conventions
 
-```mermaid
-flowchart LR
-    subgraph thrive["Agents Thrive"]
-        direction TB
-        T1["Boilerplate & scaffolding"]
-        T2["Refactoring with clear patterns"]
-        T3["Debugging with stack traces"]
-        T4["Documentation"]
-        T5["Cross-file edits"]
-    end
-
-    subgraph struggle["Agents Struggle"]
-        direction TB
-        S1["Ambiguous goals"]
-        S2["Novel architecture decisions"]
-        S3["Long tasks without checkpoints"]
-        S4["Missing real-world context"]
-    end
-```
-
 The mental model I keep coming back to: agents are exceptional at tasks that are *well-specified* and *well-bounded*. The better you are at defining what "done" looks like, the better your agent will perform. That's not a limitation of the technology — it's a skill that compounds. The developers who get the most out of agents are the ones who've gotten good at framing problems cleanly.
 
 ---
@@ -189,7 +207,7 @@ The mental model I keep coming back to: agents are exceptional at tasks that are
 
 We've covered what agents are and how they work mechanically. The next piece gets practical: how do you actually communicate with one? What makes a good prompt for an agent versus a one-off chat query? How do you give it the right context, set guardrails, and stay in control without micromanaging?
 
-[Article 3](/blog/agentic-ai-3-prompting-context-control) is where the theory starts turning into daily workflow. And where we'll start talking about the part most tutorials skip: what happens when things go wrong.
+[Part 3](/blog/agentic-ai-3-prompting-context-control) is where the theory starts turning into daily workflow. And where we'll start talking about the part most tutorials skip: what happens when things go wrong.
 
 *See you in [Part 3](/blog/agentic-ai-3-prompting-context-control).*
 

@@ -209,6 +209,7 @@
 	ol {
 		padding-inline-start: 1.5em;
 		margin-block: 0.75em;
+		list-style: revert;
 	}
 
 	li {
@@ -225,6 +226,41 @@
 
 		p {
 			margin: 0;
+		}
+	}
+
+	details {
+		margin-block: 1em;
+		padding: spacing(1) spacing(2);
+		border-inline-start: 3px solid var(--cyan);
+		background-color: var(--surface-alt);
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+		color: var(--muted);
+
+		summary {
+			cursor: pointer;
+			font-weight: 600;
+			color: var(--cyan);
+			list-style: none;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			&::before {
+				content: '▸';
+				display: inline-block;
+				margin-inline-end: 0.5em;
+				transition: transform 0.2s ease;
+			}
+		}
+
+		&[open] summary {
+			margin-block-end: 0.75em;
+
+			&::before {
+				transform: rotate(90deg);
+			}
 		}
 	}
 

@@ -1,7 +1,7 @@
 ---
 title: "Integrating Agents into Your Development Workflow"
 slug: agentic-ai-4-integrating-agents-workflow
-date: 2026-04-21
+date: 2026-04-29
 description: "Where agents genuinely fit in the development cycle and where they don't. A realistic look at planning, coding, testing, and reviewing with agents — and what a typical day actually looks like."
 tags: [ai, agentic-development, llm, workflow]
 series: agentic-ai-development
@@ -33,8 +33,6 @@ Feed an agent a feature description and ask it to generate a first-draft technic
 
 The same applies to breaking down work. "Here's the feature — what are the logical implementation tasks?" is a prompt that agents handle well, especially when they have access to your existing codebase for context.
 
-<!-- IMAGE: An illustration of a blank whiteboard transforming into a structured spec document with sections: entities, API surface, edge cases, open questions. A subtle agent cursor icon in the corner, as if it just finished writing. Clean, editorial style, warm lighting, optimistic mood. -->
-
 ### Coding
 
 This is the obvious one, and yes — it's real. Agents genuinely accelerate implementation work, particularly for:
@@ -55,7 +53,17 @@ Before you open a PR, run your diff through an agent with a prompt like: "Review
 
 What agents aren't good at: reviewing for architectural intent. They can tell you *what* the code does. They can't always tell you whether it's the *right* approach given where the system is going. That judgment still lives with you.
 
-<!-- IMAGE: Diagram — "Agent-assisted code review output." A mock review summary card: PR title at top, then a checklist of flagged items grouped by severity — 🔴 Security (1 item: "unsanitized user input at line 43"), 🟡 Logic (2 items), 🟢 Style (3 items). Below: "No issues found: error handling, test coverage, type safety." Clean, structured, looks like a real tool output rather than an illustration. -->
+```mermaid
+flowchart TB
+    subgraph review["Review: feat/user-profile-edit"]
+        direction TB
+        sec["🔴 Security — 1 issue\nUnsanitized user input at profile.tsx:43"]
+        logic["🟡 Logic — 2 issues\nMissing null check in updateProfile()\nRace condition in concurrent saves"]
+        styling["🟢 Style — 3 issues\nInconsistent prop naming\nMagic number on line 91\nFunction exceeds 50 lines"]
+        ok["✓ No issues: error handling, test coverage, type safety"]
+        sec ~~~ logic ~~~ styling ~~~ ok
+    end
+```
 
 ### Testing
 
@@ -72,6 +80,22 @@ Possibly the highest effort-to-value ratio of anything in this list.
 Documentation is the task everyone knows matters and no one wants to do. Agents don't mind. Give one a module, ask for a README, JSDoc comments, or an architecture overview — it'll produce something accurate, consistent, and professional in seconds.
 
 The one thing to watch: agents document what the code does, not necessarily why it exists or what decisions were made along the way. That institutional context still needs to come from you. But "here's the code, add the what, I'll add the why" is a very workable division of labor.
+
+---
+
+## The Productivity Multipliers
+
+Beyond the basic prompt-and-iterate loop, modern agents expose features that compound — small mechanical helpers that turn repeat tasks into single keystrokes. They're easy to overlook and disproportionately valuable.
+
+**Slash commands and custom skills.** Most current agents let you save reusable prompt templates as named commands — `/review` runs your code-review template, `/spec` scaffolds a feature spec, `/test` writes tests with your team's conventions baked in. Five seconds of setup, daily payoff. Worth standardizing across your team so everyone's `/review` does the same thing.
+
+**Hooks.** A hook is a script that fires automatically on agent events — before a tool call, after a file edit, on session start. Use them for things you want enforced rather than remembered: auto-formatting after every edit, blocking writes to certain directories, running a typecheck before any commit. Hooks are how you turn process discipline into something that just happens.
+
+**Subagents.** When a task naturally splits into independent pieces — research three options, audit five files, run six checks in parallel — modern agents can spawn focused subagents for each. The main agent coordinates; the subagents do the legwork without polluting the parent's context. For the right shape of task, this is meaningfully faster than serial work.
+
+**Background and async runs.** The biggest workflow change in the last year is that agents no longer demand to be babysat. Long tasks run in the background while you do something else — kick off a refactor, switch to a meeting, come back to a summary and a diff. The shift from synchronous co-pilot to asynchronous teammate is bigger than it sounds. Treat it like delegating to a fast junior who pages you when they're done.
+
+These are not edge features. They're where the daily-driver developers find their leverage.
 
 ---
 
@@ -104,7 +128,7 @@ flowchart LR
     morning --> midday --> afternoon
 ```
 
-The honest version: on a good day with well-defined work, I ship roughly twice what I'd ship solo. On a day with ambiguous problems, messy legacy code, or decisions that require real judgment, the agent is more of a sounding board than a force multiplier. The variance is real. Managing it is part of the skill.
+The honest version: on a good day with well-defined work, I ship roughly twice what I'd ship solo. On a day with ambiguous problems, messy legacy code, or decisions that require real judgment, the agent is more of a sounding board than a force multiplier. The variance is real, and it's not random — clarity multiplies, ambiguity stalls. Managing that gap is part of the skill.
 
 ---
 
@@ -116,9 +140,9 @@ A few patterns I see teams fall into that undercut the value. There's a line fro
 
 **Using agents for the wrong tasks.** The temptation is to throw everything at the agent. But there are tasks where the friction of prompting, waiting, and reviewing costs more than just writing it yourself. Short, simple, highly familiar tasks are often faster done directly. Reserve agents for tasks with meaningful complexity or volume.
 
-**Prompting once and hoping.** One prompt, one shot, no iteration. This is how you get mediocre output and conclude agents aren't useful. The best workflows are conversational — you prompt, review, redirect, and iterate. The agent is a collaborator, not a vending machine.
+**Prompting once and hoping.** One prompt, one shot, no iteration. This is how you get mediocre output and conclude agents aren't useful. The best workflows are conversational — you prompt, review, redirect, and iterate.
 
-**Ignoring the context setup.** As we covered in [Article 3](/blog/agentic-ai-3-prompting-context-control), context is everything. Teams that drop agents into new tasks cold — no codebase context, no conventions, no constraints — get generic output. Teams that invest thirty seconds in setup get output that fits.
+**Ignoring the context setup.** As we covered in [Part 3](/blog/agentic-ai-3-prompting-context-control), context is everything. Teams that drop agents into new tasks cold — no codebase context, no conventions, no constraints — get generic output. Teams that invest thirty seconds in setup get output that fits.
 
 ```mermaid
 flowchart TD
@@ -126,33 +150,37 @@ flowchart TD
         direction TB
         T1["Treating output as final\n→ Always review before merging"]
         T2["Wrong tasks for agents\n→ Skip trivial, familiar work"]
-        T3["One prompt, no iteration\n→ Collaborate, don't vend"]
+        T3["One prompt, no iteration\n→ Iterate, don't one-shot"]
         T4["No context setup\n→ 30 seconds of setup pays dividends"]
     end
 ```
 
-Brian Jenney's [account of building agents in production](https://brianjenney.medium.com/a-practical-guide-on-building-ai-agents-30efce169473) illustrates this cycle well — the plan-execute-review loop works beautifully when the setup is right, and breaks in instructive ways when it isn't. His experience mirrors what I've seen: the teams that struggle aren't the ones with weak models, they're the ones with weak context.
-
 ---
 
-## The ROI Conversation (For Leads and PMs)
+## What This Actually Costs
 
-If you're trying to make the case for adopting agents at a team level, or evaluate whether the investment is worth it, here's the honest framework:
+The productivity gains are real but uneven. They're highest for work that's well-specified in familiar domains. They're lower for work that's exploratory, architectural, or context-dependent.
 
-The productivity gains are real but uneven. They're highest for developers already writing well-specified work in familiar domains. They're lower for work that's exploratory, architectural, or context-dependent.
+The learning curve is real too. Teams don't hit peak productivity with agents on day one. There's a period of figuring out the prompting patterns, the workflow integration, and the right division of labor. Budget for it.
 
-The learning curve is real. Teams don't hit peak productivity with agents on day one. There's a period of figuring out the prompting patterns, the workflow integration, the right division of labor. Budget for it.
+And the dollar cost is non-trivial. Per-token API usage scales with how much you actually use the agent. Here's a rough profile-based breakdown for a single developer running Claude Code or an equivalent:
 
-The cost is non-trivial. API usage, seat licenses, the time to set up sensible defaults — it adds up. For a team of five, you're probably looking at a few hundred dollars a month, depending on usage. That's very easy to justify with even modest productivity gains, but it's worth tracking rather than ignoring.
+| Profile | Typical use | Monthly cost (per dev) |
+|---|---|---|
+| Light | Occasional helper, a few short tasks per day | $20–$40 |
+| Medium | Daily driver, mixed task sizes | $80–$150 |
+| Heavy | Long-horizon multi-step tasks, frequent tool calls | $200–$400+ |
 
-The compounding effect is where the real story is. Teams that adopt agents early and get good at working with them develop a capability advantage that grows over time. The gap between teams who know how to use these tools well and teams who don't is going to widen. That's the actual business case.
+Numbers will shift as pricing and model efficiency change, but the shape holds: the cost is dominated by tokens, not seats. That's easy to justify with modest productivity gains — it's also easy to let drift unnoticed if no one's watching.
+
+The compounding effect is where the real story is. Teams that adopt agents early and get good at working with them develop a capability advantage that grows over time. The gap between teams who use these tools well and teams who don't is going to widen. That's the actual case.
 
 ---
 
 ## What's Coming Next
 
-We've been looking at agents from the individual developer perspective. [Article 5](/blog/agentic-ai-5-agentic-development-at-team-scale) zooms out to the team level: how organizations are restructuring around AI agents, which roles are shifting, how to make toolchain decisions, and what governance looks like when agents have access to your systems.
+We've been looking at agents from the individual developer perspective. [Part 5](/blog/agentic-ai-5-agentic-development-at-team-scale) zooms out to the team level: how organizations are restructuring around AI agents, which roles are shifting, how to make toolchain decisions, and what governance looks like when agents have access to your systems.
 
-If you're a team lead, an engineering manager, or a PM — [Article 5](/blog/agentic-ai-5-agentic-development-at-team-scale) is written for you.
+If you're a team lead, an engineering manager, or a PM — [Part 5](/blog/agentic-ai-5-agentic-development-at-team-scale) is written for you.
 
 *See you in [Part 5](/blog/agentic-ai-5-agentic-development-at-team-scale).*

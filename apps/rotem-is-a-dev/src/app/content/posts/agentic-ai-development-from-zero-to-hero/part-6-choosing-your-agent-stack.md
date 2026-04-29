@@ -1,7 +1,7 @@
 ---
 title: "Choosing Your Agent Stack: A Practical Comparison"
 slug: agentic-ai-6-choosing-your-agent-stack
-date: 2026-05-05
+date: 2026-04-29
 description: "An honest framework for choosing the right agent tool — comparing the main players, running a meaningful pilot, and making a confident decision based on your actual situation."
 tags: [ai, agentic-development, llm, tooling]
 series: agentic-ai-development
@@ -9,7 +9,7 @@ seriesOrder: 6
 draft: true
 ---
 
-Six articles in, you have the mental model. Now comes the part everyone actually Googled first: which agent should I use?
+Six parts in, you have the mental model. Now comes the part everyone actually Googled first: which agent should I use?
 
 This is the article I wish existed when I started. Not a feature comparison table lifted from a vendor's website, but an honest framework for making the decision based on your actual situation — your team, your workflow, your risk tolerance, your budget.
 
@@ -59,7 +59,7 @@ Claude Code is Anthropic's CLI-first agent. It runs in your terminal, operates d
 
 Its strengths are reasoning quality and instruction following. For complex, multi-step tasks — debugging a subtle interaction between systems, refactoring a large module consistently, implementing a feature across a full stack — it tends to produce coherent, high-quality work. It's also notably good at reading existing codebases and matching their conventions, which matters enormously in practice.
 
-The tradeoffs: it's terminal-based, which some developers find less natural than inline IDE integration. And because it's designed for meaningful autonomy, it works best when you've invested in the context setup we covered in [Article 3](/blog/agentic-ai-3-prompting-context-control) — it rewards good prompting more than some alternatives.
+The tradeoffs: it's terminal-based, which some developers find less natural than inline IDE integration. And because it's designed for meaningful autonomy, it works best when you've invested in the context setup we covered in [Part 3](/blog/agentic-ai-3-prompting-context-control) — it rewards good prompting more than some alternatives.
 
 Best fit for: developers and teams who work on complex, well-specified tasks and want an agent they can genuinely delegate to. Also a strong choice if you want to integrate agents into CI pipelines or automated workflows.
 
@@ -144,6 +144,18 @@ flowchart TD
 
 ---
 
+## Evals: The Discipline That Outlives the Pilot
+
+A pilot is a one-time decision. **Evals** are how you keep that decision honest as models, prompts, and codebases change underneath you.
+
+The minimum viable eval is a small set of representative tasks — five to ten — with known good outcomes, that you re-run whenever something material changes: a new model version, a system prompt update, a major dependency upgrade. If the score drops, you investigate before rolling out to the team.
+
+Sophisticated teams run evals continuously and track scores in dashboards. Smaller teams can get most of the value with a `/evals` directory containing a handful of golden test cases and a habit of running them on agent-config changes. The point isn't tooling — it's having a way to notice when the agent's judgment has shifted under your feet.
+
+This connects back to a point from [Part 3](/blog/agentic-ai-3-prompting-context-control): in agent-augmented workflows, your test suite is validating the agent's judgment as much as the code. Evals are how you formalize that — without them, you're trusting that the model that works today still works tomorrow. Sometimes it does. Sometimes it doesn't.
+
+---
+
 ## Build vs. Buy vs. Compose
 
 One framework that helps clarify the decision:
@@ -191,17 +203,19 @@ The teams that treat this as a moment to learn rather than a moment to wait will
 
 ## Closing the Series
 
-Six articles ago, I asked whether you understood this technology well enough to use it well. I hope the answer now is closer to yes.
+Six parts ago, I asked whether you understood this technology well enough to use it well. I hope the answer now is closer to yes.
 
 We've covered a lot of ground: the fundamentals of generative AI and LLMs, the anatomy of a coding agent, how to communicate with agents effectively, how to integrate them into real workflows, how teams are reorganizing around them, and how to choose the right tools for your situation.
 
-The through-line, if there is one, is this: these tools are powerful, imperfect, and genuinely transformative — but only if you engage with them actively. The developers and teams getting the most out of agents aren't the ones who handed over the wheel. They're the ones who figured out a new way to drive.
+The through-line is the one I named in Part 1: agents amplify clarity and amplify ambiguity equally. The teams shipping fast aren't the ones with the best model — they're the ones who got better at framing the problem before the agent ever sees it. These tools are powerful, imperfect, and genuinely transformative, but only if you engage with them actively. The developers and teams getting the most out of agents aren't the ones who handed over the wheel. They're the ones who figured out a new way to drive.
 
 That's the shift. And it's worth making.
 
 ---
 
-*This is the final article in the "Agentic AI Development: From Zero to Hero" series. If you found it useful, the earlier pieces are worth reading in order — each one builds on the last. And if something here is wrong, outdated, or missing — I'd genuinely like to know.*
+*This is the final part in the "Agentic AI Development: From Zero to Hero" series. If you found it useful, the earlier pieces are worth reading in order — each one builds on the last.*
+
+*If you have war stories from your own team, corrections, or just want to compare notes on what's actually working in production — find me on [LinkedIn](https://linkedin.com/in/rotem-horovitz) or [X](https://x.com/lurx). The conversation is where most of the real learning happens, and none of us is figuring this out alone.*
 
 ---
 
