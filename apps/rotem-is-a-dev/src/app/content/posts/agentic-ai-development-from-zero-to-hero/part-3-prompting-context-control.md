@@ -1,12 +1,11 @@
 ---
 title: "Prompting, Context & Control: How to Actually Work with Agents"
 slug: agentic-ai-3-prompting-context-control
-date: 2026-04-29
+date: 2026-04-30
 description: "Close the gap between installing an agent and getting real value from it. How to prompt effectively, provide the right context, and stay in control without micromanaging."
 tags: [ai, agentic-development, llm, prompting]
 series: agentic-ai-development
 seriesOrder: 3
-draft: true
 ---
 
 There's a gap between "I installed the agent" and "the agent is actually useful." Most people fall into it.

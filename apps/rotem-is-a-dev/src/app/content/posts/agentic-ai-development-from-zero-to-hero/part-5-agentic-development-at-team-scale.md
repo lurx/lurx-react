@@ -1,12 +1,11 @@
 ---
 title: "Agentic Development at Team Scale"
 slug: agentic-ai-5-agentic-development-at-team-scale
-date: 2026-04-29
+date: 2026-04-30
 description: "What changes when it's not just you and an agent, but a whole team. How roles shift, what standards to set, and how to adopt agentic tools without introducing new risks."
 tags: [ai, agentic-development, llm, team-workflow]
 series: agentic-ai-development
 seriesOrder: 5
-draft: true
 ---
 
 Everything we've covered so far has been about one developer and one agent.

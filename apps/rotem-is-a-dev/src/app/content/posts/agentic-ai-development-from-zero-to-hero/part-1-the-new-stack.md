@@ -1,12 +1,11 @@
 ---
 title: "The New Stack: Understanding Gen AI, LLMs, and Why They Matter"
 slug: agentic-ai-1-the-new-stack
-date: 2026-04-29
+date: 2026-04-30
 description: "Before we talk about agents, workflows, and team structure, let's make sure we're speaking the same language. A practical introduction to generative AI, LLMs, and why this moment matters."
 tags: [ai, agentic-development, llm]
 series: agentic-ai-development
 seriesOrder: 1
-draft: true
 ---
 
 *Already comfortable with LLMs, tokens, and context windows? [Skip to Part 2](/blog/agentic-ai-2-what-is-a-coding-agent) where we get into how coding agents actually work.*

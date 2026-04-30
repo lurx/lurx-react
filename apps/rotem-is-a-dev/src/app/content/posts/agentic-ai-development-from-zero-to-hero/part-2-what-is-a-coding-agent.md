@@ -1,12 +1,11 @@
 ---
 title: "What is an AI Coding Agent? A Practical Breakdown"
 slug: agentic-ai-2-what-is-a-coding-agent
-date: 2026-04-29
+date: 2026-04-30
 description: "Open the hood on coding agents — how they actually work, what makes them different from copilots, and where they break down. A practical anatomy using Claude Code as the worked example."
 tags: [ai, agentic-development, llm, coding-agents]
 series: agentic-ai-development
 seriesOrder: 2
-draft: true
 ---
 
 If [Part 1](/blog/agentic-ai-1-the-new-stack) was about understanding the engine, this one is about opening the hood.

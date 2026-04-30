@@ -1,12 +1,11 @@
 ---
 title: "Integrating Agents into Your Development Workflow"
 slug: agentic-ai-4-integrating-agents-workflow
-date: 2026-04-29
+date: 2026-04-30
 description: "Where agents genuinely fit in the development cycle and where they don't. A realistic look at planning, coding, testing, and reviewing with agents — and what a typical day actually looks like."
 tags: [ai, agentic-development, llm, workflow]
 series: agentic-ai-development
 seriesOrder: 4
-draft: true
 ---
 
 At some point, knowing how agents work stops being the bottleneck. The bottleneck becomes figuring out where they actually fit in the way you already build software.
@@ -55,14 +54,11 @@ What agents aren't good at: reviewing for architectural intent. They can tell yo
 
 ```mermaid
 flowchart TB
-    subgraph review["Review: feat/user-profile-edit"]
-        direction TB
-        sec["🔴 Security — 1 issue\nUnsanitized user input at profile.tsx:43"]
-        logic["🟡 Logic — 2 issues\nMissing null check in updateProfile()\nRace condition in concurrent saves"]
-        styling["🟢 Style — 3 issues\nInconsistent prop naming\nMagic number on line 91\nFunction exceeds 50 lines"]
-        ok["✓ No issues: error handling, test coverage, type safety"]
-        sec ~~~ logic ~~~ styling ~~~ ok
-    end
+    review(["Review: feat/user-profile-edit"])
+    review --> sec["🔴 Security — 1 issue\nUnsanitized user input at profile.tsx:43"]
+    review --> logic["🟡 Logic — 2 issues\nMissing null check in updateProfile()\nRace condition in concurrent saves"]
+    review --> styling["🟢 Style — 3 issues\nInconsistent prop naming\nMagic number on line 91\nFunction exceeds 50 lines"]
+    review --> ok["✓ No issues: error handling, test coverage, type safety"]
 ```
 
 ### Testing
@@ -144,16 +140,31 @@ A few patterns I see teams fall into that undercut the value. There's a line fro
 
 **Ignoring the context setup.** As we covered in [Part 3](/blog/agentic-ai-3-prompting-context-control), context is everything. Teams that drop agents into new tasks cold — no codebase context, no conventions, no constraints — get generic output. Teams that invest thirty seconds in setup get output that fits.
 
+**Common workflow traps and their fixes:**
+
+<div class="diagram-row" style="--diagram-row-basis: 160px">
+
 ```mermaid
-flowchart TD
-    subgraph traps["Common Workflow Traps"]
-        direction TB
-        T1["Treating output as final\n→ Always review before merging"]
-        T2["Wrong tasks for agents\n→ Skip trivial, familiar work"]
-        T3["One prompt, no iteration\n→ Iterate, don't one-shot"]
-        T4["No context setup\n→ 30 seconds of setup pays dividends"]
-    end
+flowchart TB
+    T1["Treating output as final"] --> F1["Always review before merging"]
 ```
+
+```mermaid
+flowchart TB
+    T2["Wrong tasks for agents"] --> F2["Skip trivial, familiar work"]
+```
+
+```mermaid
+flowchart TB
+    T3["One prompt, no iteration"] --> F3["Iterate, don't one-shot"]
+```
+
+```mermaid
+flowchart TB
+    T4["No context setup"] --> F4["30 seconds of setup pays dividends"]
+```
+
+</div>
 
 ---
 

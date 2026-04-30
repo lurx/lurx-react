@@ -1,12 +1,11 @@
 ---
 title: "Choosing Your Agent Stack: A Practical Comparison"
 slug: agentic-ai-6-choosing-your-agent-stack
-date: 2026-04-29
+date: 2026-04-30
 description: "An honest framework for choosing the right agent tool — comparing the main players, running a meaningful pilot, and making a confident decision based on your actual situation."
 tags: [ai, agentic-development, llm, tooling]
 series: agentic-ai-development
 seriesOrder: 6
-draft: true
 ---
 
 Six parts in, you have the mental model. Now comes the part everyone actually Googled first: which agent should I use?
