@@ -1,0 +1,44 @@
+@use 'mixins/spacing' as *;
+
+.filter {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(1.5);
+	padding: spacing(2) spacing(3);
+}
+
+.label {
+	color: var(--muted);
+	font-size: 0.8125rem;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+  justify-content: justify;
+	gap: spacing(0.75);
+}
+
+.tag {
+	font-size: 0.9rem;
+	color: var(--muted);
+	background: none;
+	border: 1px solid var(--border);
+	padding: spacing(0.5) spacing(1.5);
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+	font-family: inherit;
+	user-select: none;
+
+	&:hover {
+		color: var(--text);
+		border-color: var(--muted-dim);
+	}
+
+	&[aria-pressed='true'] {
+		color: var(--teal);
+		border-color: var(--teal);
+		background-color: rgba(67, 217, 173, 0.1);
+	}
+}

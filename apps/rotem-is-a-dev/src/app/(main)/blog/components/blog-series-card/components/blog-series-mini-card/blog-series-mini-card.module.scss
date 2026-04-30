@@ -1,0 +1,47 @@
+@use 'mixins/spacing' as *;
+
+.miniCard {
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface);
+	transition: border-color 0.2s;
+
+	&:hover {
+		border-color: var(--muted-dim);
+	}
+}
+
+.miniCardLink {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: spacing(2);
+	text-decoration: none;
+	color: inherit;
+}
+
+.miniCardFooter {
+	margin-block-start: auto;
+}
+
+.partBadge {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--orange, #e78a4e);
+	margin-block-end: spacing(0.75);
+}
+
+.miniCardTitle {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--text);
+	margin: 0 0 spacing(0.5);
+	line-height: 1.4;
+}
+
+.miniCardMeta {
+	font-size: 0.6875rem;
+	color: var(--blog-meta);
+}

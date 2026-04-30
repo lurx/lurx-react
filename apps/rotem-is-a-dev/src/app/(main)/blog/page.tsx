@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { posts, mdxPosts } from '#velite';
+import { IS_PREVIEW_ENV } from '@/app/utils/is-preview-env.util';
 import { BlogPage } from './blog-page.component';
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function BlogServerPage() {
 	const publishedPosts = [...posts, ...mdxPosts]
-		.filter(post => !post.draft)
+		.filter(post => IS_PREVIEW_ENV || !post.draft)
 		.sort(
 			(postA, postB) =>
 				new Date(postB.date).getTime() -

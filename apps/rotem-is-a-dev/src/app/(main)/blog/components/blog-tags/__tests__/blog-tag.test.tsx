@@ -22,4 +22,16 @@ describe('BlogTag', () => {
 		const span = container.firstChild as HTMLElement;
 		expect(span.className).toContain('tag');
 	});
+
+	it('sets data-draft attribute when draft is true', () => {
+		const { container } = render(<BlogTag tag="draft" draft />);
+		const span = container.firstChild as HTMLElement;
+		expect(span).toHaveAttribute('data-draft');
+	});
+
+	it('does not set data-draft attribute when draft is false', () => {
+		const { container } = render(<BlogTag tag="react" />);
+		const span = container.firstChild as HTMLElement;
+		expect(span).not.toHaveAttribute('data-draft');
+	});
 });

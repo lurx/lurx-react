@@ -12,6 +12,9 @@ jest.mock('next/navigation', () => ({
 jest.mock('../blog-page.helpers', () => ({
 	filterPosts: jest.fn((posts: Post[]) => posts),
 	getAllTags: jest.fn(() => ['react', 'typescript']),
+	groupPostsIntoListItems: jest.fn((posts: Post[]) =>
+		posts.map(post => ({ type: 'post' as const, post })),
+	),
 }));
 
 jest.mock('@/app/utils/toggle-in-array.util', () => ({
@@ -23,26 +26,6 @@ jest.mock('@/app/utils/toggle-in-array.util', () => ({
 jest.mock('@/app/components', () => ({
 	FilterPanel: ({ children }: { children: React.ReactNode }) => (
 		<aside data-testid="filter-panel">{children}</aside>
-	),
-	TechnologyFilter: ({
-		technologies,
-		selected,
-		onToggleAction,
-		sectionLabel,
-	}: {
-		technologies: string[];
-		selected: string[];
-		onToggleAction: (tag: string) => void;
-		sectionLabel: string;
-	}) => (
-		<div data-testid="technology-filter">
-			<span>{sectionLabel}</span>
-			{technologies.map((tech: string) => (
-				<button key={tech} onClick={() => onToggleAction(tech)} aria-pressed={selected.includes(tech)}>
-					{tech}
-				</button>
-			))}
-		</div>
 	),
 	TextInput: ({
 		label,
@@ -61,6 +44,26 @@ jest.mock('@/app/components', () => ({
 			onChange={onChange}
 			placeholder={placeholder}
 		/>
+	),
+}));
+
+jest.mock('../components/blog-tag-filter', () => ({
+	BlogTagFilter: ({
+		tags,
+		selected,
+		onToggleAction,
+	}: {
+		tags: string[];
+		selected: string[];
+		onToggleAction: (tag: string) => void;
+	}) => (
+		<div data-testid="blog-tag-filter">
+			{tags.map((tag: string) => (
+				<button key={tag} onClick={() => onToggleAction(tag)} aria-pressed={selected.includes(tag)}>
+					{tag}
+				</button>
+			))}
+		</div>
 	),
 }));
 
@@ -124,12 +127,12 @@ describe('BlogPage', () => {
 		expect(screen.getByPlaceholderText('Search posts...')).toBeInTheDocument();
 	});
 
-	it('renders the technology filter with the tags label', () => {
+	it('renders the tag filter', () => {
 		render(<BlogPage posts={POSTS} />);
-		expect(screen.getByText('tags')).toBeInTheDocument();
+		expect(screen.getByTestId('blog-tag-filter')).toBeInTheDocument();
 	});
 
-	it('renders the technology filter with all available tags', () => {
+	it('renders the tag filter with all available tags', () => {
 		render(<BlogPage posts={POSTS} />);
 		expect(screen.getByText('react')).toBeInTheDocument();
 		expect(screen.getByText('typescript')).toBeInTheDocument();

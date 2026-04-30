@@ -1,0 +1,51 @@
+@use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
+
+.seriesCard {
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-alt);
+	padding: spacing(3);
+}
+
+.seriesTitle {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--text);
+	margin: 0 0 spacing(0.5);
+}
+
+.seriesMeta {
+	display: flex;
+	align-items: center;
+	gap: spacing(1.5);
+	font-size: 0.75rem;
+	color: var(--blog-meta);
+	margin-block-end: spacing(1);
+}
+
+.seriesDescription {
+	font-size: 0.875rem;
+	color: var(--muted);
+	margin: 0 0 spacing(1);
+	line-height: 1.5;
+}
+
+.seriesGrid {
+  --series-grid-columns: 3;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-block-start: spacing(2);
+	display: grid;
+	grid-template-columns: repeat(var(--series-grid-columns), 1fr);
+	gap: spacing(1.5);
+
+	@include media-below('desktop') {
+		--series-grid-columns: 2;
+	}
+
+	@include media-below('tablet') {
+		--series-grid-columns: 1;
+	}
+}
