@@ -136,6 +136,8 @@ flowchart LR
         Act --> O["Observe result"]
         O --> R
     end
+
+    Chatbot ~~~ Agent
 ```
 
 Think of the difference this way. A chatbot is like calling a consultant and asking for advice. An agent is like hiring that consultant, giving them access to your systems, and having them actually do the work — file the report, send the email, run the build.
