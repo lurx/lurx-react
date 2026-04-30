@@ -154,6 +154,8 @@ For both of you: this is not a marginal productivity improvement. It's a shift i
 
 Developers are spending less time on implementation boilerplate and more time on architecture, judgment, and review. Team leads are managing outputs from humans *and* agents. PMs are scoping work differently because the cost of certain tasks has dropped dramatically. The org chart hasn't changed yet — but the workflows already have.
 
+<div class="diagram-row">
+
 ```mermaid
 pie title Before agents
     "Implementation" : 60
@@ -169,6 +171,8 @@ pie title With agents
     "Review" : 25
     "Context setup" : 25
 ```
+
+</div>
 
 None of that means jobs are disappearing tomorrow. But it does mean that the teams who understand this technology — really understand it, not just have a vague sense that "AI is a thing" — will make meaningfully better decisions than those who don't.
 

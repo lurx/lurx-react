@@ -304,6 +304,29 @@
 		border-radius: var(--radius-md);
 	}
 
+	:global(.diagram-row) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: spacing(2);
+		margin-block: 1em;
+
+		& > :global(pre.mermaid) {
+			flex: 1 1 320px;
+			margin-block: 0;
+			min-inline-size: 0;
+
+			svg {
+				inline-size: 100% !important;
+				max-inline-size: 100% !important;
+				block-size: auto;
+			}
+		}
+
+		@include media-below('tablet') {
+			flex-direction: column;
+		}
+	}
+
 	table {
 		width: 100%;
 		border-collapse: collapse;
