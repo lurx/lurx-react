@@ -11,7 +11,6 @@ import {
 } from 'velite';
 import { mermaidConfig } from './src/app/content/plugins/mermaid.config';
 import { rehypeExternalLinks } from './src/app/content/plugins/rehype-external-links';
-import { rehypeMermaidBrFix } from './src/app/content/plugins/rehype-mermaid-br-fix';
 
 const posts = defineCollection({
 	name: 'Post',
@@ -67,7 +66,6 @@ function createContentPlugins(): MarkdownOptions & MdxOptions {
 		rehypePlugins: [
 			rehypeExternalLinks,
 			[rehypeMermaid, mermaidConfig],
-			rehypeMermaidBrFix,
 			[rehypeShiki, { theme: 'night-owl' }],
 		],
 	};

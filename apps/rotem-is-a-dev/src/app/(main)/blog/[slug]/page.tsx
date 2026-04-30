@@ -9,7 +9,7 @@ import { SERIES_META } from '../data/blog-series.data';
 import type { AnyPost } from '../blog-page.types';
 import type { BlogPostPageProps } from './blog-post-page.types';
 import styles from './blog-post.module.scss';
-import { BackToBlogLink, BlogPostActions, BlogPostHeader, SeriesNav } from './components';
+import { BackToBlogLink, BlogPostActions, BlogPostHeader, MermaidRenderer, SeriesNav } from './components';
 
 type InteractivePostProps = {
 	code?: string;
@@ -108,6 +108,7 @@ export default async function BlogPostPage({ params }: Readonly<BlogPostPageProp
 				/>
 			)}
 			<Comments entityType="blog" entityId={slug} />
+			<MermaidRenderer />
 		</article>
 	);
 }
