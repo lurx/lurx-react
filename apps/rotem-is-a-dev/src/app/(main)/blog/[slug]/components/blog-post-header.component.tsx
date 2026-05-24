@@ -1,6 +1,6 @@
-import { formatDate } from '../../blog-page.helpers';
+import { TagsList } from '@/app/components/tags-list';
+import { formatDate } from '@/app/utils/format-date.util';
 import type { BlogPostHeaderProps } from '../../blog-page.types';
-import { BlogTagsList } from '../../components';
 import styles from '../blog-post.module.scss';
 
 export const BlogPostHeader = ({ post, actions }: BlogPostHeaderProps) => {
@@ -20,7 +20,7 @@ export const BlogPostHeader = ({ post, actions }: BlogPostHeaderProps) => {
         {' | '}
 				<span className={styles.readingTime}>{readingTime} min read</span>
 			</div>
-			<BlogTagsList tags={tags} />
+			<TagsList tags={tags} />
 		</header>
 	);
 };

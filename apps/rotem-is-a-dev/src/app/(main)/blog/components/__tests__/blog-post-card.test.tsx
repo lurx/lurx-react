@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { Post } from '@/.velite';
 
-jest.mock('@/app/(main)/blog/blog-page.helpers', () => ({
+jest.mock('@/app/utils/format-date.util', () => ({
 	formatDate: (date: string) => `Formatted: ${date}`,
 }));
 
-jest.mock('@/app/(main)/blog/components/blog-tags', () => ({
-	BlogTagsList: ({ tags }: { tags: string[] }) => (
-		<div data-testid="blog-tags-list">{tags.join(', ')}</div>
+jest.mock('@/app/components/tags-list', () => ({
+	TagsList: ({ tags }: { tags: string[] }) => (
+		<div data-testid="tags-list">{tags.join(', ')}</div>
 	),
 }));
 
@@ -79,12 +79,12 @@ describe('BlogPostCard', () => {
 
 	it('renders the tags list', () => {
 		render(<BlogPostCard post={mockPost} />);
-		expect(screen.getByTestId('blog-tags-list')).toBeInTheDocument();
+		expect(screen.getByTestId('tags-list')).toBeInTheDocument();
 	});
 
-	it('passes the post tags to BlogTagsList', () => {
+	it('passes the post tags to TagsList', () => {
 		render(<BlogPostCard post={mockPost} />);
-		expect(screen.getByTestId('blog-tags-list')).toHaveTextContent('react, typescript');
+		expect(screen.getByTestId('tags-list')).toHaveTextContent('react, typescript');
 	});
 
 	it('renders as a list item', () => {

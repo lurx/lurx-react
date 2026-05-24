@@ -16,16 +16,6 @@ export type BlogListSeries = {
 
 export type BlogListItem = BlogListPost | BlogListSeries;
 
-export type BlogTagProps = {
-  tag: string;
-  draft?: boolean;
-};
-
-export type BlogTagsListProps = {
-  tags: string[];
-  draft?: boolean;
-};
-
 export type BlogPostHeaderProps = {
   post: AnyPost;
   actions?: React.ReactNode;

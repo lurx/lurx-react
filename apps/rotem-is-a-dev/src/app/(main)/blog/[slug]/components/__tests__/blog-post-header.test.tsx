@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { BlogPostHeader } from '../blog-post-header.component';
 import type { Post } from '@/.velite';
 
-jest.mock('@/app/(main)/blog/blog-page.helpers', () => ({
+jest.mock('@/app/utils/format-date.util', () => ({
 	formatDate: (date: string) => `Formatted: ${date}`,
 }));
 
-jest.mock('@/app/(main)/blog/components', () => ({
-	BlogTagsList: ({ tags }: { tags: string[] }) => (
-		<div data-testid="blog-tags-list">{tags.join(', ')}</div>
+jest.mock('@/app/components/tags-list', () => ({
+	TagsList: ({ tags }: { tags: string[] }) => (
+		<div data-testid="tags-list">{tags.join(', ')}</div>
 	),
 }));
 
@@ -47,12 +47,12 @@ describe('BlogPostHeader', () => {
 
 	it('renders the tags list', () => {
 		render(<BlogPostHeader post={mockPost} />);
-		expect(screen.getByTestId('blog-tags-list')).toBeInTheDocument();
+		expect(screen.getByTestId('tags-list')).toBeInTheDocument();
 	});
 
-	it('passes the post tags to BlogTagsList', () => {
+	it('passes the post tags to TagsList', () => {
 		render(<BlogPostHeader post={mockPost} />);
-		expect(screen.getByTestId('blog-tags-list')).toHaveTextContent('react, typescript');
+		expect(screen.getByTestId('tags-list')).toHaveTextContent('react, typescript');
 	});
 
 	it('renders inside a header element', () => {
@@ -69,7 +69,7 @@ describe('BlogPostHeader', () => {
 	it('renders with no tags correctly', () => {
 		const post: Post = { ...mockPost, tags: [] };
 		render(<BlogPostHeader post={post} />);
-		expect(screen.getByTestId('blog-tags-list')).toHaveTextContent('');
+		expect(screen.getByTestId('tags-list')).toHaveTextContent('');
 	});
 
 	it('renders actions when provided', () => {

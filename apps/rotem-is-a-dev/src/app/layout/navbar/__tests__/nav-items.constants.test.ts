@@ -5,9 +5,10 @@ describe('NAV_ITEMS', () => {
 		expect(NAV_ITEMS).toEqual([
 			{ label: 'hello', href: '/', enabled: true },
 			{ label: 'about-me', href: '/about-me', enabled: true },
-			{ label: 'games', href: '/games', enabled: true },
-			{ label: 'projects', href: '/projects', enabled: true },
 			{ label: 'blog', href: '/blog', enabled: true },
+			{ label: 'snippets', href: '/snippets', enabled: true },
+			{ label: 'projects', href: '/projects', enabled: true },
+			{ label: 'games', href: '/games', enabled: true },
 		]);
 	});
 

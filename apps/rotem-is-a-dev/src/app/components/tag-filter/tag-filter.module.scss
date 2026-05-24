@@ -15,7 +15,7 @@
 .tags {
 	display: flex;
 	flex-wrap: wrap;
-  justify-content: justify;
+	justify-content: justify;
 	gap: spacing(0.75);
 }
 
@@ -39,6 +39,6 @@
 	&[aria-pressed='true'] {
 		color: var(--teal);
 		border-color: var(--teal);
-		background-color: rgba(67, 217, 173, 0.1);
+		background-color: var(--tag-bg-teal);
 	}
 }

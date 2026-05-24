@@ -11,8 +11,6 @@
 	}
 }
 
-// ─── Main Content ──────────────────────────────────────────────────────────────
-
 .content {
 	flex: 1;
 	display: flex;
@@ -48,12 +46,12 @@
 .cardLink {
 	display: block;
 	padding: spacing(3);
-	padding-block-end: spacing(1.5);
 	text-decoration: none;
 	color: inherit;
 }
 
 .cardTitle {
+	font-family: var(--font-mono), monospace;
 	font-size: 1.125rem;
 	font-weight: 600;
 	color: var(--text);
