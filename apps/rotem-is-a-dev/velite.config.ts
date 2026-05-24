@@ -11,6 +11,9 @@ import {
 } from 'velite';
 import { mermaidConfig } from './src/app/content/plugins/mermaid.config';
 import { rehypeExternalLinks } from './src/app/content/plugins/rehype-external-links';
+import { remarkIncludeSnippet } from './src/app/content/plugins/remark-include-snippet';
+
+const SNIPPETS_SOURCE_DIR = resolve(process.cwd(), 'src/snippets');
 
 const posts = defineCollection({
 	name: 'Post',
@@ -61,8 +64,27 @@ const pages = defineCollection({
 	}),
 });
 
+const snippets = defineCollection({
+	name: 'Snippet',
+	pattern: 'snippets/**/*.md',
+	schema: s.object({
+		title: s.string(),
+		slug: s.slug('snippets'),
+		date: s.isodate(),
+		description: s.string(),
+		tags: s.array(s.string()),
+		source: s.string(),
+		draft: s.boolean().default(false),
+		content: s.markdown(),
+		metadata: s.metadata(),
+	}),
+});
+
 function createContentPlugins(): MarkdownOptions & MdxOptions {
 	return {
+		remarkPlugins: [
+			[remarkIncludeSnippet, { baseDir: SNIPPETS_SOURCE_DIR }],
+		],
 		rehypePlugins: [
 			rehypeExternalLinks,
 			[rehypeMermaid, mermaidConfig],
@@ -79,7 +101,7 @@ export default defineConfig({
 		base: '/static/',
 		clean: true,
 	},
-	collections: { posts, mdxPosts, pages },
+	collections: { posts, mdxPosts, pages, snippets },
 	complete: (_data, context) => {
 		const trigger = resolve(
 			dirname(context.config.configPath),
