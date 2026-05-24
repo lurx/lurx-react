@@ -58,6 +58,6 @@ function buildCodeNode(filename: string, baseDir: string): MdastNode {
 	return {
 		type: 'code',
 		lang,
-		value: contents.replace(/\n+$/, ''),
+		value: contents.trimEnd(),
 	};
 }
