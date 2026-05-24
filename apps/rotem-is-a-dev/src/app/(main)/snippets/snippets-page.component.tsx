@@ -2,10 +2,12 @@
 
 import { FilterPanel, TextInput } from '@/app/components';
 import { EMPTY_STATE_VARIANTS, EmptyState } from '@/app/components/empty-state';
+import { TagFilter } from '@/app/components/tag-filter';
+import { filterByTagsAndSearch } from '@/app/utils/filter-by-tags-and-search.util';
+import { getAllTags } from '@/app/utils/get-all-tags.util';
 import { toggleInArray } from '@/app/utils/toggle-in-array.util';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { SnippetCard, SnippetTagFilter } from './components';
-import { filterSnippets, getAllTags } from './snippets-page.helpers';
+import { SnippetCard } from './components';
 import styles from './snippets-page.module.scss';
 import type { SnippetItem, SnippetsPageProps } from './snippets-page.types';
 
@@ -26,7 +28,7 @@ export const SnippetsPage = ({ snippets }: SnippetsPageProps) => {
 		setSelectedTags(previous => toggleInArray(previous, tag));
 	}, []);
 
-	const filteredSnippets = filterSnippets(snippets, selectedTags, search);
+	const filteredSnippets = filterByTagsAndSearch(snippets, selectedTags, search);
 
 	const renderSnippet = (snippet: SnippetItem) => (
 		<SnippetCard key={snippet.slug} snippet={snippet} />
@@ -45,7 +47,7 @@ export const SnippetsPage = ({ snippets }: SnippetsPageProps) => {
 					onChange={handleSearchChange}
 					placeholder="Search snippets..."
 				/>
-				<SnippetTagFilter
+				<TagFilter
 					tags={allTags}
 					selected={selectedTags}
 					onToggleAction={toggleTag}

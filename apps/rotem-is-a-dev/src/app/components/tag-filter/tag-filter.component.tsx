@@ -1,7 +1,7 @@
-import styles from './blog-tag-filter.module.scss';
-import type { BlogTagFilterProps } from './blog-tag-filter.types';
+import styles from './tag-filter.module.scss';
+import type { TagFilterProps } from './tag-filter.types';
 
-export const BlogTagFilter = ({ tags, selected, onToggleAction }: BlogTagFilterProps) => (
+export const TagFilter = ({ tags, selected, onToggleAction }: TagFilterProps) => (
 	<div className={styles.filter} role="group" aria-label="Filter by tags">
 		<span className={styles.label}>_tags:</span>
 		<div className={styles.tags}>

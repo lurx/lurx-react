@@ -2,20 +2,22 @@
 
 import { FilterPanel, TextInput } from '@/app/components';
 import { EMPTY_STATE_VARIANTS, EmptyState } from '@/app/components/empty-state';
+import { TagFilter } from '@/app/components/tag-filter';
+import { filterByTagsAndSearch } from '@/app/utils/filter-by-tags-and-search.util';
+import { getAllTags } from '@/app/utils/get-all-tags.util';
 import { toggleInArray } from '@/app/utils/toggle-in-array.util';
 import type { AnyPost, BlogListItem, BlogPageProps } from './blog-page.types';
 import { useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { filterPosts, getAllTags, groupPostsIntoListItems } from './blog-page.helpers';
+import { groupPostsIntoListItems } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
 import { BlogPostCard } from './components/blog-post-card.component';
-import { BlogTagFilter } from './components/blog-tag-filter';
 import { BlogSeriesCard } from './components/blog-series-card';
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
 	const router = useRouter();
 	const [search, setSearch] = useState('');
-	const [selectedTags, setSelectedTags] = useState<Technology[]>([]);
+	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
 	const handleSearchChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +31,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		[posts],
 	);
 
-	const toggleTag = useCallback((tag: Technology) => {
+	const toggleTag = useCallback((tag: string) => {
 		setSelectedTags(prev => toggleInArray(prev, tag));
 	}, []);
 
@@ -37,7 +39,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		router.push(`/blog/${post.slug}`);
 	}, [router]);
 
-	const filteredPosts = filterPosts(posts, selectedTags, search);
+	const filteredPosts = filterByTagsAndSearch(posts, selectedTags, search);
 	const listItems = groupPostsIntoListItems(filteredPosts);
 
 	const renderListItem = (item: BlogListItem) => {
@@ -63,7 +65,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 					onChange={handleSearchChange}
 					placeholder="Search posts..."
 				/>
-				<BlogTagFilter
+				<TagFilter
 					tags={allTags}
 					selected={selectedTags}
 					onToggleAction={toggleTag}

@@ -1,0 +1,16 @@
+@use 'mixins/spacing' as *;
+
+.tag {
+	--tag-color: var(--teal);
+	--tag-bg-color: var(--tag-bg-teal);
+	font-size: 0.6875rem;
+	color: var(--tag-color);
+	background-color: var(--tag-bg-color);
+	padding: 2px spacing(1);
+	border-radius: var(--radius-sm);
+
+	&[data-draft] {
+		--tag-color: var(--purple);
+		--tag-bg-color: var(--tag-bg-purple);
+	}
+}

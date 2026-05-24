@@ -1,0 +1,7 @@
+@use 'mixins/spacing' as *;
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: spacing(0.5);
+}

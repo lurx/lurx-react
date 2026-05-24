@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { extname, resolve } from 'node:path';
+import { extname, resolve, sep } from 'node:path';
 import type { MdastNode, RemarkIncludeSnippetOptions } from './remark-include-snippet.types';
 
 const INCLUDE_LANG = 'include';
@@ -44,6 +44,14 @@ function isIncludeDirective(node: MdastNode): boolean {
 
 function buildCodeNode(filename: string, baseDir: string): MdastNode {
 	const absolutePath = resolve(baseDir, filename);
+	const containmentPrefix = baseDir.endsWith(sep) ? baseDir : baseDir + sep;
+
+	if (!absolutePath.startsWith(containmentPrefix)) {
+		throw new Error(
+			`remark-include-snippet: include path "${filename}" resolves outside the snippets directory.`,
+		);
+	}
+
 	const contents = readFileSync(absolutePath, 'utf-8');
 	const lang = LANG_BY_EXTENSION[extname(filename)] ?? 'text';
 

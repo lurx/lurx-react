@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { formatDate } from '../../blog-page.helpers';
-import { BlogTagsList } from '../blog-tags';
+import { TagsList } from '@/app/components/tags-list';
+import { formatDate } from '@/app/utils/format-date.util';
 import type { BlogSeriesCardProps } from './blog-series-card.types';
 import styles from './blog-series-card.module.scss';
 import { BlogSeriesMiniCard } from './components/blog-series-mini-card';
@@ -33,7 +33,7 @@ export const BlogSeriesCard = ({ meta, posts }: BlogSeriesCardProps) => {
 				<span>{posts.length} parts</span>
 			</div>
 			<p className={styles.seriesDescription}>{meta.description}</p>
-			<BlogTagsList
+			<TagsList
 				tags={sharedTags}
 				draft={isDraft}
 			/>

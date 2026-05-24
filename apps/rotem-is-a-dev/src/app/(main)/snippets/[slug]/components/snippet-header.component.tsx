@@ -1,5 +1,5 @@
-import { SnippetTagsList } from '../../components';
-import { formatDate } from '../../snippets-page.helpers';
+import { TagsList } from '@/app/components/tags-list';
+import { formatDate } from '@/app/utils/format-date.util';
 import type { SnippetHeaderProps } from '../../snippets-page.types';
 import styles from '../snippet.module.scss';
 
@@ -13,7 +13,7 @@ export const SnippetHeader = ({ snippet }: SnippetHeaderProps) => {
 			<div className={styles.meta}>
 				<time dateTime={date}>{formatDate(date)}</time>
 			</div>
-			<SnippetTagsList tags={tags} />
+			<TagsList tags={tags} />
 		</header>
 	);
 };

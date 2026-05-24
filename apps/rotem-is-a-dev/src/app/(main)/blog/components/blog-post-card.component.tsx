@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { formatDate } from '../blog-page.helpers';
+import { TagsList } from '@/app/components/tags-list';
+import { formatDate } from '@/app/utils/format-date.util';
 import styles from '../blog-page.module.scss';
 import { BlogPostCardFooter } from './blog-post-card-footer';
 import type { BlogPostCardProps } from './blog-post-card.types';
-import { BlogTagsList } from './blog-tags';
 
 export const BlogPostCard = ({ post, onCommentClickAction }: BlogPostCardProps) => {
 	const handleCommentClick = onCommentClickAction ? () => onCommentClickAction(post) : undefined;
@@ -28,7 +28,7 @@ export const BlogPostCard = ({ post, onCommentClickAction }: BlogPostCardProps) 
 				<p className={styles.cardDescription}>
 					{post.description}
 				</p>
-				<BlogTagsList tags={post.tags} draft={post.draft} />
+				<TagsList tags={post.tags} draft={post.draft} />
 			</Link>
 			{handleCommentClick && (
 				<BlogPostCardFooter

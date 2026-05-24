@@ -10,11 +10,17 @@ jest.mock('next/navigation', () => ({
 }));
 
 jest.mock('../blog-page.helpers', () => ({
-	filterPosts: jest.fn((posts: Post[]) => posts),
-	getAllTags: jest.fn(() => ['react', 'typescript']),
 	groupPostsIntoListItems: jest.fn((posts: Post[]) =>
 		posts.map(post => ({ type: 'post' as const, post })),
 	),
+}));
+
+jest.mock('@/app/utils/filter-by-tags-and-search.util', () => ({
+	filterByTagsAndSearch: jest.fn((posts: Post[]) => posts),
+}));
+
+jest.mock('@/app/utils/get-all-tags.util', () => ({
+	getAllTags: jest.fn(() => ['react', 'typescript']),
 }));
 
 jest.mock('@/app/utils/toggle-in-array.util', () => ({
@@ -47,8 +53,8 @@ jest.mock('@/app/components', () => ({
 	),
 }));
 
-jest.mock('../components/blog-tag-filter', () => ({
-	BlogTagFilter: ({
+jest.mock('@/app/components/tag-filter', () => ({
+	TagFilter: ({
 		tags,
 		selected,
 		onToggleAction,
@@ -57,7 +63,7 @@ jest.mock('../components/blog-tag-filter', () => ({
 		selected: string[];
 		onToggleAction: (tag: string) => void;
 	}) => (
-		<div data-testid="blog-tag-filter">
+		<div data-testid="tag-filter">
 			{tags.map((tag: string) => (
 				<button key={tag} onClick={() => onToggleAction(tag)} aria-pressed={selected.includes(tag)}>
 					{tag}
@@ -87,10 +93,11 @@ jest.mock('@/app/components/empty-state', () => ({
 	EMPTY_STATE_VARIANTS: { NO_POSTS: 'NO_POSTS' },
 }));
 
-import { filterPosts, getAllTags } from '../blog-page.helpers';
+import { filterByTagsAndSearch } from '@/app/utils/filter-by-tags-and-search.util';
+import { getAllTags } from '@/app/utils/get-all-tags.util';
 import { BlogPage } from '../blog-page.component';
 
-const mockFilterPosts = filterPosts as jest.Mock;
+const mockFilterPosts = filterByTagsAndSearch as jest.Mock;
 const mockGetAllTags = getAllTags as jest.Mock;
 
 const makeMockPost = (overrides: Partial<Post> = {}): Post => ({
@@ -129,7 +136,7 @@ describe('BlogPage', () => {
 
 	it('renders the tag filter', () => {
 		render(<BlogPage posts={POSTS} />);
-		expect(screen.getByTestId('blog-tag-filter')).toBeInTheDocument();
+		expect(screen.getByTestId('tag-filter')).toBeInTheDocument();
 	});
 
 	it('renders the tag filter with all available tags', () => {

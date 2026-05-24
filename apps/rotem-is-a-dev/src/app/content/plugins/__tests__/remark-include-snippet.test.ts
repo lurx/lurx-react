@@ -83,4 +83,12 @@ describe('remarkIncludeSnippet', () => {
 			{ type: 'code', lang: 'ts', value: 'export {};' },
 		]);
 	});
+
+	it('throws when the include path escapes the base directory', () => {
+		const tree = makeRoot([makeIncludeFence('../escaped.ts')]);
+
+		expect(() => remarkIncludeSnippet({ baseDir })(tree)).toThrow(
+			/resolves outside the snippets directory/,
+		);
+	});
 });
