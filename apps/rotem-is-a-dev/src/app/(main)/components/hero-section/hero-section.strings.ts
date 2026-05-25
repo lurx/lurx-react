@@ -1,5 +1,5 @@
 export const heroSectionStrings = {
-	greeting: 'Hi all. I am',
+	greeting: 'Hi, I\'m',
 	name: 'Rotem Horovitz',
 	role: 'Front-end developer',
 	commentText: '// find my profile on Github:',
