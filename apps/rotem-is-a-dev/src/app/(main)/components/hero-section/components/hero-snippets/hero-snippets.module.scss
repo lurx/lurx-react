@@ -1,4 +1,6 @@
+@use 'mixins/media' as *;
 @use 'mixins/normalize-to-grid' as *;
+@use 'mixins/spacing' as *;
 
 // Embla viewport — must have overflow: hidden and a fixed height
 .viewport {
@@ -48,4 +50,24 @@
 
 .code {
   flex: 1;
+}
+
+// Mobile horizontal carousel — slides scroll side-by-side
+@include media-below('tablet') {
+  .viewport {
+    inline-size: 100%;
+    block-size: 320px;
+  }
+
+  .emblaContainer {
+    flex-direction: row;
+    block-size: 100%;
+  }
+
+  .slide {
+    flex: 0 0 80%;
+    max-inline-size: 320px;
+    margin-block-end: 0;
+    margin-inline-end: spacing(2);
+  }
 }

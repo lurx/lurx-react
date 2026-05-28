@@ -6,18 +6,19 @@ import { SnippetSlide } from './hero-snippet-slide.component';
 import { SNIPPETS, TOTAL_SNIPPETS } from './hero-snippets.constants';
 import { getOpacity } from './hero-snippets.helpers';
 import styles from './hero-snippets.module.scss';
+import type { HeroSnippetsProps } from './hero-snippets.types';
 
 const AUTO_SCROLL_INTERVAL_MS = 2000;
 
-export const HeroSnippets = () => {
+export const HeroSnippets = ({ axis = 'y' }: HeroSnippetsProps) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [paused, setPaused] = useState(false);
 
 	const [emblaRef, emblaApi] = useEmblaCarousel({
-		axis: 'y',
+		axis,
 		loop: true,
 		align: 'center',
-		watchDrag: false,
+		watchDrag: axis === 'x',
 	});
 
 	const handlePause = () => setPaused(true);
@@ -48,6 +49,7 @@ export const HeroSnippets = () => {
 			onBlur={handlePlay}
 			aria-label="Code snippets carousel"
 			data-testid="hero-snippets"
+			data-axis={axis}
 			data-hero-widget
 		>
 			<div className={styles.emblaContainer}>

@@ -16,6 +16,8 @@ export const HeroSection = () => {
 	const { isMobile } = useResponsive();
 	const { isShellLoaded } = useEntryAnimation();
 
+	const carouselAxis = isMobile ? 'x' : 'y';
+
 	return (
 		<HeroProvider>
 			<section
@@ -25,14 +27,12 @@ export const HeroSection = () => {
 				<HeroBlurs />
 				<HeroIntroduction />
 
-				{!isMobile && (
-					<div className={styles.right}>
-						<HeroSnippets />
-						<HeroGameTrigger />
-					</div>
-				)}
+				<div className={styles.right}>
+					<HeroSnippets key={carouselAxis} axis={carouselAxis} />
+					{!isMobile && <HeroGameTrigger />}
+				</div>
 
-				<HeroGameDialog />
+				{!isMobile && <HeroGameDialog />}
 			</section>
 		</HeroProvider>
 	);

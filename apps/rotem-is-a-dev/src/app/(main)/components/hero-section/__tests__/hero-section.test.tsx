@@ -1,8 +1,10 @@
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import { HeroSection } from '../hero-section.component';
 
+let mockIsMobile = false;
+
 jest.mock('@/hooks', () => ({
-	useResponsive: () => ({ isMobile: false, isTablet: false, isDesktop: true }),
+	useResponsive: () => ({ isMobile: mockIsMobile, isTablet: false, isDesktop: !mockIsMobile }),
 }));
 
 jest.mock('@/lib/shiki', () => ({
@@ -44,6 +46,7 @@ const WIN_CLOSE_DELAY_MS = 1000;
 
 beforeEach(() => {
 	jest.useFakeTimers();
+	mockIsMobile = false;
 	let portalRoot = document.getElementById('portal-root');
 	if (!portalRoot) {
 		portalRoot = document.createElement('div');
@@ -125,5 +128,32 @@ describe('HeroSection', () => {
 			jest.advanceTimersByTime(WIN_CLOSE_DELAY_MS);
 		});
 		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
+	});
+
+	describe('on mobile', () => {
+		beforeEach(() => {
+			mockIsMobile = true;
+		});
+
+		it('still renders the snippets carousel', async () => {
+			await act(async () => {
+				render(<HeroSection />);
+			});
+			expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
+		});
+
+		it('uses the horizontal axis on the carousel', async () => {
+			await act(async () => {
+				render(<HeroSection />);
+			});
+			expect(screen.getByTestId('hero-snippets')).toHaveAttribute('data-axis', 'x');
+		});
+
+		it('does not render the play-snake trigger', async () => {
+			await act(async () => {
+				render(<HeroSection />);
+			});
+			expect(screen.queryByRole('button', { name: /play the snake game/i })).not.toBeInTheDocument();
+		});
 	});
 });
