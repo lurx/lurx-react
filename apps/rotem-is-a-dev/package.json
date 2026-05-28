@@ -22,6 +22,7 @@
     "react-dom": "^19.0.0",
     "react-game-engine": "1.2.0",
     "regenerator-runtime": "0.14.1",
+    "resend": "6.12.4",
     "sharp": "0.34.5",
     "shiki": "3.22.0",
     "typescript": "5.9.3",

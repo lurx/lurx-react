@@ -1,4 +1,5 @@
 import { GithubLink } from '../components/github-link.component';
+import { HeroCtaActions } from '../components/hero-cta-actions';
 import { RoleLine } from '../components/role-line.component';
 import styles from '../hero-section.module.scss';
 import { heroSectionStrings } from '../hero-section.strings';
@@ -9,5 +10,6 @@ export const HeroIntroduction = () => (
 		<h1 className={styles.name} data-hero-intro="name">{heroSectionStrings.name}</h1>
 		<RoleLine />
 		<GithubLink />
+		<HeroCtaActions />
 	</div>
 );

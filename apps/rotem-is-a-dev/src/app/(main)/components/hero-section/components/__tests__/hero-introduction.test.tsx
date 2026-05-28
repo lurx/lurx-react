@@ -4,7 +4,7 @@ import { HeroIntroduction } from '../hero-introduction.component';
 describe('HeroIntroduction', () => {
 	it('renders the greeting', () => {
 		render(<HeroIntroduction />);
-		expect(screen.getByText('Hi all. I am')).toBeInTheDocument();
+		expect(screen.getByText('Hi, I\'m')).toBeInTheDocument();
 	});
 
 	it('renders the name', () => {

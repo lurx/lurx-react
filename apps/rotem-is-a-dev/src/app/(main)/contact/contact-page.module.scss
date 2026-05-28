@@ -1,0 +1,98 @@
+@use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
+
+.page {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	padding: spacing(5) spacing(6);
+
+	@include media-below('tablet') {
+		padding: spacing(3) spacing(2);
+	}
+}
+
+.header {
+	margin-block-end: spacing(4);
+}
+
+.title {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--text);
+	margin: 0 0 spacing(0.5);
+	line-height: 1.2;
+
+	@include media-below('tablet') {
+		font-size: 1.5rem;
+	}
+}
+
+.subtitle {
+	font-size: 1rem;
+	color: var(--muted);
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+	gap: spacing(5);
+	max-inline-size: 1080px;
+
+	@include media-below('tablet') {
+		grid-template-columns: 1fr;
+		gap: spacing(3);
+	}
+}
+
+.formColumn {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(2);
+}
+
+.formHeading {
+	font-size: 0.9375rem;
+	color: var(--muted);
+}
+
+.success {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(2);
+	padding: spacing(3);
+	background-color: rgba(67, 217, 173, 0.06);
+	border: 1px solid var(--teal);
+	border-radius: var(--radius-md);
+}
+
+.successHeading {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--teal);
+}
+
+.successBody {
+	font-size: 0.9375rem;
+	color: var(--text);
+	line-height: 1.6;
+}
+
+.sendAnother {
+	align-self: flex-start;
+	padding: spacing(1) spacing(2.5);
+	font: inherit;
+	font-size: 0.9375rem;
+	color: var(--teal);
+	background-color: transparent;
+	border: 1px solid var(--teal);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	transition: background-color 0.15s, color 0.15s;
+
+	&:hover {
+		background-color: var(--teal);
+		color: var(--bg);
+	}
+}

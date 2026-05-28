@@ -46,7 +46,7 @@ afterEach(() => jest.useRealTimers());
 describe('HeroSection', () => {
 	it('renders the greeting', () => {
 		render(<HeroSection />);
-		expect(screen.getByText('Hi all. I am')).toBeInTheDocument();
+		expect(screen.getByText('Hi, I\'m')).toBeInTheDocument();
 	});
 
 	it('renders the name', () => {

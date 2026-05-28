@@ -69,6 +69,14 @@ export const useHeroEntryAnimation = () => {
 					{ clipPath: 'inset(0 0% 0 0)', duration: 0.9, ease: 'none' },
 					position,
 				);
+			} else if (key === 'cta-actions') {
+				// Soft fade + lift for the CTA pair — no typewriter (multiple targets)
+				tl.fromTo(
+					el,
+					{ opacity: 0, y: 8 },
+					{ opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+					`${position}+=0.15`,
+				);
 			} else {
 				tl.set(el, { opacity: 1 }, position);
 				tl.add(typewrite(el, heroTypewriteOpts));

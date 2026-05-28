@@ -1,0 +1,128 @@
+@use 'mixins/spacing' as *;
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(2);
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: spacing(0.5);
+}
+
+.label {
+	font-size: 0.875rem;
+	color: var(--cyan);
+}
+
+.input,
+.textarea {
+	width: 100%;
+	padding: spacing(1.25) spacing(1.5);
+	font: inherit;
+	font-size: 0.9375rem;
+	color: var(--text);
+	background-color: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	outline: none;
+	transition: border-color 0.15s, box-shadow 0.15s;
+
+	&::placeholder {
+		color: var(--muted-dim);
+	}
+
+	&:focus {
+		border-color: var(--orange);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
+.inputError {
+	border-color: var(--pink);
+	box-shadow: 0 0 0 1px var(--pink);
+
+	&:focus {
+		border-color: var(--pink);
+	}
+}
+
+.textarea {
+	resize: vertical;
+	min-block-size: 140px;
+	line-height: 1.5;
+}
+
+.honeypot {
+	position: absolute;
+	inset-inline-start: -9999px;
+	inline-size: 1px;
+	block-size: 1px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.fieldError {
+	font-size: 0.8125rem;
+	color: var(--pink);
+}
+
+.formError {
+	padding: spacing(1) spacing(1.5);
+	font-size: 0.875rem;
+	color: var(--pink);
+	background-color: rgba(255, 161, 173, 0.08);
+	border: 1px solid var(--pink);
+	border-radius: var(--radius-md);
+}
+
+.checkboxRow {
+	display: flex;
+	align-items: center;
+	gap: spacing(1);
+	margin-block-start: spacing(0.5);
+}
+
+.checkbox {
+	inline-size: 16px;
+	block-size: 16px;
+	accent-color: var(--orange);
+	cursor: pointer;
+}
+
+.checkboxLabel {
+	font-size: 0.875rem;
+	color: var(--muted);
+	cursor: pointer;
+}
+
+.submit {
+	align-self: flex-start;
+	margin-block-start: spacing(1);
+	padding: spacing(1) spacing(2.5);
+	font: inherit;
+	font-size: 0.9375rem;
+	font-weight: 500;
+	color: var(--orange);
+	background-color: transparent;
+	border: 1px solid var(--orange);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	transition: background-color 0.15s, color 0.15s;
+
+	&:hover:not(:disabled) {
+		background-color: var(--orange);
+		color: var(--bg);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}

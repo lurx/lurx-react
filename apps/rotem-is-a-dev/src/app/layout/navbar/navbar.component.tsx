@@ -14,7 +14,7 @@ export const Navbar = () => {
 				<NavbarLogo title={title} />
 				<NavItemsList />
 				<DownloadCVButton />
-				<ContactButton hidden/>
+				<ContactButton />
 				<AuthButton />
 				<MobileMenu />
 			</nav>

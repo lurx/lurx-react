@@ -2,18 +2,17 @@
 
 import { useResponsive } from '@/hooks';
 import styles from '../navbar.module.scss';
-import type { ContactButtonProps } from './contact-button.types';
 import { NavItem } from './nav-item.component';
 
-export const ContactButton = ({ hidden }: ContactButtonProps) => {
+export const ContactButton = () => {
 	const { isMobile } = useResponsive();
 
-	if (isMobile || hidden) return null;
+	if (isMobile) return null;
 
 	return (
 		<NavItem
 			label="Contact me"
-			href="#contact-me"
+			href="/contact"
 			className={styles.contact}
 			aria-label="Contact me"
 			active={false}

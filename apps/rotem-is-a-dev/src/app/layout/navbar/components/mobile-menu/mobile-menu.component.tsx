@@ -82,13 +82,17 @@ export const MobileMenu = () => {
 							/>
 							<span>_download-cv</span>
 						</a>
-						{/* <a
-							href="#contact-me"
+						<a
+							href="/contact"
 							className={styles.navLink}
 							role="menuitem"
 						>
+							<FaIcon
+								iconName="envelope"
+								iconGroup="fal"
+							/>
 							<span>_contact-me</span>
-						</a> */}
+						</a>
 					</div>
 				</div>
 			)}
