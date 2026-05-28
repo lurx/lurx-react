@@ -4,10 +4,11 @@ import { useResponsive } from '@/hooks';
 import classNames from 'classnames';
 import { useEntryAnimation } from '../entry-animation';
 import { HeroBlurs } from './components/hero-blurs.component';
+import { HeroGameDialog } from './components/hero-game-dialog';
+import { HeroGameTrigger } from './components/hero-game-trigger';
 import { HeroIntroduction } from './components/hero-introduction.component';
 import { HeroSnippets } from './components/hero-snippets/hero-snippets.component';
 import { HeroEntryAnimation } from './hero-entry-animation.component';
-import { HeroGame } from './hero-game.component';
 import styles from './hero-section.module.scss';
 import { HeroProvider } from './hero.context';
 
@@ -26,10 +27,12 @@ export const HeroSection = () => {
 
 				{!isMobile && (
 					<div className={styles.right}>
-						<HeroGame />
 						<HeroSnippets />
+						<HeroGameTrigger />
 					</div>
 				)}
+
+				<HeroGameDialog />
 			</section>
 		</HeroProvider>
 	);

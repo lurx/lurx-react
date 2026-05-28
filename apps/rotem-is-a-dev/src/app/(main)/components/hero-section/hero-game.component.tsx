@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { FaIcon } from '@/app/components/fa-icon';
 import { ArrowKeyGrid } from '@/games/components/arrow-key-grid';
@@ -18,6 +18,7 @@ const RgeSnakeGame = dynamic(
 
 const INITIAL_SNAKE_LENGTH = 3;
 const HERO_FOOD_TOTAL = 10;
+const WIN_CLOSE_DELAY_MS = 1000;
 
 const HERO_SNAKE_CONFIG = {
 	cellSize: 16,
@@ -33,31 +34,40 @@ const ARROW_ITEMS: ArrowKeyGridItem<Direction>[] = [
 ];
 
 export const HeroGame = () => {
-	const { gameCompleted, handleComplete } = useHeroContext();
+	const { closeGame } = useHeroContext();
 	const [score, setScore] = useState(0);
+	const winTimeoutRef = useRef<Nullable<ReturnType<typeof setTimeout>>>(null);
 	const activeDirection = useActiveKey<Direction>(ARROW_DIRECTION_MAP);
 
 	const handleScoreChange = useCallback((newScore: number) => {
 		setScore(newScore);
 	}, []);
 
-	if (gameCompleted) return null;
+	const handleWin = useCallback(() => {
+		winTimeoutRef.current = setTimeout(closeGame, WIN_CLOSE_DELAY_MS);
+	}, [closeGame]);
+
+	useEffect(() => {
+		return () => {
+			if (winTimeoutRef.current) clearTimeout(winTimeoutRef.current);
+		};
+	}, []);
 
 	const foodRemaining = HERO_FOOD_TOTAL - score;
 
 	return (
-		<div className={styles.widget} data-hero-widget>
+		<div className={styles.widget}>
 			<div className={styles.body}>
-				<div className={styles.gridWrapper} data-hero-section="grid">
+				<div className={styles.gridWrapper}>
 					<RgeSnakeGame
 						config={HERO_SNAKE_CONFIG}
-						onWin={handleComplete}
+						onWin={handleWin}
 						onScoreChange={handleScoreChange}
 						hideControls
 					/>
 				</div>
 
-				<div className={styles.controls} data-hero-section="controls">
+				<div className={styles.controls}>
 					<div className={styles.controlsTop}>
 						<div className={styles.gameNav}>
 							<div>
@@ -68,7 +78,7 @@ export const HeroGame = () => {
 						</div>
 
 						<div className={styles.foodSection}>
-							<p className={styles.comment} data-hero-text="food-label">{'// food left'}</p>
+							<p className={styles.comment}>{'// food left'}</p>
 							<div
 								className={styles.foodDots}
 								aria-label={`${foodRemaining} food items remaining`}
@@ -92,16 +102,6 @@ export const HeroGame = () => {
 							</div>
 						</div>
 					</div>
-
-					<button
-						className={styles.skipButton}
-						onClick={handleComplete}
-						type="button"
-						aria-label="Skip game"
-						data-hero-text="skip"
-					>
-						Skip
-					</button>
 				</div>
 			</div>
 

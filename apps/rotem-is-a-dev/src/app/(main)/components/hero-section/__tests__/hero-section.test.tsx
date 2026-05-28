@@ -40,8 +40,23 @@ jest.mock('@/games/rge-snake-game', () => ({
 	),
 }));
 
-beforeEach(() => jest.useFakeTimers());
-afterEach(() => jest.useRealTimers());
+const WIN_CLOSE_DELAY_MS = 1000;
+
+beforeEach(() => {
+	jest.useFakeTimers();
+	let portalRoot = document.getElementById('portal-root');
+	if (!portalRoot) {
+		portalRoot = document.createElement('div');
+		portalRoot.id = 'portal-root';
+		document.body.appendChild(portalRoot);
+	}
+});
+
+afterEach(() => {
+	jest.useRealTimers();
+	const portalRoot = document.getElementById('portal-root');
+	if (portalRoot) portalRoot.innerHTML = '';
+});
 
 describe('HeroSection', () => {
 	it('renders the greeting', () => {
@@ -73,29 +88,42 @@ describe('HeroSection', () => {
 		).toHaveAttribute('href', 'https://github.com/lurx');
 	});
 
-	it('renders the snake game initially', async () => {
+	it('renders the snippets carousel by default', async () => {
 		await act(async () => {
 			render(<HeroSection />);
+		});
+		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
+		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
+	});
+
+	it('renders the play-snake trigger', async () => {
+		await act(async () => {
+			render(<HeroSection />);
+		});
+		expect(screen.getByRole('button', { name: /play the snake game/i })).toBeInTheDocument();
+	});
+
+	it('opens the game dialog when the trigger is clicked', async () => {
+		await act(async () => {
+			render(<HeroSection />);
+		});
+		await act(async () => {
+			fireEvent.click(screen.getByRole('button', { name: /play the snake game/i }));
 		});
 		expect(screen.getByTestId('snake-game')).toBeInTheDocument();
-		expect(screen.queryByTestId('hero-snippets')).not.toBeInTheDocument();
 	});
 
-	it('hides the snake game and shows snippets when skip is triggered', async () => {
+	it('closes the game dialog after the player wins', async () => {
 		await act(async () => {
 			render(<HeroSection />);
 		});
-		fireEvent.click(screen.getByText('Skip'));
-		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
-		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
-	});
-
-	it('hides the snake game and shows snippets when win is triggered', async () => {
 		await act(async () => {
-			render(<HeroSection />);
+			fireEvent.click(screen.getByRole('button', { name: /play the snake game/i }));
 		});
 		fireEvent.click(screen.getByText('win'));
+		act(() => {
+			jest.advanceTimersByTime(WIN_CLOSE_DELAY_MS);
+		});
 		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
-		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
 	});
 });

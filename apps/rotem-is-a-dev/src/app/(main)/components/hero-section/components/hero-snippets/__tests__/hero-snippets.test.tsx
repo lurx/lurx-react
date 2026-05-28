@@ -6,8 +6,6 @@ jest.mock('@/app/components', () => ({
 	),
 }));
 
-let mockGameCompleted = true;
-
 let mockOnSelectHandler: Nullable<() => void> = null;
 const mockScrollNext = jest.fn();
 const mockSelectedScrollSnap = jest.fn(() => 0);
@@ -30,18 +28,10 @@ jest.mock('embla-carousel-react', () => ({
 	default: jest.fn(() => [mockEmblaRef, mockCurrentEmblaApi]),
 }));
 
-jest.mock('../../../hero.context', () => ({
-	useHeroContext: () => ({
-		gameCompleted: mockGameCompleted,
-		handleComplete: jest.fn(),
-	}),
-}));
-
 import { HeroSnippets } from '../hero-snippets.component';
 
 beforeEach(() => {
 	jest.useFakeTimers();
-	mockGameCompleted = true;
 	mockCurrentEmblaApi = mockEmblaApi;
 	mockOnSelectHandler = null;
 	mockScrollNext.mockClear();
@@ -55,15 +45,9 @@ afterEach(() => {
 });
 
 describe('HeroSnippets', () => {
-	it('renders the carousel when game is completed', () => {
+	it('renders the carousel', () => {
 		render(<HeroSnippets />);
 		expect(screen.getByTestId('hero-snippets')).toBeInTheDocument();
-	});
-
-	it('returns null when game is not completed', () => {
-		mockGameCompleted = false;
-		const { container } = render(<HeroSnippets />);
-		expect(container).toBeEmptyDOMElement();
 	});
 
 	it('renders all snippet titles', () => {

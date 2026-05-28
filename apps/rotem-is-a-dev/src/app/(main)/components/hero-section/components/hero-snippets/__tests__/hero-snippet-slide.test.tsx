@@ -51,6 +51,12 @@ describe('SnippetSlide', () => {
 		expect(screen.getByText('throttle')).toBeInTheDocument();
 	});
 
+	it('links to the snippet page using the title as slug', () => {
+		render(<SnippetSlide {...defaultProps} title="throttle" />);
+		const link = screen.getByRole('link', { name: /read the throttle snippet/i });
+		expect(link).toHaveAttribute('href', '/snippets/throttle');
+	});
+
 	it('has displayName set to SnippetSlide', () => {
 		expect(SnippetSlide.displayName).toBe('SnippetSlide');
 	});

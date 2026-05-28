@@ -1,4 +1,5 @@
 export type HeroContextValue = {
-	gameCompleted: boolean;
-	handleComplete: () => void;
+	isGameOpen: boolean;
+	openGame: () => void;
+	closeGame: () => void;
 }

@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react';
 
-const mockHandleComplete = jest.fn();
-let mockGameCompleted = false;
+const mockCloseGame = jest.fn();
+const mockOpenGame = jest.fn();
 let mockActiveDirection: string | null = null;
 
 jest.mock('@/app/components/fa-icon', () => ({
@@ -12,8 +12,9 @@ jest.mock('@/app/components/fa-icon', () => ({
 
 jest.mock('../hero.context', () => ({
 	useHeroContext: () => ({
-		gameCompleted: mockGameCompleted,
-		handleComplete: mockHandleComplete,
+		isGameOpen: true,
+		openGame: mockOpenGame,
+		closeGame: mockCloseGame,
 	}),
 }));
 
@@ -52,50 +53,40 @@ jest.mock('@/games/rge-snake-game', () => ({
 
 import { HeroGame } from '../hero-game.component';
 
+const WIN_CLOSE_DELAY_MS = 1000;
+
 beforeEach(() => {
-	mockGameCompleted = false;
+	jest.useFakeTimers();
 	mockActiveDirection = null;
-	mockHandleComplete.mockClear();
+	mockCloseGame.mockClear();
+	mockOpenGame.mockClear();
 	capturedOnScoreChange = undefined;
 });
 
+afterEach(() => {
+	jest.useRealTimers();
+});
+
 describe('HeroGame', () => {
-	it('renders the widget shell with snake game when game is not completed', async () => {
+	it('renders the widget shell with snake game', async () => {
 		await act(async () => {
 			render(<HeroGame />);
 		});
 		expect(screen.getByTestId('snake-game')).toBeInTheDocument();
 		expect(screen.getByText('// use keyboard')).toBeInTheDocument();
 		expect(screen.getByText('// arrows to play')).toBeInTheDocument();
-		expect(screen.getByText('Skip')).toBeInTheDocument();
 	});
 
-	it('returns null when game is completed', () => {
-		mockGameCompleted = true;
-		const { container } = render(<HeroGame />);
-		expect(container).toBeEmptyDOMElement();
-	});
-
-	it('passes handleComplete as onWin to RgeSnakeGame', async () => {
+	it('closes the game after the player wins (with delay)', async () => {
 		await act(async () => {
 			render(<HeroGame />);
 		});
 		screen.getByText('win').click();
-		expect(mockHandleComplete).toHaveBeenCalledTimes(1);
-	});
-
-	it('calls handleComplete when skip button is clicked', async () => {
-		await act(async () => {
-			render(<HeroGame />);
+		expect(mockCloseGame).not.toHaveBeenCalled();
+		act(() => {
+			jest.advanceTimersByTime(WIN_CLOSE_DELAY_MS);
 		});
-		screen.getByText('Skip').click();
-		expect(mockHandleComplete).toHaveBeenCalledTimes(1);
-	});
-
-	it('does not render widget after game is completed', () => {
-		mockGameCompleted = true;
-		render(<HeroGame />);
-		expect(screen.queryByTestId('snake-game')).not.toBeInTheDocument();
+		expect(mockCloseGame).toHaveBeenCalledTimes(1);
 	});
 
 	it('renders decorative arrow keys via ArrowKeyGrid', async () => {

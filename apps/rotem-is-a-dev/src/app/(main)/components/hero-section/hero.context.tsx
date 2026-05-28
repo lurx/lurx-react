@@ -7,12 +7,13 @@ import type { HeroContextValue } from './hero.types';
 export const heroContext = createContext<Nullable<HeroContextValue>>(null);
 
 export const HeroProvider = ({ children }: { children: ReactNode }) => {
-	const [gameCompleted, setGameCompleted] = useState(false);
-	const handleComplete = useCallback(() => setGameCompleted(true), []);
+	const [isGameOpen, setIsGameOpen] = useState(false);
+	const openGame = useCallback(() => setIsGameOpen(true), []);
+	const closeGame = useCallback(() => setIsGameOpen(false), []);
 
 	const value = useMemo(
-		() => ({ gameCompleted, handleComplete }),
-		[gameCompleted, handleComplete],
+		() => ({ isGameOpen, openGame, closeGame }),
+		[isGameOpen, openGame, closeGame],
 	);
 
 	return (
