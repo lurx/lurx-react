@@ -45,10 +45,9 @@
 // ─── Image Area ────────────────────────────────────────────────────────────────
 
 .imageWrapper {
-  --project-preview-bg: #0d1b2e;
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: var(--project-preview-bg);
+	background-color: var(--surface-deep);
 	overflow: hidden;
 	flex-shrink: 0;
 }
@@ -61,7 +60,7 @@
 			rgba(97, 95, 255, 0.18) 0%,
 			transparent 65%
 		),
-		linear-gradient(135deg, var(--project-preview-bg) 0%, var(--surface) 100%);
+		linear-gradient(135deg, var(--surface-deep) 0%, var(--surface) 100%);
 }
 
 .demoPreview {
@@ -88,9 +87,9 @@
 	align-items: center;
 	justify-content: center;
 	padding: 2px;
-	background-color: #a3b3ff;
+	background-color: var(--keyword);
 	border-radius: 4px;
-	color: var(--surface);
+	color: var(--text);
 	font-size: 1.25rem;
 	line-height: 1;
 }

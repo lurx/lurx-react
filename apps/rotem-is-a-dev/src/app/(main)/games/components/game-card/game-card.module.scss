@@ -45,10 +45,9 @@
 // ─── Preview Area ──────────────────────────────────────────────────────────────
 
 .imageWrapper {
-	--game-preview-bg: #0d1b2e;
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: var(--game-preview-bg);
+	background-color: var(--surface-deep);
 	overflow: hidden;
 	flex-shrink: 0;
 }
