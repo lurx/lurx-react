@@ -21,6 +21,11 @@ export const SKILL_BRAND_COLORS: Record<string, string> = {
 	scss: '#cc6699',
 	git: '#f05032',
 	'vue js': '#4fc08d',
+	claude: '#d97757',
+	copilot: '#8957e5',
+	cursor: '#94a3b8',
+	gemini: '#4285f4',
+	ollama: '#8b8b8b',
 };
 
 export const PDF_LAYOUT = {

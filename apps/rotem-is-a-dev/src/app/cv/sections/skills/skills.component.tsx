@@ -14,6 +14,11 @@ const skillBrandColors: Record<string, string> = {
 	'vue js': '#42b883',
 	scss: '#cf649a',
 	git: '#f05032',
+	claude: '#d97757',
+	copilot: '#8957e5',
+	cursor: '#94a3b8',
+	gemini: '#4285f4',
+	ollama: '#8b8b8b',
 };
 
 export const Skills = () => {
