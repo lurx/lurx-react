@@ -1,4 +1,3 @@
-export { AuthButton } from './auth-button';
 export { ContactButton } from './contact-button.component';
 export { DownloadCVButton } from './download-cv-button.component';
 export { NavItem } from './nav-item.component';

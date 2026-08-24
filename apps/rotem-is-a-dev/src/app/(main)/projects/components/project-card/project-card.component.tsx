@@ -10,12 +10,11 @@ const TECH_ICON_MAP: Record<string, IconData> = {
 	css: { iconName: 'css', iconGroup: 'fab' },
 };
 
-export const ProjectCard = ({ project, onViewProjectAction, onCommentClickAction }: ProjectCardProps) => {
+export const ProjectCard = ({ project, onViewProjectAction }: ProjectCardProps) => {
 	const primaryTech = project.technologies[0];
 	const techIcon = primaryTech ? TECH_ICON_MAP[primaryTech] : undefined;
 	const DemoComponent = project.demo;
 	const handleViewProject = onViewProjectAction ? () => onViewProjectAction(project) : undefined;
-	const handleCommentClick = onCommentClickAction ? () => onCommentClickAction(project) : undefined;
 
 	const previewContent = DemoComponent
 		? <div className={styles.demoPreview} aria-hidden="true">
@@ -55,13 +54,8 @@ export const ProjectCard = ({ project, onViewProjectAction, onCommentClickAction
 					<p className={styles.description}>{project.description}</p>
 				</div>
 
-				{handleCommentClick && (
-					<ProjectCardFooter
-						entityType="project"
-						entityId={String(project.id)}
-						onCommentClickAction={handleCommentClick}
-						onViewClickAction={handleViewProject}
-					/>
+				{handleViewProject && (
+					<ProjectCardFooter onViewClickAction={handleViewProject} />
 				)}
 			</div>
 		</article>

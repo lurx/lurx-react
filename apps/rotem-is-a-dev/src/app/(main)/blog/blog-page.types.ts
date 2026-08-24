@@ -18,7 +18,6 @@ export type BlogListItem = BlogListPost | BlogListSeries;
 
 export type BlogPostHeaderProps = {
   post: AnyPost;
-  actions?: React.ReactNode;
 }
 
 export type BlogPageProps = {

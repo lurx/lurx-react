@@ -10,8 +10,7 @@
 		"install:local": "dotenv -e .env.local -- pnpm install",
 		"check:before-push": "bash scripts/check-before-push.sh",
 		"prepare": "husky",
-		"sonar": "dotenv -e .env.local -- docker run -i --rm -e SONARQUBE_TOKEN -e SONARQUBE_ORG -e SONARQUBE_CLOUD_URL -e SONARQUBE_IDE_PORT mcp/sonarqube",
-		"firebase:deploy-rules": "firebase deploy --only firestore:rules --project=rotem-is-a-dev"
+		"sonar": "dotenv -e .env.local -- docker run -i --rm -e SONARQUBE_TOKEN -e SONARQUBE_ORG -e SONARQUBE_CLOUD_URL -e SONARQUBE_IDE_PORT mcp/sonarqube"
 	},
 	"private": true,
 	"dependencies": {
@@ -22,7 +21,6 @@
 		"classnames": "^2.5.1",
 		"embla-carousel-react": "^8.6.0",
 		"es-toolkit": "1.39.10",
-		"firebase": "^12.10.0",
 		"gsap": "^3.14.2",
 		"next": "^15.3.0",
 		"react": "^19.0.0",

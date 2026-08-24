@@ -1,5 +1,4 @@
 import '@/lib/mdx/velite-hmr-trigger';
-import { Comments } from '@/app/components/comments';
 import { IS_PREVIEW_ENV } from '@/app/utils/is-preview-env.util';
 import { posts, mdxPosts } from '#velite';
 import type { ComponentType } from 'react';
@@ -10,7 +9,7 @@ import { SERIES_META } from '../data/blog-series.data';
 import type { AnyPost } from '../blog-page.types';
 import type { BlogPostPageProps } from './blog-post-page.types';
 import styles from './blog-post.module.scss';
-import { BackToBlogLink, BlogPostActions, BlogPostHeader, BlogPostSchema, MermaidRenderer, SeriesNav } from './components';
+import { BackToBlogLink, BlogPostHeader, BlogPostSchema, MermaidRenderer, SeriesNav } from './components';
 
 type InteractivePostProps = {
 	code?: string;
@@ -105,7 +104,7 @@ export default async function BlogPostPage({ params }: Readonly<BlogPostPageProp
 		<article className={styles.page}>
       <BlogPostSchema post={post} />
       <BackToBlogLink />
-      <BlogPostHeader post={post} actions={<BlogPostActions entityType="blog" entityId={slug} />} />
+      <BlogPostHeader post={post} />
 			{InteractiveContent
 				? <InteractiveContent code={mdxCode} />
 				: <div
@@ -120,7 +119,6 @@ export default async function BlogPostPage({ params }: Readonly<BlogPostPageProp
 					currentSlug={slug}
 				/>
 			)}
-			<Comments entityType="blog" entityId={slug} />
 			<MermaidRenderer />
 		</article>
 	);

@@ -6,8 +6,7 @@ import { TagFilter } from '@/app/components/tag-filter';
 import { filterByTagsAndSearch } from '@/app/utils/filter-by-tags-and-search.util';
 import { getAllTags } from '@/app/utils/get-all-tags.util';
 import { toggleInArray } from '@/app/utils/toggle-in-array.util';
-import type { AnyPost, BlogListItem, BlogPageProps } from './blog-page.types';
-import { useRouter } from 'next/navigation';
+import type { BlogListItem, BlogPageProps } from './blog-page.types';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { groupPostsIntoListItems } from './blog-page.helpers';
 import styles from './blog-page.module.scss';
@@ -15,7 +14,6 @@ import { BlogPostCard } from './components/blog-post-card.component';
 import { BlogSeriesCard } from './components/blog-series-card';
 
 export const BlogPage = ({ posts }: BlogPageProps) => {
-	const router = useRouter();
 	const [search, setSearch] = useState('');
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -35,10 +33,6 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 		setSelectedTags(prev => toggleInArray(prev, tag));
 	}, []);
 
-	const handleCommentClick = useCallback((post: AnyPost) => {
-		router.push(`/blog/${post.slug}`);
-	}, [router]);
-
 	const filteredPosts = filterByTagsAndSearch(posts, selectedTags, search);
 	const listItems = groupPostsIntoListItems(filteredPosts);
 
@@ -47,7 +41,7 @@ export const BlogPage = ({ posts }: BlogPageProps) => {
 			return <BlogSeriesCard key={item.meta.slug} meta={item.meta} posts={item.posts} />;
 		}
 
-		return <BlogPostCard key={item.post.slug} post={item.post} onCommentClickAction={handleCommentClick} />;
+		return <BlogPostCard key={item.post.slug} post={item.post} />;
 	};
 
 	const postListContent = listItems.length === 0

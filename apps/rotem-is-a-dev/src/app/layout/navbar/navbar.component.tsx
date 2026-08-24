@@ -1,6 +1,6 @@
 import { toCodeLike } from '@/app/utils/to-code-like.util';
 
-import { AuthButton, ContactButton, DownloadCVButton, MobileMenu, NavItemsList, NavbarLogo } from './components';
+import { ContactButton, DownloadCVButton, MobileMenu, NavItemsList, NavbarLogo } from './components';
 import styles from './navbar.module.scss';
 
 export const Navbar = () => {
@@ -15,7 +15,6 @@ export const Navbar = () => {
 				<NavItemsList />
 				<DownloadCVButton />
 				<ContactButton />
-				<AuthButton />
 				<MobileMenu />
 			</nav>
 		</header>

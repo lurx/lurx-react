@@ -51,11 +51,9 @@ jest.mock('../../projects-grid', () => ({
 	ProjectsGrid: ({
 		projects,
 		onViewProjectAction,
-		onCommentClickAction,
 	}: {
 		projects: Project[];
 		onViewProjectAction?: (project: Project) => void;
-		onCommentClickAction?: (project: Project) => void;
 	}) => (
 		<div data-testid="projects-grid">
 			{projects.map(project => (
@@ -63,9 +61,6 @@ jest.mock('../../projects-grid', () => ({
 					<span>{project.slug}</span>
 					{onViewProjectAction && (
 						<button onClick={() => onViewProjectAction(project)}>view {project.slug}</button>
-					)}
-					{onCommentClickAction && (
-						<button onClick={() => onCommentClickAction(project)}>comment {project.slug}</button>
 					)}
 				</div>
 			))}
@@ -82,16 +77,14 @@ jest.mock('../../project-demo-drawer', () => ({
 	ProjectDemoDrawer: ({
 		project,
 		onCloseAction,
-		scrollToComments,
 		children,
 	}: {
 		project: Project | null;
 		onCloseAction: () => void;
-		scrollToComments?: boolean;
 		children: React.ReactNode;
 	}) =>
 		project ? (
-			<div data-testid="project-demo-drawer" data-scroll-to-comments={scrollToComments}>
+			<div data-testid="project-demo-drawer">
 				<button onClick={onCloseAction}>close</button>
 				{children}
 			</div>
@@ -189,16 +182,4 @@ describe('ProjectsPage', () => {
 		expect(screen.queryByText('_animated-logo-loader')).not.toBeInTheDocument();
 	});
 
-	it('opens the demo drawer with scrollToComments when comment button is clicked', () => {
-		render(<ProjectsPage />);
-		fireEvent.click(screen.getByRole('button', { name: 'comment _wolverine-css' }));
-		expect(screen.getByTestId('project-demo-drawer')).toBeInTheDocument();
-		expect(screen.getByTestId('project-demo-drawer')).toHaveAttribute('data-scroll-to-comments', 'true');
-	});
-
-	it('sets scrollToComments to false when view button is clicked', () => {
-		render(<ProjectsPage />);
-		fireEvent.click(screen.getByRole('button', { name: 'view _wolverine-css' }));
-		expect(screen.getByTestId('project-demo-drawer')).toHaveAttribute('data-scroll-to-comments', 'false');
-	});
 });

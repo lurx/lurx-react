@@ -1,14 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { Post } from '@/.velite';
 
-const mockPush = jest.fn();
-
-jest.mock('next/navigation', () => ({
-	useRouter: () => ({
-		push: mockPush,
-	}),
-}));
-
 jest.mock('../blog-page.helpers', () => ({
 	groupPostsIntoListItems: jest.fn((posts: Post[]) =>
 		posts.map(post => ({ type: 'post' as const, post })),
@@ -74,14 +66,9 @@ jest.mock('@/app/components/tag-filter', () => ({
 }));
 
 jest.mock('../components/blog-post-card.component', () => ({
-	BlogPostCard: ({ post, onCommentClickAction }: { post: Post; onCommentClickAction?: (post: Post) => void }) => (
+	BlogPostCard: ({ post }: { post: Post }) => (
 		<li data-testid={`post-card-${post.slug}`}>
 			{post.title}
-			{onCommentClickAction && (
-				<button data-testid={`comment-click-${post.slug}`} onClick={() => onCommentClickAction(post)}>
-					comment
-				</button>
-			)}
 		</li>
 	),
 }));
@@ -207,14 +194,4 @@ describe('BlogPage', () => {
 		expect(screen.getByTestId('empty-state')).toBeInTheDocument();
 	});
 
-	it('passes onCommentClick to blog post cards', () => {
-		render(<BlogPage posts={POSTS} />);
-		expect(screen.getByTestId('comment-click-post-one')).toBeInTheDocument();
-	});
-
-	it('navigates to blog post when comment is clicked', () => {
-		render(<BlogPage posts={POSTS} />);
-		fireEvent.click(screen.getByTestId('comment-click-post-one'));
-		expect(mockPush).toHaveBeenCalledWith('/blog/post-one');
-	});
 });
