@@ -74,7 +74,7 @@ describe('HeroSection', () => {
 
 	it('renders the role with arrow prefix', () => {
 		render(<HeroSection />);
-		expect(screen.getByText(/front-end developer/)).toBeInTheDocument();
+		expect(screen.getByText(/front-end-developer/)).toBeInTheDocument();
 	});
 
 	it('renders the github comment', () => {

@@ -7,9 +7,9 @@ describe('RoleLine', () => {
 		expect(container.querySelector('p')).toBeInTheDocument();
 	});
 
-	it('renders the role text', () => {
+	it('renders the role text in kebab-case', () => {
 		render(<RoleLine />);
-		expect(screen.getByText(/front-end developer/i)).toBeInTheDocument();
+		expect(screen.getByText(/front-end-developer/i)).toBeInTheDocument();
 	});
 
 	it('includes the arrow prefix in the rendered text', () => {
@@ -23,10 +23,10 @@ describe('RoleLine', () => {
 		expect(para).toBeInTheDocument();
 	});
 
-	it('renders the full formatted text with prefix and role', () => {
+	it('renders the full formatted text with prefix and kebab-cased role', () => {
 		render(<RoleLine />);
-		const para = screen.getByText(/front-end developer/i);
+		const para = screen.getByText(/front-end-developer/i);
 		expect(para.textContent).toContain('>');
-		expect(para.textContent?.toLowerCase()).toContain('front-end developer');
+		expect(para.textContent?.toLowerCase()).toContain('front-end-developer');
 	});
 });
