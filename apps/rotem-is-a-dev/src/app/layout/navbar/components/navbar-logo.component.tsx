@@ -5,13 +5,11 @@ import type { NavBarLogoProps } from './navbar-logo.types';
 
 export const NavbarLogo = ({ title }: NavBarLogoProps) => (
 	<span className={styles.logo}>
-		<span data-animate-text="logo">
-			<Link href="/">
-				<span className={styles.logoLink}>
-					<Logo size={LOGO_SIZES.ICON} />
-					{title}
-				</span>
-			</Link>
-		</span>
+		<Link href="/">
+			<span className={styles.logoLink}>
+				<Logo size={LOGO_SIZES.ICON} />
+				{title}
+			</span>
+		</Link>
 	</span>
 );

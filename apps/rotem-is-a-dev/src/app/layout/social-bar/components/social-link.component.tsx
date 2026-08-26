@@ -17,19 +17,14 @@ export const SocialLink = ({
 	const label: RenderItem = {
 		key: 'label',
 		element: shouldHideLabel ? undefined : (
-			<span
-				className={styles.label}
-				data-animate-text={link.displayText ? 'footer-username' : undefined}
-			>
-				{visibleText}
-			</span>
+			<span className={styles.label}>{visibleText}</span>
 		),
 	};
 
 	const renderOrder: RenderItem[] = iconPosition === 'end' ? [label, icon] : [icon, label];
 
 	return (
-		<span className={styles.iconWrapper} data-animate-icon>
+		<span className={styles.iconWrapper}>
 			<a
 				href={link.url}
 				target="_blank"

@@ -5,7 +5,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { PropsWithChildren } from 'react';
 import { Navbar, SocialBar } from '../layout/';
-import { BorderLines, EntryAnimation, EntryAnimationProvider, ReplayButton } from './components/entry-animation';
+import { BorderLines } from './components/border-lines';
 import styles from './page.module.scss';
 config.autoAddCss = false;
 
@@ -24,18 +24,14 @@ const bitcountGridSingle = Bitcount_Grid_Single({
 export default function MainLayout({ children }: Readonly<PropsWithChildren>) {
 	return (
 		<div className={`${firaCode.variable} ${bitcountGridSingle.variable} ${firaCode.className}`}>
-			<EntryAnimationProvider>
-				<div className={styles.backdrop}>
-					<main className={styles.page} data-page>
-						<EntryAnimation />
-						<BorderLines />
-						<Navbar />
-						{children}
-						<SocialBar />
-					</main>
-				</div>
-				<ReplayButton />
-			</EntryAnimationProvider>
+			<div className={styles.backdrop}>
+				<main className={styles.page} data-page>
+					<BorderLines />
+					<Navbar />
+					{children}
+					<SocialBar />
+				</main>
+			</div>
 			<div id="portal-root" />
 		</div>
 	);

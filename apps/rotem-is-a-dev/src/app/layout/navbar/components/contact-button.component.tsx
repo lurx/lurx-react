@@ -16,7 +16,6 @@ export const ContactButton = () => {
 			className={styles.contact}
 			aria-label="Contact me"
 			active={false}
-			data-animate-text="contact"
 		/>
 	);
 };

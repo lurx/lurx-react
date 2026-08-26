@@ -1,9 +1,8 @@
 'use client';
 
 import gsap from 'gsap';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { typewrite } from '@/app/utils/typewrite.util';
-import { useEntryAnimation } from '../../entry-animation';
 import { INTRO_ORDER } from './use-hero-entry-animation.types';
 import type { IntroKey } from './use-hero-entry-animation.types';
 
@@ -11,27 +10,28 @@ const isReduced = () =>
 	globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const useHeroEntryAnimation = () => {
-	const { isShellLoaded } = useEntryAnimation();
+	const [isRevealed, setIsRevealed] = useState(false);
 
-	// Set initial hidden state as soon as elements are in the DOM.
-	// The hero section is opacity:0 at mount time so nothing is visible yet.
-	useEffect(() => {
-		if (isReduced()) return;
+	// Runs before the browser paints: hide the animated elements and reveal the
+	// section in the same commit, so the hero never flashes into view unstyled.
+	useLayoutEffect(() => {
+		if (isReduced()) {
+			setIsRevealed(true);
+			return;
+		}
 
 		gsap.set('[data-hero-intro]', { opacity: 0 });
 		gsap.set('[data-hero-widget]', { opacity: 0, scale: 0.75, transformOrigin: 'center' });
-		gsap.set('[data-hero-section]', { opacity: 0 });
+		setIsRevealed(true);
 
 		return () => {
 			gsap.set('[data-hero-intro]', { clearProps: 'all' });
 			gsap.set('[data-hero-widget]', { clearProps: 'all' });
-			gsap.set('[data-hero-section]', { clearProps: 'all' });
 		};
 	}, []);
 
-	// Run the animation sequence once the shell entry animation completes.
+	// Run the animation sequence once the hero is mounted.
 	useEffect(() => {
-		if (!isShellLoaded) return;
 		if (isReduced()) return;
 
 		const introEls = INTRO_ORDER.map((key: IntroKey) =>
@@ -64,7 +64,7 @@ export const useHeroEntryAnimation = () => {
 					position,
 				);
 			} else if (key === 'cta-actions') {
-				// Soft fade + lift for the CTA pair — no typewriter (multiple targets)
+				// Soft fade + lift for the CTA pair, no typewriter (multiple targets)
 				tl.fromTo(
 					el,
 					{ opacity: 0, y: 8 },
@@ -93,7 +93,8 @@ export const useHeroEntryAnimation = () => {
 			});
 			gsap.set('[data-hero-intro]', { clearProps: 'all' });
 			gsap.set('[data-hero-widget]', { clearProps: 'all' });
-			gsap.set('[data-hero-section]', { clearProps: 'all' });
 		};
-	}, [isShellLoaded]);
+	}, []);
+
+	return isRevealed;
 };

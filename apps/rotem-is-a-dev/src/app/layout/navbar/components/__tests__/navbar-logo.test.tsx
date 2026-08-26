@@ -29,10 +29,4 @@ describe('NavbarLogo', () => {
 		render(<NavbarLogo title="rotem-horovitz" />);
 		expect(screen.getByTestId('logo-svg')).toBeInTheDocument();
 	});
-
-	it('renders with data-animate-text="logo" attribute', () => {
-		const { container } = render(<NavbarLogo title="rotem-horovitz" />);
-		const animateEl = container.querySelector('[data-animate-text="logo"]');
-		expect(animateEl).toBeInTheDocument();
-	});
 });

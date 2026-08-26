@@ -14,19 +14,9 @@ jest.mock('@/lib/shiki', () => ({
 		})),
 }));
 
-// Stub entry animation context so component renders without provider
-jest.mock('../../entry-animation/entry-animation.context', () => ({
-	useEntryAnimation: () => ({
-		isShellLoaded: true,
-		setIsShellLoaded: jest.fn(),
-		animationKey: 0,
-		triggerReplay: jest.fn(),
-	}),
-}));
-
-// Stub entry animation so GSAP typewrite doesn't clear text in JSDOM
+// Stub the hero entry animation so GSAP typewrite doesn't clear text in JSDOM
 jest.mock('../hooks/use-hero-entry-animation.hook', () => ({
-	useHeroEntryAnimation: () => undefined,
+	useHeroEntryAnimation: () => true,
 }));
 
 // Stub RgeSnakeGame to control win callback via HeroGame
