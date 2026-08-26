@@ -1,8 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+const HERO_ANIMATION_TIMEOUT_MS = 15_000;
+
+test('renders the hero heading', async ({ page }) => {
 	await page.goto('/');
 
-	// Expect h1 to contain a substring.
-	expect(await page.locator('h1').innerText()).toContain('Welcome');
+	// The hero types its heading in one character at a time, so the assertion
+	// has to retry while the animation runs.
+	await expect(page.locator('h1')).toHaveText('Rotem Horovitz', {
+		timeout: HERO_ANIMATION_TIMEOUT_MS,
+	});
 });
