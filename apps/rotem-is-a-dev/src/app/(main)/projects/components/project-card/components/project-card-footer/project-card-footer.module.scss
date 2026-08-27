@@ -15,7 +15,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: spacing(1) spacing(1.5);
-	background-color: #45556c;
+	background-color: var(--control);
 	border-radius: var(--radius-md);
 	color: var(--text);
 	cursor: pointer;
@@ -25,6 +25,6 @@
 	transition: background-color 0.2s;
 
 	&:hover {
-		background-color: #536277;
+		background-color: var(--control-hover);
 	}
 }

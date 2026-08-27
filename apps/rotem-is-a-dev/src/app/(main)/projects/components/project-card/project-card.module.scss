@@ -23,7 +23,7 @@
 
 .cardTitleNumber {
 	font-weight: 700;
-	color: var(--keyword);
+	color: var(--keyword-ink);
 }
 
 .cardTitleSeparator {
@@ -50,7 +50,7 @@
 .imageWrapper {
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: var(--surface-deep);
+	background-color: var(--surface-near);
 	overflow: hidden;
 	flex-shrink: 0;
 }
@@ -60,10 +60,10 @@
 	height: 100%;
 	background: radial-gradient(
 			ellipse at 70% 40%,
-			rgba(97, 95, 255, 0.18) 0%,
+			var(--glow-keyword) 0%,
 			transparent 65%
 		),
-		linear-gradient(135deg, var(--surface-deep) 0%, var(--surface) 100%);
+		linear-gradient(135deg, var(--surface-near) 0%, var(--surface) 100%);
 }
 
 .demoPreview {

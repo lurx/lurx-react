@@ -23,7 +23,7 @@
 
 .cardTitleNumber {
 	font-weight: 700;
-	color: var(--keyword);
+	color: var(--keyword-ink);
 }
 
 .cardTitleSeparator {
@@ -50,7 +50,7 @@
 .imageWrapper {
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: var(--surface-deep);
+	background-color: var(--surface-near);
 	overflow: hidden;
 	flex-shrink: 0;
 }

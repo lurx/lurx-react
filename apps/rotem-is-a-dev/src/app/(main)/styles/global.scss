@@ -1,23 +1,96 @@
-:root {
+// Colour tokens are paired across themes; everything else is theme-independent.
+// Ordering is what light mode must preserve — not direction. Raised fills sit
+// above the page on a dark ground and below it on a pale one, but each fill
+// keeps its distance from `--surface`: `--surface-near` one step off, `--surface-alt` two.
+@mixin dark-colour-tokens {
+	// surfaces
 	--bg: #020618;
 	--surface: #0f172b;
+	--surface-near: #0d1b2e;
+	--surface-alt: #1d293d;
 	--border: #314158;
+	--border-dim: #2a3f55;
+
+	// ink
 	--text: #f8fafc;
-	--muted: #90a1b9;
+	--muted: #b4c2d4;
+	--muted-dim: #8496ad;
+
+	// syntax accents
 	--teal: #43d9ad;
 	--orange: #ffb86a;
 	--keyword: #615fff;
+	--keyword-ink: #8b8aff;
 	--cyan: #00d5be;
 	--pink: #ffa1ad;
 	--purple: #dab2ff;
 
-	--surface-alt: #1d293d;
-	--surface-deep: #0d1b2e;
-	--muted-dim: #62748e;
+	// state overlays
+	--selected: rgba(248, 250, 252, 0.06);
+	--hover: rgba(248, 250, 252, 0.04);
+	--pressed: rgba(248, 250, 252, 0.1);
+	--scrim: rgba(0, 0, 0, 0.5);
 
+	// backplates — accent tints, named for the tint rather than the hex
 	--tag-bg-teal: rgba(67, 217, 173, 0.1);
 	--tag-bg-purple: rgba(199, 146, 234, 0.1);
+	--wash-teal: rgba(67, 217, 173, 0.06);
+	--wash-pink: rgba(255, 161, 173, 0.08);
+	--wash-keyword: rgba(97, 95, 255, 0.15);
+	--glow-keyword: rgba(97, 95, 255, 0.18);
 
+	// neutral filled control
+	--control: #45556c;
+	--control-hover: #536277;
+
+	--github: #3094ff;
+}
+
+@mixin light-colour-tokens {
+	// surfaces
+	--bg: #e2e8f0;
+	--surface: #ffffff;
+	--surface-near: #f8fafc;
+	--surface-alt: #f1f5f9;
+	--border: #cbd5e1;
+	--border-dim: #aebbcd;
+
+	// ink
+	--text: #0f172b;
+	--muted: #394552;
+	--muted-dim: #556275;
+
+	// syntax accents — teal, orange and cyan only clear AA at 800-level here
+	--teal: #115e59;
+	--orange: #92400e;
+	--keyword: #4f46e5;
+	--keyword-ink: #4338ca;
+	--cyan: #155e75;
+	--pink: #be185d;
+	--purple: #7e22ce;
+
+	// state overlays — dark ink, or they composite to white and vanish
+	--selected: rgba(15, 23, 43, 0.07);
+	--hover: rgba(15, 23, 43, 0.045);
+	--pressed: rgba(15, 23, 43, 0.11);
+	--scrim: rgba(15, 23, 43, 0.4);
+
+	// backplates — re-tinted from the light accents so pills stay their own colour
+	--tag-bg-teal: rgba(17, 94, 89, 0.11);
+	--tag-bg-purple: rgba(126, 34, 206, 0.1);
+	--wash-teal: rgba(17, 94, 89, 0.07);
+	--wash-pink: rgba(190, 24, 93, 0.08);
+	--wash-keyword: rgba(79, 70, 229, 0.12);
+	--glow-keyword: rgba(79, 70, 229, 0.14);
+
+	// neutral filled control — pale enough to carry `--text`
+	--control: #cbd5e1;
+	--control-hover: #b3c0d0;
+
+	--github: #0b5ed7;
+}
+
+:root {
 	--ui-grid-unit: 8px;
 	--spacing-unit: var(--ui-grid-unit);
 
@@ -47,7 +120,7 @@
 
 	--code-tab-size: 2;
 
-	// brands
+	// brands — Google's, not ours. Locked in both themes.
 	--google-red: #ea4335;
 	--google-yellow: #fbbc05;
 	--google-green: #34a853;
@@ -64,8 +137,23 @@
 		var(--google-red) 297deg
 	);
 
-	--github: #3094ff;
 	--github-gradient: conic-gradient(var(--github) 0deg, var(--github) 360deg);
+}
+
+:root,
+[data-theme='dark'] {
+	@include dark-colour-tokens;
+}
+
+[data-theme='light'] {
+	@include light-colour-tokens;
+}
+
+// Respect the OS until the user chooses.
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme]) {
+		@include light-colour-tokens;
+	}
 }
 
 *,

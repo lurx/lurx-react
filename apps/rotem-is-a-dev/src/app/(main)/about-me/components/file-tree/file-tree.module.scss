@@ -45,7 +45,7 @@
 	transition: background-color 0.15s;
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 
@@ -78,7 +78,7 @@
 	transition: background-color 0.15s;
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 
@@ -134,11 +134,11 @@
 	transition: background-color 0.15s;
 
 	&.activeFile {
-		background-color: rgba(248, 250, 252, 0.06);
+		background-color: var(--selected);
 	}
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 

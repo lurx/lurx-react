@@ -62,7 +62,7 @@
 	flex-direction: column;
 	gap: spacing(2);
 	padding: spacing(3);
-	background-color: rgba(67, 217, 173, 0.06);
+	background-color: var(--wash-teal);
 	border: 1px solid var(--teal);
 	border-radius: var(--radius-md);
 }

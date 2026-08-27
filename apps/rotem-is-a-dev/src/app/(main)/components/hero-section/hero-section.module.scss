@@ -84,7 +84,7 @@
 
 .role {
 	font-size: clamp(1.429rem, 2vw, 2.143rem);
-	color: var(--keyword);
+	color: var(--keyword-ink);
 	margin-block-end: 32px;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .keyword {
-	color: var(--keyword);
+	color: var(--keyword-ink);
 }
 
 .varName {
