@@ -14,8 +14,8 @@
 	},
 	"private": true,
 	"dependencies": {
-		"@awesome.me/kit-1d40de302b": "^1.0.41",
-		"@fortawesome/fontawesome-svg-core": "^7.2.0",
+		"@awesome.me/kit-1d40de302b": "^1.0.42",
+		"@fortawesome/fontawesome-svg-core": "^7.3.1",
 		"@fortawesome/react-fontawesome": "^3.2.0",
 		"@react-pdf/renderer": "^4.3.2",
 		"classnames": "^2.5.1",
