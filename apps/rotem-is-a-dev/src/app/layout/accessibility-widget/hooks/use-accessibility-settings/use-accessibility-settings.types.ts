@@ -1,7 +1,8 @@
-import type { TextScale } from '../../accessibility-widget.types';
+import type { TextScale, Theme } from '../../accessibility-widget.types';
 
 export type AccessibilitySettings = {
 	textScale: TextScale;
+	theme: Theme;
 	lineHeightDisplayValue: string;
 	letterSpacingDisplayValue: string;
 	canDecreaseScale: boolean;
@@ -10,16 +11,19 @@ export type AccessibilitySettings = {
 	canIncreaseLineHeight: boolean;
 	canDecreaseLetterSpacing: boolean;
 	canIncreaseLetterSpacing: boolean;
+	isThemeDefault: boolean;
 	isTextScaleDefault: boolean;
 	isLineHeightDefault: boolean;
 	isLetterSpacingDefault: boolean;
 	isAllDefault: boolean;
+	selectTheme: (theme: Theme) => void;
 	decreaseScale: () => void;
 	increaseScale: () => void;
 	decreaseLineHeight: () => void;
 	increaseLineHeight: () => void;
 	decreaseLetterSpacing: () => void;
 	increaseLetterSpacing: () => void;
+	resetTheme: () => void;
 	resetTextScale: () => void;
 	resetLineHeight: () => void;
 	resetLetterSpacing: () => void;

@@ -15,6 +15,7 @@ import {
 	MOBILE_BASE_FONT_SIZE_PX,
 	MOBILE_BREAKPOINT_PX,
 	TEXT_SCALE_STORAGE_KEY,
+	THEME_ATTRIBUTE,
 } from '../accessibility-widget.types';
 
 const mockGetItem = jest.mocked(localStorage.getItem);
@@ -24,6 +25,7 @@ beforeEach(() => {
 	document.documentElement.style.removeProperty('--root-font-size');
 	document.documentElement.style.removeProperty('--a11y-line-height');
 	document.documentElement.style.removeProperty('--a11y-letter-spacing');
+	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
 });
 
 describe('readStoredScale', () => {
@@ -203,3 +205,4 @@ describe('formatSpacingValue', () => {
 		expect(formatSpacingValue([1.5, 2], 1, 'x')).toBe('2x');
 	});
 });
+

@@ -1,8 +1,15 @@
 import { FaIcon } from '@/app/components';
+import {
+	THEME_LABELS,
+	THEMES,
+} from '@/app/layout/accessibility-widget/accessibility-widget.types';
+import type { Theme } from '@/app/layout/accessibility-widget/accessibility-widget.types';
+import { ThemeOption } from './components';
 import type { AccessibilityControlsProps } from './accessibility-controls.types';
 import styles from './accessibility-controls.module.scss';
 
 export const AccessibilityControls = ({
+	theme,
 	textScale,
 	lineHeightDisplayValue,
 	letterSpacingDisplayValue,
@@ -12,58 +19,92 @@ export const AccessibilityControls = ({
 	canIncreaseLineHeight,
 	canDecreaseLetterSpacing,
 	canIncreaseLetterSpacing,
+	isThemeDefault,
 	isTextScaleDefault,
 	isLineHeightDefault,
 	isLetterSpacingDefault,
 	isAllDefault,
+	selectTheme,
 	decreaseScale,
 	increaseScale,
 	decreaseLineHeight,
 	increaseLineHeight,
 	decreaseLetterSpacing,
 	increaseLetterSpacing,
+	resetTheme,
 	resetTextScale,
 	resetLineHeight,
 	resetLetterSpacing,
 	resetAll,
 }: AccessibilityControlsProps) => {
+	const renderThemeOption = (option: Theme) => (
+		<ThemeOption
+			key={option}
+			theme={option}
+			label={THEME_LABELS[option]}
+			isActive={option === theme}
+			onSelectAction={selectTheme}
+		/>
+	);
+
 	return (
 		<>
 			<div className={styles.sectionHeader}>
-				<span className={styles.sectionLabel}>Text size</span>
+				<span className={styles.sectionLabel}>Theme</span>
 				<button
 					className={styles.sectionReset}
-					onClick={resetTextScale}
-					disabled={isTextScaleDefault}
-					aria-label="Reset text size"
+					onClick={resetTheme}
+					disabled={isThemeDefault}
+					aria-label="Reset theme"
 				>
 					Reset
 				</button>
 			</div>
-			<div className={styles.scaleControls}>
-				<button
-					className={styles.scaleButton}
-					onClick={decreaseScale}
-					disabled={!canDecreaseScale}
-					aria-label="Decrease text size"
-				>
-					<FaIcon
-						iconName="minus"
-						iconGroup="fal"
-					/>
-				</button>
-				<span className={styles.scaleValue}>{textScale}%</span>
-				<button
-					className={styles.scaleButton}
-					onClick={increaseScale}
-					disabled={!canIncreaseScale}
-					aria-label="Increase text size"
-				>
-					<FaIcon
-						iconName="plus"
-						iconGroup="fal"
-					/>
-				</button>
+			<div
+				className={styles.themeControls}
+				role="group"
+				aria-label="Theme"
+			>
+				{THEMES.map(renderThemeOption)}
+			</div>
+
+			<div className={styles.divider}>
+				<div className={styles.sectionHeader}>
+					<span className={styles.sectionLabel}>Text size</span>
+					<button
+						className={styles.sectionReset}
+						onClick={resetTextScale}
+						disabled={isTextScaleDefault}
+						aria-label="Reset text size"
+					>
+						Reset
+					</button>
+				</div>
+				<div className={styles.scaleControls}>
+					<button
+						className={styles.scaleButton}
+						onClick={decreaseScale}
+						disabled={!canDecreaseScale}
+						aria-label="Decrease text size"
+					>
+						<FaIcon
+							iconName="minus"
+							iconGroup="fal"
+						/>
+					</button>
+					<span className={styles.scaleValue}>{textScale}%</span>
+					<button
+						className={styles.scaleButton}
+						onClick={increaseScale}
+						disabled={!canIncreaseScale}
+						aria-label="Increase text size"
+					>
+						<FaIcon
+							iconName="plus"
+							iconGroup="fal"
+						/>
+					</button>
+				</div>
 			</div>
 
 			<div className={styles.divider}>

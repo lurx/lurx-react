@@ -33,3 +33,15 @@ export const DEFAULT_SPACING_LEVEL: SpacingLevel = 0;
 export const LINE_HEIGHT_STORAGE_KEY = 'accessibility-line-height';
 
 export const LETTER_SPACING_STORAGE_KEY = 'accessibility-letter-spacing';
+
+// Theme lives in `app/layout/theme` — it is shared with the navbar switcher and
+// the boot script, so it cannot be owned by this widget. Re-exported for the
+// consumers that already reach for it here.
+export {
+	DEFAULT_THEME,
+	THEME_ATTRIBUTE,
+	THEME_LABELS,
+	THEME_STORAGE_KEY,
+	THEMES,
+} from '../theme';
+export type { Theme } from '../theme';
