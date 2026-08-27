@@ -4,7 +4,9 @@ slug: react-internals-1-how-hooks-work
 date: 2026-08-27
 description: "Most React developers follow the rules of hooks. Fewer understand why they exist. Dive into the linked list that powers useState, useEffect, and the rules of hooks."
 tags: [react, hooks, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 1
 ---
 
 *Most React developers follow the rules of hooks. Fewer understand why they exist. This article changes that, and the answer turns out to be less magic than you'd expect.*

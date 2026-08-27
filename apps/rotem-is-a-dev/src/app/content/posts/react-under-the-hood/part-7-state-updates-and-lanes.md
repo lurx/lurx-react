@@ -4,7 +4,9 @@ slug: react-internals-7-state-updates-and-lanes
 date: 2026-08-27
 description: "setState doesn't set state. It enqueues an update. What happens between that call and the re-render is one of the most misunderstood parts of React."
 tags: [react, state, batching, scheduler, lanes, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 7
 ---
 
 *`setState` doesn't set state. It enqueues an update. What happens between that call and the re-render is one of the most misunderstood parts of React.*

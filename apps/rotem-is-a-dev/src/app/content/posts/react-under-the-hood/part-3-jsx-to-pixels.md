@@ -4,7 +4,9 @@ slug: react-internals-3-jsx-to-pixels
 date: 2026-08-27
 description: "You call it rendering. React calls it calling your function. The DOM update happens later, in a phase most developers don't know exists."
 tags: [react, rendering, jsx, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 3
 ---
 
 *You call it "rendering." React calls it "calling your function." The DOM update happens later, in a phase most developers don't know exists.*

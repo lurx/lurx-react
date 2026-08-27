@@ -4,7 +4,9 @@ slug: react-internals-8-concurrent-react
 date: 2026-08-27
 description: "React is single-threaded. Yet startTransition keeps your input responsive while rendering an expensive list. Here's how, and why it isn't multithreading."
 tags: [react, concurrent, suspense, transitions, scheduler, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 8
 ---
 
 *React is single-threaded. Yet `startTransition` keeps your input responsive while rendering an expensive list. Here's how, and why it isn't multithreading.*

@@ -4,7 +4,9 @@ slug: react-internals-2-useeffect-is-not-a-lifecycle
 date: 2026-08-27
 description: "You were told useEffect with an empty dependency array is componentDidMount. That mental model is wrong, and it's the reason effects feel unpredictable."
 tags: [react, hooks, useEffect, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 2
 ---
 
 *You were told `useEffect` with an empty dependency array is `componentDidMount`. That mental model is wrong, and it's the reason effects feel unpredictable.*

@@ -4,7 +4,9 @@ slug: react-internals-5-fiber-tree
 date: 2026-08-27
 description: "Behind every component in your tree, there's an object React never shows you. It's called a fiber, and it's the data structure that makes everything else in React possible."
 tags: [react, fiber, architecture, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 5
 ---
 
 *Behind every component in your tree, there's an object React never shows you. It's called a fiber, and it's the data structure that makes everything else in React possible.*

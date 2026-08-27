@@ -4,7 +4,9 @@ slug: react-internals-6-reconciliation
 date: 2026-08-27
 description: "You were told to always use unique keys. But why? The answer lives inside React's diffing algorithm, and it's simpler than you think."
 tags: [react, reconciliation, diffing, keys, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 6
 ---
 
 *You were told to always use unique keys. But why? The answer lives inside React's diffing algorithm, and it's simpler than you think.*

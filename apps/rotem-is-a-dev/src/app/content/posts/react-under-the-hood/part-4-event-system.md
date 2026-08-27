@@ -4,7 +4,9 @@ slug: react-internals-4-event-system
 date: 2026-08-27
 description: "You think onClick attaches a click handler to your button. It doesn't. React's event system is a layer of indirection you've been using every day without knowing it exists."
 tags: [react, events, internals]
-draft: true
+draft: false
+series: react-under-the-hood
+seriesOrder: 4
 ---
 
 *You think `onClick` attaches a click handler to your button. It doesn't. React's event system is a layer of indirection you've been using every day without knowing it exists.*
