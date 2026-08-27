@@ -6,34 +6,31 @@ description: "A practical guide to the Entity-Component-System pattern in React,
 tags: [react, gamedev, architecture]
 draft: false
 ---
+You've spent years on forms, dashboards, and CRUD screens. Then one day you wonder what it would take to build a game in React.
 
-# 🎮 Building a Browser Game with react-game-engine
+Turns out you can, and you keep almost everything you already know. The `react-game-engine` library (RGE) brings the Entity-Component-System (ECS) pattern to React. It runs the game loop for you and leaves your UI layer as ordinary React.
 
-You've spent years building forms, dashboards, and CRUD apps. One day you wake up and think: _"What if I built a game... in React?"_
-
-Turns out, you can — and it doesn't require throwing away everything you know about components and state. The `react-game-engine` library (RGE) brings the **Entity-Component-System** (ECS) pattern to React, giving you a proper game loop while keeping your UI layer familiar.
-
-This post walks through how I built a snake game using RGE, with real code from the actual implementation. No pseudocode, no hand-waving.
+Here's how I built a snake game with it. Every snippet below is copied out of the running implementation.
 
 ---
 
-## 🧠 The ECS Mental Model
+## The ECS mental model
 
-ECS splits your game into three concerns:
+ECS splits a game into three kinds of things.
 
-- **Entities** — Pure data. No behavior, no rendering logic. Just bags of properties describing _what exists_.
-- **Systems** — Pure functions that run every frame. They read entities, apply logic, and return updated entities. They describe _what happens_.
-- **Renderers** — React components attached to entities. They describe _how things look_.
+- **Entities.** Plain objects with no methods. Properties describing _what exists_.
+- **Systems.** Functions that run every frame. They read entities, apply logic, and return updated entities. They describe _what happens_.
+- **Renderers.** React components attached to entities. They describe _how things look_.
 
-This separation is the whole trick. Your game logic doesn't know about React. Your React components don't know about game rules. And your data doesn't know about either.
+That separation is the whole trick. Your game logic doesn't know about React. Your React components don't know about game rules. And your data doesn't know about either.
 
-If you've ever struggled with a React component that handles input, updates state, runs game logic, AND renders — ECS is the antidote.
+If you've ever fought a component that reads input, holds state, runs game rules, and renders, ECS is the fix.
 
 ---
 
-## 🔄 How RGE Runs the Loop
+## How RGE runs the loop
 
-Before diving into the code, here's how `react-game-engine` orchestrates everything at runtime:
+Before the code, here's what `react-game-engine` does at runtime.
 
 ```mermaid
 %%{init: {"flowchart": {"subGraphTitleMargin": {"top": 20, "bottom": 4}}} }%%
@@ -62,17 +59,17 @@ flowchart TD
     Render --> RAF
 ```
 
-The key insight: **your code never calls `requestAnimationFrame` directly**. RGE owns the loop. You give it an array of systems and an object of entities, and it calls your systems on every frame, passing the current entities and a bag of args (input events, timing, a `dispatch` function). After systems run, RGE renders each entity's `renderer` component with the entity's current properties as props.
+Your code never calls `requestAnimationFrame`. RGE owns the loop. You hand it an array of systems and an object of entities, and it calls every system once per frame with the current entities plus an args object holding input events, timing, and a `dispatch` function. Then it renders each entity's `renderer` component with that entity's current properties as props.
 
-This means systems don't know about React, renderers don't know about game logic, and the game loop itself is someone else's problem. You just define _what exists_, _what happens_, and _how it looks_.
+So systems don't know about React, renderers don't know about game rules, and the loop is someone else's problem. You define _what exists_, _what happens_, and _how it looks_.
 
 ---
 
-## 📦 Designing the Entities
+## Designing the entities
 
-Entities in RGE are just plain objects. Each one has whatever properties your systems need, plus a `renderer` property that tells RGE which React component to draw.
+Entities in RGE are plain objects. Each one carries whatever properties your systems need, plus a `renderer` property naming the React component that draws it.
 
-Here are the types for the snake game:
+Here are the types for the snake game.
 
 ```typescript
 type Position = {
@@ -113,31 +110,31 @@ type Entities = {
 };
 ```
 
-Notice anything? There's no `update()` method. No `draw()` call. No class hierarchy. The snake entity is just "here's my body segments, which direction I'm heading, and whether I'm growing." The board entity is just grid dimensions and timing config.
+No `update()` method. No `draw()` call. No class hierarchy. The snake entity says "here are my body segments, the direction I'm heading, and whether I'm growing." The board entity holds grid dimensions and timing config.
 
-The `board` entity doesn't even have a renderer — it holds config _and_ runtime state (like `lastTickTime`) that systems read from and write to. Not everything needs to be visible.
+The `board` entity has no renderer at all. It holds config plus runtime state like `lastTickTime` that systems read and write. Not everything needs to be visible.
 
 ---
 
-## ⚙️ Writing Systems as Pure Functions
+## Writing systems as pure functions
 
-Every system has the same signature:
+Every system has the same signature.
 
 ```typescript
 type System = (entities: Entities, args: SystemArgs) => Entities;
 ```
 
-That's it. Take entities in, return entities out. The `args` object gives you input events, a `dispatch` function for game events, and timing info.
+That's it. Entities in, entities out. The `args` object carries input events, a `dispatch` function for game events, and timing info.
 
-The snake game has four systems, and **order matters**:
+The snake game has four systems, and their order matters.
 
 ```typescript
 const SYSTEMS = [handleInput, moveSnake, checkFood, checkCollision];
 ```
 
-Input first (so the snake's direction is set before it moves), then movement, then food checks, then collision checks. Swap the order and you get bugs — a snake that eats food _after_ crashing into a wall, for example.
+Input first, so the direction is set before the snake moves. Then movement, then food, then collisions. Swap two of them and you get a snake that eats food _after_ crashing into a wall.
 
-### 1️⃣ handleInput — Reading Keyboard Events
+### 1. handleInput reads the keyboard
 
 ```typescript
 export const handleInput = (entities: Entities, { input }: SystemArgs): Entities => {
@@ -163,9 +160,9 @@ export const handleInput = (entities: Entities, { input }: SystemArgs): Entities
 };
 ```
 
-Simple loop: find the first valid key press, make sure it's not a 180-degree reversal (you can't go from UP to DOWN — that's instant death), and update the direction. The `keyScheme` check means the game supports both arrow keys and WASD.
+The loop takes the first valid key press, rejects 180-degree reversals (UP straight to DOWN is instant death), and sets the direction. The `keyScheme` lookup is what lets the game accept arrow keys or WASD.
 
-### 2️⃣ moveSnake — Advancing the Snake
+### 2. moveSnake advances the body
 
 ```typescript
 const DIRECTION_DELTAS: Record<Direction, Position> = {
@@ -196,9 +193,9 @@ export const moveSnake = (entities: Entities, { time }: SystemArgs): Entities =>
 };
 ```
 
-This is the core movement. Add a new head in the current direction, and unless we're growing (just ate food), drop the tail. The snake slides forward.
+Add a new head in the current direction, and unless we just ate, drop the tail. The snake slides forward.
 
-### 3️⃣ checkFood — Eating and Spawning
+### 3. checkFood eats and respawns
 
 ```typescript
 export const checkFood = (entities: Entities, { dispatch }: SystemArgs): Entities => {
@@ -219,9 +216,9 @@ export const checkFood = (entities: Entities, { dispatch }: SystemArgs): Entitie
 };
 ```
 
-Head on food? Set `growing` to true (so `moveSnake` won't pop the tail next tick), spawn new food somewhere the snake isn't, and dispatch an event so the UI can update the score.
+Head on food? Set `growing` to true so `moveSnake` keeps the tail next tick, spawn new food somewhere the snake isn't, and dispatch an event so the UI can update the score.
 
-### 4️⃣ checkCollision — Walls and Self
+### 4. checkCollision handles walls and self
 
 ```typescript
 export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): Entities => {
@@ -254,39 +251,39 @@ export const checkCollision = (entities: Entities, { dispatch }: SystemArgs): En
 };
 ```
 
-Check walls, check self-collision, check win condition. Each dispatches an event — the system doesn't care what the UI does with it.
+Walls, then self-collision, then the win condition. Each one dispatches an event and moves on. The system never learns what the UI does with it.
 
 ---
 
-## ⏱️ Tick-Based Game Loops
+## Tick-based game loops
 
-RGE calls your systems on every animation frame (~60fps). But snake doesn't move 60 times per second — that would be unplayable chaos. So `moveSnake` throttles itself using a `lastTickTime` value stored on the board entity:
+RGE calls your systems on every animation frame, roughly 60 per second. Snake shouldn't move 60 times a second, so `moveSnake` throttles itself against a `lastTickTime` value stored on the board entity.
 
 ```typescript
 if (time.current - entities.board.lastTickTime < entities.board.tickMs) return entities;
 entities.board.lastTickTime = time.current;
 ```
 
-The `tickMs` value (default 150ms) controls game speed. Shorter tick = faster snake.
+`tickMs` (default 150ms) controls game speed. Shorter tick, faster snake.
 
-Keeping `lastTickTime` on the entity instead of in module-level state is important. It means the system stays pure — all its state lives in the entity graph. When the game restarts and `createEntities()` builds a fresh set with `lastTickTime: 0`, the tick resets automatically. No separate cleanup function, no hidden global to remember. It also makes the system trivially testable: just set `board.lastTickTime` in your mock entities and the system behaves predictably, with no `beforeEach` reset ritual.
+Keeping `lastTickTime` on the entity rather than in module scope matters more than it looks. All of the system's state lives in the entities, so a restart resets the tick for free. `createEntities()` builds a fresh set with `lastTickTime: 0` and there is nothing else to clean up. Tests get the same benefit. Set `board.lastTickTime` on your mock entities and the system does exactly one thing, with no `beforeEach` reset to remember.
 
 ---
 
-## 🎯 The Focus Trap: Why RGE's Input Pipeline Can Break
+## The focus trap in RGE's input handling
 
-There's a subtle gotcha with how `react-game-engine` captures keyboard input that bit me when I added a second game (a Tetris-style brickfall).
+The way `react-game-engine` captures keyboard input bit me when I added a second game, a Tetris-style brickfall.
 
-RGE renders a `<div>` with `tabIndex={0}` and attaches `onKeyDown` to it. On mount, it calls `this.container.current.focus()`. This works perfectly — until the user clicks _anywhere_ outside that div. A controls panel, a score display, a "restart" button — one click and the div loses focus. `onKeyDown` stops firing. Your systems stop receiving input events. The game appears frozen.
+RGE renders a `<div>` with `tabIndex={0}`, attaches `onKeyDown` to it, and calls `this.container.current.focus()` on mount. That holds until the user clicks anywhere outside the div. A controls panel, a score display, a "restart" button. One click and the div loses focus, `onKeyDown` stops firing, systems stop receiving input, and the game looks frozen.
 
-The insidious part: it works flawlessly in initial testing. You load the page, the div auto-focuses, keys work. It only breaks after the user interacts with surrounding UI — which is exactly what a real player does.
+The nasty part is that it survives your own testing. You load the page, the div auto-focuses, the keys work. It only breaks once someone touches the surrounding UI, which is the first thing a real player does.
 
-### The fix: bypass the engine's input pipeline
+### The fix
 
-Instead of relying on RGE's focus-dependent `onKeyDown`, attach a global listener and queue actions directly on the entity:
+Skip RGE's focus-dependent `onKeyDown`. Attach a global listener and queue actions on the entity instead.
 
 ```typescript
-// In the component — global listener always fires, regardless of focus
+// In the component. A global listener fires regardless of focus
 useEffect(() => {
  const handleKeyDown = (event: KeyboardEvent) => {
   const action = ACTION_MAPS[keyScheme][event.key];
@@ -301,7 +298,7 @@ useEffect(() => {
 ```
 
 ```typescript
-// In the system — read from the entity, not from RGE's input arg
+// In the system. Read from the entity, not from RGE's input arg
 export const handleInput = (entities: Entities, { dispatch }: SystemArgs): Entities => {
  const { pendingActions } = entities.board;
 
@@ -317,15 +314,15 @@ export const handleInput = (entities: Entities, { dispatch }: SystemArgs): Entit
 };
 ```
 
-The component maps raw keys to game actions (respecting the active key scheme) and pushes them onto a `pendingActions` array on the board entity. The system reads and clears that array each frame. No focus required. No dependency on RGE's internal event plumbing.
+The component maps raw keys to game actions under the active key scheme and pushes them onto a `pendingActions` array on the board entity. The system drains that array each frame. No focus required, and no dependency on RGE's internal event plumbing.
 
-This is the same principle as `lastTickTime` — store runtime state on the entity, not in a side channel. The system stays pure, the component owns the browser integration, and the two communicate through the entity graph.
+Same principle as `lastTickTime`. Runtime state goes on the entity, never in a side channel. The system stays pure, the component owns the browser integration, and the two talk through the entities.
 
 ---
 
-## 🎨 Renderers as React Components
+## Renderers are React components
 
-Renderers are just React components. RGE passes the entity's properties as props and renders them inside its container. Here's the snake:
+RGE passes an entity's properties to its renderer as props and mounts the result inside its container. Here's the snake.
 
 ```tsx
 export const SnakeRenderer = ({ body, cellSize }: { body: Position[]; cellSize: number }) => (
@@ -355,9 +352,9 @@ export const SnakeRenderer = ({ body, cellSize }: { body: Position[]; cellSize: 
 );
 ```
 
-Each body segment is absolutely positioned on the board. The head gets a glow effect and larger border radius. Tail segments fade out — a nice touch that's trivial to add because the renderer is just a component that receives data.
+Each body segment is absolutely positioned on the board. The head gets a glow and a larger border radius, and the tail fades toward the end. That fade cost one line, because the renderer is a component receiving data and nothing more.
 
-The food renderer is even simpler:
+The food renderer is shorter still.
 
 ```tsx
 export const FoodRenderer = ({ position, cellSize }: { position: Position; cellSize: number }) => (
@@ -376,13 +373,13 @@ export const FoodRenderer = ({ position, cellSize }: { position: Position; cellS
 );
 ```
 
-A glowing orange circle. That's it. The renderer doesn't know anything about game logic — it just places a dot where the entity says it should be.
+A glowing orange circle. The renderer knows nothing about game rules. It puts a dot where the entity says.
 
 ---
 
-## 🔌 Wiring It All Up
+## Wiring it up
 
-The main component ties everything together:
+The main component ties it together.
 
 ```tsx
 export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
@@ -420,19 +417,19 @@ export const RgeSnakeGame = ({ config }: RgeSnakeGameProps) => {
 };
 ```
 
-The component doesn't contain any game logic. It manages lifecycle (`idle → playing → won/lost`), passes a flat `systems` array and `entities` object to `GameEngine`, and listens for events. The `running` boolean pauses/resumes the engine. The `swap` method on the engine ref replaces all entities on restart.
+There's no game logic in the component. It tracks the lifecycle (`idle → playing → won/lost`), hands `GameEngine` a flat `systems` array and an `entities` object, and listens for events. The `running` boolean pauses and resumes the engine. The `swap` method on the engine ref replaces all entities on restart.
 
-The game flow is dead simple:
+The flow is small.
 
-1. **Idle** — overlay shows "START GAME"
-2. **Playing** — engine runs, systems process every frame
-3. **Won/Lost** — engine stops, overlay shows score + replay button
+1. **Idle.** The overlay shows START GAME.
+2. **Playing.** The engine runs and systems process every frame.
+3. **Won or lost.** The engine stops and the overlay shows the score with a replay button.
 
 ---
 
-## 📐 Config-Driven Sizing
+## Config-driven sizing
 
-The snake game accepts an optional `config` prop with five fields:
+The snake game takes an optional `config` prop with five fields.
 
 ```typescript
 type SnakeGameConfig = {
@@ -444,7 +441,7 @@ type SnakeGameConfig = {
 };
 ```
 
-All fields have defaults (`10×20` grid, `20px` cells, `150ms` tick, win at `20` body length), but every value is overridable. This means the same component can render as a tiny sidebar widget or a full-screen game — just change the numbers:
+Every field has a default (`10×20` grid, `20px` cells, `150ms` tick, win at `20` body length) and every one can be overridden. The same component renders as a sidebar widget or a full-screen game depending on the numbers you pass.
 
 ```tsx
 // Compact sidebar version (default)
@@ -460,7 +457,7 @@ All fields have defaults (`10×20` grid, `20px` cells, `150ms` tick, win at `20`
 <RgeSnakeGame config={{ winLength: 13 }} />
 ```
 
-The trick is that the config drives _both_ the game logic and the visual layout. Entities use `gridCols`, `gridRows`, and `cellSize` to position the snake and food. But the same values also get injected as CSS custom properties:
+The config drives the game logic and the layout at once. Entities use `gridCols`, `gridRows`, and `cellSize` to position the snake and food, and the same values go in as CSS custom properties.
 
 ```typescript
 const boardCssVariables = {
@@ -470,7 +467,7 @@ const boardCssVariables = {
 } as React.CSSProperties;
 ```
 
-The board's SCSS uses these variables to calculate its own dimensions:
+The board's SCSS sizes itself from those variables.
 
 ```scss
 .board {
@@ -480,15 +477,15 @@ The board's SCSS uses these variables to calculate its own dimensions:
 }
 ```
 
-The board resizes itself. The grid lines in the background pattern match the cell size. And the renderers already use `cellSize` for absolute positioning — so everything stays in sync. One config object, two rendering systems (JS and CSS), zero manual coordination.
+The board resizes itself, the background grid lines match the cell size, and the renderers already use `cellSize` to place things. Change one number and the JS and the CSS move together with nothing coordinating them.
 
-This is why `cellSize` lives on every entity. It's not redundant — the renderers need it to convert grid coordinates to pixel offsets, and the CSS needs it to size the container. The config is the single source of truth for both.
+That's why `cellSize` sits on every entity. It looks redundant, but the renderers need it to turn grid coordinates into pixel offsets and the CSS needs it to size the container. One config value feeds both.
 
 ---
 
-## 🧪 Testing the ECS
+## Testing the ECS
 
-Here's where ECS really shines. Systems are pure functions — you give them mock entities and mock args, and assert on the output. No DOM, no rendering, no timers.
+This is the payoff. Systems are pure functions, so a test is mock entities in, assertion on the output. No DOM, no rendering, no timers.
 
 ```typescript
 it('changes direction when a valid arrow key is pressed', () => {
@@ -504,7 +501,7 @@ it('prevents 180-degree reversal from UP to DOWN', () => {
 });
 ```
 
-Testing `checkCollision`:
+Same for `checkCollision`.
 
 ```typescript
 it('dispatches game-over when head hits left wall', () => {
@@ -522,9 +519,9 @@ it('does not dispatch when snake is in valid position', () => {
 });
 ```
 
-No mocking GSAP timelines. No fake timers. No `act()` wrappers. Just function in, assertion out.
+No GSAP timelines to mock, no fake timers, no `act()` wrappers.
 
-For the main component, mock `GameEngine` itself and simulate events through the mock:
+The main component needs one mock. Replace `GameEngine` and fire events through it.
 
 ```tsx
 jest.mock('react-game-engine', () => ({
@@ -546,15 +543,15 @@ it('increments score on food-eaten event', () => {
 });
 ```
 
-The mock lets you trigger game events by clicking — no need to simulate 60fps game loops in tests.
+Clicking the mock fires a game event, so no test has to run a 60fps loop.
 
 ---
 
-## 🪆 Embedding in Custom Chrome
+## Embedding in custom chrome
 
-The snake game lives on the homepage inside a glassmorphism widget with its own controls panel, food tracker, and skip button. But the `RgeSnakeGame` component has its own wrapper, score display, and d-pad. We need the game board _without_ the surrounding UI, so the host widget can provide its own.
+On the homepage the snake game sits inside a glass widget with its own controls panel, food tracker, and skip button. `RgeSnakeGame` ships its own wrapper, score display, and d-pad, and here I want the board without any of that so the host can supply its own.
 
-Two props make this possible:
+Two props handle it.
 
 ```typescript
 type RgeSnakeGameProps = {
@@ -566,7 +563,7 @@ type RgeSnakeGameProps = {
 };
 ```
 
-When `hideControls` is `true`, the component returns just the board element — no wrapper div, no `GameControls`. The host widget wraps it in its own layout:
+With `hideControls` set, the component returns the board element alone. No wrapper div, no `GameControls`. The host widget supplies the layout.
 
 ```tsx
 const HERO_SNAKE_CONFIG = {
@@ -594,7 +591,7 @@ const HERO_SNAKE_CONFIG = {
 </div>
 ```
 
-The `onScoreChange` callback fires whenever the score updates, letting the host track progress externally. The homepage widget uses this to drive a row of food dot indicators — 10 SVG circles that dim as the snake eats:
+`onScoreChange` fires on every score update so the host can track progress. The homepage widget uses it to drive a row of 10 SVG dots that dim as the snake eats.
 
 ```tsx
 const foodRemaining = FOOD_TOTAL - score;
@@ -608,25 +605,19 @@ const foodRemaining = FOOD_TOTAL - score;
 ))}
 ```
 
-The `winLength` config ties everything together: set it to `initialSnakeLength + foodTotal` (3 + 10 = 13), and the game ends exactly when the last food dot dims. One config value, two systems (game logic and UI indicators), zero coordination.
+`winLength` ties the two halves together. Set it to `initialSnakeLength + foodTotal` (3 + 10 = 13) and the game ends on the frame the last dot dims.
 
 ---
 
-## 🏁 Wrap-Up
+## Wrap-up
 
-The ECS pattern through `react-game-engine` gives you:
+What I got out of ECS here: tests that are ordinary function calls, input and movement and collision code that never touch each other, and a rendering layer that's plain React. Adding power-ups means writing a `PowerUpEntity` and a `checkPowerUp` system and appending it to the `SYSTEMS` array. Changing the speed means changing one number, because the tick loop is separate from the frame rate.
 
-- **Testability** — Systems are pure functions. Write tests in seconds, not minutes.
-- **Separation of concerns** — Input handling, movement, collision, and rendering never touch each other.
-- **Easy extensibility** — Want power-ups? Add a `PowerUpEntity` and a `checkPowerUp` system. Drop it into the `SYSTEMS` array. Done.
-- **React-friendly rendering** — Renderers are just components. Use CSS, animations, whatever you already know.
-- **Configurable game speed** — The tick-based loop decouples game logic from frame rate.
+The structure holds for bigger games. Swap the snake for a spaceship, add physics, and entities stay dumb while systems stay pure.
 
-The same architecture scales to more complex games. Swap the snake for a spaceship, add physics and particle systems, and the pattern holds. Entities stay dumb, systems stay pure, renderers stay pretty.
+Performance is the caveat. The snake game mutates entities directly (`entities.board.lastTickTime = time.current`, `snake.body = [newHead, ...snake.body]`) and gets away with it because there are three entities. At 60fps nobody notices. The cost shows up at scale, since every system receives the whole entity object and RGE re-renders every entity's component each frame. With hundreds of entities, particles, or physics bodies you'd pool arrays instead of allocating new ones, wrap unchanged renderers in `React.memo`, and batch mutations. ECS gives you somewhere to put that work. It doesn't do the work for you.
 
-**A note on performance:** The snake game gets away with direct mutation (`entities.board.lastTickTime = time.current`, `snake.body = [newHead, ...snake.body]`) because the entity count is tiny — one snake, one food, one board. At 60fps that's invisible. But the pattern has a cost: every system in the pipeline receives the full entity object, and RGE re-renders every entity's React component each frame. For a game with hundreds of entities, particle effects, or physics bodies, you'd want to be more deliberate — pool arrays instead of allocating new ones, skip unchanged renderers with `React.memo`, or batch mutations. ECS gives you the _structure_ to scale, but you still have to think about allocation and render cost as complexity grows.
-
-If you've been itching to build something that _isn't_ a form, give it a shot. The ECS pattern might just ruin you for traditional state management.
+If you've been itching to build something that _isn't_ a form, this is a good weekend. Fair warning, going back to reducers afterwards is a letdown.
 
 ## Links
 

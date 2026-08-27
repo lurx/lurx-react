@@ -116,7 +116,7 @@ describe('ScenarioTypography', () => {
 	it('renders the verdict callout', () => {
 		render(<ScenarioTypography />);
 
-		expect(screen.getByText(/Niche but powerful/)).toBeInTheDocument();
+		expect(screen.getByText(/niche but powerful/)).toBeInTheDocument();
 	});
 
 	it('renders layoutWithLines description paragraph', () => {

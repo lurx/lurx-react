@@ -2,7 +2,7 @@
 title: "Choosing Your Agent Stack: A Practical Comparison"
 slug: agentic-ai-6-choosing-your-agent-stack
 date: 2026-04-30
-description: "An honest framework for choosing the right agent tool — comparing the main players, running a meaningful pilot, and making a confident decision based on your actual situation."
+description: "An honest framework for choosing an agent. The main players compared, how to run a pilot worth trusting, and how to decide based on your actual situation."
 tags: [ai, agentic-development, llm, tooling]
 series: agentic-ai-development
 seriesOrder: 6
@@ -10,25 +10,25 @@ seriesOrder: 6
 
 Six parts in, you have the mental model. Now comes the part everyone actually Googled first: which agent should I use?
 
-This is the article I wish existed when I started. Not a feature comparison table lifted from a vendor's website, but an honest framework for making the decision based on your actual situation — your team, your workflow, your risk tolerance, your budget.
+This is the article I wish existed when I started. Not a feature comparison lifted from a vendor's website, but a framework for deciding based on your actual situation. Your team, your workflow, your risk tolerance, your budget.
 
-We'll compare the main players, walk through how to run a meaningful pilot, and close with an honest look at where this is all going. By the end, you'll have what you need to make a confident choice — or at least a confident first move.
+We'll compare the main players, walk through how to run a pilot worth trusting, and close with an honest look at where this is heading. By the end you'll have what you need to make a confident choice, or at least a confident first move.
 
 ---
 
-## The Evaluation Criteria That Actually Matter
+## The evaluation criteria that actually matter
 
 Before we look at specific tools, let's establish what we're evaluating. Because "which agent is best" is the wrong question. The right question is "which agent is best for us, for this kind of work, in this environment?"
 
 Here are the dimensions that actually determine fit:
 
-**Autonomy level.** How much does the agent do before checking in with you? High-autonomy agents run longer, do more, and require more trust. Low-autonomy agents keep you tightly in the loop. Neither is better in the abstract — it depends on your risk tolerance and the nature of your work.
+**Autonomy level.** How much does the agent do before checking in? High-autonomy agents run longer, do more, and ask for more trust. Low-autonomy agents keep you in the loop. Neither is better in the abstract. It depends on your risk tolerance and the kind of work you do.
 
-**IDE integration.** Does it live inside your editor, or does it run in a terminal alongside it? IDE-native agents feel more like a co-pilot — they see what you see, inline. Terminal-based agents feel more like delegating to someone else. Both are valid mental models; they produce different working styles.
+**IDE integration.** Does it live inside your editor or run in a terminal alongside it? IDE-native agents feel like a co-pilot. They see what you see, inline. Terminal-based agents feel like delegating to someone else. Both are valid, and they produce different working styles.
 
-**Context sources.** What can the agent actually see? Just your open file? The whole repository? Your GitHub issues? Your internal documentation? The wider the context, the more informed the decisions — and the more you need to think carefully about what you're sharing.
+**Context sources.** What can the agent see? Your open file? The whole repository? Your GitHub issues? Your internal documentation? The wider the context, the better informed the decisions, and the more carefully you need to think about what you're sharing.
 
-**Model quality.** The underlying model matters. Reasoning ability, instruction following, code quality — these vary meaningfully across providers. This is also the dimension that changes fastest, so any specific comparison I make here will be outdated within months. Treat current benchmarks as a starting point, not a verdict.
+**Model quality.** The underlying model matters. Reasoning, instruction following, code quality, all of it varies across providers. This is also the dimension that changes fastest, so any comparison I make here goes stale within months. Treat current benchmarks as a starting point, not a verdict.
 
 **Cost structure.** Per-seat pricing, per-token usage, or both? For light users, per-seat is often better. For heavy users running long agentic tasks, token-based costs can add up fast. Model this against your expected usage before you commit.
 
@@ -50,53 +50,53 @@ flowchart LR
 
 ---
 
-## The Main Players, Honestly Assessed
+## The main players, honestly assessed
 
 ### Claude Code
 
 Claude Code is Anthropic's CLI-first agent. It runs in your terminal, operates directly on your filesystem, and is built around the assumption that you want a capable, somewhat autonomous collaborator you can drop into a project and give a meaningful task.
 
-Its strengths are reasoning quality and instruction following. For complex, multi-step tasks — debugging a subtle interaction between systems, refactoring a large module consistently, implementing a feature across a full stack — it tends to produce coherent, high-quality work. It's also notably good at reading existing codebases and matching their conventions, which matters enormously in practice.
+Its strengths are reasoning quality and instruction following. On complex multi-step work, debugging a subtle interaction between systems, refactoring a large module consistently, implementing a feature across the stack, it produces coherent work. It's also good at reading an existing codebase and matching its conventions, which matters more in practice than any benchmark.
 
-The tradeoffs: it's terminal-based, which some developers find less natural than inline IDE integration. And because it's designed for meaningful autonomy, it works best when you've invested in the context setup we covered in [Part 3](/blog/agentic-ai-3-prompting-context-control) — it rewards good prompting more than some alternatives.
+The tradeoffs. It's terminal-based, which some developers find less natural than inline IDE integration. And because it's built for real autonomy, it works best once you've done the context setup from [Part 3](/blog/agentic-ai-3-prompting-context-control). It rewards good prompting more than some alternatives do.
 
 Best fit for: developers and teams who work on complex, well-specified tasks and want an agent they can genuinely delegate to. Also a strong choice if you want to integrate agents into CI pipelines or automated workflows.
 
 ### Cursor
 
-Cursor is a fork of VS Code with deep agent integration baked in. If you already live in VS Code, the transition is nearly frictionless — it's your editor, but with a capable agent woven into the editing experience.
+Cursor is a fork of VS Code with agent integration baked in. If you already live in VS Code, the transition costs you almost nothing. It's your editor, with a capable agent woven into it.
 
 Its strength is the inline collaboration model. You can chat with it about the file you're editing, apply suggestions directly, and stay tightly in control throughout. For developers who want to augment their flow without handing off control, this feels natural fast.
 
-The tradeoffs: because it's designed for tight collaboration, it's less suited to longer autonomous runs. It excels at "help me with this" more than "go build this." Also worth noting: Cursor's underlying model varies by plan — the quality ceiling is directly tied to what you're paying for.
+The tradeoffs. Built for tight collaboration, it's less suited to long autonomous runs. It's better at "help me with this" than "go build this." Worth noting too that Cursor's underlying model varies by plan, so the quality ceiling tracks what you pay.
 
 Best fit for: individual developers who want an always-on coding companion inside their editor. Particularly good for developers new to agents who want to stay in control while they build trust in the tool.
 
 ### GitHub Copilot
 
-Copilot has grown substantially from its autocomplete origins. Its agent mode, available in VS Code and JetBrains, can work across files, execute terminal commands, and handle multi-step tasks. The major advantage it brings that nothing else can fully replicate: GitHub context.
+Copilot has grown a long way from its autocomplete origins. Agent mode, in VS Code and JetBrains, works across files, executes terminal commands, and handles multi-step tasks. The advantage nothing else fully replicates is GitHub context.
 
-If your team is already living in GitHub — issues, PRs, code review, Actions — Copilot can see all of it. An agent that understands your issue history, your PR feedback patterns, and your CI configuration is meaningfully more informed than one working from the code alone.
+If your team already lives in GitHub, issues, PRs, code review, Actions, Copilot sees all of it. An agent that knows your issue history, your PR feedback patterns, and your CI configuration is better informed than one working from the code alone.
 
-The tradeoffs: the agent experience is less polished than dedicated agent-first tools. It's caught up significantly but still feels like a very good IDE assistant that grew into agents, rather than something designed around agentic workflows from the start.
+The tradeoffs. The agent experience is less polished than the agent-first tools. It has closed a lot of ground, but it still feels like a very good IDE assistant that grew into agents rather than something designed around them.
 
-Best fit for: teams already deep in the GitHub ecosystem, particularly those where the GitHub context integration creates clear value. Also a safe enterprise choice — Microsoft's support, security posture, and compliance story are mature.
+Best fit for: teams already deep in the GitHub ecosystem, especially where that context integration creates clear value. Also the safe enterprise choice. Microsoft's support, security posture, and compliance story are mature.
 
 ### Devin
 
-Devin sits at the far end of the autonomy spectrum. It's designed for longer-horizon tasks — the kind where you describe a feature or a bug and come back later to review the result. It operates in a sandboxed environment, can browse the web, write and run code, and iterate independently for extended periods.
+Devin sits at the far end of the autonomy spectrum, built for long tasks. Describe a feature or a bug, come back later, review the result. It works in a sandbox, browses the web, writes and runs code, and iterates on its own for long stretches.
 
-The honest assessment: Devin represents where the category is going more than where it is today. It's capable and genuinely impressive on the right tasks, but the practical day-to-day reality is narrower than the launch demos suggested. Long-horizon autonomous work is hard — error accumulation is real, and the tasks where you can genuinely walk away and come back to something usable are more limited than the marketing implies.
+The honest assessment is that Devin shows where the category is going more than where it is. It's impressive on the right task, and the day-to-day reality is narrower than the launch demos suggested. Long autonomous runs are hard. Error accumulates, and the set of tasks where you can walk away and come back to something usable is smaller than the marketing implies.
 
 Best fit for: teams experimenting with the frontier of agent autonomy, or organizations with specific long-horizon tasks that fit the model well. Worth following closely as the technology matures.
 
-### Custom Agents via API
+### Custom agents via API
 
-One option that doesn't get enough attention in these comparisons: building your own.
+One option that doesn't get enough attention: building your own.
 
 All the major model providers expose APIs that let you build agents tailored exactly to your workflow. You control the tools, the memory architecture, the autonomy model, the context sources. You can integrate directly with your internal systems in ways that off-the-shelf tools can't.
 
-The tradeoffs are real: it takes engineering time to build and maintain, and you're on the hook for everything the managed tools handle for you. But for organizations with specific requirements — particular security constraints, deep internal tool integration, domain-specific workflows — a custom agent can outperform any off-the-shelf option.
+The tradeoffs are real. It takes engineering time to build and maintain, and you own everything the managed tools would have handled. But for an organization with specific requirements, particular security constraints, deep internal tool integration, domain-specific workflows, a custom agent beats anything off the shelf.
 
 Best fit for: engineering teams with the capacity to build and maintain tooling, where the specific requirements of the org make custom the right call.
 
@@ -110,21 +110,21 @@ Best fit for: engineering teams with the capacity to build and maintain tooling,
 
 ---
 
-## How to Run a Meaningful Pilot
+## How to run a pilot worth trusting
 
 The worst way to evaluate an agent is to let five developers try it however they want for a month and then take a vote. You'll get five different experiences, measuring five different things, and the discussion will be more about personal preference than about fit.
 
 Here's a more structured approach.
 
-**Define the task set first.** Before you start, pick three to five representative tasks from your actual backlog. One simple, well-specified task. One complex, multi-file task. One debugging task with a real stack trace. One documentation task. These become your benchmark — you run every agent candidate through the same set.
+**Define the task set first.** Pick three to five representative tasks from your actual backlog. One simple and well-specified. One complex and multi-file. One debugging task with a real stack trace. One documentation task. These are your benchmark, and every candidate runs the same set.
 
-**Control the context.** Give each agent the same context setup. Same system prompt, same relevant files, same project conventions. You're evaluating the agent, not your prompting — variation in context will swamp the signal.
+**Control the context.** Give each agent the same setup. Same system prompt, same relevant files, same project conventions. You're evaluating the agent, not your prompting, and variation in context swamps the signal.
 
-**Measure what matters.** For each task: how long did it take to reach a usable result (including iteration time)? How much manual correction was needed? Was the output consistent with your codebase conventions? Did it require significant re-prompting? Score each agent on each task with a simple rubric — don't rely on vibes.
+**Measure what matters.** For each task, how long to a usable result, counting iteration time? How much manual correction? Did the output match your codebase conventions? How much re-prompting? Score each agent on each task with a simple rubric. Don't run on vibes.
 
-**Include a real review step.** Don't just evaluate "did it produce code" — evaluate "would this pass code review?" Have a senior developer review the output without knowing which agent produced it. Blind review removes a lot of bias.
+**Include a real review step.** The question isn't "did it produce code," it's "would this pass code review?" Have a senior developer review the output without knowing which agent wrote it. Blind review removes a lot of bias.
 
-**Run it for at least two weeks.** First impressions with agents are unreliable. The first few days are dominated by the novelty effect — everything seems impressive. The second week is when the real patterns emerge: where it's consistently useful, where it keeps failing, what the friction points are.
+**Run it for at least two weeks.** First impressions with agents are unreliable. Novelty carries the first few days and everything looks impressive. The second week is when the patterns show: where it's reliably useful, where it keeps failing, where the friction sits.
 
 ```mermaid
 flowchart TD
@@ -143,27 +143,27 @@ flowchart TD
 
 ---
 
-## Evals: The Discipline That Outlives the Pilot
+## Evals outlive the pilot
 
 A pilot is a one-time decision. **Evals** are how you keep that decision honest as models, prompts, and codebases change underneath you.
 
-The minimum viable eval is a small set of representative tasks — five to ten — with known good outcomes, that you re-run whenever something material changes: a new model version, a system prompt update, a major dependency upgrade. If the score drops, you investigate before rolling out to the team.
+The minimum viable eval is five to ten representative tasks with known good outcomes, re-run whenever something material changes: a new model version, a system prompt update, a major dependency upgrade. If the score drops, investigate before it reaches the team.
 
-Sophisticated teams run evals continuously and track scores in dashboards. Smaller teams can get most of the value with a `/evals` directory containing a handful of golden test cases and a habit of running them on agent-config changes. The point isn't tooling — it's having a way to notice when the agent's judgment has shifted under your feet.
+Sophisticated teams run evals continuously and track scores on dashboards. Smaller teams get most of the value from an `/evals` directory holding a handful of golden test cases and the habit of running them on agent-config changes. The point isn't the tooling. It's having a way to notice when the agent's judgment shifts under you.
 
-This connects back to a point from [Part 3](/blog/agentic-ai-3-prompting-context-control): in agent-augmented workflows, your test suite is validating the agent's judgment as much as the code. Evals are how you formalize that — without them, you're trusting that the model that works today still works tomorrow. Sometimes it does. Sometimes it doesn't.
+This connects back to [Part 3](/blog/agentic-ai-3-prompting-context-control). In agent-augmented workflows your test suite validates the agent's judgment as much as the code. Evals formalize that. Without them you're trusting that the model working today still works tomorrow. Sometimes it does.
 
 ---
 
-## Build vs. Buy vs. Compose
+## Build vs. buy vs. compose
 
-One framework that helps clarify the decision:
+One framework that clarifies the decision.
 
-**Buy** (off-the-shelf agent tools like Cursor, Copilot, Claude Code): Fast to start, low maintenance overhead, limited customization. Right for most teams most of the time.
+**Buy.** Off-the-shelf tools like Cursor, Copilot, and Claude Code. Fast to start, low maintenance, limited customization. Right for most teams most of the time.
 
-**Compose** (using agent frameworks and model APIs to assemble a workflow): More flexible than buying, less overhead than full custom. Tools like LangGraph, CrewAI, or Anthropic's own agent primitives let you wire together agents with custom tools and memory without building from scratch. Good for teams with specific workflow requirements that off-the-shelf tools don't cover.
+**Compose.** Agent frameworks and model APIs assembled into a workflow. More flexible than buying, less overhead than full custom. LangGraph, CrewAI, and Anthropic's own building blocks let you wire agents to custom tools and memory without starting from nothing. Good for teams whose workflow requirements the off-the-shelf tools don't cover.
 
-**Build** (custom agent from scratch via API): Maximum control, maximum maintenance cost. Right for organizations with very specific requirements or where the agent is itself a product or core capability.
+**Build.** A custom agent from scratch on the API. Maximum control, maximum maintenance. Right when the requirements are unusual, or when the agent is itself the product.
 
 Most teams should start with Buy, learn what doesn't fit, and move toward Compose for the gaps. Full Build is a deliberate choice for specific situations, not a default.
 
@@ -178,44 +178,44 @@ flowchart TD
     Specific -- "Yes" --> Build["Build\n\nCustom from scratch\nMax control, max cost"]
 ```
 
-One piece of guidance worth internalizing here: Anthropic's own [guide to building effective agents](https://www.anthropic.com/research/building-effective-agents) spends a surprising amount of time explaining when *not* to build an agent — when a simpler chain of prompts, or even a single well-crafted API call, is the right answer. The instinct to reach for the most powerful pattern is strong, but the best teams match the tool to the task. Sometimes Buy is right not because you can't Build, but because you shouldn't.
+Worth noting here that Anthropic's own [guide to building effective agents](https://www.anthropic.com/research/building-effective-agents) spends a surprising amount of time on when *not* to build an agent, and when a simple chain of prompts or one well-crafted API call is the right answer. The pull toward the most powerful pattern is strong. The best teams match the tool to the task. Sometimes Buy is right not because you can't Build, but because you shouldn't.
 
 ---
 
-## Where This Is Going
+## Where this is going
 
-Any honest look at the agent landscape has to acknowledge how fast it's moving. Tools that were state-of-the-art six months ago have been superseded. Capabilities that seemed years away have shipped. The specific comparisons I've made in this article will need updating — probably sooner than you think.
+Any honest look at this field has to admit how fast it moves. Tools that led six months ago have been passed. Capabilities that looked years out have shipped. The comparisons in this article will need updating, probably sooner than you'd like.
 
-But a few directional bets feel durable enough to be worth making:
+A few bets still feel durable enough to make.
 
 **Agents will get more autonomous.** The trend line is clear: from autocomplete to copilot to agent, and from single-step agents to multi-step agents to agents that can run for hours on complex tasks. The question isn't whether this happens but how quickly the reliability catches up to the ambition.
 
-**Multi-agent systems will become practical.** Right now, most people are working with one agent at a time. The frontier is multiple specialized agents working in parallel — one writing code, one running tests, one reviewing output, one updating documentation. The coordination overhead is real, but the tools for managing it are maturing fast.
+**Multi-agent systems will become practical.** Most people work with one agent at a time today. The frontier is several specialized agents in parallel. One writing code, one running tests, one reviewing output, one updating docs. The coordination overhead is real, and the tools for managing it are maturing fast.
 
-**Context will get bigger and smarter.** Context windows are expanding, but raw size isn't the whole story — agents are also getting better at deciding what to put in context, what to retrieve from external memory, and what to ignore. The practical limit on "how much can the agent know about my project" is moving rapidly.
+**Context will get bigger and smarter.** Windows keep expanding, and raw size isn't the whole story. Agents are getting better at deciding what to load into context, what to retrieve from external memory, and what to ignore. The practical ceiling on how much an agent can know about your project keeps rising.
 
-**The skill of working with agents will become a core engineering competency.** Right now it feels like a specialty. In two to three years, it'll feel like knowing how to use version control — table stakes, not differentiating.
+**Working with agents will become a core engineering skill.** Right now it reads as a specialty. In two or three years it'll read like knowing git. Expected, not impressive.
 
 The teams that treat this as a moment to learn rather than a moment to wait will be in a very different position than those who don't.
 
 ---
 
-## Closing the Series
+## Closing the series
 
 Six parts ago, I asked whether you understood this technology well enough to use it well. I hope the answer now is closer to yes.
 
 We've covered a lot of ground: the fundamentals of generative AI and LLMs, the anatomy of a coding agent, how to communicate with agents effectively, how to integrate them into real workflows, how teams are reorganizing around them, and how to choose the right tools for your situation.
 
-The through-line is the one I named in Part 1: agents amplify clarity and amplify ambiguity equally. The teams shipping fast aren't the ones with the best model — they're the ones who got better at framing the problem before the agent ever sees it. These tools are powerful, imperfect, and genuinely transformative, but only if you engage with them actively. The developers and teams getting the most out of agents aren't the ones who handed over the wheel. They're the ones who figured out a new way to drive.
+The through-line is the one from Part 1. Agents amplify clarity and ambiguity equally. The teams shipping fast aren't the ones with the best model. They're the ones who got better at framing the problem before the agent ever sees it. These tools are powerful and imperfect, and they only pay off while you stay engaged with them. The people getting the most out of agents didn't hand over the wheel. They worked out a new way to drive.
 
 That's the shift. And it's worth making.
 
 ---
 
-*This is the final part in the "Agentic AI Development: From Zero to Hero" series. If you found it useful, the earlier pieces are worth reading in order — each one builds on the last.*
+*This is the final part in the "Agentic AI Development: From Zero to Hero" series. If you found it useful, the earlier pieces are worth reading in order, since each one builds on the last.*
 
-*If you have war stories from your own team, corrections, or just want to compare notes on what's actually working in production — find me on [LinkedIn](https://linkedin.com/in/rotem-horovitz) or [X](https://x.com/lurx). The conversation is where most of the real learning happens, and none of us is figuring this out alone.*
+*If you have war stories from your own team, corrections, or you just want to compare notes on what's actually working in production, find me on [LinkedIn](https://linkedin.com/in/rotem-horovitz) or [X](https://x.com/lurx). The conversation is where most of the real learning happens, and none of us is figuring this out alone.*
 
 ---
 
-**Resources worth bookmarking:** Two references that go deeper than this series could. The [Anthropic Cookbook's agent patterns](https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents) section has working implementations of the orchestration patterns we discussed in [Part 2](/blog/agentic-ai-2-what-is-a-coding-agent) — routing, handoffs, tool use, memory. And [21 Agentic Design Patterns](https://github.com/CarlBarl/agentic-design-patterns) is a well-organized catalog of the architectural patterns emerging across the field. Both are living documents that get updated as the space moves. Good starting points for going from "I understand this" to "I'm building with this."
+**Resources worth bookmarking.** Two references that go deeper than this series could. The [Anthropic Cookbook's agent patterns](https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents) section has working implementations of the orchestration patterns from [Part 2](/blog/agentic-ai-2-what-is-a-coding-agent), covering prompt chaining, routing, parallelization, orchestrator-workers, and evaluator-optimizer. [21 Agentic Design Patterns](https://github.com/josephsenior/Agentic-Design-Patterns) is a runnable catalog of the wider pattern set, one directory per pattern. Both get updated as the space moves. Good places to go from "I understand this" to "I'm building with this."

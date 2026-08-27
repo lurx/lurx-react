@@ -9,8 +9,8 @@ import { BenchmarkWidget } from '../benchmark-widget';
 const EMPTY_ROWS: BenchmarkBarRow[] = [
 	{ label: 'DOM interleaved (worst)', value: '\u2014', percentage: 0, color: '#f87171' },
 	{ label: 'DOM batched (best case)', value: '\u2014', percentage: 0, color: '#fb923c' },
-	{ label: 'Pretext prepare() \u2014 once', value: '\u2014', percentage: 0, color: '#5aedcd' },
-	{ label: 'Pretext layout() \u2014 hot path', value: '\u2014', percentage: 0, color: '#4ade80' },
+	{ label: 'Pretext prepare(), once', value: '\u2014', percentage: 0, color: '#5aedcd' },
+	{ label: 'Pretext layout(), hot path', value: '\u2014', percentage: 0, color: '#4ade80' },
 ];
 
 function formatMs(ms: number): string {
@@ -24,8 +24,8 @@ function toBarRows(results: BenchmarkResults): BenchmarkBarRow[] {
 	return [
 		{ label: 'DOM interleaved (worst)', value: formatMs(results.domInterleaved), percentage: pct(results.domInterleaved), color: '#f87171' },
 		{ label: 'DOM batched (best case)', value: formatMs(results.domBatched), percentage: pct(results.domBatched), color: '#fb923c' },
-		{ label: 'Pretext prepare() \u2014 once', value: formatMs(results.prepare), percentage: pct(results.prepare), color: '#5aedcd' },
-		{ label: 'Pretext layout() \u2014 hot path', value: formatMs(results.layout), percentage: pct(results.layout), color: '#4ade80' },
+		{ label: 'Pretext prepare(), once', value: formatMs(results.prepare), percentage: pct(results.prepare), color: '#5aedcd' },
+		{ label: 'Pretext layout(), hot path', value: formatMs(results.layout), percentage: pct(results.layout), color: '#4ade80' },
 	];
 }
 
@@ -55,7 +55,7 @@ export function MainBenchmark() {
 	return (
 		<BenchmarkWidget
 			title="Text Height Prediction"
-			description="Mixed paragraphs, 2–8 sentences each. Resize simulation: layout computed at 5 different widths (280–700px)."
+			description="Mixed paragraphs, 2 to 8 sentences each. The resize simulation runs layout at 5 widths, from 280px to 700px."
 			rows={rows}
 			status={status}
 			onRunAction={handleRun}

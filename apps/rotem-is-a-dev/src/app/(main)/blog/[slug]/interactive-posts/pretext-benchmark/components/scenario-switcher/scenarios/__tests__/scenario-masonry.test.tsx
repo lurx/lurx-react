@@ -108,7 +108,7 @@ describe('ScenarioMasonry', () => {
 	it('renders the verdict callout', () => {
 		render(<ScenarioMasonry />);
 
-		expect(screen.getByText(/Solid use case/)).toBeInTheDocument();
+		expect(screen.getByText(/solid use case/)).toBeInTheDocument();
 	});
 
 	it('renders a resize handle', () => {

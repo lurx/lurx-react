@@ -4,7 +4,7 @@ export function ReflowViz() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.label}>
-				INTERLEAVED PATTERN &mdash; each component reads independently
+				INTERLEAVED PATTERN: each component reads independently
 			</div>
 			<div className={styles.row}>
 				<span className={styles.rowLabel}>Component A</span>

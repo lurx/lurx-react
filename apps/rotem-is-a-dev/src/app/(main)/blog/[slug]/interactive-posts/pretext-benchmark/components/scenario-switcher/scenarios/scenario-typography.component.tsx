@@ -105,10 +105,10 @@ export function ScenarioTypography() {
 			<h3 className={postStyles.subheading}>Typography: justification and text shaping</h3>
 			<p className={postStyles.paragraph}>
 				CSS <code className={postStyles.inlineCode}>text-align: justify</code> uses a greedy
-				line-breaking algorithm &mdash; it fills each line as much as possible before wrapping.
-				This creates &ldquo;rivers&rdquo;: vertical channels of whitespace that flow down through
-				paragraphs and disrupt reading. Below, both paragraphs are rendered on canvas using pretext&apos;s
-				line data &mdash; the left uses greedy breaks, the right uses balanced breaks.
+				line-breaking algorithm. It fills each line as full as it can before wrapping. That creates
+				&quot;rivers&quot;, vertical channels of whitespace running down the paragraph that pull your
+				eye off the line. Both paragraphs below render on canvas from pretext&apos;s line data. The
+				left uses greedy breaks, the right uses balanced breaks.
 			</p>
 
 			<div className={demoStyles.typographyCompare} ref={containerRef}>
@@ -120,7 +120,7 @@ export function ScenarioTypography() {
 					<p style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' }}>{TYPOGRAPHY_TEXT}</p>
 					{result && (
 						<p className={postStyles.footnote}>
-							Worst gap: {greedyMaxSpacing.toFixed(1)}px &mdash; red highlights show rivers
+							Worst gap: {greedyMaxSpacing.toFixed(1)}px, red highlights show rivers
 						</p>
 					)}
 				</div>
@@ -132,7 +132,7 @@ export function ScenarioTypography() {
 					<p style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' }}>{TYPOGRAPHY_TEXT}</p>
 					{result && (
 						<p className={postStyles.footnote}>
-							Worst gap: {optimalMaxSpacing.toFixed(1)}px &mdash; {((1 - optimalMaxSpacing / greedyMaxSpacing) * 100).toFixed(0)}% tighter
+							Worst gap: {optimalMaxSpacing.toFixed(1)}px, {((1 - optimalMaxSpacing / greedyMaxSpacing) * 100).toFixed(0)}% tighter
 						</p>
 					)}
 				</div>
@@ -140,15 +140,15 @@ export function ScenarioTypography() {
 
 			<p className={postStyles.paragraph}>
 				Pretext&apos;s <code className={postStyles.inlineCode}>layoutWithLines()</code> returns per-line text and widths,
-				making it trivial to compute justification spacing. The balanced version binary-searches for the narrowest
-				width that keeps the same line count &mdash; evening out line lengths and reducing worst-case gaps.
+				which makes justification spacing easy to compute. The balanced version binary-searches for the narrowest
+				width that keeps the same line count, which evens out line lengths and shrinks the worst gaps.
 			</p>
 			<div className={postStyles.callout}>
-				<strong>Verdict: Niche but powerful.</strong> Editorial sites, reading apps, and digital
+				<strong>Verdict: niche but powerful.</strong> Editorial sites, reading apps, and digital
 				magazines have been stuck with CSS&apos;s greedy justification for years. Pretext is the first
-				JS library that makes better justification practical in proportional fonts at browser
-				speed. The trade-off: you&apos;re rendering to Canvas, not HTML, so accessibility and selection
-				require extra work.
+				JS library that makes better justification practical in proportional fonts at browser speed.
+				The trade-off is that you render to Canvas instead of HTML, so accessibility and selection
+				need extra work.
 			</div>
 		</>
 	);

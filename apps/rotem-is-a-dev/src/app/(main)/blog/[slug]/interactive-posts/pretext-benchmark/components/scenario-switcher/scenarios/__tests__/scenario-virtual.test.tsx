@@ -32,7 +32,7 @@ describe('ScenarioVirtual', () => {
 
 	it('renders the verdict callout text', () => {
 		render(<ScenarioVirtual />);
-		expect(screen.getByText(/Verdict: Strong use case/)).toBeInTheDocument();
+		expect(screen.getByText(/Verdict: strong use case/)).toBeInTheDocument();
 	});
 
 	it('renders the explanatory paragraph about virtual scrolling', () => {

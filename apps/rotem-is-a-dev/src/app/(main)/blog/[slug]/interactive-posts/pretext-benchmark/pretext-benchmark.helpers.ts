@@ -204,11 +204,11 @@ const elements = texts.map(text => {
 elements.forEach(el => el.getBoundingClientRect().height);
 
 // ── Pretext prepare() ── (one-time cost)
-// Uses canvas measureText() internally — no DOM reflow
+// Uses canvas measureText() internally. No DOM reflow
 const prepared = texts.map(text => prepare(text, font));
 
 // ── Pretext layout() ── (hot path, called on every resize)
-// Pure arithmetic over cached segment widths — no canvas, no DOM
+// Pure arithmetic over cached segment widths. No canvas, no DOM
 prepared.forEach(p => layout(p, maxWidth, lineHeight));`;
 }
 
@@ -236,7 +236,7 @@ for (const width of widths) {
 // ── Pretext: prepare once, layout at each width ──
 const prepared = texts.map(text => prepare(text, font));
 for (const width of widths) {
-  // Pure arithmetic — no canvas, no DOM
+  // Pure arithmetic, no canvas, no DOM
   prepared.forEach(p => layout(p, width, 24));
 }`;
 }

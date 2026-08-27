@@ -108,9 +108,9 @@ export function ScenarioMasonry() {
 			<h3 className={postStyles.subheading}>Masonry layout with height prediction</h3>
 			<p className={postStyles.paragraph}>
 				Masonry assigns cards to whichever column is currently shortest. The problem: you need card
-				heights before mounting them to know the optimal column assignment. Drag the right edge to
-				resize &mdash; pretext recomputes all heights instantly via <code className={postStyles.inlineCode}>layout()</code>,
-				no DOM measurement needed.
+				heights before mounting them to know which column each one belongs in. Drag the right edge to
+				resize. Pretext recomputes every height through <code className={postStyles.inlineCode}>layout()</code>,
+				with no DOM measurement at all.
 			</p>
 
 			<div className={demoStyles.masonryWrapper} ref={wrapperRef}>
@@ -157,9 +157,9 @@ export function ScenarioMasonry() {
 			</div>
 
 			<div className={`${postStyles.callout} ${postStyles.good}`}>
-				<strong>Verdict: Solid use case.</strong> Pretext predicts text card heights without mounting,
-				enabling correct masonry assignment on the first render. Resize triggers only <code className={postStyles.inlineCode}>layout()</code> &mdash;
-				pure arithmetic, no DOM reads.
+				<strong>Verdict: solid use case.</strong> Pretext predicts text card heights without mounting,
+				so the first render already puts each card in the right column. Resize triggers only <code className={postStyles.inlineCode}>layout()</code>,
+				which is arithmetic and no DOM reads.
 			</div>
 		</>
 	);

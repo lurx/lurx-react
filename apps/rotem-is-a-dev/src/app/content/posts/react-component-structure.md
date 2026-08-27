@@ -6,26 +6,17 @@ description: "A clean, consistent, scalable structure for React function compone
 tags: [react, components, architecture]
 draft: false
 ---
+No rule says how a React function component has to be laid out. The linter doesn't care. The bundler doesn't care.
 
-# React Component Structure: The Calm, Predictable Way to Write Function Components
+There's still a difference between a component that works and a component you can read in one pass at 5 PM right before you start your weekend.
 
-There’s no official law that says how a React function component must be structured.
-
-But there *is* a difference between:
-
-> “This component works.”
-
-and
-
-> “Ahhh. Yes. This sparks joy.”
-
-This guide lays out a clean, consistent, scalable structure for React function components — and then dives into the technical reasons why it works.
+This is the order I use, and the reasons it holds up.
 
 ---
 
-# The Ideal Order (The “React Sandwich”)
+## The ideal order (the "React sandwich")
 
-Here’s the preferred structure inside a component, top to bottom:
+Top to bottom, inside every component:
 
 1. Props destructuring
 2. State
@@ -39,11 +30,11 @@ Here’s the preferred structure inside a component, top to bottom:
 10. Render helpers
 11. The return JSX
 
-Let’s break it down.
+Let's break it down.
 
 ---
 
-## 1️⃣ Props Destructuring
+### 1. Props destructuring
 
 ```tsx
 type Props = {
@@ -54,80 +45,55 @@ type Props = {
 export function MyComponent({ title, isVisible }: Props) {
 ```
 
-Why first?
+Props are the component's contract, and everything below depends on them. Put them first and the reader knows what goes in before they read what happens with it.
 
-- It defines the component’s contract.
-- Everything else depends on it.
-- It immediately tells the reader what this component consumes.
-
-Think of it as the ingredient list before cooking.
+The ingredient list before the recipe.
 
 ---
 
-## 2️⃣ State
+### 2. State
 
 ```tsx
 const [count, setCount] = useState(0);
 ```
 
-State is the component’s internal memory. It should be declared early because:
+State is the component's memory, and most of the hooks below it read from that memory. Declaring it early means a `useMemo` on line 30 never points at a `useState` on line 60.
 
-- Other hooks may depend on it.
-- It influences rendering.
-- It defines behavior.
-
-Hooks must always be called in the same order. Keeping state declarations grouped prevents conditional-hook chaos.
+Grouping the `useState` calls also makes it obvious at a glance that none of them sit inside a condition, which is the one thing React won't forgive.
 
 ---
 
-## 3️⃣ Refs
+### 3. Refs
 
 ```tsx
 const inputRef = useRef<HTMLInputElement>(null);
 ```
 
-Refs are persistent containers across renders.
-
-They belong near state because:
-- They are stable across renders.
-- They don’t trigger re-renders.
-- They’re part of component memory.
+A ref is memory too. Memory that survives renders without triggering one when it changes. That's the only real difference from state, and it's why refs sit directly underneath it.
 
 ---
 
-## 4️⃣ Context
+### 4. Context
 
 ```tsx
 const theme = useContext(ThemeContext);
 ```
 
-Context connects your component to the outside world.
-
-It belongs with the “input layer” of your component:
-- Props
-- State
-- Context
-
-All sources of data come first.
+Context is another input, and inputs belong together. Props come from the parent, state from the component, context from somewhere further up the tree. Read those three blocks and you know every value this component starts with.
 
 ---
 
-## 5️⃣ Custom Hooks
+### 5. Custom hooks
 
 ```tsx
 const { data, isLoading } = useUserData(userId);
 ```
 
-Custom hooks encapsulate logic.
-
-They belong before memoization and callbacks because:
-- They often provide values used later.
-- They may contain effects internally.
-- They’re foundational behavior.
+Custom hooks hand you values the rest of the component uses, and they often run effects of their own on the inside. Anything that hides an effect belongs above the code depending on its results.
 
 ---
 
-## 6️⃣ Memoized Values
+### 6. Memoized values
 
 ```tsx
 const sortedItems = useMemo(() => {
@@ -135,17 +101,11 @@ const sortedItems = useMemo(() => {
 }, [items]);
 ```
 
-`useMemo` is for derived data.
-
-It belongs after data sources because:
-- It depends on state, props, or custom hooks.
-- It prepares data for rendering.
-
-Think of this as your “data transformation” layer.
+`useMemo` is derived data, so it can only come after the data it derives from. This is the transformation layer, with raw inputs above it and render-ready values below.
 
 ---
 
-## 7️⃣ Callbacks / Handlers
+### 7. Callbacks / handlers
 
 ```tsx
 const handleClick = useCallback(() => {
@@ -153,18 +113,13 @@ const handleClick = useCallback(() => {
 }, []);
 ```
 
-Callbacks often:
-- Use state
-- Use memoized values
-- Trigger effects indirectly
+Handlers read state and memoized values, so they go after both.
 
-They belong after memoized values because they may depend on them.
-
-Keeping them grouped also makes it easier to audit dependencies.
+Keeping them in one block also makes the dependency arrays easy to audit. Scattered `useCallback` calls are how stale closures survive code review.
 
 ---
 
-## 8️⃣ Effects
+### 8. Effects
 
 ```tsx
 useEffect(() => {
@@ -172,39 +127,24 @@ useEffect(() => {
 }, [title, count]);
 ```
 
-Effects synchronize with the outside world.
-
-They come after all logic because:
-- They depend on everything above.
-- They represent side effects.
-- They are not pure computation.
-
-Putting effects last makes the dependency chain visually obvious.
+Effects are where the component reaches outside itself: the document title, a subscription, a fetch. They depend on everything above them, so they go last among the hooks. Read the file top to bottom and every dependency arrow points upward.
 
 ---
 
-## 9️⃣ Guard Clauses (Early Returns)
+### 9. Guard clauses (early returns)
 
 ```tsx
 if (!isVisible) return null;
 if (isLoading) return <Spinner />;
 ```
 
-Guard clauses:
+An early return kills a whole branch of rendering in one line and saves you from wrapping the JSX in yet another condition.
 
-- Improve readability
-- Reduce nesting
-- Fail fast
-
-They come right before render helpers and JSX.
-
-Why not earlier?
-
-Because hooks must run unconditionally. You can’t early-return before them.
+They come after every hook, never before. Hooks have to run unconditionally on every render, so an early return above them changes the hook count between renders and React starts handing state to the wrong calls.
 
 ---
 
-## 🔟 Render Helpers
+### 10. Render helpers
 
 ```tsx
 function renderItem(item: Item) {
@@ -212,17 +152,11 @@ function renderItem(item: Item) {
 }
 ```
 
-Render helpers:
-
-- Keep JSX clean
-- Extract conditional logic
-- Improve readability
-
-They belong close to the final return, because they’re purely about presentation.
+A render helper is presentation and nothing else, so it lives next to the thing it renders into. Once a helper starts reaching for state or firing events, it wants to be a component.
 
 ---
 
-## 1️⃣1️⃣ Return JSX
+### 11. Return JSX
 
 ```tsx
 return (
@@ -235,23 +169,21 @@ return (
 }
 ```
 
-This is the output.
-
-Everything above builds toward this moment.
+The output. By the time you reach it, every value it references is already defined and named above.
 
 ---
 
-# Why This Order Works (The Technical Deep Dive)
+## Why this order works
 
-Now let’s get into the mechanics.
+Now the mechanics.
 
 ---
 
-## 🔁 Hooks Must Run in the Same Order
+### Hooks must run in the same order
 
-React relies on call order to associate state with hook calls.
+React matches state to hook calls by order, not by name. There's no key, just a counter.
 
-This is why this is illegal:
+Which is why this is illegal:
 
 ```tsx
 if (isVisible) {
@@ -259,45 +191,29 @@ if (isVisible) {
 }
 ```
 
-If the hook order changes between renders, React breaks.
-
-Keeping all hooks at the top guarantees stability.
+Render once with `isVisible` true and once with it false, and the counter shifts. Every hook after this one gets handed the wrong slot. Keeping all hooks at the top makes that impossible.
 
 ---
 
-## 🧠 Data Flow Should Move Downward
+### Data flow moves downward
 
-Good components read like a pipeline:
+Good components read like a pipeline: inputs → state → derived values → side effects → render.
 
-Inputs
-↓
-Internal State
-↓
-Derived Values
-↓
-Side Effects
-↓
-Render
-
-This structure mirrors how React actually works.
+That's the order React works in too, so the file matches the runtime.
 
 ---
 
-## 🧮 Dependency Clarity
+### Dependency clarity
 
-When everything is grouped:
+If a callback depends on `sortedItems`, then `sortedItems` is declared above it. Always.
 
-- It’s easy to scan for dependency issues.
-- It’s easier to fix `react-hooks/exhaustive-deps` warnings.
-- You can visually trace logic.
-
-If a callback depends on `sortedItems`, you’ll see `sortedItems` declared above it.
+That one guarantee turns a `react-hooks/exhaustive-deps` warning into a two-second fix instead of a scavenger hunt through the file.
 
 ---
 
-## 🧱 Preventing “Component Soup”
+### Preventing "component soup"
 
-Bad components look like this:
+Scrambled components look like this:
 
 ```tsx
 const handleClick = ...
@@ -306,13 +222,11 @@ useEffect(...)
 const value = useMemo(...)
 ```
 
-Logic is scattered.
-
-Order removes cognitive overhead.
+Nothing there is wrong. It just costs a full read to work out what depends on what, every time anyone opens the file.
 
 ---
 
-# The Full Example
+## The full example
 
 ```tsx
 type Props = {
@@ -362,19 +276,8 @@ export function MyComponent({ title, isVisible, items }: Props) {
 
 ---
 
-# Final Thoughts
+## Final thoughts
 
-This structure:
+None of this makes a component faster. It makes it predictable. You know where to look for a handler, where a value came from, and whether a hook is safe to move.
 
-- Improves readability
-- Reduces bugs
-- Makes dependency management easier
-- Scales across teams
-- Makes code reviews smoother
-- Makes ESLint rules easier to enforce
-
-Most importantly:
-
-It makes your components predictable.
-
-And predictability is underrated engineering luxury.
+Predictability is a badly underrated luxury. Every component opens the same way, and after a week you stop reading the structure at all and just read the logic.

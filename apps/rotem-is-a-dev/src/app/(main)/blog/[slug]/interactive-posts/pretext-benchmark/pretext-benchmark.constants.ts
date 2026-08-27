@@ -11,7 +11,7 @@ export const SCENARIOS = [
 		id: 'shrinkwrap',
 		icon: { iconName: 'messages', iconGroup: 'fal' },
 		title: 'Chat Bubbles',
-		description: 'Exact shrinkwrap \u2014 CSS fit-content sizes to the widest line',
+		description: 'Exact shrinkwrap, where CSS fit-content only sizes to the widest line',
 	},
 	{
 		id: 'masonry',
@@ -47,5 +47,5 @@ export const IMPOSSIBLE_THINGS = [
 	{ icon: { iconName: 'paintbrush-fine', iconGroup: 'fal' }, label: 'CANVAS / SVG TEXT', description: 'Route wrapped text to Canvas or SVG with exact line positions. CSS layout doesn\'t exist there.' },
 	{ icon: { iconName: 'road-barrier', iconGroup: 'fal' }, label: 'OBSTACLE ROUTING', description: 'Flow text around images with per-line width changes. CSS shape-outside is limited; JS shapes aren\'t.' },
 	{ icon: { iconName: 'scale-balanced', iconGroup: 'fal' }, label: 'BALANCED TEXT', description: 'Find the width where lines are most balanced (headline widows). CSS text-wrap: balance approximates this.' },
-	{ icon: { iconName: 'vial', iconGroup: 'fal' }, label: 'BUILD-TIME CHECKS', description: 'Verify that button labels don\'t overflow their containers in CI \u2014 no browser required.' },
+	{ icon: { iconName: 'vial', iconGroup: 'fal' }, label: 'BUILD-TIME CHECKS', description: 'Verify that button labels don\'t overflow their containers in CI, no browser required.' },
 ] satisfies ImpossibleThing[];

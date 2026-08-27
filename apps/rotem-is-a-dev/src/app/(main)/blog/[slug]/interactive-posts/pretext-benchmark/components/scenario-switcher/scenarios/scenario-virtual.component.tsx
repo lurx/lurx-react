@@ -13,8 +13,8 @@ export function ScenarioVirtual() {
 			</p>
 			<p className={postStyles.paragraph}>
 				The conventional approach uses a ResizeObserver or a one-time measurement pass with hidden
-				elements. Both require elements to exist in the DOM before you know their height &mdash; which
-				forces a two-phase render or eager DOM population. Pretext breaks this dependency.
+				elements. Both need the elements to exist in the DOM before you know their height, which
+				forces a two-phase render or eager DOM population. Pretext breaks that dependency.
 			</p>
 			<div className={postStyles.compare}>
 				<div className={postStyles.comparePane}>
@@ -37,9 +37,9 @@ export function ScenarioVirtual() {
 				</div>
 			</div>
 			<div className={`${postStyles.callout} ${postStyles.good}`}>
-				<strong>Verdict: Strong use case.</strong> Pretext was essentially designed for this.
-				The prepare/layout split maps perfectly onto virtualised list architecture &mdash; prepare when data
-				loads, layout when width changes. The ability to run in a Web Worker is a meaningful bonus.
+				<strong>Verdict: strong use case.</strong> Pretext was built for this. The prepare/layout split
+				maps straight onto virtualised list architecture. Prepare when data loads, layout when width
+				changes. Running it in a Web Worker is a real bonus.
 			</div>
 		</>
 	);

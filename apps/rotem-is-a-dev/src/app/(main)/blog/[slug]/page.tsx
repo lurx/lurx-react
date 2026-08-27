@@ -5,11 +5,12 @@ import { posts, mdxPosts } from '#velite';
 import type { ComponentType } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { SITE_URL } from '@/data/site.data';
 import { SERIES_META } from '../data/blog-series.data';
 import type { AnyPost } from '../blog-page.types';
 import type { BlogPostPageProps } from './blog-post-page.types';
 import styles from './blog-post.module.scss';
-import { BackToBlogLink, BlogPostActions, BlogPostHeader, MermaidRenderer, SeriesNav } from './components';
+import { BackToBlogLink, BlogPostActions, BlogPostHeader, BlogPostSchema, MermaidRenderer, SeriesNav } from './components';
 
 type InteractivePostProps = {
 	code?: string;
@@ -72,9 +73,20 @@ export async function generateMetadata({
 
 	if (!post) return {};
 
+	const url = `${SITE_URL}/blog/${post.slug}`;
+
 	return {
 		title: post.title,
 		description: post.description,
+		alternates: { canonical: url },
+		openGraph: {
+			type: 'article',
+			title: post.title,
+			description: post.description,
+			url,
+			publishedTime: post.date,
+			tags: post.tags,
+		},
 	};
 }
 
@@ -91,6 +103,7 @@ export default async function BlogPostPage({ params }: Readonly<BlogPostPageProp
 
 	return (
 		<article className={styles.page}>
+      <BlogPostSchema post={post} />
       <BackToBlogLink />
       <BlogPostHeader post={post} actions={<BlogPostActions entityType="blog" entityId={slug} />} />
 			{InteractiveContent

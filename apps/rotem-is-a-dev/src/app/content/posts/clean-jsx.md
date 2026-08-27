@@ -1,34 +1,31 @@
 ---
-title: "The Do’s and Don’ts of Clean, Reusable React JSX"
+title: "The Do's and Don'ts of Clean, Reusable React JSX"
 slug: clean-jsx
 date: 2025-02-27
-description: "Golden rules for writing JSX that’s clean, maintainable, and pleasing to your fellow developers."
+description: "Golden rules for writing JSX that's clean, maintainable, and pleasing to your fellow developers."
 tags: [react, jsx, best-practices]
 draft: false
 ---
+JSX is React's bread and butter. A sweet syntax layer that makes UI code read like the thing it renders. And like butter, spread it wrong and everything gets greasy.
 
-# 🧼 The Do’s and Don’ts of Clean, Reusable React JSX
-
-JSX is React’s bread and butter—a sweet syntax layer that makes our UI code feel intuitive and expressive. But just like butter, if you overdo it or spread it wrong, things get messy.
-
-This guide outlines the golden rules for writing JSX that’s clean, maintainable, and pleasing to your fellow developers (and future-you at 2 AM).
+Here are the rules I hold myself to, mostly so future-me at 2 AM doesn't have to untangle present-me's cleverness.
 
 ---
 
-## ✅ DO: Keep JSX Declarative and Clean
+## Do keep JSX declarative
 
-React wants to tell a story. Let it read like a story.
+React wants to tell a story. Let it read like one.
 
 ```tsx
 <Button
-	onClick={handleClick}
-	disabled={isLoading}
+  onClick={handleClick}
+  disabled={isLoading}
 >
-	{buttonLabel}
+ {buttonLabel}
 </Button>
 ```
 
-But avoid logic gymnastics right in the middle of your JSX:
+Avoid logic gymnastics in the middle of your JSX.
 
 ```tsx
 // ❌ Bad
@@ -37,7 +34,7 @@ But avoid logic gymnastics right in the middle of your JSX:
 </Button>
 ```
 
-✅ Better
+Better:
 
 ```tsx
 const buttonLabel = getButtonLabel(someFlag, otherFlag);
@@ -51,11 +48,11 @@ const handleClick = () => {
 <Button onClick={handleClick}>{buttonLabel}</Button>;
 ```
 
-_**Rule of thumb**_: If your JSX looks like a puzzle, pull the logic out and name it something readable.
+Rule of thumb: if your JSX looks like a puzzle, pull the logic out and give it a name.
 
 ---
 
-## ❌ DON'T: Use Ternaries in JSX (for anything)
+## Don't use ternaries in JSX
 
 Yes, ternaries are concise. Yes, they make you feel clever. But no, they're not readable at scale.
 
@@ -66,7 +63,7 @@ Yes, ternaries are concise. Yes, they make you feel clever. But no, they're not 
 </div>
 ```
 
-✅ Clean it up
+Clean it up:
 
 ```tsx
 const roleLabel = getRoleLabel(user);
@@ -78,7 +75,7 @@ Let your JSX breathe. Logic belongs in variables, hooks, or helper functions.
 
 ---
 
-## ✅ DO: Extract Inline Functions to Constants or useCallback
+## Do extract inline functions
 
 Every time you define a function in JSX, React re-creates it on every render. This can break `useMemo`, `React.memo`, and your soul.
 
@@ -102,11 +99,11 @@ const handleClick = useCallback(() => {
 }, [item.id]);
 ```
 
-It’s like inviting a friend to dinner: give them a name, don’t make them show up anonymous.
+A named handler also tells the next reader what the click does before they open the callback.
 
 ---
 
-## ❌ DON'T: Use Magic Values in JSX
+## Don't use magic values in JSX
 
 Magic values are fine in fairy tales, but not in your markup.
 
@@ -125,22 +122,21 @@ const headerStyle = {
 <header style={headerStyle}>Hello</header>;
 ```
 
-Named constants speak volumes. And when the design system changes? You’ll thank yourself.
+When the design system moves that 37 to 40, you change one line instead of grepping for the number.
 
 ---
 
-## ✅ DO: Break Down Complex JSX into Components
+## Do break complex JSX into components
 
 If your JSX block is starting to look like it belongs in the Louvre... extract it!
 
 ```tsx
 // ❌ Instead of this:
 items.map(item => {
-	const handleBuy = () => buyItem(item.id);
-
-	return (
-		<div key={item.id}>
-			<h3>{item.title}</h3>
+  const handleBuy = () => buyItem(item.id);
+  return (
+    <div key={item.id}>
+      <h3>{item.title}</h3>
 			<p>{item.description}</p>
 			<Button onClick={handleBuy}>Buy</Button>
 		</div>
@@ -159,11 +155,11 @@ items.map(item => (
 ));
 ```
 
-Cleaner code. Reusable components. Fewer bugs. Happier devs.
+Now the card markup has one home, and the map body is a single component call.
 
 ---
 
-## ❌ DON'T: Nest JSX Like It’s Inception
+## Don't nest JSX like it's Inception
 
 Fragments are great. But double-nesting them, triple-nesting them, nesting `<div>`s like Russian dolls? Not great.
 
@@ -184,13 +180,13 @@ Fragments are great. But double-nesting them, triple-nesting them, nesting `<div
 </>
 ```
 
-✅ Simplify layout. Use semantic tags. Extract structure where it gets gnarly.
+Use semantic tags, and extract a component once the indentation passes four levels.
 
 ---
 
-## ✅ DO: Use Meaningful, Consistent Naming
+## Do name things meaningfully
 
-You’re not just writing for yourself. You’re writing for Karen from QA and Dev Dave from the future.
+You're writing for Karen from QA, and for Dave six months from now.
 
 ```tsx
 // ❌ Confusing
@@ -204,7 +200,7 @@ JSX is not the place for riddles. Save that for your escape room hobby.
 
 ---
 
-## ❌ DON'T: Spread Props Blindly
+## Don't spread props blindly
 
 ```tsx
 // ❌ What horrors lie within this {...props}?
@@ -220,20 +216,18 @@ Instead, be explicit:
 />
 ```
 
-Clarity > Convenience. Always.
+Clarity beats convenience, every time.
 
-> Prop spreading is generally discouraged as it can lead to unintended behavior or make the code harder to understand. However, it is acceptable in cases where all props need to be passed down to a child component or when working with higher-order components (HOCs) or utility wrappers.
+> Spreading hides what a component actually receives, and it forwards props the child never asked for. The exception is a pass-through wrapper or an HOC, where forwarding everything is the entire job.
 
 ---
 
-## ❌ DON'T: Use Duplicate or Unstable Keys
+## Do use a stable, unique `key` per `.map()`
 
-## ✅ DO: Use a Unique `key` per `.map()`
-
-React uses the `key` prop to track items inside a list. It does **not** need to be globally unique — only unique within that specific `.map()`.
+React uses the `key` prop to track items inside a list. It has to be unique within that one `.map()`, not across your whole app.
 
 ```tsx
-// ❌ Bad – index can break if the list changes
+// ❌ Bad. Index breaks when the list changes
 items.map((item, index) => (
 	<ListItem
 		key={index}
@@ -243,7 +237,7 @@ items.map((item, index) => (
 ```
 
 ```tsx
-// ✅ Good – stable and unique within this map
+// ✅ Good. Stable and unique within this map
 items.map(item => (
 	<ListItem
 		key={item.id}
@@ -252,19 +246,19 @@ items.map(item => (
 ));
 ```
 
-Avoid using `index` unless your list is completely static and never changes. Keys should be predictable, stable, and unique within the list they belong to.
+Index keys are safe only for a list that never reorders, filters, or grows. Everything else needs an id.
 
 ---
 
-# Wrap-Up: JSX Zen Mode
+## Wrap-up
 
-Here’s your JSX mantra:
+The short version.
 
-- **Keep it declarative** — logic before render.
-- **Extract everything** — ternaries, inline functions, magic numbers.
-- **Name wisely** — clarity beats cleverness.
-- **Componentize like a boss** — even small chunks.
-- **Use proper keys** — unique per map, stable per item.
-- **Never write JSX you wouldn’t want to debug with a hangover.**
+- **Keep it declarative.** Logic before render.
+- **Extract everything.** Ternaries, inline functions, magic numbers.
+- **Name wisely.** Clarity beats cleverness.
+- **Componentize like a boss.** Even the small chunks.
+- **Use proper keys.** Unique per map, stable per item.
+- **Never write JSX you wouldn't want to debug with a hangover.**
 
-React rewards the developer who shows restraint. So write JSX like it’s poetry — with purpose, clarity, and not a ternary in sight.
+React rewards restraint. Write JSX you'd be happy to read out loud.
