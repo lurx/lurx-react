@@ -84,13 +84,13 @@ export function MdxVerdictBox() {
 		<VerdictBox title="The short answer">
 			<p className={styles.paragraph}>
 				If you&apos;re building virtual scrolling, Canvas/SVG text rendering, chat UIs, or any layout that
-				requires knowing text height before mounting &mdash; <strong>yes, pretext is the best tool available.</strong>{' '}
-				The performance lead over DOM measurement is real and substantial, the accuracy is impressive,
-				and the API surface is small and well-designed.
+				requires knowing text height before mounting, <strong>yes, pretext is the best tool available.</strong>{' '}
+				The performance lead over DOM measurement is real, the accuracy held up on everything I threw
+				at it, and the API is small enough to learn in an afternoon.
 			</p>
 			<p className={styles.paragraph}>
 				If you&apos;re building standard content pages, forms, or anything where the browser&apos;s own layout
-				engine can do the work &mdash; <strong>don&apos;t reach for pretext.</strong> The additional complexity,
+				engine can do the work, <strong>don&apos;t reach for pretext.</strong> The additional complexity,
 				font-sync discipline, and CSS-mode restrictions aren&apos;t worth it when CSS already has the answer.
 			</p>
 		</VerdictBox>

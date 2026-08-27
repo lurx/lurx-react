@@ -8,7 +8,7 @@ const MOCK_PAGE: PrivacyPolicyPageProps['page'] = {
 	lastUpdated: 'March 10, 2026',
 	description: 'Test privacy policy description.',
 	content:
-		'<h2>Introduction</h2><p>Welcome to <strong>rotem.is-a.dev</strong>.</p>' +
+		'<h2>Introduction</h2><p>Welcome to <strong>rotemhorovitz.com</strong>.</p>' +
 		'<h2>Contact</h2><p>Email us at <a href="mailto:test@example.com">test@example.com</a>.</p>',
 };
 
@@ -36,6 +36,6 @@ describe('PrivacyPolicyPage', () => {
 	});
 
 	it('renders content HTML with inline elements', () => {
-		expect(screen.getByText('rotem.is-a.dev')).toBeInTheDocument();
+		expect(screen.getByText('rotemhorovitz.com')).toBeInTheDocument();
 	});
 });

@@ -9,7 +9,7 @@ import type { BubbleMessage } from './shrinkwrap-demo.types';
 const MESSAGES = [
 	{ text: 'Hey, did you see the new pretext library? It does text measurement without touching the DOM at all', side: 'right' },
 	{ text: 'Yeah I saw it! The prepare/layout split is really clever for virtualised lists', side: 'left' },
-	{ text: 'Exactly. And the hot path is pure arithmetic — no canvas calls, no reflows', side: 'right' },
+	{ text: 'Exactly. And the hot path is pure arithmetic, no canvas calls, no reflows', side: 'right' },
 ] satisfies BubbleMessage[];
 
 export function ScenarioShrinkwrap() {
@@ -38,12 +38,12 @@ export function ScenarioShrinkwrap() {
 			<p className={postStyles.paragraph}>
 				<code className={postStyles.inlineCode}>width: fit-content</code> sizes a container to its widest
 				wrapped line. If a message wraps to 3 lines and the last line is short, the bubble still stretches
-				to the longest line &mdash; leaving dead white space that looks wrong for a messenger UI.
+				to the longest line, leaving dead white space that looks wrong in a messenger UI.
 			</p>
 			<p className={postStyles.paragraph}>
 				Pretext&apos;s <code className={postStyles.inlineCode}>layout()</code> lets you binary-search
-				the minimum width that still produces the same line count. The result: bubbles that are as tight
-				as possible without getting shorter.
+				the minimum width that still produces the same line count. The result: bubbles as narrow as
+				they can go without gaining a line.
 			</p>
 
 			<div className={postStyles.compare}>
@@ -112,10 +112,10 @@ export function ScenarioShrinkwrap() {
 			</div>
 
 			<div className={`${postStyles.callout} ${postStyles.good}`}>
-				<strong>Verdict: CSS literally cannot do this.</strong> There is no CSS property that finds
-				the narrowest width producing exactly N lines. That requires running layout at multiple widths
-				and comparing line counts &mdash; which is exactly what pretext&apos;s API makes trivial. This is one of
-				the &ldquo;impossible things&rdquo; pretext unlocks.
+				<strong>Verdict: CSS cannot do this.</strong> No CSS property finds the narrowest width that
+				still produces exactly N lines. That takes running layout at several widths and comparing line
+				counts, which is what pretext&apos;s API makes cheap. One of the &quot;impossible things&quot;
+				from the section above.
 			</div>
 		</>
 	);

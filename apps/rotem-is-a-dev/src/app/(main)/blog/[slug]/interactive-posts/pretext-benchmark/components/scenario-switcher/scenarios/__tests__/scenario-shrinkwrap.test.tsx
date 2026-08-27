@@ -59,7 +59,7 @@ describe('ScenarioShrinkwrap', () => {
 		expect(mockComputeShrinkwrap).toHaveBeenCalledWith([
 			'Hey, did you see the new pretext library? It does text measurement without touching the DOM at all',
 			'Yeah I saw it! The prepare/layout split is really clever for virtualised lists',
-			'Exactly. And the hot path is pure arithmetic — no canvas calls, no reflows',
+			'Exactly. And the hot path is pure arithmetic, no canvas calls, no reflows',
 		]);
 	});
 
@@ -97,7 +97,7 @@ describe('ScenarioShrinkwrap', () => {
 	it('renders the verdict callout', () => {
 		render(<ScenarioShrinkwrap />);
 
-		expect(screen.getByText(/CSS literally cannot do this/)).toBeInTheDocument();
+		expect(screen.getByText(/CSS cannot do this/)).toBeInTheDocument();
 	});
 
 	it('does not render waste markers for zero-waste results', async () => {
