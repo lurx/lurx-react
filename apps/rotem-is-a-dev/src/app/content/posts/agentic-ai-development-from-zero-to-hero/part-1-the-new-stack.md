@@ -16,7 +16,7 @@ A note on where I'm writing from. I'm a frontend engineer, previously at Payonee
 
 One idea runs through the whole series, so here it is up front. **Agents amplify clarity and ambiguity equally.** Vague intent gets you confidently wrong output. Sharp specification gets you real leverage. The rest is mechanics.
 
-[Alex Azimbaev](https://medium.com/@alex-azimbaev/building-ai-agents-that-actually-ship-a-practical-guide-for-2025-0c84e2233218) framed it in a way that stuck with me. 2024 was the year of prototypes and proof-of-concepts, when everyone experimented and almost nobody shipped. 2025 is when the infrastructure caught up with the ambition. The models got better, the tooling matured, and the patterns settled enough for teams to build on them. That's where we are now.
+[Alex Azimbaev](https://medium.com/@alex-azimbaev/building-ai-agents-that-actually-ship-a-practical-guide-for-2025-0c84e2233218) framed it in a way that stuck with me. 2024 was the year of prototypes and proof-of-concepts, when everyone experimented and few shipped. 2025 is when the infrastructure caught up with the ambition. The models got better, the tooling matured, and the patterns settled enough for teams to build on them. That's where we are now.
 
 We're starting at the foundation, and not because I doubt anyone's intelligence. Most of the confusion I see in teams, developers very much included, traces back to a shaky mental model at the base level. So before agents, workflows, and team structure, let's agree on the vocabulary.
 
