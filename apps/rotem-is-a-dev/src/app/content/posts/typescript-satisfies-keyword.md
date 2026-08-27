@@ -6,9 +6,6 @@ description: "How TypeScript's `satisfies` keyword validates your data without t
 tags: [typescript]
 draft: false
 ---
-
-# The `satisfies` Keyword in TypeScript (Or: Having Your Type Cake and Eating It Too)
-
 TypeScript 4.9 quietly slipped a new operator into our lives. `satisfies` solves one of those problems that's annoying enough to complain about, but never quite annoying enough to file an issue over. You know the one. You want TypeScript to *check* your value against a type, and the moment you add the annotation it forgets everything it just learned about your data, like a golden retriever after a loud noise.
 
 That ends now.

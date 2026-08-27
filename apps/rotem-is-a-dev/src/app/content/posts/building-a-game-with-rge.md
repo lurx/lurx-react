@@ -6,9 +6,6 @@ description: "A practical guide to the Entity-Component-System pattern in React,
 tags: [react, gamedev, architecture]
 draft: false
 ---
-
-# Building a Browser Game with react-game-engine
-
 You've spent years on forms, dashboards, and CRUD screens. Then one day you wonder what it would take to build a game in React.
 
 Turns out you can, and you keep almost everything you already know. The `react-game-engine` library (RGE) brings the Entity-Component-System (ECS) pattern to React. It runs the game loop for you and leaves your UI layer as ordinary React.

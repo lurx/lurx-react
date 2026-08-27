@@ -6,9 +6,6 @@ description: "Golden rules for writing JSX that's clean, maintainable, and pleas
 tags: [react, jsx, best-practices]
 draft: false
 ---
-
-# The Do's and Don'ts of Clean, Reusable React JSX
-
 JSX is React's bread and butter. A sweet syntax layer that makes UI code read like the thing it renders. And like butter, spread it wrong and everything gets greasy.
 
 Here are the rules I hold myself to, mostly so future-me at 2 AM doesn't have to untangle present-me's cleverness.
@@ -139,7 +136,7 @@ items.map(item => {
   const handleBuy = () => buyItem(item.id);
   return (
     <div key={item.id}>
-			<h3>{item.title}</h3>
+      <h3>{item.title}</h3>
 			<p>{item.description}</p>
 			<Button onClick={handleBuy}>Buy</Button>
 		</div>

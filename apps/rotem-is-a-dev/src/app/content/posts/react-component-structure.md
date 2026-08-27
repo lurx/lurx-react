@@ -6,9 +6,6 @@ description: "A clean, consistent, scalable structure for React function compone
 tags: [react, components, architecture]
 draft: false
 ---
-
-# React Component Structure: The Calm, Predictable Way to Write Function Components
-
 No rule says how a React function component has to be laid out. The linter doesn't care. The bundler doesn't care.
 
 There's still a difference between a component that works and a component you can read in one pass at 5 PM right before you start your weekend.
