@@ -17,6 +17,11 @@ declare module 'shiki/themes/night-owl' {
 	export default theme;
 }
 
+declare module 'shiki/themes/github-light' {
+	const theme: import('shiki').ThemeRegistrationRaw;
+	export default theme;
+}
+
 declare module 'shiki/langs/javascript' {
 	const lang: import('shiki').LanguageRegistration;
 	export default lang;

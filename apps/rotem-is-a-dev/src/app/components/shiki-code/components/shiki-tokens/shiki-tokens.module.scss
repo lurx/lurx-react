@@ -1,0 +1,18 @@
+// Shiki emits both themes' colours as inline custom properties per token; these
+// rules are what actually pick one, mirroring the theme cascade in global.scss.
+.token {
+	color: var(--shiki-dark);
+	font-style: var(--shiki-dark-font-style, normal);
+}
+
+:global([data-theme='light']) .token {
+	color: var(--shiki-light);
+	font-style: var(--shiki-light-font-style, normal);
+}
+
+@media (prefers-color-scheme: light) {
+	:global(:root:not([data-theme])) .token {
+		color: var(--shiki-light);
+		font-style: var(--shiki-light-font-style, normal);
+	}
+}

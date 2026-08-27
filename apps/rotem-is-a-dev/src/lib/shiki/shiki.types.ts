@@ -1,7 +1,12 @@
-import type { ThemedToken } from 'shiki/core';
+import type { CSSProperties } from 'react';
+
+export type ShikiToken = {
+	content: string;
+	style: CSSProperties;
+};
 
 export type ShikiLine = {
-	tokens: ThemedToken[];
+	tokens: ShikiToken[];
 }
 
 export type UseShikiTokensParams = {

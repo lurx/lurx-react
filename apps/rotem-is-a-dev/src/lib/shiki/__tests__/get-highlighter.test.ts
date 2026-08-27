@@ -1,5 +1,5 @@
 const mockHighlighterInstance = {
-	codeToTokensBase: jest.fn(),
+	codeToTokens: jest.fn(),
 	codeToHtml: jest.fn(),
 };
 
@@ -15,6 +15,7 @@ jest.mock('shiki/engine/oniguruma', () => ({
 }));
 
 jest.mock('shiki/themes/night-owl', () => ({ default: { name: 'night-owl' } }), { virtual: true });
+jest.mock('shiki/themes/github-light', () => ({ default: { name: 'github-light' } }), { virtual: true });
 jest.mock('shiki/langs/javascript', () => ({ default: { name: 'javascript' } }), { virtual: true });
 jest.mock('shiki/langs/typescript', () => ({ default: { name: 'typescript' } }), { virtual: true });
 jest.mock('shiki/langs/json', () => ({ default: { name: 'json' } }), { virtual: true });
@@ -43,7 +44,7 @@ describe('getHighlighter', () => {
 		expect(callArgs).toHaveProperty('themes');
 		expect(callArgs).toHaveProperty('langs');
 		expect(callArgs).toHaveProperty('engine');
-		expect(callArgs.themes).toHaveLength(1);
+		expect(callArgs.themes).toHaveLength(2);
 		expect(callArgs.langs).toHaveLength(4);
 	});
 

@@ -15,13 +15,13 @@ describe('CodeBlock', () => {
 	const mockLines: ShikiLine[] = [
 		{
 			tokens: [
-				{ content: 'const', color: '#C792EA', offset: 0 },
-				{ content: ' x', color: '#D6DEEB', offset: 6 },
+				{ content: 'const', style: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
+				{ content: ' x', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 			],
 		},
 		{
 			tokens: [
-				{ content: '  = 1;', color: '#D6DEEB', offset: 0 },
+				{ content: '  = 1;', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 			],
 		},
 	];
@@ -67,10 +67,10 @@ describe('CodeBlock', () => {
 		render(<CodeBlock code="const x = 1;" />);
 
 		const constToken = screen.getByText('const');
-		expect(constToken).toHaveStyle({ color: '#C792EA' });
+		expect(constToken).toHaveStyle({ '--shiki-dark': '#C792EA' });
 
 		const xToken = screen.getByText(' x', { normalizer: noTrimNormalizer });
-		expect(xToken).toHaveStyle({ color: '#D6DEEB' });
+		expect(xToken).toHaveStyle({ '--shiki-dark': '#D6DEEB' });
 	});
 
 	it('renders raw code as fallback while loading (null shikiLines)', () => {

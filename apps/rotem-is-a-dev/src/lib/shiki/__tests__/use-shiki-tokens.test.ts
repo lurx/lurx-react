@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react';
 import type { ThemedToken } from 'shiki/core';
 
-const mockCodeToTokensBase = jest.fn();
+const mockCodeToTokens = jest.fn();
 const mockGetHighlighter = jest.fn().mockResolvedValue({
-	codeToTokensBase: (...args: unknown[]) => mockCodeToTokensBase(...args),
+	codeToTokens: (...args: unknown[]) => mockCodeToTokens(...args),
 });
 
 jest.mock('../get-highlighter', () => ({
@@ -11,6 +11,7 @@ jest.mock('../get-highlighter', () => ({
 }));
 
 import { useShikiTokens } from '../use-shiki-tokens.hook';
+import { CODE_THEMES } from '../shiki.constants';
 
 type ShikiLanguage = 'typescript' | 'javascript' | 'json';
 type ShikiHookProps = { code: string; language: ShikiLanguage };
@@ -25,18 +26,23 @@ const renderShikiHook = (props: ShikiHookProps = DEFAULT_SHIKI_PROPS) =>
 		{ initialProps: props },
 	);
 
+const toExpectedToken = (token: ThemedToken) => ({
+	content: token.content,
+	style: token.htmlStyle,
+});
+
 describe('useShikiTokens', () => {
 	const mockTokenLine1: ThemedToken[] = [
-		{ content: 'const', color: '#C792EA', offset: 0 },
-		{ content: ' x', color: '#D6DEEB', offset: 6 },
+		{ content: 'const', offset: 0, htmlStyle: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
+		{ content: ' x', offset: 0, htmlStyle: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 	];
 	const mockTokenLine2: ThemedToken[] = [
-		{ content: '  = 1;', color: '#D6DEEB', offset: 0 },
+		{ content: '  = 1;', offset: 0, htmlStyle: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 	];
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockCodeToTokensBase.mockReturnValue([mockTokenLine1, mockTokenLine2]);
+		mockCodeToTokens.mockReturnValue({ tokens: [mockTokenLine1, mockTokenLine2] });
 	});
 
 	it('returns null initially while loading', () => {
@@ -49,8 +55,8 @@ describe('useShikiTokens', () => {
 		await flushPromises();
 
 		expect(result.current).toEqual([
-			{ tokens: mockTokenLine1 },
-			{ tokens: mockTokenLine2 },
+			{ tokens: mockTokenLine1.map(toExpectedToken) },
+			{ tokens: mockTokenLine2.map(toExpectedToken) },
 		]);
 	});
 
@@ -61,13 +67,14 @@ describe('useShikiTokens', () => {
 		expect(mockGetHighlighter).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls codeToTokensBase with code, language, and night-owl theme', async () => {
+	it('asks for both themes so the colours stay switchable in CSS', async () => {
 		renderShikiHook();
 		await flushPromises();
 
-		expect(mockCodeToTokensBase).toHaveBeenCalledWith('const x = 1;', {
+		expect(mockCodeToTokens).toHaveBeenCalledWith('const x = 1;', {
 			lang: 'typescript',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 
@@ -76,15 +83,17 @@ describe('useShikiTokens', () => {
 		await flushPromises();
 
 		const updatedTokenLine: ThemedToken[] = [
-			{ content: 'let y', color: '#C792EA', offset: 0 },
+			{ content: 'let y', offset: 0, htmlStyle: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
 		];
-		mockCodeToTokensBase.mockReturnValue([updatedTokenLine]);
+		mockCodeToTokens.mockReturnValue({ tokens: [updatedTokenLine] });
 
 		rerender({ code: 'let y = 2;', language: 'typescript' });
 		await flushPromises();
 
-		expect(result.current).toEqual([{ tokens: updatedTokenLine }]);
-		expect(mockCodeToTokensBase).toHaveBeenCalledTimes(2);
+		expect(result.current).toEqual([
+			{ tokens: updatedTokenLine.map(toExpectedToken) },
+		]);
+		expect(mockCodeToTokens).toHaveBeenCalledTimes(2);
 	});
 
 	it('re-fetches tokens when the language changes', async () => {
@@ -94,9 +103,10 @@ describe('useShikiTokens', () => {
 		rerender({ code: 'const x = 1;', language: 'javascript' });
 		await flushPromises();
 
-		expect(mockCodeToTokensBase).toHaveBeenLastCalledWith('const x = 1;', {
+		expect(mockCodeToTokens).toHaveBeenLastCalledWith('const x = 1;', {
 			lang: 'javascript',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 
@@ -113,16 +123,16 @@ describe('useShikiTokens', () => {
 
 		await act(async () => {
 			resolveHighlighter({
-				codeToTokensBase: mockCodeToTokensBase,
+				codeToTokensBase: mockCodeToTokens,
 			});
 			await Promise.resolve();
 		});
 
-		expect(mockCodeToTokensBase).not.toHaveBeenCalled();
+		expect(mockCodeToTokens).not.toHaveBeenCalled();
 	});
 
 	it('handles empty code', async () => {
-		mockCodeToTokensBase.mockReturnValue([]);
+		mockCodeToTokens.mockReturnValue({ tokens: [] });
 
 		const { result } = renderShikiHook({ code: '', language: 'typescript' });
 		await flushPromises();
@@ -134,9 +144,10 @@ describe('useShikiTokens', () => {
 		renderShikiHook({ code: '{}', language: 'json' });
 		await flushPromises();
 
-		expect(mockCodeToTokensBase).toHaveBeenCalledWith('{}', {
+		expect(mockCodeToTokens).toHaveBeenCalledWith('{}', {
 			lang: 'json',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 });
