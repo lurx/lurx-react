@@ -19,6 +19,7 @@ import {
 	TEXT_SCALES,
 } from '../../accessibility-widget.types';
 import type { SpacingLevel, TextScale } from '../../accessibility-widget.types';
+import { useThemeContext } from '../../../theme';
 import type { AccessibilitySettings } from './use-accessibility-settings.types';
 
 export function useAccessibilitySettings(): AccessibilitySettings {
@@ -29,6 +30,8 @@ export function useAccessibilitySettings(): AccessibilitySettings {
 	const [letterSpacing, setLetterSpacing] = useState<SpacingLevel>(() =>
 		readStoredLevel(LETTER_SPACING_STORAGE_KEY),
 	);
+
+	const { theme, isThemeDefault, selectTheme, resetTheme } = useThemeContext();
 
 	useLayoutEffect(() => {
 		applyTextScale(textScale);
@@ -57,7 +60,10 @@ export function useAccessibilitySettings(): AccessibilitySettings {
 	const isLineHeightDefault = lineHeight === DEFAULT_SPACING_LEVEL;
 	const isLetterSpacingDefault = letterSpacing === DEFAULT_SPACING_LEVEL;
 	const isAllDefault =
-		isTextScaleDefault && isLineHeightDefault && isLetterSpacingDefault;
+		isThemeDefault &&
+		isTextScaleDefault &&
+		isLineHeightDefault &&
+		isLetterSpacingDefault;
 
 	const lineHeightDisplayValue = formatSpacingValue(
 		LINE_HEIGHT_VALUES,
@@ -107,12 +113,14 @@ export function useAccessibilitySettings(): AccessibilitySettings {
 	}, []);
 
 	const resetAll = useCallback(() => {
+		resetTheme();
 		setTextScale(DEFAULT_TEXT_SCALE);
 		setLineHeight(DEFAULT_SPACING_LEVEL);
 		setLetterSpacing(DEFAULT_SPACING_LEVEL);
-	}, []);
+	}, [resetTheme]);
 
 	return {
+		theme,
 		textScale,
 		lineHeightDisplayValue,
 		letterSpacingDisplayValue,
@@ -122,16 +130,19 @@ export function useAccessibilitySettings(): AccessibilitySettings {
 		canIncreaseLineHeight,
 		canDecreaseLetterSpacing,
 		canIncreaseLetterSpacing,
+		isThemeDefault,
 		isTextScaleDefault,
 		isLineHeightDefault,
 		isLetterSpacingDefault,
 		isAllDefault,
+		selectTheme,
 		decreaseScale,
 		increaseScale,
 		decreaseLineHeight,
 		increaseLineHeight,
 		decreaseLetterSpacing,
 		increaseLetterSpacing,
+		resetTheme,
 		resetTextScale,
 		resetLineHeight,
 		resetLetterSpacing,

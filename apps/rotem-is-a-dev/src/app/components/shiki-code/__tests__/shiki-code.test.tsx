@@ -6,13 +6,13 @@ describe('ShikiCode', () => {
 	const mockLines: ShikiLine[] = [
 		{
 			tokens: [
-				{ content: 'const', color: '#C792EA', offset: 0 },
-				{ content: ' x', color: '#D6DEEB', offset: 6 },
+				{ content: 'const', style: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
+				{ content: ' x', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 			],
 		},
 		{
 			tokens: [
-				{ content: '  = 1;', color: '#D6DEEB', offset: 0 },
+				{ content: '  = 1;', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 			],
 		},
 	];
@@ -37,9 +37,9 @@ describe('ShikiCode', () => {
 		const { container } = render(<ShikiCode lines={mockLines} />);
 
 		const allSpans = container.querySelectorAll('span span');
-		expect(allSpans[0]).toHaveStyle({ color: '#C792EA' });
-		expect(allSpans[1]).toHaveStyle({ color: '#D6DEEB' });
-		expect(allSpans[2]).toHaveStyle({ color: '#D6DEEB' });
+		expect(allSpans[0]).toHaveStyle({ '--shiki-dark': '#C792EA' });
+		expect(allSpans[1]).toHaveStyle({ '--shiki-dark': '#D6DEEB' });
+		expect(allSpans[2]).toHaveStyle({ '--shiki-dark': '#D6DEEB' });
 	});
 
 	it('appends a newline character after each line', () => {
@@ -60,10 +60,10 @@ describe('ShikiCode', () => {
 		const singleLine: ShikiLine[] = [
 			{
 				tokens: [
-					{ content: 'let', color: '#C792EA', offset: 0 },
-					{ content: ' y', color: '#D6DEEB', offset: 4 },
-					{ content: ' = ', color: '#C792EA', offset: 6 },
-					{ content: '"hello"', color: '#ECC48D', offset: 9 },
+					{ content: 'let', style: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
+					{ content: ' y', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
+					{ content: ' = ', style: { '--shiki-dark': '#C792EA', '--shiki-light': '#D73A49' } },
+					{ content: '"hello"', style: { '--shiki-dark': '#ECC48D', '--shiki-light': '#032F62' } },
 				],
 			},
 		];
@@ -74,13 +74,13 @@ describe('ShikiCode', () => {
 		expect(tokenSpans).toHaveLength(4);
 		expect(tokenSpans[0]).toHaveTextContent('let');
 		expect(tokenSpans[3]).toHaveTextContent('"hello"');
-		expect(tokenSpans[3]).toHaveStyle({ color: '#ECC48D' });
+		expect(tokenSpans[3]).toHaveStyle({ '--shiki-dark': '#ECC48D' });
 	});
 
 	it('renders a line with a single token', () => {
 		const singleTokenLine: ShikiLine[] = [
 			{
-				tokens: [{ content: '// comment', color: '#637777', offset: 0 }],
+				tokens: [{ content: '// comment', style: { '--shiki-dark': '#637777', '--shiki-light': '#6A737D' } }],
 			},
 		];
 
@@ -89,14 +89,14 @@ describe('ShikiCode', () => {
 		const tokenSpans = container.querySelectorAll('span span');
 		expect(tokenSpans).toHaveLength(1);
 		expect(tokenSpans[0]).toHaveTextContent('// comment');
-		expect(tokenSpans[0]).toHaveStyle({ color: '#637777' });
+		expect(tokenSpans[0]).toHaveStyle({ '--shiki-dark': '#637777' });
 	});
 
 	it('preserves whitespace in token content', () => {
 		const whitespaceLines: ShikiLine[] = [
 			{
 				tokens: [
-					{ content: '  indented', color: '#D6DEEB', offset: 0 },
+					{ content: '  indented', style: { '--shiki-dark': '#D6DEEB', '--shiki-light': '#24292E' } },
 				],
 			},
 		];

@@ -4,8 +4,6 @@ import {
 	DEFAULT_TEXT_SCALE,
 	LETTER_SPACING_VALUES,
 	LINE_HEIGHT_VALUES,
-	MOBILE_BASE_FONT_SIZE_PX,
-	MOBILE_BREAKPOINT_PX,
 	TEXT_SCALE_STORAGE_KEY,
 	TEXT_SCALES,
 	type SpacingLevel,
@@ -38,18 +36,12 @@ export function readStoredLevel(key: string): SpacingLevel {
 	return DEFAULT_SPACING_LEVEL;
 }
 
-export function getBaseFontSize(): number {
-	return globalThis.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches
-		? MOBILE_BASE_FONT_SIZE_PX
-		: BASE_FONT_SIZE_PX;
-}
-
 export function applyTextScale(scale: TextScale): void {
 	if (scale === DEFAULT_TEXT_SCALE) {
 		document.documentElement.style.removeProperty('--root-font-size');
 		return;
 	}
-	const fontSize = (getBaseFontSize() * scale) / 100;
+	const fontSize = (BASE_FONT_SIZE_PX * scale) / 100;
 	document.documentElement.style.setProperty(
 		'--root-font-size',
 		`${fontSize}px`,
@@ -99,3 +91,4 @@ export function formatSpacingValue(
 	if (value === 'Normal') return 'Normal';
 	return `${value}${suffix}`;
 }
+

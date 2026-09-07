@@ -4,7 +4,7 @@ import { HeroIntroduction } from '../hero-introduction.component';
 describe('HeroIntroduction', () => {
 	it('renders the greeting', () => {
 		render(<HeroIntroduction />);
-		expect(screen.getByText('Hi all. I am')).toBeInTheDocument();
+		expect(screen.getByText('Hi, I\'m')).toBeInTheDocument();
 	});
 
 	it('renders the name', () => {
@@ -14,7 +14,7 @@ describe('HeroIntroduction', () => {
 
 	it('renders the role line', () => {
 		render(<HeroIntroduction />);
-		expect(screen.getByText(/front-end developer/)).toBeInTheDocument();
+		expect(screen.getByText(/front-end-developer/)).toBeInTheDocument();
 	});
 
 	it('renders the GitHub profile link', () => {

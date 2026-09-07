@@ -110,6 +110,13 @@ describe('MobileMenu', () => {
 		expect(downloadLink).toHaveAttribute('href', '#downloadPdf');
 	});
 
+	it('renders the contact-me action linking to /contact', () => {
+		render(<MobileMenu />);
+		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+		const contactLink = screen.getByText('_contact-me').closest('a');
+		expect(contactLink).toHaveAttribute('href', '/contact');
+	});
+
 	it('closes the dropdown on route change', () => {
 		const { rerender } = render(<MobileMenu />);
 		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));

@@ -4,11 +4,9 @@ export const TEXT_SCALES: TextScale[] = [100, 125, 150, 175, 200];
 
 export const DEFAULT_TEXT_SCALE: TextScale = 100;
 
-export const BASE_FONT_SIZE_PX = 14;
-
-export const MOBILE_BASE_FONT_SIZE_PX = 16;
-
-export const MOBILE_BREAKPOINT_PX = 767;
+/** Mirrors `--root-font-size` in global.scss — the scale multiplies this, so
+ * the two must agree or 125% would render smaller than the unscaled default. */
+export const BASE_FONT_SIZE_PX = 16;
 
 export const TEXT_SCALE_STORAGE_KEY = 'accessibility-text-scale';
 
@@ -33,3 +31,15 @@ export const DEFAULT_SPACING_LEVEL: SpacingLevel = 0;
 export const LINE_HEIGHT_STORAGE_KEY = 'accessibility-line-height';
 
 export const LETTER_SPACING_STORAGE_KEY = 'accessibility-letter-spacing';
+
+// Theme lives in `app/layout/theme` — it is shared with the navbar switcher and
+// the boot script, so it cannot be owned by this widget. Re-exported for the
+// consumers that already reach for it here.
+export {
+	DEFAULT_THEME,
+	THEME_ATTRIBUTE,
+	THEME_LABELS,
+	THEME_STORAGE_KEY,
+	THEMES,
+} from '../theme';
+export type { Theme } from '../theme';

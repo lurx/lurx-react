@@ -6,11 +6,14 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	width: 460px;
-	flex-shrink: 0;
+	flex: 0 1 460px;
+	min-width: 320px;
+	max-width: 460px;
 
 	@include media-below('tablet') {
-		width: 100%;
+		flex-basis: 100%;
+		min-width: 0;
+		max-width: none;
 	}
 }
 
@@ -20,7 +23,7 @@
 
 .cardTitleNumber {
 	font-weight: 700;
-	color: var(--keyword);
+	color: var(--keyword-ink);
 }
 
 .cardTitleSeparator {
@@ -45,10 +48,9 @@
 // ─── Image Area ────────────────────────────────────────────────────────────────
 
 .imageWrapper {
-  --project-preview-bg: #0d1b2e;
 	position: relative;
 	height: #{normalize-to-grid(260px)};
-	background-color: var(--project-preview-bg);
+	background-color: var(--surface-near);
 	overflow: hidden;
 	flex-shrink: 0;
 }
@@ -58,10 +60,10 @@
 	height: 100%;
 	background: radial-gradient(
 			ellipse at 70% 40%,
-			rgba(97, 95, 255, 0.18) 0%,
+			var(--glow-keyword) 0%,
 			transparent 65%
 		),
-		linear-gradient(135deg, var(--project-preview-bg) 0%, var(--surface) 100%);
+		linear-gradient(135deg, var(--surface-near) 0%, var(--surface) 100%);
 }
 
 .demoPreview {
@@ -88,10 +90,10 @@
 	align-items: center;
 	justify-content: center;
 	padding: 2px;
-	background-color: #a3b3ff;
+	background-color: var(--keyword);
 	border-radius: 4px;
-	color: var(--surface);
-	font-size: 1.286rem;
+	color: var(--text);
+	font-size: 1.25rem;
 	line-height: 1;
 }
 

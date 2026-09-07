@@ -1,5 +1,6 @@
 'use client';
 
+import { ShikiTokens } from '@/app/components/shiki-code';
 import { useShikiTokens } from '@/lib/shiki';
 import { useMemo } from 'react';
 import { toLanguage, toLines } from './about-editor.helpers';
@@ -15,14 +16,10 @@ export const AboutEditor = ({ content }: AboutEditorProps) => {
 
 	const renderShikiLine = (index: number) => (
 		<span className={styles.codeLine}>
-			{shikiLines?.[index].tokens.map((token, tokenIndex) => (
-				<span
-					key={`token-${index}-${tokenIndex}`}
-					style={{ color: token.color }}
-				>
-					{token.content}
-				</span>
-			))}
+			<ShikiTokens
+				tokens={shikiLines?.[index].tokens ?? []}
+				lineKey={String(index)}
+			/>
 		</span>
 	);
 

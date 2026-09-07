@@ -3,7 +3,7 @@ import styles from '../hero-section.module.scss';
 import { heroSectionStrings } from '../hero-section.strings';
 
 export const RoleLine = () => {
-  const formattedRole = toCodeLike(heroSectionStrings.role, { prefix: '> ' });
+  const formattedRole = toCodeLike(heroSectionStrings.role, { prefix: '> ', convertCase: 'kebab-case' });
   return (
 	<p className={styles.role} data-hero-intro="role">{formattedRole}</p>
 )};

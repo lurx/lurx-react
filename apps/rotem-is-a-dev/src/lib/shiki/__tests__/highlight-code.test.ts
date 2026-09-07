@@ -1,28 +1,43 @@
 import type { ThemedToken } from 'shiki/core';
 
-const mockCodeToTokensBase = jest.fn();
+const mockCodeToTokens = jest.fn();
 
 jest.mock('../get-highlighter', () => ({
 	getHighlighter: jest.fn().mockResolvedValue({
-		codeToTokensBase: (...args: unknown[]) => mockCodeToTokensBase(...args),
+		codeToTokens: (...args: unknown[]) => mockCodeToTokens(...args),
 	}),
 }));
 
 import { highlightCode } from '../highlight-code';
 import { getHighlighter } from '../get-highlighter';
+import { CODE_THEMES } from '../shiki.constants';
+
+function themedToken(content: string, dark: string, light: string): ThemedToken {
+	return { content, offset: 0, htmlStyle: { '--shiki-dark': dark, '--shiki-light': light } };
+}
+
+function expectedToken(content: string, dark: string, light: string) {
+	return { content, style: { '--shiki-dark': dark, '--shiki-light': light } };
+}
 
 describe('highlightCode', () => {
 	const mockTokenLine1: ThemedToken[] = [
-		{ content: 'const', color: '#C792EA', offset: 0 },
-		{ content: ' x', color: '#D6DEEB', offset: 6 },
+		themedToken('const', '#C792EA', '#D73A49'),
+		themedToken(' x', '#D6DEEB', '#24292E'),
 	];
 	const mockTokenLine2: ThemedToken[] = [
-		{ content: '  = 1;', color: '#D6DEEB', offset: 0 },
+		themedToken('  = 1;', '#D6DEEB', '#24292E'),
 	];
+
+	const expectedLine1 = [
+		expectedToken('const', '#C792EA', '#D73A49'),
+		expectedToken(' x', '#D6DEEB', '#24292E'),
+	];
+	const expectedLine2 = [expectedToken('  = 1;', '#D6DEEB', '#24292E')];
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		mockCodeToTokensBase.mockReturnValue([mockTokenLine1, mockTokenLine2]);
+		mockCodeToTokens.mockReturnValue({ tokens: [mockTokenLine1, mockTokenLine2] });
 	});
 
 	it('calls getHighlighter to obtain a highlighter instance', async () => {
@@ -31,26 +46,27 @@ describe('highlightCode', () => {
 		expect(getHighlighter).toHaveBeenCalledTimes(1);
 	});
 
-	it('calls codeToTokensBase with the provided code, language, and night-owl theme', async () => {
+	it('asks for both themes so the colours stay switchable in CSS', async () => {
 		await highlightCode({ code: 'const x = 1;', language: 'typescript' });
 
-		expect(mockCodeToTokensBase).toHaveBeenCalledWith('const x = 1;', {
+		expect(mockCodeToTokens).toHaveBeenCalledWith('const x = 1;', {
 			lang: 'typescript',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 
-	it('transforms token lines into ShikiLine objects', async () => {
+	it('transforms token lines into ShikiLine objects carrying both colours', async () => {
 		const result = await highlightCode({ code: 'const x = 1;', language: 'typescript' });
 
 		expect(result).toEqual([
-			{ tokens: mockTokenLine1 },
-			{ tokens: mockTokenLine2 },
+			{ tokens: expectedLine1 },
+			{ tokens: expectedLine2 },
 		]);
 	});
 
 	it('returns an empty array when code produces no token lines', async () => {
-		mockCodeToTokensBase.mockReturnValue([]);
+		mockCodeToTokens.mockReturnValue({ tokens: [] });
 
 		const result = await highlightCode({ code: '', language: 'typescript' });
 
@@ -58,41 +74,48 @@ describe('highlightCode', () => {
 	});
 
 	it('handles single-line code', async () => {
-		mockCodeToTokensBase.mockReturnValue([mockTokenLine1]);
+		mockCodeToTokens.mockReturnValue({ tokens: [mockTokenLine1] });
 
 		const result = await highlightCode({ code: 'const x', language: 'javascript' });
 
 		expect(result).toHaveLength(1);
-		expect(result[0]).toEqual({ tokens: mockTokenLine1 });
+		expect(result[0]).toEqual({ tokens: expectedLine1 });
 	});
 
 	it('passes javascript language correctly', async () => {
 		await highlightCode({ code: 'var a = 1;', language: 'javascript' });
 
-		expect(mockCodeToTokensBase).toHaveBeenCalledWith('var a = 1;', {
+		expect(mockCodeToTokens).toHaveBeenCalledWith('var a = 1;', {
 			lang: 'javascript',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 
 	it('passes json language correctly', async () => {
 		await highlightCode({ code: '{"key": "value"}', language: 'json' });
 
-		expect(mockCodeToTokensBase).toHaveBeenCalledWith('{"key": "value"}', {
+		expect(mockCodeToTokens).toHaveBeenCalledWith('{"key": "value"}', {
 			lang: 'json',
-			theme: 'night-owl',
+			themes: CODE_THEMES,
+			defaultColor: false,
 		});
 	});
 
 	it('handles multi-line code with three lines', async () => {
-		const thirdLine: ThemedToken[] = [
-			{ content: 'return x;', color: '#C792EA', offset: 0 },
-		];
-		mockCodeToTokensBase.mockReturnValue([mockTokenLine1, mockTokenLine2, thirdLine]);
+		const thirdLine: ThemedToken[] = [themedToken('return x;', '#C792EA', '#D73A49')];
+		mockCodeToTokens.mockReturnValue({
+			tokens: [mockTokenLine1, mockTokenLine2, thirdLine],
+		});
 
-		const result = await highlightCode({ code: 'const x\n  = 1;\nreturn x;', language: 'typescript' });
+		const result = await highlightCode({
+			code: 'const x\n  = 1;\nreturn x;',
+			language: 'typescript',
+		});
 
 		expect(result).toHaveLength(3);
-		expect(result[2]).toEqual({ tokens: thirdLine });
+		expect(result[2]).toEqual({
+			tokens: [expectedToken('return x;', '#C792EA', '#D73A49')],
+		});
 	});
 });

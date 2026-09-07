@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
+import { ThemeInitScript } from './layout/theme-init-script';
 
 export const metadata: Metadata = {
 	metadataBase: new URL('https://rotemhorovitz.com'),
@@ -21,7 +22,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<html lang="en">
+		// ThemeInitScript writes data-theme onto <html> before hydration, so the
+		// server markup intentionally differs from the first client render here.
+		<html
+			lang="en"
+			suppressHydrationWarning
+		>
+			<head>
+				<ThemeInitScript />
+			</head>
 			<body>{children}</body>
 		</html>
 	);

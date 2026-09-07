@@ -31,7 +31,7 @@
 
 .chevron {
 	flex-shrink: 0;
-	font-size: 0.857rem;
+	font-size: 0.875rem;
 	color: var(--muted);
 	transition: transform 0.15s;
 
@@ -64,7 +64,7 @@
 	border-radius: 4px;
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 
@@ -93,7 +93,7 @@
 	border-radius: 2px;
 	background-color: var(--surface);
 	color: var(--text);
-	font-size: 0.857rem;
+	font-size: 0.875rem;
 	transition: background-color 0.15s;
 
 	&.checked {
@@ -112,7 +112,7 @@
 
 .techIcon {
 	flex-shrink: 0;
-	font-size: 1.286rem;
+	font-size: 1.25rem;
 	color: var(--text);
 }
 

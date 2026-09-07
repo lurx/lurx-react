@@ -1,6 +1,26 @@
 @use 'mixins/spacing' as *;
 
+// The pill fills are viz-local rather than palette tokens — only this widget
+// speaks in "write / read / reflow". They still pair across themes: dark mode
+// tints the fills up from the surface, light mode tints them down from it, and
+// the ink is `--text` in both, so the label follows the theme it sits on.
+@mixin dark-viz-tokens {
+	--viz-write: #1a3a5c;
+	--viz-read: #9b4d55;
+	--viz-reflow: #85683a;
+	--viz-empty: rgba(248, 250, 252, 0.05);
+}
+
+@mixin light-viz-tokens {
+	--viz-write: #cfe0f0;
+	--viz-read: #f8c9c9;
+	--viz-reflow: #fdd9b0;
+	--viz-empty: rgba(15, 23, 43, 0.05);
+}
+
 .container {
+	@include dark-viz-tokens;
+
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -11,6 +31,17 @@
 	margin-block: spacing(2);
 	font-family: var(--font-mono), monospace;
 	font-size: 1rem;
+}
+
+:global([data-theme='light']) .container {
+	@include light-viz-tokens;
+}
+
+// Respect the OS until the user chooses.
+@media (prefers-color-scheme: light) {
+	:global(:root:not([data-theme])) .container {
+		@include light-viz-tokens;
+	}
 }
 
 .label {
@@ -38,24 +69,24 @@
 	align-items: center;
 	padding-inline: 6px;
 	font-size: 0.875rem;
-	color: rgba(255, 255, 255, 0.7);
+	color: var(--text);
 	white-space: nowrap;
 }
 
 .write {
-	background-color: #1a3a5c;
+	background-color: var(--viz-write);
 }
 
 .read {
-	background-color: rgba(248, 113, 113, 0.6);
+	background-color: var(--viz-read);
 }
 
 .reflow {
-	background-color: rgba(251, 146, 60, 0.5);
+	background-color: var(--viz-reflow);
 }
 
 .empty {
-	background-color: rgba(255, 255, 255, 0.05);
+	background-color: var(--viz-empty);
 }
 
 .legend {

@@ -1,0 +1,21 @@
+.navBorder {
+	position: absolute;
+	inset-block-start: 56px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
+	height: 1px;
+	background: var(--border);
+	pointer-events: none;
+	z-index: var(--z-decoration);
+}
+
+.footerBorder {
+	position: absolute;
+	inset-block-end: 48px;
+	inset-inline-start: 0;
+	inset-inline-end: 0;
+	height: 1px;
+	background: var(--border);
+	pointer-events: none;
+	z-index: var(--z-decoration);
+}

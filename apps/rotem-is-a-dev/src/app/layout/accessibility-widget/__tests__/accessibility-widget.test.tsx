@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { AccessibilityWidget } from '../accessibility-widget.component';
+import { ThemeProvider } from '../../theme';
 import {
 	BASE_FONT_SIZE_PX,
 	LETTER_SPACING_STORAGE_KEY,
 	LETTER_SPACING_VALUES,
 	LINE_HEIGHT_STORAGE_KEY,
 	LINE_HEIGHT_VALUES,
-	MOBILE_BASE_FONT_SIZE_PX,
 	TEXT_SCALE_STORAGE_KEY,
+	THEME_ATTRIBUTE,
+	THEME_STORAGE_KEY,
 } from '../accessibility-widget.types';
 
 const mockGetItem = jest.mocked(localStorage.getItem);
@@ -19,7 +21,16 @@ beforeEach(() => {
 	document.documentElement.style.removeProperty('--root-font-size');
 	document.documentElement.style.removeProperty('--a11y-line-height');
 	document.documentElement.style.removeProperty('--a11y-letter-spacing');
+	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
 });
+
+function renderWidget() {
+	return render(
+		<ThemeProvider>
+			<AccessibilityWidget />
+		</ThemeProvider>,
+	);
+}
 
 function openPanel() {
 	fireEvent.click(
@@ -29,19 +40,19 @@ function openPanel() {
 
 describe('AccessibilityWidget', () => {
 	it('renders the accessibility button', () => {
-		render(<AccessibilityWidget />);
+		renderWidget();
 		expect(
 			screen.getByRole('button', { name: 'Accessibility options' }),
 		).toBeInTheDocument();
 	});
 
 	it('does not show the panel initially', () => {
-		render(<AccessibilityWidget />);
+		renderWidget();
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	});
 
 	it('toggles the panel on button click', () => {
-		render(<AccessibilityWidget />);
+		renderWidget();
 		const trigger = screen.getByRole('button', {
 			name: 'Accessibility options',
 		});
@@ -54,7 +65,7 @@ describe('AccessibilityWidget', () => {
 	});
 
 	it('sets aria-expanded on the trigger button', () => {
-		render(<AccessibilityWidget />);
+		renderWidget();
 		const trigger = screen.getByRole('button', {
 			name: 'Accessibility options',
 		});
@@ -66,7 +77,7 @@ describe('AccessibilityWidget', () => {
 	});
 
 	it('closes the panel on Escape key', () => {
-		render(<AccessibilityWidget />);
+		renderWidget();
 		openPanel();
 		expect(screen.getByRole('dialog')).toBeInTheDocument();
 
@@ -76,10 +87,12 @@ describe('AccessibilityWidget', () => {
 
 	it('closes the panel on outside click', () => {
 		render(
-			<div>
-				<div data-testid="outside">outside</div>
-				<AccessibilityWidget />
-			</div>,
+			<ThemeProvider>
+				<div>
+					<div data-testid="outside">outside</div>
+					<AccessibilityWidget />
+				</div>
+			</ThemeProvider>,
 		);
 		openPanel();
 		expect(screen.getByRole('dialog')).toBeInTheDocument();
@@ -90,13 +103,13 @@ describe('AccessibilityWidget', () => {
 
 	describe('Text scale', () => {
 		it('shows 100% as default text scale', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getByText('100%')).toBeInTheDocument();
 		});
 
 		it('increases text scale on plus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -106,7 +119,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('decreases text scale on minus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -121,7 +134,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables decrease button at minimum scale', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -130,7 +143,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables increase button at maximum scale', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			const increaseButton = screen.getByRole('button', {
@@ -146,7 +159,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('persists text scale to localStorage on change', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -162,7 +175,7 @@ describe('AccessibilityWidget', () => {
 		it('restores text scale from localStorage on mount', () => {
 			mockGetItem.mockReturnValue(JSON.stringify(150));
 
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(screen.getByText('150%')).toBeInTheDocument();
@@ -171,7 +184,7 @@ describe('AccessibilityWidget', () => {
 		it('applies --root-font-size on mount from stored value', () => {
 			mockGetItem.mockReturnValue(JSON.stringify(175));
 
-			render(<AccessibilityWidget />);
+			renderWidget();
 
 			expect(
 				document.documentElement.style.getPropertyValue(
@@ -183,13 +196,13 @@ describe('AccessibilityWidget', () => {
 
 	describe('Line height', () => {
 		it('shows Normal as default line height', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getAllByText('Normal')).toHaveLength(2);
 		});
 
 		it('increases line height on plus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -201,7 +214,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('decreases line height on minus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -214,7 +227,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables decrease button at minimum level', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -223,7 +236,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables increase button at maximum level', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			const increaseButton = screen.getByRole('button', {
@@ -242,7 +255,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('persists line height to localStorage on change', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -261,7 +274,7 @@ describe('AccessibilityWidget', () => {
 				return null;
 			});
 
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -270,7 +283,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('applies --a11y-line-height CSS property', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -285,7 +298,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('removes --a11y-line-height when reset to Normal', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -310,13 +323,13 @@ describe('AccessibilityWidget', () => {
 
 	describe('Letter spacing', () => {
 		it('shows Normal as default letter spacing', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getAllByText('Normal')).toHaveLength(2);
 		});
 
 		it('increases letter spacing on plus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -330,7 +343,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('decreases letter spacing on minus click', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -347,7 +360,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables decrease button at minimum level', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -358,7 +371,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables increase button at maximum level', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			const increaseButton = screen.getByRole('button', {
@@ -377,7 +390,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('persists letter spacing to localStorage on change', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -399,7 +412,7 @@ describe('AccessibilityWidget', () => {
 				return null;
 			});
 
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -408,7 +421,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('applies --a11y-letter-spacing CSS property', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -425,7 +438,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('removes --a11y-letter-spacing when reset to Normal', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -454,7 +467,7 @@ describe('AccessibilityWidget', () => {
 
 	describe('Per-section reset', () => {
 		it('resets only text size when clicking its reset button', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -475,7 +488,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('resets only line height when clicking its reset button', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -494,7 +507,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('resets only letter spacing when clicking its reset button', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -517,7 +530,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables per-section reset buttons at defaults', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -532,7 +545,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('enables per-section reset button when its setting is changed', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -554,14 +567,14 @@ describe('AccessibilityWidget', () => {
 	describe('Edge cases and error handling', () => {
 		it('falls back to default when localStorage has invalid text scale', () => {
 			mockGetItem.mockReturnValue(JSON.stringify(999));
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getByText('100%')).toBeInTheDocument();
 		});
 
 		it('falls back to default when localStorage has unparseable text scale', () => {
 			mockGetItem.mockReturnValue('{{bad json');
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getByText('100%')).toBeInTheDocument();
 		});
@@ -571,7 +584,7 @@ describe('AccessibilityWidget', () => {
 				if (key === LINE_HEIGHT_STORAGE_KEY) return JSON.stringify(99);
 				return null;
 			});
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getAllByText('Normal')).toHaveLength(2);
 		});
@@ -581,20 +594,20 @@ describe('AccessibilityWidget', () => {
 				if (key === LETTER_SPACING_STORAGE_KEY) return '{{bad';
 				return null;
 			});
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			expect(screen.getAllByText('Normal')).toHaveLength(2);
 		});
 
 		it('ignores non-Escape keydown when panel is open', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			fireEvent.keyDown(document, { key: 'Enter' });
 			expect(screen.getByRole('dialog')).toBeInTheDocument();
 		});
 
 		it('does not change text scale when clicking decrease at minimum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			fireEvent.click(
 				screen.getByRole('button', { name: 'Decrease text size' }),
@@ -603,7 +616,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('does not change text scale when clicking increase at maximum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			const btn = screen.getByRole('button', { name: 'Increase text size' });
 			fireEvent.click(btn);
@@ -615,7 +628,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('does not change line height when clicking decrease at minimum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			fireEvent.click(
 				screen.getByRole('button', { name: 'Decrease line height' }),
@@ -624,7 +637,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('does not change line height when clicking increase at maximum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			const btn = screen.getByRole('button', { name: 'Increase line height' });
 			fireEvent.click(btn);
@@ -639,7 +652,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('does not change letter spacing when clicking decrease at minimum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			fireEvent.click(
 				screen.getByRole('button', { name: 'Decrease letter spacing' }),
@@ -648,7 +661,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('does not change letter spacing when clicking increase at maximum', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 			const btn = screen.getByRole('button', { name: 'Increase letter spacing' });
 			fireEvent.click(btn);
@@ -663,45 +676,9 @@ describe('AccessibilityWidget', () => {
 		});
 	});
 
-	describe('Mobile font size', () => {
-		it('uses MOBILE_BASE_FONT_SIZE_PX when matchMedia matches mobile breakpoint', () => {
-			const originalMatchMedia = globalThis.matchMedia;
-			Object.defineProperty(globalThis, 'matchMedia', {
-				writable: true,
-				value: jest.fn().mockImplementation((query: string) => ({
-					matches: true,
-					media: query,
-					onchange: null,
-					addListener: jest.fn(),
-					removeListener: jest.fn(),
-					addEventListener: jest.fn(),
-					removeEventListener: jest.fn(),
-					dispatchEvent: jest.fn(),
-				})),
-			});
-
-			render(<AccessibilityWidget />);
-			openPanel();
-
-			fireEvent.click(
-				screen.getByRole('button', { name: 'Increase text size' }),
-			);
-
-			const expectedFontSize = (MOBILE_BASE_FONT_SIZE_PX * 125) / 100;
-			expect(
-				document.documentElement.style.getPropertyValue('--root-font-size'),
-			).toBe(`${expectedFontSize}px`);
-
-			Object.defineProperty(globalThis, 'matchMedia', {
-				writable: true,
-				value: originalMatchMedia,
-			});
-		});
-	});
-
 	describe('Reset all', () => {
 		it('resets all settings to defaults', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -725,7 +702,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('disables reset all button when all settings are at defaults', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			expect(
@@ -734,7 +711,7 @@ describe('AccessibilityWidget', () => {
 		});
 
 		it('enables reset all button when any setting is changed', () => {
-			render(<AccessibilityWidget />);
+			renderWidget();
 			openPanel();
 
 			fireEvent.click(
@@ -745,5 +722,111 @@ describe('AccessibilityWidget', () => {
 				screen.getByRole('button', { name: 'Reset all' }),
 			).not.toBeDisabled();
 		});
+	});
+});
+
+describe('theme control', () => {
+	it('renders the three theme options', () => {
+		renderWidget();
+		openPanel();
+
+		expect(screen.getByRole('button', { name: 'System' })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Dark' })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Light' })).toBeInTheDocument();
+	});
+
+	it('marks System as the pressed option by default', () => {
+		renderWidget();
+		openPanel();
+
+		expect(screen.getByRole('button', { name: 'System' })).toHaveAttribute(
+			'aria-pressed',
+			'true',
+		);
+		expect(screen.getByRole('button', { name: 'Light' })).toHaveAttribute(
+			'aria-pressed',
+			'false',
+		);
+	});
+
+	it('leaves the theme attribute off for the system default', () => {
+		renderWidget();
+		expect(document.documentElement.hasAttribute(THEME_ATTRIBUTE)).toBe(
+			false,
+		);
+	});
+
+	it('sets the theme attribute when light is chosen', () => {
+		renderWidget();
+		openPanel();
+
+		fireEvent.click(screen.getByRole('button', { name: 'Light' }));
+
+		expect(document.documentElement.getAttribute(THEME_ATTRIBUTE)).toBe(
+			'light',
+		);
+		expect(screen.getByRole('button', { name: 'Light' })).toHaveAttribute(
+			'aria-pressed',
+			'true',
+		);
+	});
+
+	it('persists the chosen theme', () => {
+		renderWidget();
+		openPanel();
+
+		fireEvent.click(screen.getByRole('button', { name: 'Dark' }));
+
+		expect(mockSetItem).toHaveBeenCalledWith(
+			THEME_STORAGE_KEY,
+			JSON.stringify('dark'),
+		);
+	});
+
+	it('restores a stored theme on mount', () => {
+		mockGetItem.mockImplementation(key =>
+			key === THEME_STORAGE_KEY ? JSON.stringify('light') : null,
+		);
+
+		renderWidget();
+
+		expect(document.documentElement.getAttribute(THEME_ATTRIBUTE)).toBe(
+			'light',
+		);
+	});
+
+	it('disables the theme reset until a theme is chosen', () => {
+		renderWidget();
+		openPanel();
+
+		const resetTheme = screen.getByRole('button', { name: 'Reset theme' });
+		expect(resetTheme).toBeDisabled();
+
+		fireEvent.click(screen.getByRole('button', { name: 'Dark' }));
+		expect(resetTheme).toBeEnabled();
+	});
+
+	it('returns to the system default when the theme is reset', () => {
+		renderWidget();
+		openPanel();
+
+		fireEvent.click(screen.getByRole('button', { name: 'Dark' }));
+		fireEvent.click(screen.getByRole('button', { name: 'Reset theme' }));
+
+		expect(document.documentElement.hasAttribute(THEME_ATTRIBUTE)).toBe(
+			false,
+		);
+	});
+
+	it('returns to the system default when everything is reset', () => {
+		renderWidget();
+		openPanel();
+
+		fireEvent.click(screen.getByRole('button', { name: 'Light' }));
+		fireEvent.click(screen.getByRole('button', { name: 'Reset all' }));
+
+		expect(document.documentElement.hasAttribute(THEME_ATTRIBUTE)).toBe(
+			false,
+		);
 	});
 });

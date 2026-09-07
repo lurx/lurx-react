@@ -1,14 +1,23 @@
 import { render, screen } from '@testing-library/react';
 import { SocialBar } from '../social-bar.component';
+import { ThemeProvider } from '../../theme';
+
+// The theme switcher lives in here, so it needs the provider its page supplies.
+const renderWithTheme = () =>
+	render(
+		<ThemeProvider>
+			<SocialBar />
+		</ThemeProvider>,
+	);
 
 describe('SocialBar', () => {
 	it('renders the "find me in:" label', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		expect(screen.getByText('find me in:')).toBeInTheDocument();
 	});
 
 	it('renders the Twitter/X link', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		const twitterLink = screen.getByRole('link', { name: 'X (Twitter)' });
 		expect(twitterLink).toBeInTheDocument();
 		expect(twitterLink).toHaveAttribute('href', 'https://x.com/lurx');
@@ -16,7 +25,7 @@ describe('SocialBar', () => {
 	});
 
 	it('renders the LinkedIn link', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' });
 		expect(linkedinLink).toBeInTheDocument();
 		expect(linkedinLink).toHaveAttribute(
@@ -26,7 +35,7 @@ describe('SocialBar', () => {
 	});
 
 	it('renders the GitHub link', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		const githubLink = screen.getByRole('link', { name: 'GitHub' });
 		expect(githubLink).toBeInTheDocument();
 		expect(githubLink).toHaveAttribute('href', 'https://github.com/lurx');
@@ -34,12 +43,12 @@ describe('SocialBar', () => {
 	});
 
 	it('has a footer landmark', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		expect(screen.getByRole('contentinfo')).toBeInTheDocument();
 	});
 
 	it('opens all external links in a new tab', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		const externalLinks = screen.getAllByRole('link').filter(
 			(link) => link.getAttribute('href')?.startsWith('http'),
 		);
@@ -50,7 +59,7 @@ describe('SocialBar', () => {
 	});
 
 	it('renders a privacy policy link', () => {
-		render(<SocialBar />);
+		renderWithTheme();
 		const privacyLink = screen.getByRole('link', { name: 'privacy' });
 		expect(privacyLink).toHaveAttribute('href', '/privacy-policy');
 	});

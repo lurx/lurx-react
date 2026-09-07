@@ -18,7 +18,6 @@ export const ProjectsPage = () => {
 	>([]);
 	const [selectedProject, setSelectedProject] =
 		useState<Nullable<Project>>(null);
-	const [scrollToComments, setScrollToComments] = useState(false);
 
 	const handleSearchChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
@@ -33,17 +32,10 @@ export const ProjectsPage = () => {
 
 	const handleViewProject = useCallback((project: Project) => {
 		setSelectedProject(project);
-		setScrollToComments(false);
-	}, []);
-
-	const handleCommentClick = useCallback((project: Project) => {
-		setSelectedProject(project);
-		setScrollToComments(true);
 	}, []);
 
 	const handleCloseDrawer = useCallback(() => {
 		setSelectedProject(null);
-		setScrollToComments(false);
 	}, []);
 
 	const filteredProjects = filterProjects(PROJECTS, selectedTechnologies, search);
@@ -70,14 +62,12 @@ export const ProjectsPage = () => {
 				<ProjectsGrid
 					projects={filteredProjects}
 					onViewProjectAction={handleViewProject}
-					onCommentClickAction={handleCommentClick}
 				/>
 			</div>
 
 			<ProjectDemoDrawer
 				project={selectedProject}
 				onCloseAction={handleCloseDrawer}
-				scrollToComments={scrollToComments}
 			>
 				<DemoRenderer demo={DemoComponent} />
 			</ProjectDemoDrawer>

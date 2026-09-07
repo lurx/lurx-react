@@ -3,7 +3,7 @@ import { formatDate } from '@/app/utils/format-date.util';
 import type { BlogPostHeaderProps } from '../../blog-page.types';
 import styles from '../blog-post.module.scss';
 
-export const BlogPostHeader = ({ post, actions }: BlogPostHeaderProps) => {
+export const BlogPostHeader = ({ post }: BlogPostHeaderProps) => {
 	const {
 		date,
 		metadata: { readingTime },
@@ -13,7 +13,6 @@ export const BlogPostHeader = ({ post, actions }: BlogPostHeaderProps) => {
 		<header className={styles.header}>
 			<div className={styles.titleRow}>
 				<h1 className={styles.title}>{post.title}</h1>
-				{actions}
 			</div>
 			<div className={styles.meta}>
 				<time dateTime={date}>{formatDate(date)}</time>

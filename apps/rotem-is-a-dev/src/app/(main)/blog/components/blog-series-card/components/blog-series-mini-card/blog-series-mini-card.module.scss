@@ -29,7 +29,7 @@
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
-	color: var(--orange, #e78a4e);
+	color: var(--orange);
 	margin-block-end: spacing(0.75);
 }
 
@@ -42,6 +42,6 @@
 }
 
 .miniCardMeta {
-	font-size: 0.6875rem;
+	font-size: 0.75rem;
 	color: var(--blog-meta);
 }

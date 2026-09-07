@@ -8,7 +8,10 @@ export async function getHighlighter(): Promise<HighlighterCore> {
 		const { createOnigurumaEngine } = await import('shiki/engine/oniguruma');
 
 		return createHighlighterCore({
-			themes: [import('shiki/themes/night-owl')],
+			themes: [
+				import('shiki/themes/night-owl'),
+				import('shiki/themes/github-light'),
+			],
 			langs: [
 				import('shiki/langs/javascript'),
 				import('shiki/langs/typescript'),

@@ -33,7 +33,7 @@
 	padding: spacing(0.5) spacing(1);
 
 	&[data-current] {
-		background-color: rgba(67, 217, 173, 0.1);
+		background-color: var(--tag-bg-teal);
 		color: var(--teal);
 		font-weight: 600;
 	}

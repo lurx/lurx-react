@@ -45,13 +45,13 @@
 	transition: background-color 0.15s;
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 
 .sectionChevron {
 	flex-shrink: 0;
-	font-size: 0.857rem;
+	font-size: 0.875rem;
 	color: var(--muted);
 }
 
@@ -78,14 +78,14 @@
 	transition: background-color 0.15s;
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 
 .folderChevron {
 	display: none;
 	flex-shrink: 0;
-	font-size: 0.857rem;
+	font-size: 0.875rem;
 	color: var(--muted);
 	transition: transform 0.15s;
 
@@ -134,11 +134,11 @@
 	transition: background-color 0.15s;
 
 	&.activeFile {
-		background-color: rgba(248, 250, 252, 0.06);
+		background-color: var(--selected);
 	}
 
 	&:hover {
-		background-color: rgba(248, 250, 252, 0.04);
+		background-color: var(--hover);
 	}
 }
 

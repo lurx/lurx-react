@@ -1,4 +1,6 @@
+@use 'mixins/media' as *;
 @use 'mixins/normalize-to-grid' as *;
+@use 'mixins/spacing' as *;
 
 // Embla viewport — must have overflow: hidden and a fixed height
 .viewport {
@@ -28,15 +30,44 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: opacity 0.5s ease;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.5s ease, border-color 0.2s, background-color 0.2s;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--orange);
+    background-color: var(--surface);
+    outline: none;
+  }
 }
 
 .slideLabel {
-  font-size: 0.857rem;
+  font-size: 0.875rem;
   color: var(--muted);
   flex-shrink: 0;
 }
 
 .code {
   flex: 1;
+}
+
+// Mobile horizontal carousel — slides scroll side-by-side
+@include media-below('tablet') {
+  .viewport {
+    inline-size: 100%;
+    block-size: 320px;
+  }
+
+  .emblaContainer {
+    flex-direction: row;
+    block-size: 100%;
+  }
+
+  .slide {
+    flex: 0 0 80%;
+    max-inline-size: 320px;
+    margin-block-end: 0;
+    margin-inline-end: spacing(2);
+  }
 }

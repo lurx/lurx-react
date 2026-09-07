@@ -1,4 +1,5 @@
 @use 'mixins/media' as *;
+@use 'mixins/spacing' as *;
 
 .hero {
 	flex: 1;
@@ -19,7 +20,7 @@
 }
 
 .heroBlurs {
-  --blurs-base-animation-duration: 15s;
+  --blurs-base-animation-duration: 40s;
 	--blurs-translate-x: 0%;
 	position: absolute;
 	inset-inline-start: 46%;
@@ -68,14 +69,14 @@
 }
 
 .greeting {
-	font-size: 1.286rem;
+	font-size: 1.25rem;
 	color: var(--muted);
 	margin-block-end: 8px;
 }
 
 .name {
-	font-size: clamp(2.571rem, 4vw, 4.286rem);
-	font-weight: 400;
+	font-size: clamp(3rem, 4vw, 4.286rem);
+	font-weight: 600;
 	color: var(--text);
 	margin-block-end: 12px;
 	line-height: 1.1;
@@ -83,7 +84,7 @@
 
 .role {
 	font-size: clamp(1.429rem, 2vw, 2.143rem);
-	color: var(--keyword);
+	color: var(--keyword-ink);
 	margin-block-end: 32px;
 }
 
@@ -110,7 +111,7 @@
 }
 
 .keyword {
-	color: var(--keyword);
+	color: var(--keyword-ink);
 }
 
 .varName {
@@ -142,8 +143,9 @@
 .right {
 	flex: 0 0 auto;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+	align-items: stretch;
 }
 
 @include media-below('tablet') {
@@ -159,7 +161,9 @@
 	}
 
 	.right {
-		display: none;
+		inline-size: 100%;
+		margin-block-start: spacing(4);
+		margin-block-end: spacing(2);
 	}
 
 	.heroBlurs {

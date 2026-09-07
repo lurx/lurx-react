@@ -26,6 +26,12 @@
 	}
 }
 
+.themeControls {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
 .scaleControls {
 	display: flex;
 	align-items: center;

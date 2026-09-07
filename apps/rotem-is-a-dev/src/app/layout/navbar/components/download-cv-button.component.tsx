@@ -37,14 +37,12 @@ export const DownloadCVButton = () => {
 						iconName="file-pdf"
 						iconGroup="fal"
 						className={styles.downloadIcon}
-						data-animate-icon
 					/>
 				)
 			}
 			onClick={handleClick}
 			className={styles.downloadCv}
 			active={false}
-			data-animate-text="download-cv"
 		/>
 	);
 };

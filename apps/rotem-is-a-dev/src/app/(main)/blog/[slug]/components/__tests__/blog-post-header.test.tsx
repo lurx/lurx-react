@@ -72,13 +72,4 @@ describe('BlogPostHeader', () => {
 		expect(screen.getByTestId('tags-list')).toHaveTextContent('');
 	});
 
-	it('renders actions when provided', () => {
-		render(<BlogPostHeader post={mockPost} actions={<div data-testid="mock-actions">actions</div>} />);
-		expect(screen.getByTestId('mock-actions')).toBeInTheDocument();
-	});
-
-	it('does not render actions when not provided', () => {
-		render(<BlogPostHeader post={mockPost} />);
-		expect(screen.queryByTestId('mock-actions')).not.toBeInTheDocument();
-	});
 });

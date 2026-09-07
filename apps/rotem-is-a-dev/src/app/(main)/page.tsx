@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { HeroSection } from './components/hero-section/hero-section.component';
 
 export const metadata: Metadata = {
-	title: 'Hello',
+	title: { absolute: 'rotem-horovitz // front-end-developer' },
 	description:
 		'Welcome to the portfolio of Rotem Horovitz — a Senior Frontend Developer building modern, performant web experiences.',
 };

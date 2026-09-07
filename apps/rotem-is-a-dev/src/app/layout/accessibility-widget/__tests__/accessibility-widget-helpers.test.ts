@@ -1,8 +1,9 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
 	applySpacing,
 	applyTextScale,
 	formatSpacingValue,
-	getBaseFontSize,
 	readStoredLevel,
 	readStoredScale,
 } from '../accessibility-widget.helpers';
@@ -12,9 +13,9 @@ import {
 	DEFAULT_TEXT_SCALE,
 	LETTER_SPACING_VALUES,
 	LINE_HEIGHT_VALUES,
-	MOBILE_BASE_FONT_SIZE_PX,
-	MOBILE_BREAKPOINT_PX,
 	TEXT_SCALE_STORAGE_KEY,
+	TEXT_SCALES,
+	THEME_ATTRIBUTE,
 } from '../accessibility-widget.types';
 
 const mockGetItem = jest.mocked(localStorage.getItem);
@@ -24,6 +25,7 @@ beforeEach(() => {
 	document.documentElement.style.removeProperty('--root-font-size');
 	document.documentElement.style.removeProperty('--a11y-line-height');
 	document.documentElement.style.removeProperty('--a11y-letter-spacing');
+	document.documentElement.removeAttribute(THEME_ATTRIBUTE);
 });
 
 describe('readStoredScale', () => {
@@ -69,48 +71,33 @@ describe('readStoredLevel', () => {
 	});
 });
 
-describe('getBaseFontSize', () => {
-	it('returns MOBILE_BASE_FONT_SIZE_PX when matchMedia matches the mobile breakpoint', () => {
-		Object.defineProperty(globalThis, 'matchMedia', {
-			writable: true,
-			value: jest.fn().mockImplementation((query: string) => ({
-				matches: true,
-				media: query,
-				onchange: null,
-				addListener: jest.fn(),
-				removeListener: jest.fn(),
-				addEventListener: jest.fn(),
-				removeEventListener: jest.fn(),
-				dispatchEvent: jest.fn(),
-			})),
-		});
-
-		expect(getBaseFontSize()).toBe(MOBILE_BASE_FONT_SIZE_PX);
-		expect(globalThis.matchMedia).toHaveBeenCalledWith(
-			`(max-width: ${MOBILE_BREAKPOINT_PX}px)`,
-		);
-	});
-
-	it('returns BASE_FONT_SIZE_PX when matchMedia does not match the mobile breakpoint', () => {
-		Object.defineProperty(globalThis, 'matchMedia', {
-			writable: true,
-			value: jest.fn().mockImplementation((query: string) => ({
-				matches: false,
-				media: query,
-				onchange: null,
-				addListener: jest.fn(),
-				removeListener: jest.fn(),
-				addEventListener: jest.fn(),
-				removeEventListener: jest.fn(),
-				dispatchEvent: jest.fn(),
-			})),
-		});
-
-		expect(getBaseFontSize()).toBe(BASE_FONT_SIZE_PX);
-	});
-});
-
 describe('applyTextScale', () => {
+	// The scale multiplies BASE_FONT_SIZE_PX, so it has to match the root the
+	// stylesheet actually ships — otherwise 125% renders smaller than 100%.
+	it('keeps BASE_FONT_SIZE_PX in step with --root-font-size in global.scss', () => {
+		const globalScss = readFileSync(
+			join(__dirname, '../../../(main)/styles/global.scss'),
+			'utf8',
+		);
+		const declared = /--root-font-size:\s*(\d+(?:\.\d+)?)px/.exec(globalScss);
+
+		expect(declared).not.toBeNull();
+		expect(Number(declared?.[1])).toBe(BASE_FONT_SIZE_PX);
+	});
+
+	it.each(TEXT_SCALES.filter(scale => scale !== DEFAULT_TEXT_SCALE))(
+		'scales %i%% up from the unscaled root, never below it',
+		scale => {
+			applyTextScale(scale);
+
+			const applied = Number.parseFloat(
+				document.documentElement.style.getPropertyValue('--root-font-size'),
+			);
+
+			expect(applied).toBeGreaterThan(BASE_FONT_SIZE_PX);
+		},
+	);
+
 	beforeEach(() => {
 		Object.defineProperty(globalThis, 'matchMedia', {
 			writable: true,
@@ -203,3 +190,4 @@ describe('formatSpacingValue', () => {
 		expect(formatSpacingValue([1.5, 2], 1, 'x')).toBe('2x');
 	});
 });
+
