@@ -7,7 +7,6 @@ import {
 	LETTER_SPACING_VALUES,
 	LINE_HEIGHT_STORAGE_KEY,
 	LINE_HEIGHT_VALUES,
-	MOBILE_BASE_FONT_SIZE_PX,
 	TEXT_SCALE_STORAGE_KEY,
 	THEME_ATTRIBUTE,
 	THEME_STORAGE_KEY,
@@ -674,42 +673,6 @@ describe('AccessibilityWidget', () => {
 					`${LETTER_SPACING_VALUES.at(-1)}em`,
 				),
 			).toBeInTheDocument();
-		});
-	});
-
-	describe('Mobile font size', () => {
-		it('uses MOBILE_BASE_FONT_SIZE_PX when matchMedia matches mobile breakpoint', () => {
-			const originalMatchMedia = globalThis.matchMedia;
-			Object.defineProperty(globalThis, 'matchMedia', {
-				writable: true,
-				value: jest.fn().mockImplementation((query: string) => ({
-					matches: true,
-					media: query,
-					onchange: null,
-					addListener: jest.fn(),
-					removeListener: jest.fn(),
-					addEventListener: jest.fn(),
-					removeEventListener: jest.fn(),
-					dispatchEvent: jest.fn(),
-				})),
-			});
-
-			renderWidget();
-			openPanel();
-
-			fireEvent.click(
-				screen.getByRole('button', { name: 'Increase text size' }),
-			);
-
-			const expectedFontSize = (MOBILE_BASE_FONT_SIZE_PX * 125) / 100;
-			expect(
-				document.documentElement.style.getPropertyValue('--root-font-size'),
-			).toBe(`${expectedFontSize}px`);
-
-			Object.defineProperty(globalThis, 'matchMedia', {
-				writable: true,
-				value: originalMatchMedia,
-			});
 		});
 	});
 

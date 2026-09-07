@@ -4,11 +4,9 @@ export const TEXT_SCALES: TextScale[] = [100, 125, 150, 175, 200];
 
 export const DEFAULT_TEXT_SCALE: TextScale = 100;
 
-export const BASE_FONT_SIZE_PX = 14;
-
-export const MOBILE_BASE_FONT_SIZE_PX = 16;
-
-export const MOBILE_BREAKPOINT_PX = 767;
+/** Mirrors `--root-font-size` in global.scss — the scale multiplies this, so
+ * the two must agree or 125% would render smaller than the unscaled default. */
+export const BASE_FONT_SIZE_PX = 16;
 
 export const TEXT_SCALE_STORAGE_KEY = 'accessibility-text-scale';
 

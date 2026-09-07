@@ -59,12 +59,19 @@ export const sendMessageAction = async (
 		}
 
 		if (input.sendCopy) {
-			await resend.emails.send({
+			const copyResult = await resend.emails.send({
 				from: FROM_ADDRESS,
 				to: input.email,
 				subject: `Copy of your message: ${subject}`,
 				html: buildSenderCopyHtml(input),
 			});
+
+			// The message itself already reached its destination, so the send is a
+			// success even when the courtesy copy bounces — failing here would ask
+			// the sender to try again and mail me a duplicate. Log it instead.
+			if (copyResult.error) {
+				console.error('Sender copy failed to send', copyResult.error);
+			}
 		}
 
 		return { status: 'success' };
