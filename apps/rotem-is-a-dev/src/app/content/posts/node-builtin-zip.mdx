@@ -1,0 +1,216 @@
+---
+title: "Node's built-in ZIP: can you delete jszip yet?"
+slug: node-builtin-zip
+date: 2026-09-09
+description: "Node 26.8 put a ZIP reader and writer into node:zlib. I benchmarked it against jszip, adm-zip, yauzl and archiver, then read the stability label. The milliseconds and the label disagree."
+tags: [javascript, nodejs, performance, tooling]
+draft: false
+component: node-builtin-zip
+---
+
+Node 26.8 shipped a ZIP archive API inside `node:zlib`. Read an archive, write one, add and delete entries, deflate or zstd, with no package to install. My first reaction was to open `package.json` and look for something to delete.
+
+I'll be honest, the deleting didn't happen, and the reason isn't speed. The whole API ships marked ["Stability: 1.0 - Early development"](https://nodejs.org/docs/latest-v26.x/api/zlib.html#class-zlibzipbuffer), and Node's own [stability index](https://nodejs.org/docs/latest-v26.x/api/documentation.html#stability-index) says what that means, in full: "The feature is not subject to semantic versioning rules. Non-backward compatible changes or removal may occur in any future release. Use of the feature is not recommended in production environments."
+
+So the question this post answers isn't "can you delete jszip today".
+
+Node already answered that. The question is whether it's worth waiting for, and that's what a benchmark can tell you. I ran the new API against the four libraries most Node projects already carry, jszip, adm-zip, yauzl and archiver, on three corpora and four operations. By the end you'll know where the built-in wins and what still has to change before the label comes off.
+
+---
+
+## What shipped
+
+Three classes and a few module-level functions. [`ZipBuffer`](https://nodejs.org/docs/latest-v26.x/api/zlib.html#class-zlibzipbuffer) is a zero-copy view over an archive already in memory. [`ZipFile`](https://nodejs.org/docs/latest-v26.x/api/zlib.html#class-zlibzipfile) is the on-disk version. It reads only the central directory up front, and it can open in writable mode to append or delete entries in place. [`ZipEntry`](https://nodejs.org/docs/latest-v26.x/api/zlib.html#class-zlibzipentry) is one member, with `content()` and `contentSync()` to inflate it.
+
+Reading is the good part:
+
+```js
+import { ZipFile } from 'node:zlib';
+
+const zip = await ZipFile.open('release.zip');
+for (const name of zip.keys()) console.log(name);
+
+const manifest = await zip.get('manifest.json');
+const json = JSON.parse((await manifest.content()).toString());
+await zip.close();
+```
+
+Writing from scratch is less obvious. There's no empty constructor. `new ZipBuffer(Buffer.alloc(0))` throws `ERR_ZIP_INVALID_ARCHIVE`, and `ZipFile.open(path, { writable: true })` wants a file that already exists. A fresh archive goes through `createZipArchive`, which takes entries and hands back a stream of chunks:
+
+```js
+import { createWriteStream } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import { pipeline } from 'node:stream/promises';
+import { Readable } from 'node:stream';
+import { ZipEntry, createZipArchive } from 'node:zlib';
+
+const entries = [
+  await ZipEntry.create('README.md', await readFile('README.md'), { method: 'deflate' }),
+  await ZipEntry.create('dist/app.js', await readFile('dist/app.js'), { method: 'zstd' }),
+];
+
+await pipeline(Readable.from(createZipArchive(entries)), createWriteStream('out.zip'));
+```
+
+The first call into this API prints one warning, verbatim: `ExperimentalWarning: The zlib ZIP archive API is an experimental feature and might change at any time`.
+
+That warning covers every method name in the samples above.
+
+---
+
+## The benchmark
+
+First-hand testing, my machine, my numbers. Apple M4 Pro, 12 cores, 24 GB, macOS 26.0.1, Node 26.8.1 with zlib 1.3.2.1 and zstd 1.5.7. The libraries were [jszip](https://github.com/Stuk/jszip) 3.10.1, [adm-zip](https://github.com/cthackers/adm-zip) 0.6.0, [yauzl](https://github.com/thejoshwolfe/yauzl) 3.4.0 and [archiver](https://github.com/archiverjs/node-archiver) 8.0.0. Deflate level 6 wherever a library let me set it.
+
+Three corpora, generated from a seeded PRNG so they're reproducible. Many-small is 2,000 text files of about 2 KB each. Few-large is four 25 MB files, two compressible text, two random bytes. Realistic is a shallow clone of this site's repo, 966 files and 3.2 MB.
+
+Four operations. Write an archive from a directory. Read every entry into memory. Read one entry near the end of the central directory. List entry names without decompressing anything.
+
+The methodology matters more than the numbers, so here it is. Every combination of library, operation and corpus ran in its own child process, spawned fresh by an orchestrator. Two libraries in one process share JIT and GC state, and whichever runs second looks faster.
+
+Three warmup runs discarded, then eleven timed, with `performance.now()` around the operation only. I'm reporting medians. Peak memory came from `/usr/bin/time -l`.
+
+Before any timing counted, a correctness gate. Every reader had to open every writer's output, all five had to agree on entry count, total bytes and per-entry CRC-32, and `unzip -t` had to pass. Everything did.
+
+I excluded nothing.
+
+<ReadAllChart />
+
+<WriteChart />
+
+---
+
+## What the numbers say
+
+The built-in reads fast when the archive is in memory. `ZipBuffer` inflated every entry of the realistic corpus in 10 ms. adm-zip took 24, yauzl 66, jszip 91. On the many-small corpus the gap is wider, 13 ms against 32, 125 and 158.
+
+Zero-copy means what it says here. The archive is one Buffer and each entry is a view into it.
+
+`ZipFile`, the async on-disk path, is a different animal. Same corpus, same operation, 57 ms, slower than adm-zip and in the same neighbourhood as yauzl. The cost is one `await` per entry. `zip.values()` resolves to a synchronous generator that yields a Promise for each entry, so every one of 966 entries is its own microtask round trip. That's fine for a server pulling three files out of an upload.
+
+It's not what you want for "unpack everything".
+
+Writing is close to a wash. On the 100 MB corpus every writer landed between 2.0 and 2.3 seconds, except jszip at 4.7. jszip deflates in pure JavaScript, through [pako](https://github.com/Stuk/jszip/blob/main/package.json). The others, the built-in included, hand the bytes to native zlib, and native zlib is where the time goes.
+
+Listing and single-entry reads are where memory shows up. Ask `ZipFile` for the names in the 100 MB archive and it answers in 0.3 ms at 64 MB peak RSS, because it read the central directory and nothing else. yauzl does the same in 0.2 ms. jszip took 41 ms and 486 MB for the same question, adm-zip 361 MB. Both inflate the whole archive into memory before they can tell you what's in it.
+
+If you serve "show me the file list" for user uploads, that's the difference between a request and an incident.
+
+Pulling one entry near the end of the archive is the mirror image. `ZipBuffer` did it in about 1 ms on the two small corpora. yauzl took 32 ms on many-small, because it has no lookup by name and walks the central directory entry by entry until it finds yours.
+
+Then the small stuff. Cold import of `node:zlib` is 1.2 ms in a fresh process. jszip is 9.8 and archiver 21.7. jszip is 1.1 MB on disk, the other three are under 200 KB each. Real, but not the kind of number that changes an architecture.
+
+---
+
+## What the numbers don't say
+
+The label says "unfinished and subject to substantial change". Here's what unfinished looks like from the outside.
+
+**No compression level.** `ZipEntry.create` takes `method`, `mode`, `modified` and `comment`. It doesn't take `level`. I passed `level: 1` and `level: 9` and got byte-identical output. adm-zip has the same gap, which is why "level 6 pinned" only held for jszip and archiver in my run. If you tune compression for a CDN or a cold-storage job, this is a wall.
+
+**zstd doesn't travel.** `method: 'zstd'` writes method 93, and it's quick. Building the realistic corpus took 14 ms against 47 for deflate, for a file 2% larger. The archive's spec-legal. But the `unzip` that ships with macOS 26.0.1 is Info-ZIP 6.00 from 2009, and it skips every zstd entry with "need PK compat. v6.3 (can do v4.5)". zstd inside a ZIP is only useful when you control both ends.
+
+**Rough edges.** The Promise-per-entry iterator above. No empty constructor. `zipFiles()` returns a Readable, not the Promise of a Buffer the name suggests. None of these are bugs. All of them are the shape of an API at 1.0.
+
+---
+
+## The verdict
+
+Can you delete jszip? If your code runs in the browser, no. [jszip](https://stuk.github.io/jszip/) runs there and `node:zlib` doesn't. If it runs on Node 26.8 and reads archives from memory, the built-in's faster than everything I tested and costs nothing to import.
+
+But you read the label in the second paragraph. I wouldn't put Stability 1.0 code in a production path, and Node says the same thing in plainer words than I would.
+
+What I'd do instead is wrap it. Put one `zip.ts` module in front of whichever library you have now, and when the API reaches 1.2 or stable, swap the inside of that file. The seam is small. The types live in their own file and never change:
+
+```ts
+// zip.types.ts
+export type ZipReader = {
+  names(): string[];
+  read(name: string): Promise<Buffer>;
+};
+
+export type ZipModule = {
+  open(archive: Buffer): Promise<ZipReader>;
+  create(files: Record<string, Buffer>): Promise<Buffer>;
+};
+```
+
+Then `zip.ts` is the only file that knows which library is underneath. Today it's the jszip you already have, gathered into one place:
+
+```ts
+// zip.ts, today
+import JSZip from 'jszip';
+import type { ZipModule } from './zip.types';
+
+export const zip: ZipModule = {
+  async open(archive) {
+    const loaded = await JSZip.loadAsync(archive);
+
+    return {
+      names: () => Object.keys(loaded.files).filter((name) => !loaded.files[name].dir),
+      read: (name) => {
+        const entry = loaded.file(name);
+        if (!entry) throw new Error(`no entry ${name}`);
+
+        return entry.async('nodebuffer');
+      },
+    };
+  },
+  async create(files) {
+    const archive = new JSZip();
+    for (const [name, data] of Object.entries(files)) archive.file(name, data);
+
+    return archive.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+  },
+};
+```
+
+When the label comes off, the same file, same export, new insides. Nothing that imports `zip` changes:
+
+```ts
+// zip.ts, later
+import { ZipBuffer, ZipEntry, createZipArchiveSync } from 'node:zlib';
+import type { ZipModule } from './zip.types';
+
+export const zip: ZipModule = {
+  async open(archive) {
+    const loaded = new ZipBuffer(archive);
+
+    return {
+      names: () => [...loaded.keys()].filter((name) => !name.endsWith('/')),
+      read: (name) => loaded.get(name).content(),
+    };
+  },
+  async create(files) {
+    const entries = Object.entries(files).map(([name, data]) => ZipEntry.createSync(name, data, { method: 'deflate' }));
+
+    return Buffer.concat([...createZipArchiveSync(entries)]);
+  },
+};
+```
+
+The call site is the same on both days, which is the whole point:
+
+```ts
+// release.ts
+import { readFile, writeFile } from 'node:fs/promises';
+import { zip } from './zip';
+
+const bundle = await zip.create({
+  'manifest.json': Buffer.from(JSON.stringify({ version: '1.4.0' })),
+  'dist/app.js': await readFile('dist/app.js'),
+});
+await writeFile('release.zip', bundle);
+
+const reader = await zip.open(await readFile('release.zip'));
+console.log(reader.names()); // ['manifest.json', 'dist/app.js']
+const manifest = JSON.parse((await reader.read('manifest.json')).toString());
+```
+
+I ran both versions against each other's output and they agree. Two things stand out in the diff. `create` is where the built-in looks different from everyone else, because there's no empty archive to add to. And the missing-entry case is the one place the built-in is better behaved, since `ZipBuffer.get` throws `ERR_ZIP_ENTRY_NOT_FOUND` while jszip hands you `null`. Everything else is a rename.
+
+The benchmark says the swap will be worth making.
+
+The docs say not yet.
+
+Keep yauzl if you stream untrusted uploads. It isn't experimental, and its README documents its defences against zip bombs. Keep archiver if you want a streaming writer that walks directories and globs for you. Everyone else, set a reminder for the release that drops the warning.

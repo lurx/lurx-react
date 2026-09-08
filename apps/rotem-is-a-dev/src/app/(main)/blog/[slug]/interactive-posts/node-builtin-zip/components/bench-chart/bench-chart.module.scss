@@ -1,0 +1,28 @@
+@use 'mixins/spacing' as *;
+
+.figure {
+	margin-block: spacing(6);
+	margin-inline: 0;
+	padding-block: spacing(4);
+	padding-inline: spacing(3);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	background: var(--surface-near);
+}
+
+.title {
+	margin-block: 0 spacing(3);
+	font-family: var(--font-mono), monospace;
+	font-size: 0.95rem;
+	color: var(--text);
+}
+
+.chart {
+	inline-size: 100%;
+}
+
+.caption {
+	margin-block: spacing(3) 0;
+	font-size: 0.8rem;
+	color: var(--muted);
+}

@@ -17,6 +17,7 @@ type InteractivePostProps = {
 
 const interactivePostRegistry: Record<string, () => Promise<{ default: ComponentType<InteractivePostProps> }>> = {
 	'pretext-benchmark': () => import('./interactive-posts/pretext-benchmark'),
+	'node-builtin-zip': () => import('./interactive-posts/node-builtin-zip'),
 };
 
 function getPostBySlug(slug: string) {

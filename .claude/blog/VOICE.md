@@ -196,3 +196,4 @@ to be edited by hand.
 
 <!-- Append here. Format: -->
 <!-- - 2026-09-02: Never open a section with a question. -->
+- 2026-09-08: LinkedIn copy gets the same voice as the post, not a summary of it. Open on a concrete moment or a reaction ("I opened package.json ready to delete jszip"), keep one dry joke, and end on the opinion rather than the link. A variant that only restates the post's findings is boring and gets rewritten.

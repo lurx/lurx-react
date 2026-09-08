@@ -1,0 +1,12 @@
+@use 'mixins/media' as *;
+
+.post {
+	max-inline-size: 120ch;
+	color: var(--text);
+	line-height: 1.75;
+
+	@include media-below('tablet') {
+		max-inline-size: 100%;
+		line-height: 1.5;
+	}
+}
